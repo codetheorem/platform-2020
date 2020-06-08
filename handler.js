@@ -15,7 +15,7 @@ module.exports.get_schedule = async event => {
 };
 
 module.exports.get_event = async event => {
-  const id = event.queryStringParameters.id || "1";
+  const id = event.queryStringParameters.id;
 
   const item = await db.getItem({
     TableName: TABLE_NAME,
