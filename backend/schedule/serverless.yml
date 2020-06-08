@@ -17,18 +17,21 @@ provider:
 functions:
   get_schedule:
     handler: handler.get_schedule
+    description: Retrieves all schedule data from database
     events:
       - http: 
           path: schedule
           method: get
   get_event:
     handler: handler.get_event
+    description: Retrieves single schedule event from database
     events:
       - http: 
           path: get_event
           method: get
   add_event:
     handler: handler.add_event
+    description: Adds a new schedule event to the database
     events:
       - http: 
           path: add_event
