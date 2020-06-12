@@ -19,7 +19,8 @@
   "homepage": "https://github.com/gotechnica/platform-2020#readme",
   "dependencies": {
     "aws-sdk": "^2.691.0",
-    "aws-sdk-mock": "^5.1.0"
+    "aws-sdk-mock": "^5.1.0",
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "serverless-jest-plugin": "^0.3.0"

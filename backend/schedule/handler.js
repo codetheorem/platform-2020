@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-
+const UUID = require('uuid');
 const TABLE_NAME = 'schedule-demo';
 
 AWS.config.update({region:'us-east-1'});
@@ -27,7 +27,7 @@ module.exports.get_event = async event => {
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
   const item = await ddb.getItem({
-    TableName: TABLE_NAME,
+    TableName: process.env.SCHEDULE_TABLE,
     Key: {
       id: {
         S: id.toString()
@@ -47,10 +47,14 @@ module.exports.add_event = async event => {
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
+  const id = UUID.v4();
+
   const params = {
     TableName: process.env.SCHEDULE_TABLE,
     Item: {}
   };
+
+  body.id = id;
 
   // dynamically add post request body params to document
   Object.keys(body).forEach(k => {
