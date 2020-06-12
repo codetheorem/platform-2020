@@ -1,6 +1,5 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
-const TABLE_NAME = 'schedule-demo';
 
 AWS.config.update({region:'us-east-1'});
 
