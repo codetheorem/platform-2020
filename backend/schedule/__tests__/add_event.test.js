@@ -11,9 +11,6 @@ const wrapped = lambdaWrapper.wrap(mod, { handler: 'add_event' });
 
 const AWS = require('aws-sdk-mock');
 
-const SCHEDULE_TABLE_NAME = "platform-schedule-test";
-
-
 const sample_event = {
   id: "1",
   category: "main",
@@ -27,7 +24,7 @@ describe('add_event', () => {
     done();
   });
 
-  it('implement tests here', () => {
+  it('Correctly inserts the event into the database', () => {
     const bodyStub = sample_event;
     AWS.mock('DynamoDB', 'putItem', function(params, callback) {
       callback(null, {Item: sample_event});
