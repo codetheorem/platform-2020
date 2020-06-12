@@ -3,10 +3,17 @@ const AWS = require('aws-sdk');
 
 const TABLE_NAME = 'schedule-demo';
 
+AWS.config.update({region:'us-east-1'});
+
+const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
 module.exports.get_schedule = async event => {
-  const result = await db.scanItems({
-    TableName: TABLE_NAME
-  });
+  var params = {
+    TableName: process.env.SCHEDULE_TABLE,
+  };
+
+  const result = await ddb.scan(params).promise();
+  console.log(result.Items)
 
   return {
     statusCode: 200,
@@ -34,7 +41,7 @@ module.exports.add_event = async event => {
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
   const params = {
-    TableName: TABLE_NAME,
+    TableName: process.env.SCHEDULE_TABLE,
     Item: {}
   };
 
@@ -48,6 +55,6 @@ module.exports.add_event = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(result)
+    body: JSON.stringify(result.Item)
   };
 };

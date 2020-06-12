@@ -2,7 +2,11 @@ service: platform-schedule
 
 provider:
   name: aws
+  region: us-east-1
   runtime: nodejs10.x
+  stage: ${opt:stage, 'dev'}
+  environment:
+    SCHEDULE_TABLE: ${file(./config/${self:provider.stage}.json):SCHEDULE_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -36,3 +40,10 @@ functions:
       - http: 
           path: add_event
           method: post
+
+plugins:
+  - serverless-jest-plugin
+custom:
+  # see https://github.com/nordcloud/serverless-jest-plugin
+  jest:
+    collectCoverage: true
