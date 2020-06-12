@@ -5,20 +5,42 @@
 
 const mod = require('./../handler');
 
+const AWS = require('aws-sdk-mock');
 const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'get_schedule' });
 
+const sample_schedule = [
+  {
+    id: "1",
+    category: "main",
+    description: "A very cool workshop for Technica!",
+    start_time: "2020-6-5T15:00:00Z",
+    end_time: "2020-6-5T18:00:00Z",
+  },
+  {
+    id: "2",
+    category: "main",
+    description: "Another very cool workshop for Technica!",
+    start_time: "2020-6-5T15:00:00Z",
+    end_time: "2020-6-5T18:00:00Z",
+  }
+];
+
+
 describe('get_schedule', () => {
   beforeAll((done) => {
-//  lambdaWrapper.init(liveFunction); // Run the deployed lambda
-
     done();
   });
 
-  it('implement tests here', () => {
-    return wrapped.run({}).then((response) => {
+  it('Correctly retrieves the schedule from the database', () => {
+    AWS.mock('DynamoDB', 'scan', function(params, callback) {
+      callback(null, {Items: sample_schedule});
+    });
+
+    return wrapped.run().then((response) => {
       expect(response).toBeDefined();
+      expect(response).toMatchObject({body: JSON.stringify(sample_schedule), statusCode: 200})
     });
   });
 });

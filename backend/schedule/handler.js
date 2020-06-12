@@ -5,15 +5,14 @@ const TABLE_NAME = 'schedule-demo';
 
 AWS.config.update({region:'us-east-1'});
 
-const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-
 module.exports.get_schedule = async event => {
   var params = {
     TableName: process.env.SCHEDULE_TABLE,
   };
 
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
   const result = await ddb.scan(params).promise();
-  console.log(result.Items)
 
   return {
     statusCode: 200,
