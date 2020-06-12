@@ -1,4 +1,3 @@
-const db = require("simple-dynamodb");
 const AWS = require('aws-sdk');
 
 const TABLE_NAME = 'schedule-demo';
@@ -23,10 +22,16 @@ module.exports.get_schedule = async event => {
 module.exports.get_event = async event => {
   const id = event.queryStringParameters.id;
 
-  const item = await db.getItem({
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const item = await ddb.getItem({
     TableName: TABLE_NAME,
-    Key: { id }
-  });
+    Key: {
+      id: {
+        S: id.toString()
+      }
+    }
+  }).promise();
 
   return {
     statusCode: 200,
