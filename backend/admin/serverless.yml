@@ -1,0 +1,23 @@
+service: platform-admin
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  environment:
+    ADMIN_TABLE: ${file(./config/${self:provider.stage}.json):ADMIN_TABLE}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+       - dynamodb:Query
+       - dynamodb:Scan
+       - dynamodb:GetItem
+       - dynamodb:PutItem
+       - dynamodb:UpdateItem
+       - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:*"
+
+
+functions:
+  hello:
+    handler: handler.hello # remove this when you're implementing the first function of this service!
