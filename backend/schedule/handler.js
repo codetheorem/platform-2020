@@ -127,7 +127,7 @@ module.exports.update_event = async event => {
   // Initialize ExpressionAttributeValues for ddb,updateItem()
   let exprAttrValues = {};
 
-    let counter = 0;
+  let counter = 0;
     
   // dynamically update post request body params to document
   Object.keys(body).forEach(k => {
