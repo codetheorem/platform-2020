@@ -68,3 +68,36 @@ module.exports.add_event = async event => {
     body: JSON.stringify(result.Item)
   };
 };
+
+// Adds a new schedule event to the a user's list
+module.exports.add_event_to_user_list = async event => {
+  const body = JSON.parse(event.body);
+
+  if (!body["event_id"] || !body["user_id"]) {
+    return {
+      statusCode: 500,
+      body: "add_event_to_user_list expects keys \"event_id\" and \"user_id\""
+    }
+  }
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const id = UUID.v4();
+
+  const params = {
+    TableName: process.env.USER_EVENTS_TABLE,
+    Item: {
+      id: {S: id},
+      event_id: {S: body["event_id"]},
+      user_id: {S: body["user_id"]}
+    }
+  };
+
+  // Call DynamoDB to add the item to the table
+  const result = await ddb.putItem(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item)
+  };
+};
