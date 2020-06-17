@@ -73,7 +73,7 @@ module.exports.add_event = async event => {
 module.exports.add_event_to_user_list = async event => {
   const body = JSON.parse(event.body);
 
-  if (!(body["event_id"] && body["user_id"])) {
+  if (!body["event_id"] || !body["user_id"]) {
     return {
       statusCode: 500,
       body: "add_event_to_user_list expects keys \"event_id\" and \"user_id\""
