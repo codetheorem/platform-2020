@@ -131,13 +131,13 @@ module.exports.update_event = async event => {
     
   // dynamically update post request body params to document
   Object.keys(body).forEach(k => {
-      if (k != 'id') {
-	  const ref = 'val' + counter;
+    if (k != 'id') {
+      const ref = 'val' + counter;
       let updateElement = ' #' + k + ' =:' + ref + ','
       update = update.concat(updateElement)
       exprAttrNames['#' + k] = k
-	  exprAttrValues[':' + ref] = {S: body[k]}
-	  counter++
+      exprAttrValues[':' + ref] = {S: body[k]}
+      counter++
     }
   });
 
