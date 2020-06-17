@@ -68,3 +68,62 @@ module.exports.add_event = async event => {
     body: JSON.stringify(result.Item)
   };
 };
+
+// Updates an existing schedule event in the database
+module.exports.update_event = async event => {
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+    
+  const body = JSON.parse(event.body);
+
+  if (!body["id"]) {
+    return {
+      statusCode: 500,
+      body: "update_event expects key \"id\""
+    }
+  }
+    
+  id = body['id'];
+
+  // Initialize UpdateExpression for ddb.updateItem()
+  var update = 'SET';
+
+  // Initialize ExpressionAttributeNames for ddb.updateItem()
+  var exprAttrNames = {};
+
+  // Initialize ExpressionAttributeValues for ddb,updateItem()
+  var exprAttrValues = {};
+    
+  // dynamically update post request body params to document
+  Object.keys(body).forEach(k => {
+    if (k != 'id') {
+      var updateElement = ' #' + k + ' =:' + body[k] + ','
+      update = update.concat(updateElement)
+      exprAttrNames['#' + k] = k
+      exprAttrValues[':' + body[k]] = {S: body[k]}
+    }
+  });
+
+  // Remove trailing comma from UpdateExpression
+  update = update.slice(0, -1)
+    
+  const params = {
+    TableName: process.env.SCHEDULE_TABLE,
+    Key: {
+      id: {
+        S: id.toString()
+      }
+    },
+    UpdateExpression: update,
+    ExpressionAttributeNames: exprAttrNames,
+    ExpressionAttributeValues: exprAttrValues
+  };
+    
+  // Call DynamoDB to update the item to the table
+  const result = await ddb.updateItem(params).promise();
+    
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item)
+  };
+};
