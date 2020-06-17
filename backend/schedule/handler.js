@@ -73,6 +73,13 @@ module.exports.add_event = async event => {
 module.exports.add_event_to_user_list = async event => {
   const body = JSON.parse(event.body);
 
+  if (!(body["event_id"] && body["user_id"])) {
+    return {
+      statusCode: 500,
+      body: "add_event_to_user_list expects keys \"event_id\" and \"user_id\""
+    }
+  }
+
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
   const id = UUID.v4();
@@ -80,9 +87,9 @@ module.exports.add_event_to_user_list = async event => {
   const params = {
     TableName: process.env.USER_EVENTS_TABLE,
     Item: {
-      id: UUID.v4(),
-      event_id: body["event_id"],
-      user_id: body["user_id"]
+      id: {S: id},
+      event_id: {S: body["event_id"]},
+      user_id: {S: body["user_id"]}
     }
   };
 
