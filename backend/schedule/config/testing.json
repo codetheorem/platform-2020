@@ -1,3 +1,4 @@
 {
-    "SCHEDULE_TABLE": "platform-schedule-test"
+    "SCHEDULE_TABLE": "platform-schedule-test",
+    "USER_EVENTS_TABLE": "platform-user-events-test"
 }
