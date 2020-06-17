@@ -7,6 +7,7 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment:
     SCHEDULE_TABLE: ${file(./config/${self:provider.stage}.json):SCHEDULE_TABLE}
+    USER_EVENTS_TABLE: ${file(./config/${self:provider.stage}.json):USER_EVENTS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -39,6 +40,13 @@ functions:
     events:
       - http: 
           path: add_event
+          method: post
+  add_event_to_user_list:
+    handler: handler.add_event_to_user_list
+    description: Adds a new schedule event to the a user's list
+    events:
+      - http: 
+          path: add_event_to_user_list
           method: post
   update_event:
     handler: handler.update_event
