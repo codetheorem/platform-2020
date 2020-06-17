@@ -119,18 +119,18 @@ module.exports.update_event = async event => {
   id = body['id'];
 
   // Initialize UpdateExpression for ddb.updateItem()
-  var update = 'SET';
+  let update = 'SET';
 
   // Initialize ExpressionAttributeNames for ddb.updateItem()
-  var exprAttrNames = {};
+  let exprAttrNames = {};
 
   // Initialize ExpressionAttributeValues for ddb,updateItem()
-  var exprAttrValues = {};
+  let exprAttrValues = {};
     
   // dynamically update post request body params to document
   Object.keys(body).forEach(k => {
     if (k != 'id') {
-      var updateElement = ' #' + k + ' =:' + body[k] + ','
+      let updateElement = ' #' + k + ' =:' + body[k] + ','
       update = update.concat(updateElement)
       exprAttrNames['#' + k] = k
       exprAttrValues[':' + body[k]] = {S: body[k]}
