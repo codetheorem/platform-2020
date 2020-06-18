@@ -1,7 +1,6 @@
 const db = require("simple-dynamodb");
 const AWS = require('aws-sdk');
 const uuid = require('uuid');
-// import { v4 as uuidv4 } from 'uuid';
 
 const TABLE_NAME = 'platform-teams-dev';
 
@@ -14,7 +13,6 @@ module.exports.create_team = async event => {
     TableName: TABLE_NAME,
     Item: {
       'id': {S:uuid.v4()},
-      // team_name: body["team_name"]
     },
   };
 
@@ -25,14 +23,11 @@ module.exports.create_team = async event => {
 
   // Call DynamoDB to add the item to the table
   const result = await ddb.putItem(params).promise()
-  //   catch (e) {
-  //     console.error(e);
-  // }
 
+  // return 500 on error
   return {
     statusCode: 200,
     body: JSON.stringify(result),
   };
 
-  // catch error, return 500
 };
