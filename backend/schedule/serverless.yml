@@ -48,6 +48,14 @@ functions:
       - http: 
           path: add_event_to_user_list
           method: post
+  update_event:
+    handler: handler.update_event
+    description: Updates an existing schedule event to the database
+    events:
+      - http: 
+          path: update_event
+          method: post
+
 
 plugins:
   - serverless-jest-plugin
