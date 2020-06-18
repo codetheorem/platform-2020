@@ -1,18 +1,38 @@
-'use strict';
+const db = require("simple-dynamodb");
+const AWS = require('aws-sdk');
+const uuid = require('uuid');
+// import { v4 as uuidv4 } from 'uuid';
 
-module.exports.hello = async event => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v1.0! Your function executed successfully!',
-        input: event,
-      },
-      null,
-      2
-    ),
+const TABLE_NAME = 'platform-teams-dev';
+
+
+module.exports.create_team = async event => {
+  const body = JSON.parse(event.body);
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const params = {
+    TableName: TABLE_NAME,
+    Item: {
+      'id': {S:uuid.v4()},
+      // team_name: body["team_name"]
+    },
   };
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
+  // dynamically add post request body params to document
+  Object.keys(body).forEach(k => {
+    params.Item[k] = {S: body[k]}
+  });
+
+  // Call DynamoDB to add the item to the table
+  const result = await ddb.putItem(params).promise()
+  //   catch (e) {
+  //     console.error(e);
+  // }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+  };
+
+  // catch error, return 500
 };

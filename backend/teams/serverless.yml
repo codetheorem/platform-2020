@@ -19,5 +19,9 @@ provider:
 
 
 functions:
-  hello:
-    handler: handler.hello # remove this when you're implementing the first function of this service!
+  create_team:
+    handler: handler.create_team
+    events:
+      - http: 
+          path: create_team
+          method: post
