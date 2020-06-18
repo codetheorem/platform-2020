@@ -25,3 +25,9 @@ functions:
       - http: 
           path: create_team
           method: post
+  invite_to_team:
+    handler: handler.invite_to_team
+    events:
+      - http: 
+          path: invite_to_team
+          method: post
