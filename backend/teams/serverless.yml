@@ -31,3 +31,15 @@ functions:
       - http: 
           path: invite_to_team
           method: post
+  join_team:
+    handler: handler.join_team
+    events:
+      - http: 
+          path: join_team
+          method: post
+  leave_team:
+    handler: handler.leave_team
+    events:
+      - http: 
+          path: leave_team
+          method: post
