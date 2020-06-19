@@ -41,6 +41,13 @@ functions:
       - http: 
           path: add_event
           method: post
+  update_event:
+    handler: handler.update_event
+    description: Updates an existing schedule event to the database
+    events:
+      - http: 
+          path: update_event
+          method: post
   add_event_to_user_list:
     handler: handler.add_event_to_user_list
     description: Adds a new schedule event to the a user's list
@@ -48,12 +55,12 @@ functions:
       - http: 
           path: add_event_to_user_list
           method: post
-  update_event:
-    handler: handler.update_event
-    description: Updates an existing schedule event to the database
+  delete_event_from_user_list:
+    handler: handler.delete_event_from_user_list
+    description: Deletes a schedule event from a user's list
     events:
-      - http: 
-          path: update_event
+      - http:
+          path: delete_event_from_user_list
           method: post
 
 

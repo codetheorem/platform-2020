@@ -36,7 +36,8 @@ describe('add_event_to_user_list', () => {
     };
     return wrapped.run(event).then((response) => {
       expect(response).toBeDefined();
-      expect(response).toMatchObject({body: JSON.stringify(valid_case), statusCode: 200})
+      expect(response).toHaveProperty('statusCode', 200);
+      expect(JSON.parse(response.body)).toHaveProperty('id');
     });
   });
 
@@ -51,7 +52,7 @@ describe('add_event_to_user_list', () => {
     };
     return wrapped.run(event).then((response) => {
       expect(response).toBeDefined();
-      expect(response).toHaveProperty('statusCode', 500)
+      expect(response).toHaveProperty('statusCode', 500);
     });
   });
 });
