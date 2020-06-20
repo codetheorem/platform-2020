@@ -1,12 +1,11 @@
 const AWS = require('aws-sdk');
 const uuid = require('uuid');
 
-
+  // delete a single user from the database
 module.exports.delete_user = async event => {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-  // Call DynamoDB to delete the item
   const delete_params = {
     TableName: process.env.USERS_TABLE,
     Key: {
@@ -20,5 +19,26 @@ module.exports.delete_user = async event => {
   return {
     statusCode: 200,
     body: JSON.stringify(status_result.Item),
+  };
+};
+
+// Retrieves a single user from the database
+module.exports.get_user = async event => {
+  const id = event.queryStringParameters.id;
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const item = await ddb.getItem({
+    TableName: process.env.USERS_TABLE,
+    Key: {
+      id: {
+        S: id.toString()
+      }
+    }
+  }).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(item.Item)
   };
 };

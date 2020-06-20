@@ -25,6 +25,12 @@ functions:
       - http: 
           path: delete_user
           method: post
+  get_user:
+    handler: handler.get_user
+    events:
+      - http: 
+          path: get_user
+          method: get
 
 plugins:
   - serverless-jest-plugin
