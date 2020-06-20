@@ -6,16 +6,15 @@ module.exports = {
     browser
       .init()
       .waitForElementVisible('#app')
-      .assert.elementPresent('.hello')
-      .assert.containsText('h1', 'Welcome to Your Vue.js App')
+      .assert.containsText('h1', "Welcome to Technica's Virtual Platform!")
       .assert.elementCount('img', 1)
+      .pause(1000)
+      .click('.schedule')
+      .assert.containsText('h1', "This is a schedule page")
+      .pause(5000)
+      .click('.profile')
+      .assert.containsText('h1', "This is a profile page")
+      .pause(3000)
       .end();
-  },
-
-  'example e2e test using a custom command': (browser) => {
-    browser
-      .openHomepage()
-      .assert.elementPresent('.hello')
-      .end();
-  },
+  }
 };
