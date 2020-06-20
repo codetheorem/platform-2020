@@ -19,5 +19,16 @@ provider:
 
 
 functions:
-  hello:
-    handler: handler.hello # remove this when you're implementing the first function of this service!
+  delete_user:
+    handler: handler.delete_user
+    events:
+      - http: 
+          path: delete_user
+          method: post
+
+plugins:
+  - serverless-jest-plugin
+custom:
+  # see https://github.com/nordcloud/serverless-jest-plugin
+  jest:
+    collectCoverage: true
