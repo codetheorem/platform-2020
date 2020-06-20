@@ -5,7 +5,7 @@ AWS.config.update({region:'us-east-1'});
 
 // Retrieves the entire list of schedule events from the database
 module.exports.get_schedule = async event => {
-  var params = {
+  const params = {
     TableName: process.env.SCHEDULE_TABLE,
   };
 
