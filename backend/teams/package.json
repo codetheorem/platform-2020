@@ -4,14 +4,17 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "sls invoke test --stage testing"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.696.0",
-    "simple-dynamodb": "^1.0.1",
+    "aws-sdk": "^2.701.0",
+    "aws-sdk-mock": "^5.1.0",
     "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "serverless-jest-plugin": "^0.3.0"
   }
 }

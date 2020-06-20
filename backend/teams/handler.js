@@ -1,21 +1,20 @@
-const db = require("simple-dynamodb");
 const AWS = require('aws-sdk');
-const uuid = require('uuid');
+const UUID = require('uuid');
 
-const TEAMS_TABLE_NAME = 'platform-teams-dev';
-const INVITES_TABLE_NAME = 'platform-team-invites';
-const MEMBERSHIPS_TABLE_NAME = 'platform-team-memberships';
+AWS.config.update({region:'us-east-1'});
 
-async function post_body_to_table(event, table_name) {
+// Posts the request body fields to a DynamoDB table
+async function post_request_body_to_table(event, table_name) {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
   const params = {
     TableName: table_name,
-    Item: {
-      'id': {S:uuid.v4()},
-    },
+    Item: {}
   };
+
+  const id = UUID.v4();
+  body.id = id;
 
   // dynamically add post request body params to document
   Object.keys(body).forEach(k => {
@@ -28,20 +27,20 @@ async function post_body_to_table(event, table_name) {
   // return 500 on error
   return {
     statusCode: 200,
-    body: JSON.stringify(result),
+    body: JSON.stringify(result.Item),
   };
 };
 
 module.exports.create_team = async event => {
-  return post_body_to_table(event, TEAMS_TABLE_NAME);
+  return post_request_body_to_table(event, process.env.TEAMS_TABLE);
 };
 
 module.exports.invite_to_team = async event => {
-  return post_body_to_table(event, INVITES_TABLE_NAME);
+  return post_request_body_to_table(event, process.env.INVITES_TABLE);
 };
 
 module.exports.join_team = async event => {
-  return post_body_to_table(event, MEMBERSHIPS_TABLE_NAME);
+  return post_request_body_to_table(event, process.env.MEMBERSHIPS_TABLE);
 };
 
 module.exports.leave_team = async event => {
@@ -50,7 +49,7 @@ module.exports.leave_team = async event => {
 
   // Call DynamoDB to delete the item
   const delete_params = {
-    TableName: MEMBERSHIPS_TABLE_NAME,
+    TableName: process.env.MEMBERSHIPS_TABLE,
     Key: {
       'id': {S: body['id']},
     },

@@ -6,6 +6,8 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment:
     TEAMS_TABLE: ${file(./config/${self:provider.stage}.json):TEAMS_TABLE}
+    INVITES_TABLE: ${file(./config/${self:provider.stage}.json):INVITES_TABLE}
+    MEMBERSHIPS_TABLE: ${file(./config/${self:provider.stage}.json):MEMBERSHIPS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -43,3 +45,10 @@ functions:
       - http: 
           path: leave_team
           method: post
+
+plugins:
+  - serverless-jest-plugin
+custom:
+  # see https://github.com/nordcloud/serverless-jest-plugin
+  jest:
+    collectCoverage: true
