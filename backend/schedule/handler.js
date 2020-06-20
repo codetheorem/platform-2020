@@ -15,7 +15,11 @@ module.exports.get_schedule = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Items)
+    body: JSON.stringify(result.Items),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
+    }
   };
 };
 
@@ -36,7 +40,11 @@ module.exports.get_event = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(item.Item)
+    body: JSON.stringify(item.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 };
 
@@ -65,7 +73,11 @@ module.exports.add_event = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item)
+    body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 };
 
@@ -128,7 +140,11 @@ module.exports.update_event = async event => {
     
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item)
+    body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 };
 
@@ -161,7 +177,11 @@ module.exports.add_event_to_user_list = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({id: id})
+    body: JSON.stringify({id: id}),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 };
 
@@ -191,6 +211,10 @@ module.exports.delete_event_from_user_list = async event => {
   const result = await ddb.deleteItem(params).promise();
 
   return {
-    statusCode: 200
+    statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 };
