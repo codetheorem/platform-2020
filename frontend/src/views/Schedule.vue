@@ -1,16 +1,26 @@
 <template>
   <div class="about">
     <h1>This is a schedule page</h1>
-    <div>
-      <div v-for="event in schedule" :key="event.id">
-        <span>{{ event.name}}</span>
-      </div>
-    </div>
+    <table id="schedule-table">
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Start Time</th>
+      </tr>
+      <tr v-for="event in schedule" :key="event.id" class="schedule-item">
+        <td>{{ event.name}}</td>
+        <td>{{ event.category}}</td>
+        <td>{{ event.description}}</td>
+        <td>{{ getFormattedTime(event.start_time)}}</td>
+      </tr>
+    </table>
   </div>
 </template>
 
 <script>
 import generalMixin from '../mixins/general';
+import Config from '../config/general';
 export default {
   name: 'Schedule',
   props: {
@@ -23,26 +33,32 @@ export default {
     }
   },
   async mounted(){
-    this.schedule = await this.getData("https://dxz39cp5d0.execute-api.us-east-1.amazonaws.com", "dev", "schedule");
+    console.log(process.env.NODE_ENV)
+    this.schedule = await this.getData(Config.dev.SCHEDULE_BASE_ENDPOINT, "dev", "schedule");
     console.log(this.schedule);
+  },
+  methods: {
+    getFormattedTime(rawDateTime) {
+      return (new Date(rawDateTime)).toTimeString();
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.schedule-item {
+  padding: 10px;
+  border: 1px solid turquoise;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+#schedule-table {
+  margin: 0 auto;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+
+td, th {
+  border: 1px solid turquoise;
+  padding: 10px;
 }
 </style>
