@@ -218,3 +218,53 @@ module.exports.delete_event_from_user_list = async event => {
     }
   };
 };
+
+// Deletes a schedule event from a user's list
+module.exports.get_events_from_user_list = async event => {
+  const body = JSON.parse(event.body);
+
+  // Check for validity
+  if (!body.user_id) {
+    return {
+      statusCode: 500,
+      body: "get_events_from_user_list expects key \"user_id\""
+    }
+  }
+
+  // Vars to be used later (db instance)
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const params = {
+    TableName: process.env.USER_EVENTS_TABLE,
+    FilterExpression: "user_id = :val",
+    ExpressionAttributeValues: {
+      ":val" : {S: body.user_id},
+    }
+  };
+
+  // Call DynamoDB to scan through *all* items in the table
+  const result = await ddb.scan(params).promise();
+
+  console.log(result);
+
+  // Instead of just returning the ddb response, let's clean things up
+  const response = {
+    user_id: body.user_id,
+    event_ids: []
+  };
+
+  Object(result.Items).forEach(k => {
+    response.event_ids.push(k.event_id.S)
+  });
+
+  console.log(response);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(response),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };
+};

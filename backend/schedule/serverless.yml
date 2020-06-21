@@ -68,6 +68,14 @@ functions:
           path: delete_event_from_user_list
           method: post
           cors: true
+  get_events_from_user_list:
+    handler: handler.get_events_from_user_list
+    description: Retrieves all schedule events added to the user's list
+    events:
+      - http:
+          path: get_events_from_user_list
+          method: post
+          cors: true
 
 
 plugins:
