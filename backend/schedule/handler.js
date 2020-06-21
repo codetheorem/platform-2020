@@ -218,3 +218,64 @@ module.exports.delete_event_from_user_list = async event => {
     }
   };
 };
+
+
+
+function make_shortlink(length) {
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+// Creates and adds a new unique shortlink to the database, checking for duplicates
+module.exports.add_shortlink = async event => {
+  const body = JSON.parse(event.body);
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const id = UUID.v4();
+  let shortlink;
+  let checker_result;
+  let checker_params;
+  //check that shortlink is unique
+  do {
+    shortlink = make_shortlink(6);
+
+    checker_params = {
+      ExpressionAttributeValues: {
+       ":a": {
+         S: shortlink
+        }
+      }, 
+      FilterExpression: "shortlink = :a", 
+      TableName: process.env.SHORTLINKS_TABLE
+     };
+  
+    checker_result = await ddb.scan(checker_params).promise();
+  } while (checker_result["Count"] > 0);
+
+  // add shortlink
+  const params = {
+    TableName: process.env.SHORTLINKS_TABLE,
+    Item: {}
+  };
+
+  body.id = id;
+  body.shortlink = shortlink;
+
+  // dynamically add post request body params to document
+  Object.keys(body).forEach(k => {
+    params.Item[k] = {S: body[k]}
+  });
+
+  // Call DynamoDB to add the item to the table
+  const result = await ddb.putItem(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item)
+  };
+};

@@ -1,4 +1,5 @@
 {
     "SCHEDULE_TABLE": "platform-schedule-test",
-    "USER_EVENTS_TABLE": "platform-user-events-test"
+    "USER_EVENTS_TABLE": "platform-user-events-test",
+    "SHORTLINKS_TABLE": "platform-shortlinks-test"
 }

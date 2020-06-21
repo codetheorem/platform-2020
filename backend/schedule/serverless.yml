@@ -8,6 +8,7 @@ provider:
   environment:
     SCHEDULE_TABLE: ${file(./config/${self:provider.stage}.json):SCHEDULE_TABLE}
     USER_EVENTS_TABLE: ${file(./config/${self:provider.stage}.json):USER_EVENTS_TABLE}
+    SHORTLINKS_TABLE: ${file(./config/${self:provider.stage}.json):SHORTLINKS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -68,6 +69,15 @@ functions:
           path: delete_event_from_user_list
           method: post
           cors: true
+  add_shortlink:
+    handler: handler.add_shortlink
+    description: Adds a unique shortlink to the database
+    events:
+      - http:
+          path: add_shortlink
+          method: post
+          cors: true
+          
 
 
 plugins:
