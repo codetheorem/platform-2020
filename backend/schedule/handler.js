@@ -279,3 +279,28 @@ module.exports.add_shortlink = async event => {
     body: JSON.stringify(result.Item)
   };
 };
+
+// Retrieves a single shortlink from the database
+module.exports.get_shortlink = async event => {
+  const id = event.queryStringParameters.id;
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const item = await ddb.getItem({
+    TableName: process.env.SHORTLINKS_TABLE,
+    Key: {
+      id: {
+        S: id.toString()
+      }
+    }
+  }).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(item.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };
+};

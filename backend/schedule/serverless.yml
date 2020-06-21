@@ -77,7 +77,14 @@ functions:
           path: add_shortlink
           method: post
           cors: true
-          
+  get_shortlink:
+    handler: handler.get_shortlink
+    description: Gets a shortlink from the database
+    events:
+      - http:
+          path: get_shortlink
+          method: get
+          cors: true        
 
 
 plugins:
