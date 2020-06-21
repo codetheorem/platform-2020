@@ -19,7 +19,7 @@ module.exports = {
       pwa: false,
       enableCloudfront: false,
       pluginVersion: '4.0.0-rc3',
-      uploadConcurrency: 5
-    }
-  }
+      uploadConcurrency: 5,
+    },
+  },
 };

@@ -5,8 +5,8 @@
       <router-link to="/about">About</router-link> |
       <router-link to="/sponsorship-fair">Sponsorship Fair</router-link> |
       <router-link to="/live-stream">Live Stream</router-link> |
-      <router-link to="/schedule">Schedule</router-link> |
-      <router-link to="/profile">Profile</router-link> |
+      <router-link to="/schedule" class="schedule">Schedule</router-link> |
+      <router-link to="/profile" class="profile">Profile</router-link> |
       <router-link to="/login">Login</router-link> |
       <router-link to="/register">Register</router-link> |
     </div>
