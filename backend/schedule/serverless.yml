@@ -52,6 +52,14 @@ functions:
           path: update_event
           method: post
           cors: true
+  delete_event_from_schedule:
+    handler: handler.delete_event_from_schedule
+    description: Deletes an existing schedule event from the database
+    events:
+      - http:
+          path: delete_event_from_schedule
+          method: post
+          cors: true
   add_event_to_user_list:
     handler: handler.add_event_to_user_list
     description: Adds a new schedule event to the a user's list

@@ -148,6 +148,34 @@ module.exports.update_event = async event => {
   };
 };
 
+// Deletes an existing schedule event in the database
+module.exports.delete_event_from_schedule = async event => {
+  const body = JSON.parse(event.body);
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+    
+  if (!body.id) {
+    return {
+      statusCode: 500,
+      body: "delete_event_from_schedule expects key \"id\""
+    }
+  }
+
+  const params = {
+    TableName: process.env.SCHEDULE_TABLE,
+    Key: {
+      id: {S: body.id},
+    }
+  };
+
+  // Call DynamoDB to delete the item in the table
+  const result = await ddb.deleteItem(params).promise();
+
+  return {
+    statusCode: 200
+  };
+}
+
 // Adds a new schedule event to the a user's list
 module.exports.add_event_to_user_list = async event => {
   const body = JSON.parse(event.body);
