@@ -25,9 +25,7 @@ describe('get_events_from_user_list', () => {
   it('Correctly fails on a bad request', () => {
     const bodyStub = {};
 
-    const event = {
-      body: JSON.stringify(bodyStub)
-    };
+    const event = {};
 
     return wrapped.run(event).then((response) => {
       expect(response).toBeDefined();
@@ -40,7 +38,7 @@ describe('get_events_from_user_list', () => {
     const response = await adder.run(insert_event);
 
     const event = {
-      body: JSON.stringify({user_id: "j45kg45v4-454j3"})
+      queryStringParameters: {user_id: "j45kg45v4-454j3"}
     };
 
     // Check to make sure our fancy event id was returned by endpoint
