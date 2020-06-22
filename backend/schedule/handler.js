@@ -221,7 +221,7 @@ module.exports.delete_event_from_user_list = async event => {
   if (!body.id) {
     return {
       statusCode: 500,
-      body: "add_event_to_user_list expects keys \"id\""
+      body: "delete_event_from_user_list expects keys \"id\""
     }
   }
 
@@ -235,7 +235,7 @@ module.exports.delete_event_from_user_list = async event => {
     }
   };
 
-  // Call DynamoDB to add the item to the table
+  // Call DynamoDB to delete the item from the table
   const result = await ddb.deleteItem(params).promise();
 
   return {
