@@ -33,7 +33,7 @@ describe('add_event', () => {
     };
     return await wrapped.run(event).then(async (response) => {
       expect(response).toBeDefined();
-      expect(response).toMatchObject({body: JSON.stringify(sample_event), statusCode: 200})
+      expect(response).toMatchObject({body: {}, statusCode: 200})
     });
   });
 
