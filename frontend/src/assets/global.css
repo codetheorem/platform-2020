@@ -1,0 +1,56 @@
+@import url('https://fonts.cdnfonts.com/css/dinpro'); /* DINpro */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); /* Noto Sans */
+
+/* HEADINGS */
+h1, h2, h3, h4, h5 {
+    font-family: 'DINPro', sans-serif;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 96px;
+}
+
+h2 {
+	font-size: 64px;
+}
+
+h3 {
+	font-size: 42px;
+}
+
+h3.medium {
+	font-weight: 500;
+}
+
+h4 {
+    font-size: 36px;
+}
+
+h4.medium {
+	font-weight: 500;
+}
+
+h5 {
+	font-size: 24px;
+}
+
+h5.medium {
+	font-weight: 500;
+}
+
+/* BODY */
+body {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 18px;
+}
+
+p.body2 {
+	font-size: 14px;
+}
+p.bold {
+	font-weight: 700;
+}
+p.semi {
+	font-weight: 500;
+}
