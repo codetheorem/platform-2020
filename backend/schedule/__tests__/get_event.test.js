@@ -8,14 +8,14 @@ const mod = require('./../handler');
 const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'get_event' });
-const AWS = require('aws-sdk-mock');
+const AWS = require('aws-sdk');
 
 const sample_event = {
-  id: "1",
-  category: "main",
-  description: "A very cool workshop for Technica!",
-  start_time: "2020-6-5T15:00:00Z",
-  end_time: "2020-6-5T18:00:00Z",
+  category: { S: "main"},
+  start_time: { S: "2020-6-5T15:00:00Z"},
+  end_time: { S: "2020-6-5T18:00:00Z"},
+  description: { S: "A very cool workshop for Technica!"},
+  id: { S: "1"},
 }
 
 
@@ -29,9 +29,6 @@ describe('get_event', () => {
   };
 
   it('Correctly retrieves the event from the database', () => {
-    AWS.mock('DynamoDB', 'getItem', function(params, callback) {
-      callback(null, {Item: sample_event});
-    });
 
     return wrapped.run(event).then((response) => {
       expect(response).toBeDefined();
