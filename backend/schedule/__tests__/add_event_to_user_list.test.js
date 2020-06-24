@@ -9,8 +9,6 @@ const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'add_event_to_user_list' });
 
-const AWS = require('aws-sdk');
-
 const valid_case = {
   event_id: "5",
   user_id: "j32kg32v3-323j2"

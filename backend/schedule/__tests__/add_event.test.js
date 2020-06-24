@@ -9,8 +9,6 @@ const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'add_event' });
 
-const AWS = require('aws-sdk');
-
 const sample_event = {
   id: "1",
   category: "main",
@@ -26,7 +24,6 @@ describe('add_event', () => {
 
   it('Correctly inserts the event into the database', async () => {
     const bodyStub = sample_event;
-    const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
     const event = {
       body: JSON.stringify(bodyStub)

@@ -8,7 +8,6 @@ const mod = require('./../handler');
 const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'get_event' });
-const AWS = require('aws-sdk');
 
 const sample_event = {
   category: { S: "main"},

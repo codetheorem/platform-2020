@@ -5,7 +5,6 @@
 
 const mod = require('./../handler');
 
-const AWS = require('aws-sdk');
 const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'get_schedule' });
