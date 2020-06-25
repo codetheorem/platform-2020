@@ -7,36 +7,66 @@ const mod = require('./../handler');
 
 const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
+const adder = lambdaWrapper.wrap(mod, { handler: 'add_event' });
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'get_schedule' });
+const AWS = require('aws-sdk');
 
-const sample_schedule = [
-  {
-      id: {S: "1"},
-      category: {S: "main"},
-      description: {S: "A very cool workshop for Technica!"},
-      start_time: {S: "2020-6-5T15:00:00Z"},
-      end_time: {S: "2020-6-5T18:00:00Z"},
-  },
-  {
-      id: {S: "2"},
-      category: {S: "main"},
-      description: {S: "Another very cool workshop for Technica!"},
-      start_time: {S: "2020-6-5T15:00:00Z"},
-    end_time: {S: "2020-6-5T18:00:00Z"},
-  }
-];
+const params = {
+  TableName: process.env.SCHEDULE_TABLE,
+};
+
+const sample_event1 = {
+  body: JSON.stringify({
+    id: "1",
+    category: "main",
+    description: "A very cool workshop for Technica!",
+    start_time: "2020-6-5T15:00:00Z",
+    end_time: "2020-6-5T18:00:00Z",
+  })
+}
+
+const sample_event2 = {
+  body: JSON.stringify({
+    id: "2",
+    category: "main",
+    description: "Another very cool workshop for Technica!",
+    start_time: "2020-6-5T15:00:00Z",
+    end_time: "2020-6-5T18:00:00Z",
+  })
+};
 
 
 describe('get_schedule', () => {
-  beforeAll((done) => {
+  beforeAll(async (done) => {
+
+    const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+    const result = await ddb.scan(params).promise();
+
+    result.Items.forEach(async (k) => {
+
+      let deleteParams = {
+	TableName: process.env.SCHEDULE_TABLE,
+	Key: {
+	  id: {S: k.id.S},
+	}
+      };
+	
+      let deletedItem = await ddb.deleteItem(deleteParams).promise()
+	
+    });
+      
     done();
   });
 
-  it('Correctly retrieves the schedule from the database', () => {
+  it('Correctly retrieves the schedule from the database', async () => {
 
+    let response = await adder.run(sample_event1);
+    response = await adder.run(sample_event2);
+      
     return wrapped.run().then((response) => {
       expect(response).toBeDefined();
-      expect(response).toHaveProperty('statusCode', 200);
+      expect(response).toMatchObject({body: {}, statusCode: 200})
     });
   });
 });
