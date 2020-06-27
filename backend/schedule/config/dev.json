@@ -1,4 +1,6 @@
 {
     "SCHEDULE_TABLE": "platform-schedule-dev",
-    "USER_EVENTS_TABLE": "platform-user-events-dev"
+    "USER_EVENTS_TABLE": "platform-user-events-dev",
+    "SHORTLINKS_TABLE": "platform-shortlinks-dev",
+    "SHORTLINK_CLICKS_TABLE": "platform-shortlink-clicks-dev"
 }
