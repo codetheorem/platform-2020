@@ -1,3 +1,5 @@
 {
-    "TEAMS_TABLE": "platform-teams-test"
+    "TEAMS_TABLE": "platform-teams-test",
+    "INVITES_TABLE_NAME": "platform-team-invites-test",
+    "MEMBERSHIPS_TABLE_NAME": "platform-team-memberships-test"
 }
