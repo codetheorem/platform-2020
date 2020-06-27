@@ -29,7 +29,8 @@ module.exports.get_sponsorship_info = async event => {
 module.exports.add_sponsor = async event => {
   const body = JSON.parse(event.body);
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  // const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const id = UUID.v4();
 
@@ -41,12 +42,19 @@ module.exports.add_sponsor = async event => {
   body.id = id;
 
   // dynamically add post request body params to document
+  // Object.keys(body).forEach(k => {
+  //   if (Array.isArray(body[k])) {
+  //     params.Item[k] = {L: body[k]}
+  //   } else {
+  //     params.Item[k] = {S: body[k]}
+  //   }
+  // });
   Object.keys(body).forEach(k => {
-    params.Item[k] = {S: body[k]}
+      params.Item[k] = body[k]
   });
 
   // Call DynamoDB to add the item to the table
-  const result = await ddb.putItem(params).promise();
+  const result = await ddb.put(params).promise();
 
   return {
     statusCode: 200,
