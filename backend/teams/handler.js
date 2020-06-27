@@ -4,7 +4,7 @@ const UUID = require('uuid');
 AWS.config.update({region:'us-east-1'});
 
 // Posts the request body fields to a DynamoDB table
-async function post_request_body_to_table(event, table_name) {
+post_request_body_to_table = async (event, table_name) => {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
