@@ -1,3 +1,4 @@
 {
-    "PROJECTS_TABLE": "platform-projects-test"
+    "PROJECTS_TABLE": "platform-projects-test",
+    "SPONSORS_INFO_TABLE": "platform-sponsorship-info-test"
 }

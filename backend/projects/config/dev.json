@@ -1,3 +1,4 @@
 {
-    "PROJECTS_TABLE": "platform-projects-dev"
+    "PROJECTS_TABLE": "platform-projects-dev",
+    "SPONSORS_INFO_TABLE": "platform-sponsorship-info-dev"
 }
