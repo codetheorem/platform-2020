@@ -27,25 +27,28 @@ functions:
       - http: 
           path: create_team
           method: post
+          cors: true
   invite_to_team:
     handler: handler.invite_to_team
     events:
       - http: 
           path: invite_to_team
           method: post
+          cors: true
   join_team:
     handler: handler.join_team
     events:
       - http: 
           path: join_team
           method: post
+          cors: true
   leave_team:
     handler: handler.leave_team
     events:
       - http: 
           path: leave_team
           method: post
-
+          cors: true
 plugins:
   - serverless-jest-plugin
 custom:
