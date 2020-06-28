@@ -48,6 +48,15 @@ const routes = [
     name: 'Register',
     component: () => import('../views/Register.vue'),
   },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('../views/404.vue'),
+  },
+  {
+    path: '/:shortlink', 
+    component: () => import('../views/ShortLink.vue')
+  }
 ];
 
 const router = new VueRouter({
