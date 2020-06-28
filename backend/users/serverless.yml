@@ -17,7 +17,24 @@ provider:
        - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*"
 
-
 functions:
-  hello:
-    handler: handler.hello # remove this when you're implementing the first function of this service!
+  delete_user:
+    handler: handler.delete_user
+    events:
+      - http: 
+          path: delete_user
+          method: post
+          cors: true
+  get_user:
+    handler: handler.get_user
+    events:
+      - http: 
+          path: get_user
+          method: get
+          cors: true
+plugins:
+  - serverless-jest-plugin
+custom:
+  # see https://github.com/nordcloud/serverless-jest-plugin
+  jest:
+    collectCoverage: true
