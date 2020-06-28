@@ -8,6 +8,10 @@ Vue.config.productionTip = false;
 // Importing the global css file
 import './assets/global.css'
 
+const VueCookie = require('vue-cookie');
+// Tell Vue to use the plugin
+Vue.use(VueCookie);
+
 new Vue({
   router,
   store,
