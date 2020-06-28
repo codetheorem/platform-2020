@@ -316,7 +316,7 @@ module.exports.get_shortlink = async event => {
   const item = await ddb.getItem({
     TableName: process.env.SHORTLINKS_TABLE,
     Key: {
-      id: {
+      shortlink: {
         S: id.toString()
       }
     }
@@ -345,7 +345,8 @@ module.exports.add_shortlink_click = async event => {
     Item: {
       id: {S: id},
       link_id: {S: body["link_id"]},
-      user_id: {S: body["user_id"]}
+      user_id: {S: body["user_id"]},
+      timestamp: {S: new Date().toLocaleString()}
     }
   };
 
