@@ -27,7 +27,7 @@ export default {
             link_id: shortlink.id,
             user_id: this.getUserId()
         }
-        const postResult = await this.performPostRequest(Config.dev.SCHEDULE_BASE_ENDPOINT, "dev", "add_shortlink_click", postParams);
+        this.performPostRequest(Config.dev.SCHEDULE_BASE_ENDPOINT, "dev", "add_shortlink_click", postParams);
         window.location = shortlink.link;
     } else {
         // redirect to 404
