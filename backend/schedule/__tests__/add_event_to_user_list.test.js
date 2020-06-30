@@ -9,8 +9,6 @@ const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'add_event_to_user_list' });
 
-const AWS = require('aws-sdk-mock');
-
 const valid_case = {
   event_id: "5",
   user_id: "j32kg32v3-323j2"
@@ -27,32 +25,26 @@ describe('add_event_to_user_list', () => {
 
   it('Correctly inserts the selection into the database', () => {
     const bodyStub = valid_case;
-    AWS.mock('DynamoDB', 'putItem', function(params, callback) {
-      callback(null, {Item: valid_case});
-    });
 
     const event = {
       body: JSON.stringify(bodyStub)
     };
     return wrapped.run(event).then((response) => {
       expect(response).toBeDefined();
-      expect(response).toHaveProperty('statusCode', 200);
+      expect(response).toMatchObject({body: {}, statusCode: 200});
       expect(JSON.parse(response.body)).toHaveProperty('id');
     });
   });
 
   it('Correctly fails if an invalid input is given', () => {
     const bodyStub = invalid_case;
-    AWS.mock('DynamoDB', 'putItem', function(params, callback) {
-      callback(null, {Item: invalid_case});
-    });
 
     const event = {
       body: JSON.stringify(bodyStub)
     };
     return wrapped.run(event).then((response) => {
       expect(response).toBeDefined();
-      expect(response).toHaveProperty('statusCode', 500);
+      expect(response).toMatchObject({body: {}, statusCode: 500});
     });
   });
 });
