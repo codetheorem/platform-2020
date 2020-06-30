@@ -1,6 +1,6 @@
 <template>
   <div>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light navigation-box">
         <div class="logo-nav">
             <a class="navbar-brand" href="#">
                 <img alt="Vue logo" src="../assets/technica-logo.svg" class="img-responsive">
@@ -10,10 +10,10 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <span v-for="navRoute in navRoutes" :key="navRoute">
-                    <nav-item :title="navRoute" :selectedRoute="selectedRoute"/>
+        <div class="collapse navbar-collapse mx-auto" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+                <span v-for="navRoute in navRoutes" :key="navRoute.name">
+                    <nav-item :title="navRoute.name" :selectedRoute="selectedRoute" :destinationRoute="navRoute.path"/>
                 </span>
             </ul>
         </div>
@@ -34,7 +34,7 @@ export default {
   },
   data(){
       return {
-          navRoutes: this.$router.options.routes.filter(route => route.displayInNavBar).map(route => route.name),
+          navRoutes: this.$router.options.routes.filter(route => route.displayInNavBar),
           selectedRoute: "Home"
       }
   }
@@ -43,5 +43,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+    .navigation-box {
+        box-shadow: 0 4px 4px -5px rgba(0,0,0,.5);
+        margin-bottom: 2rem;
+    }
 </style>

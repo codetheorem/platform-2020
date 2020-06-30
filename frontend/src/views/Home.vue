@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home mx-auto">
     <img alt="Vue logo" src="../assets/technica-logo.svg" width="584" height="120">
     <HelloWorld msg="Welcome to Technica's Virtual Platform!"/>
   </div>
