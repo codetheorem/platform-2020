@@ -42,24 +42,6 @@ const schedule_regex = new RegExp (
 
 describe('get_schedule', () => {
   beforeEach(async (done) => {
-
-    const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-
-    const result = await ddb.scan(params).promise();
-
-    result.Items.forEach(async (k) => {
-
-      let deleteParams = {
-	TableName: process.env.SCHEDULE_TABLE,
-	Key: {
-	  id: {S: k.id.S},
-	}
-      };
-	
-      let deletedItem = await ddb.deleteItem(deleteParams).promise()
-	
-    });
-
     done();
   });
 
