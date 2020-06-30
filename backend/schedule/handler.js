@@ -40,7 +40,7 @@ module.exports.get_event = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(item.Item),
+    body: JSON.stringify(item),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
