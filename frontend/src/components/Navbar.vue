@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse mx-auto" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto">
                 <span v-for="navRoute in navRoutes" :key="navRoute.name">
-                    <nav-item :title="navRoute.name" :selectedRoute="selectedRoute" :destinationRoute="navRoute.path"/>
+                    <nav-item :title="navRoute.name" :destinationRoute="navRoute.path"/>
                 </span>
             </ul>
         </div>
@@ -34,8 +34,7 @@ export default {
   },
   data(){
       return {
-          navRoutes: this.$router.options.routes.filter(route => route.displayInNavBar),
-          selectedRoute: "Home"
+          navRoutes: this.$router.options.routes.filter(route => route.displayInNavBar)
       }
   }
 };

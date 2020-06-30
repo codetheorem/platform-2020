@@ -11,7 +11,6 @@ export default {
   name: 'NavItem',
   props: {
       title: String,
-      selectedRoute: String,
       destinationRoute: String
   },
 };
