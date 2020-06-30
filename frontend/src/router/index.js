@@ -9,53 +9,54 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    displayInNavBar: true
   },
   {
     path: '/sponsorship-fair',
     name: 'Sponsorship Fair',
     component: () => import('../views/SponsorshipFair.vue'),
+    displayInNavBar: true
   },
   {
     path: '/live-stream',
     name: 'Live Stream',
     component: () => import('../views/LiveStream.vue'),
+    displayInNavBar: true
   },
   {
     path: '/schedule',
     name: 'Schedule',
     component: () => import('../views/Schedule.vue'),
+    displayInNavBar: true
   },
   {
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/Profile.vue'),
+    displayInNavBar: true
   },
   {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue'),
+    displayInNavBar: true
   },
   {
     path: '/register',
     name: 'Register',
     component: () => import('../views/Register.vue'),
+    displayInNavBar: true
   },
   {
     path: '/404',
     name: '404',
     component: () => import('../views/404.vue'),
+    displayInNavBar: false
   },
   {
     path: '/:shortlink', 
-    component: () => import('../views/ShortLink.vue')
+    component: () => import('../views/ShortLink.vue'),
+    displayInNavBar: false
   }
 ];
 
