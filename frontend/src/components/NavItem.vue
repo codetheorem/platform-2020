@@ -1,5 +1,5 @@
 <template>
-  <li class="nav-item active">
+  <li class="nav-item">
     <router-link :to="destinationRoute">
         <a class="nav-link" href="#">{{ title }}</a>
     </router-link>
