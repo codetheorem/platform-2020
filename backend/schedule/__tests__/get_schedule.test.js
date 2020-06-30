@@ -16,11 +16,11 @@ const params = {
 };
 
 const sample_event = {
-    category: { S: "main"},
-    start_time: { S: "2020-6-5T15:00:00Z"},
-    end_time: { S: "2020-6-5T18:00:00Z"},
-    description: { S: "A very cool workshop for Technica!"},
-    id: { S: "1"},
+  category: { S: "main"},
+  start_time: { S: "2020-6-5T15:00:00Z"},
+  end_time: { S: "2020-6-5T18:00:00Z"},
+  description: { S: "A very cool workshop for Technica!"},
+  id: { S: "1"},
 }
 
 const insert_event = {
@@ -60,7 +60,6 @@ describe('get_schedule', () => {
 	
     });
 
-    console.log("executing beforeEach()");
     done();
   });
 
