@@ -19,6 +19,9 @@ export default {
   props: {
       tier: String,
       sponsor_list: Array
+  },
+  async mounted(){
+      console.log(this.tier, this.sponsor_list);
   }
 };
 </script>

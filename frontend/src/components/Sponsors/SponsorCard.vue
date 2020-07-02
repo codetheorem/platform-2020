@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>{{sponsor_name}}</h2>
-    
+    {{sponsor_name}}
+    {{sponsor_logo_url}}
   </div>
 </template>
 
@@ -11,7 +11,8 @@ export default {
   name: 'SponsorCard',
 
   props: {
-      sponsor_name: String
+      sponsor_name: String,
+      sponsor_logo_url: String
   }
 };
 </script>
