@@ -12,6 +12,12 @@ const routes = [
     displayInNavBar: true
   },
   {
+    path: '/sponsors',
+    name: 'Sponsors',
+    component: () => import('../views/Sponsors.vue'),
+    displayInNavBar: true
+  },
+  {
     path: '/sponsorship-fair',
     name: 'Sponsorship Fair',
     component: () => import('../views/SponsorshipFair.vue'),
