@@ -40,7 +40,7 @@ module.exports.get_event = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(item.Item),
+    body: JSON.stringify(item),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
@@ -73,7 +73,7 @@ module.exports.add_event = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item),
+    body: JSON.stringify(result),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
@@ -240,6 +240,122 @@ module.exports.delete_event_from_user_list = async event => {
 
   return {
     statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };
+};
+
+
+make_shortlink = (length) => {
+  let result = '';
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let charactersLength = characters.length;
+  for ( let i = 0; i < length; i++ ) {
+     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+// Creates and adds a new unique shortlink to the database, checking for duplicates
+module.exports.add_shortlink = async event => {
+  const body = JSON.parse(event.body);
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const id = UUID.v4();
+  let shortlink;
+  let checker_result;
+  let checker_params;
+  //check that shortlink is unique
+  do {
+    shortlink = make_shortlink(6);
+
+    checker_params = {
+      ExpressionAttributeValues: {
+       ":a": {
+         S: shortlink
+        }
+      }, 
+      FilterExpression: "shortlink = :a", 
+      TableName: process.env.SHORTLINKS_TABLE
+     };
+  
+    checker_result = await ddb.scan(checker_params).promise();
+  } while (checker_result["Count"] > 0);
+
+  // add shortlink
+  const params = {
+    TableName: process.env.SHORTLINKS_TABLE,
+    Item: {}
+  };
+
+  body.id = id;
+  body.shortlink = shortlink;
+
+  // dynamically add post request body params to document
+  Object.keys(body).forEach(k => {
+    params.Item[k] = {S: body[k]}
+  });
+
+  // Call DynamoDB to add the item to the table
+  const result = await ddb.putItem(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item)
+  };
+};
+
+// Retrieves a single shortlink from the database
+module.exports.get_shortlink = async event => {
+  const id = event.queryStringParameters.id;
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const item = await ddb.getItem({
+    TableName: process.env.SHORTLINKS_TABLE,
+    Key: {
+      shortlink: {
+        S: id.toString()
+      }
+    }
+  }).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(item.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };
+};
+
+// Adds a new shortlink click event to the database 
+module.exports.add_shortlink_click = async event => {
+  const body = JSON.parse(event.body);
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const id = UUID.v4();
+
+  const params = {
+    TableName: process.env.SHORTLINK_CLICKS_TABLE,
+    Item: {
+      id: {S: id},
+      link_id: {S: body["link_id"]},
+      user_id: {S: body["user_id"]},
+      timestamp: {S: new Date().toLocaleString()}
+    }
+  };
+
+  // Call DynamoDB to add the item to the table
+  const result = await ddb.putItem(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({id: id}),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,

@@ -8,6 +8,8 @@ provider:
   environment:
     SCHEDULE_TABLE: ${file(./config/${self:provider.stage}.json):SCHEDULE_TABLE}
     USER_EVENTS_TABLE: ${file(./config/${self:provider.stage}.json):USER_EVENTS_TABLE}
+    SHORTLINKS_TABLE: ${file(./config/${self:provider.stage}.json):SHORTLINKS_TABLE}
+    SHORTLINK_CLICKS_TABLE: ${file(./config/${self:provider.stage}.json):SHORTLINK_CLICKS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -76,6 +78,30 @@ functions:
           path: delete_event_from_user_list
           method: post
           cors: true
+  add_shortlink:
+    handler: handler.add_shortlink
+    description: Adds a unique shortlink to the database
+    events:
+      - http:
+          path: add_shortlink
+          method: post
+          cors: true
+  get_shortlink:
+    handler: handler.get_shortlink
+    description: Gets a shortlink from the database
+    events:
+      - http:
+          path: get_shortlink
+          method: get
+          cors: true        
+  add_shortlink_click:
+    handler: handler.add_shortlink_click
+    description: Adds a shortlink click event to the database
+    events:
+      - http:
+          path: add_shortlink_click
+          method: post
+          cors: true
   get_events_from_user_list:
     handler: handler.get_events_from_user_list
     description: Retrieves all schedule events added to the user's list
@@ -85,6 +111,7 @@ functions:
           method: get
           cors: true
 
+          
 
 plugins:
   - serverless-jest-plugin

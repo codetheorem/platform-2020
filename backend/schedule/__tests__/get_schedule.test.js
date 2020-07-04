@@ -5,42 +5,60 @@
 
 const mod = require('./../handler');
 
-const AWS = require('aws-sdk-mock');
 const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
+const adder = lambdaWrapper.wrap(mod, { handler: 'add_event' });
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'get_schedule' });
+const AWS = require('aws-sdk');
 
-const sample_schedule = [
-  {
+const params = {
+  TableName: process.env.SCHEDULE_TABLE,
+};
+
+const sample_event = {
+  category: { S: "main"},
+  start_time: { S: "2020-6-5T15:00:00Z"},
+  end_time: { S: "2020-6-5T18:00:00Z"},
+  description: { S: "A very cool workshop for Technica!"},
+  id: { S: "1"},
+}
+
+const insert_event = {
+  body: JSON.stringify({
     id: "1",
     category: "main",
     description: "A very cool workshop for Technica!",
     start_time: "2020-6-5T15:00:00Z",
     end_time: "2020-6-5T18:00:00Z",
-  },
-  {
-    id: "2",
-    category: "main",
-    description: "Another very cool workshop for Technica!",
-    start_time: "2020-6-5T15:00:00Z",
-    end_time: "2020-6-5T18:00:00Z",
-  }
-];
+  })
+}
 
+const schedule_regex = new RegExp (
+  ['^(\\\[{\\\"category\\\":{\\\"S\\\":\\\".*\\\"},',
+   '\\\"start_time\\\":{\\\"S\\\":\\\".*\\\"},',
+   '\\\"end_time\\\":{\\\"S\\\":\\\".*\\\"},',
+   '\\\"description\\\":{\\\"S\\\":\\\".*\\\"},',
+   '\\\"id\\\":{\\\"S\\\":\\\".*\\\"}}\\\])+$'].join(''));
 
 describe('get_schedule', () => {
-  beforeAll((done) => {
+  beforeEach(async (done) => {
     done();
   });
 
-  it('Correctly retrieves the schedule from the database', () => {
-    AWS.mock('DynamoDB', 'scan', function(params, callback) {
-      callback(null, {Items: sample_schedule});
-    });
+  it('Correctly retrieves the schedule from the database', async () => {
 
+    let response2 = await adder.run(insert_event);
+      
     return wrapped.run().then((response) => {
       expect(response).toBeDefined();
-      expect(response).toMatchObject({body: JSON.stringify(sample_schedule), statusCode: 200})
+      expect(response).toMatchObject({
+          body: expect.stringMatching(schedule_regex),
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        }
+      })
     });
   });
 });

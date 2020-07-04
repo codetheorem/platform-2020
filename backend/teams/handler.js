@@ -28,6 +28,10 @@ post_request_body_to_table = async (event, table_name) => {
   return {
     statusCode: 200,
     body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 };
 
@@ -61,5 +65,9 @@ module.exports.leave_team = async event => {
   return {
     statusCode: 200,
     body: JSON.stringify(status_result),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 };

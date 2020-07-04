@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk');
-const uuid = require('uuid');
 
   // delete a single user from the database
 module.exports.delete_user = async event => {
@@ -19,6 +18,10 @@ module.exports.delete_user = async event => {
   return {
     statusCode: 200,
     body: JSON.stringify(status_result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 };
 
@@ -39,6 +42,10 @@ module.exports.get_user = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(item.Item)
+    body: JSON.stringify(item.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 };

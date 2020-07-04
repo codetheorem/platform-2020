@@ -9,8 +9,6 @@ const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'add_event' });
 
-const AWS = require('aws-sdk-mock');
-
 const sample_event = {
   id: "1",
   category: "main",
@@ -24,18 +22,15 @@ describe('add_event', () => {
     done();
   });
 
-  it('Correctly inserts the event into the database', () => {
+  it('Correctly inserts the event into the database', async () => {
     const bodyStub = sample_event;
-    AWS.mock('DynamoDB', 'putItem', function(params, callback) {
-      callback(null, {Item: sample_event});
-    });
 
     const event = {
       body: JSON.stringify(bodyStub)
     };
-    return wrapped.run(event).then((response) => {
+    return await wrapped.run(event).then(async (response) => {
       expect(response).toBeDefined();
-      expect(response).toMatchObject({body: JSON.stringify(sample_event), statusCode: 200})
+      expect(response).toMatchObject({body: {}, statusCode: 200})
     });
   });
 
