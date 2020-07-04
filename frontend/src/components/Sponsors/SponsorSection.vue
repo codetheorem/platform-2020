@@ -1,15 +1,22 @@
 <template>
   <div>
-    <h2>{{tier}}</h2>
-
-    <b-container class="bv-example-row">
-        <b-row v-for="sponsor in sponsor_list" :key="sponsor.id" class="sponsor-section">
-            <b-col>
-                <SponsorCard :sponsor_name="sponsor.name" :sponsor_logo_url="sponsor.logo_image_url"/>
-            </b-col>
+        <h2>{{tier}}</h2>
+        <b-row class="sponsor-section">
+            <div v-for="sponsor in sponsor_list" :key="sponsor.id" >
+                <b-col>
+                    <SponsorCard :sponsor_name="sponsor.name" :sponsor_logo_url="sponsor.logo_image_url"/>
+                </b-col>
+            </div>
+            
         </b-row>
-  </b-container>
-
+  
+    <!-- <b-container class="bv-example-row">
+  <b-row>
+    <b-col>1 of 3</b-col>
+    <b-col>2 of 3</b-col>
+    <b-col>3 of 3</b-col>
+  </b-row>
+</b-container> -->
     
     
   </div>
@@ -29,6 +36,12 @@ export default {
   },
   async mounted(){
       console.log(this.tier, this.sponsor_list);
+  },
+  methods: {
+      has_data: function(){
+          console.log((this.sponsor_list.length > 0));
+          return (this.sponsor_list.length > 0);
+      }
   }
 };
 </script>
@@ -36,9 +49,9 @@ export default {
 <style>
 
 .sponsor-section {
-  padding: 30px;
-  /* align-items: flex-start;
-  display: flex;
+    justify-content: center;
+  align-items: center;
+  /* display: flex;
   flex-direction: row; */
 }
 

@@ -1,11 +1,11 @@
 
 <template>
-  <div>
+  <b-container class="sponsors-container">
     <h1>Sponsors</h1>
     <div v-for="section in sponsor_tiers" :key="section" class="sponsor-section">
         <sponsor-section :tier="section" :sponsor_list="sponsors_by_tier(section)"/>
     </div>
-  </div>
+  </b-container>
 </template>
 
 
@@ -54,3 +54,12 @@ export default {
     }
 };
 </script>
+
+<style>
+
+.sponsor-section {
+    padding: 10px;
+
+}
+
+</style>

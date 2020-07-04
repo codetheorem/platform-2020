@@ -1,15 +1,7 @@
 <template>
 
-    <div class="card-div">
-        <b-card
-            v-bind:title="sponsor_name"
-            v-bind:img-src="sponsor_logo_url"
-            v-bind:img-alt="sponsor_name"
-            img-top
-            tag="article"
-            v-bind:id="card_id"
-            class="card"
-        ></b-card>
+    <div class="card">
+        <img v-bind:src="sponsor_logo_url" v-bind:alt="sponsor_name" v-bind:id="card_id" class="img">
 
         <b-tooltip v-bind:target="card_id" triggers="hover">
             I am tooltip <b>component</b> content!
@@ -43,12 +35,19 @@ export default {
 
 <style>
 
+.img {
+    width: 100%;
+    height: 100%; 
+    object-fit: contain;
+    display: block;
+    
+}
 .card-div {
 
 }
 .card {
   max-width: 15rem;
-  height: 20rem;
+  max-height: 15rem;
   padding: 30px;
   display: inline-block;
 
