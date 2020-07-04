@@ -13,7 +13,7 @@
           <Button size="lg" text="Send Me a Magic Link"/>
           <div class="login-footer">
             <span>or </span>
-            <Button size="lg" text="Sign Up"/>
+            <Button size="lg" text="Sign Up" outlineStyle="true"/>
           </div>
         </form>
       </div>
