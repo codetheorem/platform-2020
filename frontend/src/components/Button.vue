@@ -28,6 +28,7 @@ export default {
         font-weight: bold;
         font-size: 16px;
         line-height: 22px;
+        margin-bottom: 15px;
     }
 
     .btn-wrapper:hover{
