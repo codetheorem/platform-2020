@@ -37,4 +37,10 @@ functions:
           path: get_sponsorship_info
           method: get
           cors: true
-          
+
+plugins:
+  - serverless-jest-plugin
+custom:
+  # see https://github.com/nordcloud/serverless-jest-plugin
+  jest:
+    collectCoverage: true
