@@ -1,14 +1,24 @@
 <template>
-
     <div class="card">
-        <img v-bind:src="sponsor_logo_url" v-bind:alt="sponsor_name" v-bind:id="card_id" class="img">
-
-        <b-tooltip v-bind:target="card_id" triggers="hover">
-            I am tooltip <b>component</b> content!
+        <img v-bind:src="sponsor.logo_image_url" v-bind:alt="sponsor.name" v-bind:id="sponsor.name" class="img">
+        <b-tooltip v-bind:target="sponsor.name" triggers="hover">
+            <h4>Company Information: </h4>
+            Description
+            <h4>Events Hosted: </h4>
+            {{sponsor.events_hosted}}
+            <ul>
+                <li v-for="event in sponsor.events_hosted" :key="event">
+                    {{ event }}
+                </li>
+            </ul>
+            <h4>Sponsor Prizes: </h4>
+            <ul>
+                <li v-for="prize in sponsor.prizes" :key="prize">
+                    {{ prize }}
+                </li>
+            </ul>
         </b-tooltip>
     </div>
-    
-
 </template>
 
 <script>
@@ -16,20 +26,14 @@ export default {
   name: "SponsorCard",
 
   props: {
-    sponsor_name: String,
-    sponsor_logo_url: String
+    // sponsor_name: String,
+    // sponsor_logo_url: String
+    sponsor: Object
+  },
+    async mounted(){
+      console.log(this.sponsor.events_hosted);
   },
 
-  data(){
-      sponsor_name: {{sponsor_name}}
-      sponsor_logo_url: {{sponsor_logo_url}}
-        card_id: {{sponsor_name}}
-  },
-
-    // beforeUpdate(){
-    //     this.sponsor_name = {{sponsor_name}};
-    //     this.sponsor_logo_url = {{sponsor_logo_url}};
-    // },
 };
 </script>
 

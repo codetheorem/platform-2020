@@ -3,7 +3,7 @@
   <b-container class="sponsors-container">
     <h1>Sponsors</h1>
     <div v-for="section in sponsor_tiers" :key="section" class="sponsor-section">
-        <sponsor-section :tier="section" :sponsor_list="sponsors_by_tier(section)"/>
+        <sponsor-section :tier="section" :sponsor_list="sponsors_by_tier[section]"/>
     </div>
   </b-container>
 </template>
@@ -25,10 +25,14 @@ export default {
     // create sponsor sections
     data(){
         let sponsor_tiers = ["Platinum","Gold","Silver"];
+        let sponsors_by_tier = {}
+        for (const tier of sponsor_tiers) {
+            sponsors_by_tier[tier] = [];
+        }
         return {
             sponsor_tiers: sponsor_tiers,
             sponsors: [],
-            // sponsors_by_tier: {}
+            sponsors_by_tier: sponsors_by_tier
         }
     },
     async mounted(){
@@ -36,22 +40,12 @@ export default {
         this.sponsors = await this.getData(Config.dev.SPONSORS_INFO_ENDPOINT, "dev", "get_sponsorship_info");
         console.log(this.sponsors);
 
-        // for (const tier of this.sponsor_tiers) {
-        //     this.sponsors_by_tier[tier] = this.sponsors.filter(s => s['tier'] == tier);
-        // }
-        // console.log(this.sponsors_by_tier);
+        for (const tier of this.sponsor_tiers) {
+            this.sponsors_by_tier[tier] = this.sponsors.filter(s => s['tier'] == tier);
+        }
+        console.log(this.sponsors_by_tier);
     },
 
-    // beforeUpdate(){
-    //     for (const tier of this.sponsor_tiers) {
-    //         this.sponsors_by_tier[tier] = this.sponsors.filter(s => s['tier'] == tier);
-    //     }
-    // },
-    methods: {
-        sponsors_by_tier: function(tier) {
-            return this.sponsors.filter(s => s['tier'] == tier);
-        }
-    }
 };
 </script>
 

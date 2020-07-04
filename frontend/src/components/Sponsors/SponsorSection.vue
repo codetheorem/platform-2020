@@ -1,24 +1,12 @@
 <template>
   <div>
-        <h2>{{tier}}</h2>
-        <b-row class="sponsor-section">
-            <div v-for="sponsor in sponsor_list" :key="sponsor.id" >
-                <b-col>
-                    <SponsorCard :sponsor_name="sponsor.name" :sponsor_logo_url="sponsor.logo_image_url"/>
-                </b-col>
-            </div>
-            
-        </b-row>
-  
-    <!-- <b-container class="bv-example-row">
-  <b-row>
-    <b-col>1 of 3</b-col>
-    <b-col>2 of 3</b-col>
-    <b-col>3 of 3</b-col>
-  </b-row>
-</b-container> -->
-    
-    
+    <h2>{{tier}}</h2>
+    <b-row class="sponsor-section">
+        <b-col v-for="sponsor in sponsor_list" :key="sponsor.id">
+            <!-- <SponsorCard v-bind:sponsor_name="sponsor.name" v-bind:sponsor_logo_url="sponsor.logo_image_url"/> -->
+            <SponsorCard v-bind:sponsor="sponsor"/>
+        </b-col>        
+    </b-row>
   </div>
 </template>
 
