@@ -10,7 +10,8 @@ module.exports.get_sponsorship_info = async event => {
     TableName: process.env.SPONSORS_INFO_TABLE,
   };
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  // using DocumentClient auto parses the output into nice JSON!
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const result = await ddb.scan(params).promise();
 
