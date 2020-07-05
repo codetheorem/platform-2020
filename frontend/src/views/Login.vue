@@ -16,7 +16,9 @@
             <Button size="lg" text="Send Me a Magic Link" @click="sendMagicLink"/>
             <div class="login-footer">
               <span style="padding-right: .75rem">or</span>
-              <Button size="lg" text="Sign Up" :outlineStyle="true"/>
+              <a :href="signupFormLink" target="_blank">
+                <Button size="lg" text="Sign Up" :outlineStyle="true"/>
+              </a>
             </div>
           </form>
         </div>
@@ -24,7 +26,7 @@
 
       <div v-else class="container content-container col-md-7 col-lg-8 col-xl-4">
         <div class="content-container-title">
-          <h3>Check Your Email</h3>
+          <h3>Check Your Email...</h3>
         </div>
         <div class="content-container-body">
           <p class="description-text" style="margin-bottom: 3rem">We sent an email to <b>{{ userEmail }}</b>! It has a magic link to help sign you in to Technica.</p>
@@ -37,6 +39,7 @@
 
 <script>
 import Button from '@/components/Button.vue';
+import Config from '../config/general';
 
 export default {
   name: 'Login',
@@ -58,6 +61,11 @@ export default {
       } else {
         this.emailInvalid = true;
       }
+    }
+  },
+  computed: {
+    signupFormLink(){
+      return Config.dev.SIGNUP_FORM_LINK;
     }
   }
 };
