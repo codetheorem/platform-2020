@@ -6,14 +6,14 @@
           <h3>Login</h3>
         </div>
         <div class="content-container-body">
-          <p class="description-text">This is a short explanation of whatever a magic link is supposed to do, so they know to check their email instead of password.</p>
+          <p class="description-text">Instead of using a complex password, enter your email so Technica can send you a magic link to sign in.</p>
           <form @submit="sendMagicLink">
             <div class="form-group mx-auto">
               <input type="email" class="form-control mx-auto" id="emailInput" placeholder="Email" v-model="userEmail">
             </div>
             <Button size="lg" text="Send Me a Magic Link" @click="sendMagicLink"/>
             <div class="login-footer">
-              <span>or </span>
+              <span style="padding-right: .75rem">or</span>
               <Button size="lg" text="Sign Up" :outlineStyle="true"/>
             </div>
           </form>
