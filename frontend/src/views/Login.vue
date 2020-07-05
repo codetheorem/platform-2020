@@ -7,7 +7,9 @@
         </div>
         <div class="content-container-body">
           <p class="description-text">Instead of using a complex password, enter your email so Technica can send you a magic link to sign in.</p>
-          <form @submit="sendMagicLink">
+          <p v-if="emailNotFound" class="text-error">We could not find your email in our records. For further assistance, please contact our support team.</p>
+          <p v-if="emailInvalid" class="text-error">Please enter a valid email address.</p>
+          <form @submit.prevent="sendMagicLink">
             <div class="form-group mx-auto">
               <input type="email" class="form-control mx-auto" id="emailInput" placeholder="Email" v-model="userEmail">
             </div>
@@ -25,7 +27,7 @@
           <h3>Check Your Email</h3>
         </div>
         <div class="content-container-body">
-          <p class="description-text" style="margin-bottom: 3rem">We sent an email to {{ userEmail }}! It has a magic link to help sign you in to Technica!</p>
+          <p class="description-text" style="margin-bottom: 3rem">We sent an email to <b>{{ userEmail }}</b>! It has a magic link to help sign you in to Technica.</p>
           <img alt="Mail icon" src="../assets/mail-icon.svg"  height="120">
         </div>
       </div>
@@ -44,13 +46,18 @@ export default {
   data() {
     return {
       loginButtonClicked: false,
-      userEmail: ''
+      userEmail: '',
+      emailNotFound: false,
+      emailInvalid: false
     }
   },
   methods: {
     sendMagicLink(){
-      this.loginButtonClicked = true;
-
+      if(this.userEmail != '') {
+        this.loginButtonClicked = true;
+      } else {
+        this.emailInvalid = true;
+      }
     }
   }
 };
@@ -100,5 +107,9 @@ export default {
 
   .login-footer {
     margin-bottom: 3rem;
+  }
+
+  .text-error {
+    color: red;
   }
 </style>
