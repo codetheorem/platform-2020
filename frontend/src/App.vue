@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <navbar />
+    <navbar :displayRouteList="displayRouteList"/>
     <router-view/>
   </div>
 </template>
@@ -11,6 +11,11 @@ export default {
   name: 'App',
   components: {
     Navbar
+  },
+  computed: {
+    displayRouteList() {
+      return this.$route.name != "Login";
+    }
   }
 };
 </script>
