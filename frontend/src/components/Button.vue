@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="btn btn-primary btn-lg btn-wrapper" :class="{'btn-sm': size === 'sm', 'outline-style': outlineStyle}">
+  <button type="button" class="btn btn-primary btn-lg btn-wrapper" :class="{'btn-sm': size === 'sm', 'outline-style': outlineStyle}" @click="clicked">
       <span>{{ text }}</span>
   </button>
 </template>
@@ -16,6 +16,11 @@ export default {
     outlineStyle: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    clicked(){
+      this.$emit('click')
     }
   }
 };

@@ -1,21 +1,31 @@
 <template>
   <div class="login-container">
-    <div class="container content-container col-md-7 col-lg-8 col-xl-4">
+    <div v-if="!loginButtonClicked" class="container content-container col-md-7 col-lg-8 col-xl-4">
       <div class="content-container-title">
         <h3>Login</h3>
       </div>
       <div class="content-container-body">
         <p class="description-text">This is a short explanation of whatever a magic link is supposed to do, so they know to check their email instead of password.</p>
-        <form>
+        <form @submit="sendMagicLink">
           <div class="form-group mx-auto">
-            <input type="email" class="form-control mx-auto" id="emailInput" placeholder="Email">
+            <input type="email" class="form-control mx-auto" id="emailInput" placeholder="Email" v-model="userEmail">
           </div>
-          <Button size="lg" text="Send Me a Magic Link"/>
+          <Button size="lg" text="Send Me a Magic Link" @click="sendMagicLink"/>
           <div class="login-footer">
             <span>or </span>
-            <Button size="lg" text="Sign Up" outlineStyle="true"/>
+            <Button size="lg" text="Sign Up" :outlineStyle="true"/>
           </div>
         </form>
+      </div>
+    </div>
+
+    <div v-else class="container content-container col-md-7 col-lg-8 col-xl-4">
+      <div class="content-container-title">
+        <h3>Check Your Email</h3>
+      </div>
+      <div class="content-container-body">
+        <p class="description-text">We sent an email to {{ userEmail }}! It has a magic link to help sign you in to Technica!</p>
+        <img alt="Mail icon" src="../assets/mail-icon.svg" width="584" height="120">
       </div>
     </div>
   </div>
@@ -28,6 +38,18 @@ export default {
   name: 'Login',
   components: {
     Button
+  },
+  data() {
+    return {
+      loginButtonClicked: false,
+      userEmail: ''
+    }
+  },
+  methods: {
+    sendMagicLink(){
+      this.loginButtonClicked = true;
+
+    }
   }
 };
 </script>
