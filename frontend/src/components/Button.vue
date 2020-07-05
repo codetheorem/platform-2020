@@ -38,6 +38,7 @@ export default {
         font-size: 16px;
         line-height: 22px;
         margin-bottom: 15px;
+        border: 2px solid #A88AA8;
     }
 
     .btn-wrapper:hover{
@@ -46,7 +47,7 @@ export default {
 
     .btn-wrapper:active {
         background-color: #B377DB !important;
-        border: none !important;
+        border: 2px solid #B377DB !important;
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15) !important;
     }
 

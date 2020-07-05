@@ -43,6 +43,9 @@ export default {
     },
     setUserIdCookie(id) {
       this.$cookie.set('userId', id, 100);
+    },
+    removeUserIdCookie() {
+      this.$cookie.delete('userId');
     }
   },
 };

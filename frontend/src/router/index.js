@@ -33,7 +33,13 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/Profile.vue'),
-    displayInNavBar: true
+    displayInNavBar: true,
+    dropdown: [
+      {
+        path: '/logout',
+        name: 'Sign Out',
+      }
+    ]
   },
   {
     path: '/login',
@@ -56,6 +62,11 @@ const routes = [
   {
     path: '/authenticate', 
     component: () => import('../views/Authenticate.vue'),
+    displayInNavBar: false
+  },
+  {
+    path: '/logout', 
+    component: () => import('../views/Logout.vue'),
     displayInNavBar: false
   },
   {

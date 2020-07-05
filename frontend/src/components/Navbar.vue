@@ -14,7 +14,7 @@
             <div class="collapse navbar-collapse mx-auto" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto">
                     <span v-for="navRoute in navRoutes" :key="navRoute.name">
-                        <nav-item :title="navRoute.name" :destinationRoute="navRoute.path"/>
+                        <nav-item :title="navRoute.name" :destinationRoute="navRoute.path" :dropdown="navRoute.dropdown"/>
                     </span>
                 </ul>
             </div>
