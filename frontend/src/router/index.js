@@ -54,6 +54,11 @@ const routes = [
     displayInNavBar: false
   },
   {
+    path: '/authenticate', 
+    component: () => import('../views/Authenticate.vue'),
+    displayInNavBar: false
+  },
+  {
     path: '/:shortlink', 
     component: () => import('../views/ShortLink.vue'),
     displayInNavBar: false

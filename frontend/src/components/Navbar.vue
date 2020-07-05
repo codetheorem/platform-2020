@@ -6,7 +6,7 @@
                 <img alt="Vue logo" src="../assets/technica-logo.svg" class="img-responsive">
             </a>
         </div>
-        <span v-if="displayRouteList">
+        <span v-if="displayRouteList" class="mx-auto">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
