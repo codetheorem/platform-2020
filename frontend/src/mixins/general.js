@@ -1,10 +1,17 @@
 import Axios from 'axios';
 const AWS = require('aws-sdk');
 
-var documentClient = new AWS.DynamoDB.DocumentClient();
-
 export default {
   methods: {
+    async getDataSimple(baseUrl, stage, endpoint) {
+      try {
+        const result = await Axios.get(`${baseUrl}/${stage}/${endpoint}`);
+        console.log(result);
+        return result.data;
+      } catch (e) {
+        console.error(e);
+      }
+    },
     async getData(baseUrl, stage, endpoint) {
       try {
         const result = await Axios.get(`${baseUrl}/${stage}/${endpoint}`);

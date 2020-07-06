@@ -1,9 +1,18 @@
 <template>
   <div>
-    <h2>{{tier}}</h2>
-    <b-row class="sponsor-section">
-        <b-col v-for="sponsor in sponsor_list" :key="sponsor.id">
-            <!-- <SponsorCard v-bind:sponsor_name="sponsor.name" v-bind:sponsor_logo_url="sponsor.logo_image_url"/> -->
+      <b-row class="section-banner">
+        <b-col class="hl">
+        </b-col> 
+        <b-col>
+            <h2>{{tier.toUpperCase()}}</h2>
+        </b-col>
+        <b-col class="hl">
+        </b-col>
+
+          </b-row>
+    
+    <b-row class="row">
+        <b-col v-for="sponsor in sponsor_list" :key="sponsor.id" class="col">
             <SponsorCard v-bind:sponsor="sponsor"/>
         </b-col>        
     </b-row>
@@ -36,11 +45,23 @@ export default {
 
 <style>
 
-.sponsor-section {
-    justify-content: center;
+.section-banner {
+    max-height: 50px;
+    align-items: center;
+}
+.row {
+  justify-content: center;
   align-items: center;
-  /* display: flex;
-  flex-direction: row; */
+  height: 200px;
 }
 
+.col {
+    height: 100%;
+}
+
+.hl {
+  border-top: 6px solid #B377DB;
+  width: 100%;
+  height: 10px;
+}
 </style>

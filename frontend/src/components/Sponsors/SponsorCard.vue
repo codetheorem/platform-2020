@@ -2,21 +2,28 @@
     <div class="card">
         <img v-bind:src="sponsor.logo_image_url" v-bind:alt="sponsor.name" v-bind:id="sponsor.name" class="img">
         <b-tooltip v-bind:target="sponsor.name" triggers="hover">
-            <h4>Company Information: </h4>
-            Description
-            <h4>Events Hosted: </h4>
-            {{sponsor.events_hosted}}
-            <ul>
-                <li v-for="event in sponsor.events_hosted" :key="event">
-                    {{ event }}
-                </li>
-            </ul>
-            <h4>Sponsor Prizes: </h4>
-            <ul>
-                <li v-for="prize in sponsor.prizes" :key="prize">
-                    {{ prize }}
-                </li>
-            </ul>
+              <b-row class="tooltip-text">
+                <b-col>
+                    <h4>Sponsor Information: </h4>
+                    {{sponsor.info}}
+                </b-col>
+                <b-col>
+                    <h4>Events Hosted: </h4>
+                    <ul>
+                        <li v-for="event in sponsor.events_hosted" :key="event">
+                            {{ event }}
+                        </li>
+                    </ul>
+                    <h4>Sponsor Prizes: </h4>
+                    <ul>
+                        <li v-for="prize in sponsor.prizes" :key="prize">
+                            {{ prize }}
+                        </li>
+                    </ul>
+                </b-col>
+            </b-row>
+            
+            
         </b-tooltip>
     </div>
 </template>
@@ -46,15 +53,26 @@ export default {
     display: block;
     
 }
-.card-div {
 
-}
 .card {
+  
   max-width: 15rem;
-  max-height: 15rem;
+  height: 100%;
   padding: 30px;
   display: inline-block;
 
+}
+
+.tooltip .tooltip-inner{
+  max-width: 800px !important;
+  padding: 10px;
+  background-color: #DED2E5;
+  
+  /* width: 400px !important; */
+}
+
+.tooltip-text{
+    color: black;
 }
 
 </style>

@@ -24,7 +24,7 @@ export default {
     mixins: [generalMixin],
     // create sponsor sections
     data(){
-        let sponsor_tiers = ["Platinum","Gold","Silver"];
+        let sponsor_tiers = ["Partners","Platinum","Gold"];
         let sponsors_by_tier = {}
         for (const tier of sponsor_tiers) {
             sponsors_by_tier[tier] = [];
@@ -37,7 +37,7 @@ export default {
     },
     async mounted(){
         console.log(process.env.NODE_ENV)
-        this.sponsors = await this.getData(Config.dev.SPONSORS_INFO_ENDPOINT, "dev", "get_sponsorship_info");
+        this.sponsors = await this.getDataSimple(Config.dev.SPONSORS_INFO_ENDPOINT, "dev", "get_sponsorship_info");
         console.log(this.sponsors);
 
         for (const tier of this.sponsor_tiers) {
@@ -51,9 +51,15 @@ export default {
 
 <style>
 
+body {background-color: #F4EBfA;}
+
 .sponsor-section {
     padding: 10px;
 
+}
+
+h1 {
+    color: #B377DB;
 }
 
 </style>
