@@ -51,8 +51,11 @@ export default {
 
 <style>
 
-body {background-color: #F4EBfA;}
+body {background-color: #F6F4F7;}
 
+.sponsors-container {
+    padding: 30px;
+}
 .sponsor-section {
     padding: 10px;
 
