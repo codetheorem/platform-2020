@@ -43,7 +43,7 @@ export default {
         for (const tier of this.sponsor_tiers) {
             this.sponsors_by_tier[tier] = this.sponsors.filter(s => s['tier'] == tier);
         }
-        console.log(this.sponsors_by_tier);
+        console.log("sponsors by tier", this.sponsors_by_tier);
     },
 
 };

@@ -10,9 +10,8 @@
         </b-col>
 
           </b-row>
-    
-    <b-row class="row">
-        <b-col v-for="sponsor in sponsor_list" :key="sponsor.id" class="col">
+    <b-row v-for="row in sponsor_grid" :key="row.id" class="row">
+        <b-col v-for="sponsor in row" :key="sponsor.id" class="col" sm>
             <SponsorCard v-bind:sponsor="sponsor"/>
         </b-col>        
     </b-row>
@@ -29,17 +28,37 @@ export default {
   },
   props: {
       tier: String,
-      sponsor_list: Array
+      sponsor_list: Array,
+  },
+  data(){
+      return {
+          sponsor_grid: [],
+          num_rows: 0
+      }
   },
   async mounted(){
       console.log(this.tier, this.sponsor_list);
+        this.create_grid();
+  },
+  watch: { // watch prop on change, strangely this is needed for init
+      sponsor_list: function(newVal, oldVal) {
+        this.create_grid();
+      }
   },
   methods: {
-      has_data: function(){
-          console.log((this.sponsor_list.length > 0));
-          return (this.sponsor_list.length > 0);
+      create_grid: function() {
+          for (let i = 0; i < this.sponsor_list.length; i+=1) {
+            if (i % 3 == 0) {
+                this.sponsor_grid.push([]);
+                this.num_rows += 1;
+            }
+            this.sponsor_grid[this.num_rows-1].push(this.sponsor_list[i]);
+        }
+        console.log("grid", this.sponsor_grid);
+        console.log("num_rows", this.num_rows);
       }
   }
+
 };
 </script>
 
@@ -53,6 +72,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 200px;
+  margin: 1em
 }
 
 .col {

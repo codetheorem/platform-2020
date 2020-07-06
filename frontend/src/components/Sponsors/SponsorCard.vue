@@ -56,10 +56,11 @@ export default {
 
 .card {
   
-  max-width: 15rem;
+  max-width: 20rem;
   height: 100%;
   padding: 30px;
   display: inline-block;
+  border-radius: 1em;
 
 }
 
@@ -67,12 +68,14 @@ export default {
   max-width: 800px !important;
   padding: 10px;
   background-color: #DED2E5;
-  
-  /* width: 400px !important; */
+  opacity: 1.0;  
 }
 
 .tooltip-text{
     color: black;
 }
 
+ul {
+    text-align: left;
+}
 </style>
