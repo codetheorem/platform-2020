@@ -11,7 +11,7 @@
 
           </b-row>
     <b-row v-for="row in sponsor_grid" :key="row.id" class="row">
-        <b-col v-for="sponsor in row" :key="sponsor.id" class="col" sm>
+        <b-col v-for="sponsor in row" :key="sponsor.id" class="col-sm">
             <SponsorCard v-bind:sponsor="sponsor"/>
         </b-col>        
     </b-row>
@@ -71,11 +71,12 @@ export default {
 .row {
   justify-content: center;
   align-items: center;
-  height: 200px;
+  /* height: 200px; */
   margin: 1em
 }
 
-.col {
+.col-sm {
+    min-width: 15rem;
     height: 100%;
 }
 

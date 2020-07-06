@@ -33,8 +33,6 @@ export default {
   name: "SponsorCard",
 
   props: {
-    // sponsor_name: String,
-    // sponsor_logo_url: String
     sponsor: Object
   },
     async mounted(){
@@ -47,17 +45,18 @@ export default {
 <style>
 
 .img {
-    width: 100%;
-    height: 100%; 
+    max-height: 10rem;
+    max-width: 100%;
     object-fit: contain;
-    display: block;
+    /* display: block; */
     
 }
 
 .card {
   
   max-width: 20rem;
-  height: 100%;
+  max-height: 15rem;
+  /* height: 100%; */
   padding: 30px;
   display: inline-block;
   border-radius: 1em;
@@ -68,7 +67,7 @@ export default {
   max-width: 800px !important;
   padding: 10px;
   background-color: #DED2E5;
-  opacity: 1.0;  
+  opacity: 1.0!important;  
 }
 
 .tooltip-text{
