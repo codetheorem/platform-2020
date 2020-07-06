@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="btn btn-primary btn-lg btn-wrapper" :class="{'btn-sm': size === 'sm'}">
+  <button type="button" class="btn btn-primary btn-lg btn-wrapper" :class="{'btn-sm': size === 'sm', 'outline-style': outlineStyle}" @click="clicked">
       <span>{{ text }}</span>
   </button>
 </template>
@@ -12,7 +12,16 @@ export default {
         type: String,
         default: "lg"
     },
-    text: String
+    text: String,
+    outlineStyle: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    clicked(){
+      this.$emit('click')
+    }
   }
 };
 </script>
@@ -28,6 +37,8 @@ export default {
         font-weight: bold;
         font-size: 16px;
         line-height: 22px;
+        margin-bottom: 15px;
+        border: 2px solid #A88AA8;
     }
 
     .btn-wrapper:hover{
@@ -36,6 +47,30 @@ export default {
 
     .btn-wrapper:active {
         background-color: #B377DB !important;
-        border: none !important;
+        border: 2px solid #B377DB !important;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .outline-style {
+      background-color: transparent !important;
+      color: #A88AA8;
+      border: 2px solid #A88AA8;
+    }
+
+    .outline-style:hover{
+        color: #B377DB;
+        border: 2px solid #B377DB;
+    }
+
+    .outline-style:active {
+        background-color: #F4EBFA !important;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15) !important;
+        color: #B377DB !important;
+        border: 2px solid #B377DB !important;
+    }
+
+    .btn-wrapper:focus {
+      outline: none;
+      box-shadow: none;
     }
 </style>
