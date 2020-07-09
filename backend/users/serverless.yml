@@ -39,6 +39,13 @@ functions:
           path: add_user
           method: post
           cors: true
+  update_user:
+    handler: handler.update_user
+    events:
+      - http: 
+          path: update_user
+          method: post
+          cors: true
 plugins:
   - serverless-jest-plugin
 custom:
