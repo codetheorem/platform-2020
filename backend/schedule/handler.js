@@ -137,10 +137,16 @@ module.exports.update_event = async event => {
     
   // Call DynamoDB to update the item to the table
   const result = await ddb.updateItem(params).promise();
-    
+
+  // remove {S: <value>} format returned by AWS
+  const reply = result.Item;
+  Object.keys(reply).forEach(k => {
+      reply[k] = reply[k]["S"]
+  });
+
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item),
+    body: JSON.stringify(reply),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
@@ -322,9 +328,15 @@ module.exports.get_shortlink = async event => {
     }
   }).promise();
 
+  // remove {S: <value>} format returned by AWS
+  const reply = result.Item;
+  Object.keys(reply).forEach(k => {
+      reply[k] = reply[k]["S"]
+  });
+
   return {
     statusCode: 200,
-    body: JSON.stringify(item.Item),
+    body: JSON.stringify(reply),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,

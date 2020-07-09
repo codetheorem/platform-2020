@@ -43,9 +43,15 @@ module.exports.get_user = async event => {
     }
   }).promise();
 
+  // remove {S: <value>} format returned by AWS
+  const reply = item.Item;
+  Object.keys(reply).forEach(k => {
+      reply[k] = reply[k]["S"]
+  });
+
   return {
     statusCode: 200,
-    body: JSON.stringify(item.Item),
+    body: JSON.stringify(reply),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
@@ -83,10 +89,16 @@ module.exports.add_user = async user => {
   // Call DynamoDB to add the item to the table
   const result = await ddb.putItem(params).promise();
 
+  // remove {S: <value>} format returned by AWS
+  const reply = params.Item;
+  Object.keys(reply).forEach(k => {
+      reply[k] = reply[k]["S"]
+  });
+
   // Returns status code 200 and JSON string of 'result'
   return {
     statusCode: 200,
-    body: JSON.stringify(params.Item),
+    body: JSON.stringify(reply),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true
@@ -94,6 +106,87 @@ module.exports.add_user = async user => {
   };
 };
 
+// Sends an email invite to a user for registering/logging in
+module.exports.invite_user = async event => {
+  // Lazy load the sendgrid api - we don't want to load it for other endpoints
+  const sgMail = require('@sendgrid/mail');
+
+  const body = JSON.parse(event.body);
+
+  // check for id in request
+  if (!body.id) {
+    return {
+      statusCode: 500,
+      body: "add_event_to_user_list expects keys \"id\""
+    }
+  }
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  // Get the user's info to send email and update dbs
+  const userResp = await ddb.getItem({
+    TableName: process.env.USERS_TABLE,
+    Key: {
+      id: {
+        S: body.id
+      }
+    }
+  }).promise();
+
+  const user = userResp.Item;
+
+  // TODO: actual invite link logic ----------------------------------//
+  invite_link = process.env.BASE_INVITE_URL + "?token=" + user.id.S;  //
+  // --------------------------------- TODO: actual invite link logic //
+
+  // Send the user an email, using our template
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+  const msg = {
+    from: { email:"tech@gotechnica.org" },
+    personalizations: [{
+      "to":[{
+        "email": user.email.S
+      }],
+      "dynamic_template_data":{
+        "user_name": user.full_name.S,
+        "invite_link": invite_link
+      }
+    }],
+    template_id: process.env.INVITE_TEMPLATE_ID
+  };
+
+  sgMail.send(msg);
+
+  // update ddb table:"platform-users" so user's `registration_status` is "email_invite_sent"
+  const updateResp = await ddb.updateItem({
+    TableName: process.env.USERS_TABLE,
+    Key: { id: { S: user.id.S.toString() } },
+    UpdateExpression: "SET registration_status = :s",
+    ExpressionAttributeValues: {":s": {"S":"email_invite_sent"}}
+  }).promise()
+
+  // new item in "platform-invites" table with pertinent information
+  const result = await ddb.putItem({
+    TableName: process.env.INVITES_TABLE,
+    Item: {
+      user_id: {S: user.id.S},
+      email: {S: user.email.S},
+      invite_link: {S: invite_link},
+      timestamp: {S: new Date().toString()},
+      accepted: {S: "false"}
+    }
+  }).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };
+};
 // Updates an existing schedule user in the database
 module.exports.update_user = async user => {
 

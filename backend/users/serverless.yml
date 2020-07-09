@@ -6,6 +6,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment:
     USERS_TABLE: ${file(./config/${self:provider.stage}.json):USERS_TABLE}
+    INVITES_TABLE: ${file(./config/${self:provider.stage}.json):INVITES_TABLE}
+    INVITE_TEMPLATE_ID: ${file(./config/${self:provider.stage}.json):INVITE_TEMPLATE_ID}
+    BASE_INVITE_URL: ${file(./config/${self:provider.stage}.json):BASE_INVITE_URL}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -44,6 +47,13 @@ functions:
     events:
       - http: 
           path: update_user
+          method: post
+          cors: true
+  invite_user:
+    handler: handler.invite_user
+    events:
+      - http: 
+          path: invite_user
           method: post
           cors: true
 plugins:

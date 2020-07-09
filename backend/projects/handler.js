@@ -50,9 +50,15 @@ module.exports.add_sponsor = async event => {
   // Call DynamoDB to add the item to the table
   const result = await ddb.put(params).promise();
 
+  // remove {S: <value>} format returned by AWS
+  const reply = result.Item;
+  Object.keys(reply).forEach(k => {
+      reply[k] = reply[k]["S"]
+  });
+
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item),
+    body: JSON.stringify(reply),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
