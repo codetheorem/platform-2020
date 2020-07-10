@@ -1,10 +1,12 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
+const withSentry = require("serverless-sentry-lib");
 
-AWS.config.update({ region: 'us-east-1' });
+AWS.config.update({region:'us-east-1'});
+
 
 // delete a single user from the database
-module.exports.delete_user = async event => {
+module.exports.delete_user = withSentry(async event => {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 
@@ -26,10 +28,10 @@ module.exports.delete_user = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});
 
 // Retrieves a single user from the database
-module.exports.get_user = async event => {
+module.exports.get_user = withSentry(async event => {
   const id = event.queryStringParameters.id;
 
   const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
@@ -57,10 +59,10 @@ module.exports.get_user = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});
 
 //adds a new user to the database
-module.exports.add_user = async user => {
+module.exports.add_user = withSentry(async user => {
 
   const body = JSON.parse(user.body);
   const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
@@ -104,10 +106,10 @@ module.exports.add_user = async user => {
       'Access-Control-Allow-Credentials': true
     }
   };
-};
+});
 
 // Sends an email invite to a user for registering/logging in
-module.exports.invite_user = async event => {
+module.exports.invite_user = withSentry(async event => {
   // Lazy load the sendgrid api - we don't want to load it for other endpoints
   const sgMail = require('@sendgrid/mail');
 
@@ -186,9 +188,10 @@ module.exports.invite_user = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});
+
 // Updates an existing schedule user in the database
-module.exports.update_user = async user => {
+module.exports.update_user = withSentry(async user => {
 
   const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 
@@ -252,4 +255,4 @@ module.exports.update_user = async user => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});

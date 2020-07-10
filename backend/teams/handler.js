@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
+const withSentry = require("serverless-sentry-lib");
 
 AWS.config.update({region:'us-east-1'});
 
@@ -41,19 +42,19 @@ post_request_body_to_table = async (event, table_name) => {
   };
 };
 
-module.exports.create_team = async event => {
+module.exports.create_team = withSentry(async event => {
   return post_request_body_to_table(event, process.env.TEAMS_TABLE);
-};
+});
 
-module.exports.invite_to_team = async event => {
+module.exports.invite_to_team = withSentry(async event => {
   return post_request_body_to_table(event, process.env.INVITES_TABLE);
-};
+});
 
-module.exports.join_team = async event => {
+module.exports.join_team = withSentry(async event => {
   return post_request_body_to_table(event, process.env.MEMBERSHIPS_TABLE);
-};
+});
 
-module.exports.leave_team = async event => {
+module.exports.leave_team = withSentry(async event => {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
@@ -76,4 +77,4 @@ module.exports.leave_team = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});

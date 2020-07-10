@@ -1,4 +1,5 @@
 {
+    "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
     "TEAMS_TABLE": "platform-teams-dev",
     "INVITES_TABLE": "platform-team-invites-dev",
     "MEMBERSHIPS_TABLE": "platform-team-memberships-dev"
