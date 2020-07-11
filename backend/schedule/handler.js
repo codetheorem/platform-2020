@@ -140,15 +140,9 @@ module.exports.update_event = withSentry(async event => {
   // Call DynamoDB to update the item to the table
   const result = await ddb.updateItem(params).promise();
 
-  // remove {S: <value>} format returned by AWS
-  const reply = result.Item;
-  Object.keys(reply).forEach(k => {
-      reply[k] = reply[k]["S"]
-  });
-
   return {
     statusCode: 200,
-    body: JSON.stringify(reply),
+    body: JSON.stringify(result),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
@@ -330,15 +324,9 @@ module.exports.get_shortlink = withSentry(async event => {
     }
   }).promise();
 
-  // remove {S: <value>} format returned by AWS
-  const reply = result.Item;
-  Object.keys(reply).forEach(k => {
-      reply[k] = reply[k]["S"]
-  });
-
   return {
     statusCode: 200,
-    body: JSON.stringify(reply),
+    body: JSON.stringify(item.Item),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
