@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import Config from "../config/general";
 
 Vue.use(VueRouter);
 
@@ -21,7 +22,10 @@ const routes = [
     path: '/live-stream',
     name: 'Live Stream',
     component: () => import('../views/LiveStream.vue'),
-    displayInNavBar: true
+    displayInNavBar: true,
+    beforeEnter() {
+      window.open(Config.dev.LIVESTREAM_LINK, "_blank");
+    }
   },
   {
     path: '/schedule',
@@ -60,17 +64,17 @@ const routes = [
     displayInNavBar: false
   },
   {
-    path: '/authenticate', 
+    path: '/authenticate',
     component: () => import('../views/Authenticate.vue'),
     displayInNavBar: false
   },
   {
-    path: '/logout', 
+    path: '/logout',
     component: () => import('../views/Logout.vue'),
     displayInNavBar: false
   },
   {
-    path: '/:shortlink', 
+    path: '/:shortlink',
     component: () => import('../views/ShortLink.vue'),
     displayInNavBar: false
   }
