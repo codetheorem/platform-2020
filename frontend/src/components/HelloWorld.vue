@@ -2,8 +2,8 @@
   <div class="hello">
     <h3>{{ msg }}</h3>
     <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
+      This is the Technica platform's home page (currently under development). 
+      Navigation to other pages is available through the links at the top of the page.
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
     </p>
     <h3>Installed CLI Plugins</h3>
