@@ -72,19 +72,19 @@ export default {
 .row {
   justify-content: center;
   align-items: center;
-  /* height: 200px; */
   margin: 1em
 }
 
 .col-sm {
     min-width: 15rem;
     height: 100%;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 .hl {
   border-top: 6px solid #B377DB;
   width: 100%;
   height: 10px;
-  /* min-width: 10rem; */
 }
 </style>

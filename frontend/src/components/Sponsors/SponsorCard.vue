@@ -38,21 +38,19 @@ export default {
 <style>
 
 .img {
-    max-height: 10rem;
+    max-height: 6rem;
     max-width: 100%;
     object-fit: contain;
-    /* display: block; */
 }
 
 .card {
-  
-  max-width: 20rem;
-  max-height: 15rem;
-  /* height: 100%; */
+  width: 100%;
+  height: 100%;
+  max-width: 15rem;
+  max-height: 10rem;
   padding: 30px;
   display: inline-block;
   border-radius: 1em;
-
 }
 
 .tooltip .tooltip-inner{
