@@ -5,7 +5,11 @@ provider:
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
   environment:
+    SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
     USERS_TABLE: ${file(./config/${self:provider.stage}.json):USERS_TABLE}
+    INVITES_TABLE: ${file(./config/${self:provider.stage}.json):INVITES_TABLE}
+    INVITE_TEMPLATE_ID: ${file(./config/${self:provider.stage}.json):INVITE_TEMPLATE_ID}
+    BASE_INVITE_URL: ${file(./config/${self:provider.stage}.json):BASE_INVITE_URL}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -32,9 +36,35 @@ functions:
           path: get_user
           method: get
           cors: true
+  add_user:
+    handler: handler.add_user
+    events:
+      - http: 
+          path: add_user
+          method: post
+          cors: true
+  update_user:
+    handler: handler.update_user
+    events:
+      - http: 
+          path: update_user
+          method: post
+          cors: true
+  invite_user:
+    handler: handler.invite_user
+    events:
+      - http: 
+          path: invite_user
+          method: post
+          cors: true
+
 plugins:
+  - serverless-sentry
   - serverless-jest-plugin
+
 custom:
+  sentry:
+    dsn: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
   # see https://github.com/nordcloud/serverless-jest-plugin
   jest:
     collectCoverage: true

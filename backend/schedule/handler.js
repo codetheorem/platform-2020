@@ -1,10 +1,12 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
+const withSentry = require("serverless-sentry-lib");
 
 AWS.config.update({region:'us-east-1'});
 
+
 // Retrieves the entire list of schedule events from the database
-module.exports.get_schedule = async event => {
+module.exports.get_schedule = withSentry(async event => {
   const params = {
     TableName: process.env.SCHEDULE_TABLE,
   };
@@ -21,10 +23,10 @@ module.exports.get_schedule = async event => {
       'Access-Control-Allow-Credentials': true
     }
   };
-};
+});
 
 // Retrieves a single schedule event from the database
-module.exports.get_event = async event => {
+module.exports.get_event = withSentry(async event => {
   const id = event.queryStringParameters.id;
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
@@ -46,10 +48,10 @@ module.exports.get_event = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});
 
 // Adds a new schedule event to the database
-module.exports.add_event = async event => {
+module.exports.add_event = withSentry(async event => {
   const body = JSON.parse(event.body);
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
@@ -79,10 +81,10 @@ module.exports.add_event = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});
 
 // Updates an existing schedule event in the database
-module.exports.update_event = async event => {
+module.exports.update_event = withSentry(async event => {
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
     
@@ -137,19 +139,19 @@ module.exports.update_event = async event => {
     
   // Call DynamoDB to update the item to the table
   const result = await ddb.updateItem(params).promise();
-    
+
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item),
+    body: JSON.stringify(result),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});
 
 // Deletes an existing schedule event in the database
-module.exports.delete_event_from_schedule = async event => {
+module.exports.delete_event_from_schedule = withSentry(async event => {
   const body = JSON.parse(event.body);
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
@@ -174,10 +176,10 @@ module.exports.delete_event_from_schedule = async event => {
   return {
     statusCode: 200
   };
-}
+});
 
 // Adds a new schedule event to the a user's list
-module.exports.add_event_to_user_list = async event => {
+module.exports.add_event_to_user_list = withSentry(async event => {
   const body = JSON.parse(event.body);
 
   if (!body.event_id || !body.user_id) {
@@ -211,10 +213,10 @@ module.exports.add_event_to_user_list = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});
 
 // Deletes a schedule event from a user's list
-module.exports.delete_event_from_user_list = async event => {
+module.exports.delete_event_from_user_list = withSentry(async event => {
   const body = JSON.parse(event.body);
 
   // Check for validity
@@ -245,7 +247,7 @@ module.exports.delete_event_from_user_list = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});
 
 
 make_shortlink = (length) => {
@@ -256,10 +258,10 @@ make_shortlink = (length) => {
      result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
-}
+};
 
 // Creates and adds a new unique shortlink to the database, checking for duplicates
-module.exports.add_shortlink = async event => {
+module.exports.add_shortlink = withSentry(async event => {
   const body = JSON.parse(event.body);
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
@@ -305,10 +307,10 @@ module.exports.add_shortlink = async event => {
     statusCode: 200,
     body: JSON.stringify(result.Item)
   };
-};
+});
 
 // Retrieves a single shortlink from the database
-module.exports.get_shortlink = async event => {
+module.exports.get_shortlink = withSentry(async event => {
   const id = event.queryStringParameters.id;
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
@@ -330,10 +332,10 @@ module.exports.get_shortlink = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});
 
 // Adds a new shortlink click event to the database 
-module.exports.add_shortlink_click = async event => {
+module.exports.add_shortlink_click = withSentry(async event => {
   const body = JSON.parse(event.body);
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
@@ -361,10 +363,10 @@ module.exports.add_shortlink_click = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});
 
 // Retrieves all schedule events added to the user's list
-module.exports.get_events_from_user_list = async event => {
+module.exports.get_events_from_user_list = withSentry(async event => {
   // Check for validity
   if (!event.queryStringParameters || !event.queryStringParameters.user_id) {
     return {
@@ -406,4 +408,4 @@ module.exports.get_events_from_user_list = async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});

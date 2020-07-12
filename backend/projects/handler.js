@@ -1,11 +1,13 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
+const withSentry = require("serverless-sentry-lib");
 
 AWS.config.update({region:'us-east-1'});
 
 
+
 // Retrieves all sponsors from the database
-module.exports.get_sponsorship_info = async event => {
+module.exports.get_sponsorship_info = withSentry(async event => {
   const params = {
     TableName: process.env.SPONSORS_INFO_TABLE,
   };
@@ -23,11 +25,11 @@ module.exports.get_sponsorship_info = async event => {
       'Access-Control-Allow-Credentials': true
     }
   };
-};
+});
 
 
 // Adds a new sponsor to the database
-module.exports.add_sponsor = async event => {
+module.exports.add_sponsor = withSentry(async event => {
   const body = JSON.parse(event.body);
 
   // use DocumentClient, which supports easily written db operations
@@ -52,10 +54,10 @@ module.exports.add_sponsor = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item),
+    body: JSON.stringify(result),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     }
   };
-};
+});

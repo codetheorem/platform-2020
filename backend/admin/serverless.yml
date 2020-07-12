@@ -5,6 +5,7 @@ provider:
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
   environment:
+    SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
     ADMIN_TABLE: ${file(./config/${self:provider.stage}.json):ADMIN_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
@@ -21,3 +22,15 @@ provider:
 functions:
   hello:
     handler: handler.hello # remove this when you're implementing the first function of this service!
+
+
+plugins:
+  - serverless-sentry
+  - serverless-jest-plugin
+
+custom:
+  sentry:
+    dsn: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
+  # see https://github.com/nordcloud/serverless-jest-plugin
+  jest:
+    collectCoverage: true
