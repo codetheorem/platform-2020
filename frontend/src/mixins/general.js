@@ -1,10 +1,22 @@
 import Axios from 'axios';
+const AWS = require('aws-sdk');
 
 export default {
   methods: {
+    // use this where the get data endpoint uses the AWS Document Client (AKA data is already formatted JSON)
+    async getDataSimple(baseUrl, stage, endpoint) {
+      try {
+        const result = await Axios.get(`${baseUrl}/${stage}/${endpoint}`);
+        console.log(result);
+        return result.data;
+      } catch (e) {
+        console.error(e);
+      }
+    },
     async getData(baseUrl, stage, endpoint) {
       try {
         const result = await Axios.get(`${baseUrl}/${stage}/${endpoint}`);
+        console.log(result);
         return this.processDynamoResponse(result.data);
       } catch (e) {
         console.error(e);
