@@ -1,4 +1,5 @@
 {
+    "BANNED_USERS_TABLE": "platform-banned-users-dev",
     "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
     "USERS_TABLE": "platform-users-dev",
     "INVITES_TABLE": "platform-invites-dev",

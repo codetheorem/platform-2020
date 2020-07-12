@@ -1,9 +1,7 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
 const withSentry = require("serverless-sentry-lib");
-
 AWS.config.update({region:'us-east-1'});
-
 
 // delete a single user from the database
 module.exports.delete_user = withSentry(async event => {
@@ -241,6 +239,62 @@ module.exports.update_user = withSentry(async user => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
+    }
+  };
+});
+
+// Adds a user to banned users table
+module.exports.ban_user = withSentry(async event =>{
+  const body = JSON.parse(event.body);
+
+  if(!body.id){
+    return{
+      statusCode: 500,
+      body: "ban_user expects keys \"id\""
+    };
+  }
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const params = {
+    TableName: process.env.BANNED_USERS_TABLE,
+    Item: {}
+  };
+  
+  // Dynamically add post request body params to document
+  Object.keys(body).forEach(k => {
+    params.Item[k] = {S: body[k]}
+  });
+
+  // Call DynamoDB to add the item to the table
+  const result = await ddb.putItem(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
+    }
+  };
+});
+
+// Retrieves all users from banned users table
+module.exports.get_banned_users = withSentry(async event => {
+  const params = {
+    TableName: process.env.BANNED_USERS_TABLE
+  };
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Items),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
     }
   };
 });

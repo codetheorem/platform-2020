@@ -42,10 +42,12 @@ describe('invite_user', () => {
 
     // Add a user into the DB
     const response = await adder.run(bootstrap_user);
-    const test_user_id = JSON.parse(response.body).id
-
+    const test_user_id = (JSON.parse(response.body).id.S);
+   
     const event = {
-      body: JSON.stringify({id: test_user_id})
+      body: JSON.stringify({
+        id: test_user_id
+      })
     };
 
     // Check to make sure our fancy event id was returned by endpoint

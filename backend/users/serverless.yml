@@ -2,9 +2,11 @@ service: platform-users
 
 provider:
   name: aws
+  region: us-east-1
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
   environment:
+    BANNED_USERS_TABLE: ${file(./config/${self:provider.stage}.json):BANNED_USERS_TABLE}
     SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
     USERS_TABLE: ${file(./config/${self:provider.stage}.json):USERS_TABLE}
     INVITES_TABLE: ${file(./config/${self:provider.stage}.json):INVITES_TABLE}
@@ -57,7 +59,22 @@ functions:
           path: invite_user
           method: post
           cors: true
-
+  ban_user:
+    handler: handler.ban_user
+    description: Adds user to banned table
+    events:
+      - http: 
+          path: ban_user
+          method: post
+          cors: true
+  get_banned_users:
+    handler: handler.get_banned_users
+    description: Retreives all users marked as 'banned'
+    events:
+      - http:
+          path: get_banned_users
+          method: get
+          cors: true
 plugins:
   - serverless-sentry
   - serverless-jest-plugin
@@ -65,6 +82,7 @@ plugins:
 custom:
   sentry:
     dsn: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
+
   # see https://github.com/nordcloud/serverless-jest-plugin
   jest:
     collectCoverage: true
