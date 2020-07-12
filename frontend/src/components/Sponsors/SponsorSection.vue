@@ -1,7 +1,7 @@
 <template>
   <div>
       <b-row class="section-banner">
-        <b-col class="hl"></b-col> 
+        <b-col class="hl"></b-col>
         <b-col class="section-title">
             <h2>{{tier.toUpperCase()}}</h2>
         </b-col>
@@ -11,7 +11,7 @@
     <b-row v-for="row in sponsorGrid" :key="row.id" class="row">
         <b-col v-for="sponsor in row" :key="sponsor.id" class="col-sm">
             <SponsorCard v-bind:sponsor="sponsor"/>
-        </b-col>        
+        </b-col>
     </b-row>
   </div>
 </template>
@@ -25,34 +25,34 @@ export default {
     SponsorCard,
   },
   props: {
-      tier: String,
-      sponsorList: Array,
+    tier: String,
+    sponsorList: Array,
   },
-  data(){
-      return {
-          sponsorGrid: [],
-          numRows: 0
-      }
+  data() {
+    return {
+      sponsorGrid: [],
+      numRows: 0,
+    };
   },
-  async mounted(){
-        this.create_grid();
+  async mounted() {
+    this.create_grid();
   },
   watch: { // watch prop on change, strangely this is needed for init
-      sponsorList(newVal, oldVal) {
-        this.create_grid();
-      }
+    sponsorList() {
+      this.create_grid();
+    },
   },
   methods: {
-      create_grid() {
-          for (let i = 0; i < this.sponsorList.length; i+=1) {
-            if (i % 3 == 0) {
-                this.sponsorGrid.push([]);
-                this.numRows += 1;
-            }
-            this.sponsorGrid[this.numRows-1].push(this.sponsorList[i]);
+    create_grid() {
+      for (let i = 0; i < this.sponsorList.length; i += 1) {
+        if (i % 3 === 0) {
+          this.sponsorGrid.push([]);
+          this.numRows += 1;
         }
+        this.sponsorGrid[this.numRows - 1].push(this.sponsorList[i]);
       }
-  }
+    },
+  },
 
 };
 </script>

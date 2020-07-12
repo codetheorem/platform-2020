@@ -24,5 +24,11 @@ module.exports = {
         jest: true,
       },
     },
+    {
+      files: ["*.vue"],
+      rules: {
+        'max-len': 'off' // disables line length check
+      }
+    }
   ],
 };

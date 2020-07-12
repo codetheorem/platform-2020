@@ -9,20 +9,20 @@ export default {
   name: 'Button',
   props: {
     size: {
-        type: String,
-        default: "lg"
+      type: String,
+      default: 'lg',
     },
     text: String,
     outlineStyle: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
-    clicked(){
-      this.$emit('click')
-    }
-  }
+    clicked() {
+      this.$emit('click');
+    },
+  },
 };
 </script>
 

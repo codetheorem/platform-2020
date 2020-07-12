@@ -36,26 +36,26 @@
 </template>
 
 <script>
-import NavItem from "@/components/NavItem.vue";
+import NavItem from '@/components/NavItem.vue';
 
 export default {
-  name: "Navbar",
+  name: 'Navbar',
   components: {
-    NavItem
+    NavItem,
   },
   props: {
     displayRouteList: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
       navRoutes: this.$router.options.routes.filter(
-        route => route.displayInNavBar
-      )
+        (route) => route.displayInNavBar,
+      ),
     };
-  }
+  },
 };
 </script>
 

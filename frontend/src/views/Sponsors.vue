@@ -1,4 +1,3 @@
-
 <template>
   <b-container class="sponsors-container">
     <h1>Sponsors</h1>
@@ -8,40 +7,38 @@
   </b-container>
 </template>
 
-
 <script>
+import SponsorSection from '@/components/Sponsors/SponsorSection.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
-import Button from '@/components/Button.vue';
-import SponsorSection from '@/components/Sponsors/SponsorSection.vue';
-
 
 export default {
-    name: 'Sponsors',
-    components: {
-        Button, SponsorSection
-    },
-    mixins: [generalMixin],
-    // create sponsor sections
-    data(){
-        let sponsorTiers = ["Partners","Platinum","Gold"];
-        let sponsorsByTier = {}
-        for (const tier of sponsorTiers) {
-            sponsorsByTier[tier] = [];
-        }
-        return {
-            sponsorTiers: sponsorTiers,
-            sponsors: [],
-            sponsorsByTier: sponsorsByTier
-        }
-    },
-    async mounted(){
-        this.sponsors = await this.getDataSimple(Config.dev.SPONSORS_INFO_ENDPOINT, "dev", "get_sponsorship_info");
+  name: 'Sponsors',
+  components: {
+    SponsorSection,
+  },
+  mixins: [generalMixin],
+  // create sponsor sections
+  data() {
+    const sponsorTiers = ['Partners', 'Platinum', 'Gold'];
+    const sponsorsByTier = {};
+    sponsorTiers.forEach((tier) => {
+      sponsorsByTier[tier] = [];
+    });
 
-        for (const tier of this.sponsorTiers) {
-            this.sponsorsByTier[tier] = this.sponsors.filter(s => s['tier'] == tier);
-        }
-    },
+    return {
+      sponsorTiers,
+      sponsors: [],
+      sponsorsByTier,
+    };
+  },
+  async mounted() {
+    this.sponsors = await this.getDataSimple(Config.dev.SPONSORS_INFO_ENDPOINT, 'dev', 'get_sponsorship_info');
+
+    this.sponsorTiers.forEach((tier) => {
+      this.sponsorsByTier[tier] = this.sponsors.filter((s) => s.tier === tier);
+    });
+  },
 
 };
 </script>

@@ -7,25 +7,25 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue';
-import Vue from 'vue'
+import Vue from 'vue';
 import * as Sentry from '@sentry/browser';
 import { Vue as VueIntegration } from '@sentry/integrations';
 
 Sentry.init({
   dsn: 'https://cc58a94e8e7b4864aaa9f01242666f46@o414418.ingest.sentry.io/5320099',
-  integrations: [new VueIntegration({Vue, attachProps: true})],
+  integrations: [new VueIntegration({ Vue, attachProps: true })],
 });
 
 export default {
   name: 'App',
   components: {
-    Navbar
+    Navbar,
   },
   computed: {
     displayRouteList() {
-      return this.$route.name != "Login";
-    }
-  }
+      return this.$route.name !== 'Login';
+    },
+  },
 };
 </script>
 <style>

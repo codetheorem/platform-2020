@@ -24,12 +24,12 @@
 export default {
   name: 'NavItem',
   props: {
-      title: String,
-      destinationRoute: String,
-      dropdown: {
-        type: Array,
-        default: null
-      }
+    title: String,
+    destinationRoute: String,
+    dropdown: {
+      type: Array,
+      default: null,
+    },
   },
 };
 </script>

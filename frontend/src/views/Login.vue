@@ -44,33 +44,32 @@ import Config from '../config/general';
 export default {
   name: 'Login',
   components: {
-    Button
+    Button,
   },
   data() {
     return {
       loginButtonClicked: false,
       userEmail: '',
       emailNotFound: false,
-      emailInvalid: false
-    }
+      emailInvalid: false,
+    };
   },
   methods: {
-    sendMagicLink(){
-      if(this.userEmail != '') {
+    sendMagicLink() {
+      if (this.userEmail !== '') {
         this.loginButtonClicked = true;
       } else {
         this.emailInvalid = true;
       }
-    }
+    },
   },
   computed: {
-    signupFormLink(){
+    signupFormLink() {
       return Config.dev.SIGNUP_FORM_LINK;
-    }
-  }
+    },
+  },
 };
 </script>
-
 
 <style>
   .page-container {

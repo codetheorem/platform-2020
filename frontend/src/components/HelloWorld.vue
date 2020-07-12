@@ -2,7 +2,7 @@
   <div class="hello">
     <h3>{{ msg }}</h3>
     <p>
-      This is the Technica platform's home page (currently under development). 
+      This is the Technica platform's home page (currently under development).
       Navigation to other pages is available through the links at the top of the page.
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
     </p>

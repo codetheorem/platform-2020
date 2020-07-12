@@ -1,20 +1,20 @@
 import Vue from 'vue';
+import { BootstrapVue } from 'bootstrap-vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import { BootstrapVue } from 'bootstrap-vue'
-
-Vue.config.productionTip = false;
 
 // Importing the global css file
-import './assets/global.css'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './assets/global.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+
+Vue.config.productionTip = false;
 
 const VueCookie = require('vue-cookie');
 // Tell Vue to use the plugin
 Vue.use(VueCookie);
-Vue.use(BootstrapVue)
+Vue.use(BootstrapVue);
 
 new Vue({
   router,

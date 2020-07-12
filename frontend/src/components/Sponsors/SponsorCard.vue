@@ -28,9 +28,9 @@
 
 <script>
 export default {
-  name: "SponsorCard",
+  name: 'SponsorCard',
   props: {
-    sponsor: Object
+    sponsor: Object,
   },
 };
 </script>
@@ -57,7 +57,7 @@ export default {
   max-width: 800px !important;
   padding: 10px;
   background-color: #DED2E5;
-  opacity: 1.0!important;  
+  opacity: 1.0!important;
 }
 
 .tooltip-text{
