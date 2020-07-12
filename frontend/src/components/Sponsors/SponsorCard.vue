@@ -22,8 +22,6 @@
                     </ul>
                 </b-col>
             </b-row>
-            
-            
         </b-tooltip>
     </div>
 </template>
@@ -31,14 +29,9 @@
 <script>
 export default {
   name: "SponsorCard",
-
   props: {
     sponsor: Object
   },
-    async mounted(){
-      console.log(this.sponsor.events_hosted);
-  },
-
 };
 </script>
 
@@ -49,7 +42,6 @@ export default {
     max-width: 100%;
     object-fit: contain;
     /* display: block; */
-    
 }
 
 .card {

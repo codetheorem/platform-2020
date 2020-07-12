@@ -1,16 +1,14 @@
 <template>
   <div>
       <b-row class="section-banner">
-        <b-col class="hl">
-        </b-col> 
-        <b-col>
+        <b-col class="hl"></b-col> 
+        <b-col class="section-title">
             <h2>{{tier.toUpperCase()}}</h2>
         </b-col>
-        <b-col class="hl">
-        </b-col>
+        <b-col class="hl"></b-col>
 
           </b-row>
-    <b-row v-for="row in sponsor_grid" :key="row.id" class="row">
+    <b-row v-for="row in sponsorGrid" :key="row.id" class="row">
         <b-col v-for="sponsor in row" :key="sponsor.id" class="col-sm">
             <SponsorCard v-bind:sponsor="sponsor"/>
         </b-col>        
@@ -28,34 +26,31 @@ export default {
   },
   props: {
       tier: String,
-      sponsor_list: Array,
+      sponsorList: Array,
   },
   data(){
       return {
-          sponsor_grid: [],
-          num_rows: 0
+          sponsorGrid: [],
+          numRows: 0
       }
   },
   async mounted(){
-      console.log(this.tier, this.sponsor_list);
         this.create_grid();
   },
   watch: { // watch prop on change, strangely this is needed for init
-      sponsor_list: function(newVal, oldVal) {
+      sponsorList(newVal, oldVal) {
         this.create_grid();
       }
   },
   methods: {
-      create_grid: function() {
-          for (let i = 0; i < this.sponsor_list.length; i+=1) {
+      create_grid() {
+          for (let i = 0; i < this.sponsorList.length; i+=1) {
             if (i % 3 == 0) {
-                this.sponsor_grid.push([]);
-                this.num_rows += 1;
+                this.sponsorGrid.push([]);
+                this.numRows += 1;
             }
-            this.sponsor_grid[this.num_rows-1].push(this.sponsor_list[i]);
+            this.sponsorGrid[this.numRows-1].push(this.sponsorList[i]);
         }
-        console.log("grid", this.sponsor_grid);
-        console.log("num_rows", this.num_rows);
       }
   }
 
@@ -68,6 +63,12 @@ export default {
     max-height: 50px;
     align-items: center;
 }
+
+.section-title {
+  min-width: 15rem;
+  max-width: 15rem;
+}
+
 .row {
   justify-content: center;
   align-items: center;
@@ -84,5 +85,6 @@ export default {
   border-top: 6px solid #B377DB;
   width: 100%;
   height: 10px;
+  /* min-width: 10rem; */
 }
 </style>

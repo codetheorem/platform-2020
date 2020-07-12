@@ -2,8 +2,8 @@
 <template>
   <b-container class="sponsors-container">
     <h1>Sponsors</h1>
-    <div v-for="section in sponsor_tiers" :key="section" class="sponsor-section">
-        <sponsor-section :tier="section" :sponsor_list="sponsors_by_tier[section]"/>
+    <div v-for="section in sponsorTiers" :key="section" class="sponsor-section">
+        <sponsor-section :tier="section" :sponsorList="sponsorsByTier[section]"/>
     </div>
   </b-container>
 </template>
@@ -24,26 +24,23 @@ export default {
     mixins: [generalMixin],
     // create sponsor sections
     data(){
-        let sponsor_tiers = ["Partners","Platinum","Gold"];
-        let sponsors_by_tier = {}
-        for (const tier of sponsor_tiers) {
-            sponsors_by_tier[tier] = [];
+        let sponsorTiers = ["Partners","Platinum","Gold"];
+        let sponsorsByTier = {}
+        for (const tier of sponsorTiers) {
+            sponsorsByTier[tier] = [];
         }
         return {
-            sponsor_tiers: sponsor_tiers,
+            sponsorTiers: sponsorTiers,
             sponsors: [],
-            sponsors_by_tier: sponsors_by_tier
+            sponsorsByTier: sponsorsByTier
         }
     },
     async mounted(){
-        console.log(process.env.NODE_ENV)
         this.sponsors = await this.getDataSimple(Config.dev.SPONSORS_INFO_ENDPOINT, "dev", "get_sponsorship_info");
-        console.log(this.sponsors);
 
-        for (const tier of this.sponsor_tiers) {
-            this.sponsors_by_tier[tier] = this.sponsors.filter(s => s['tier'] == tier);
+        for (const tier of this.sponsorTiers) {
+            this.sponsorsByTier[tier] = this.sponsors.filter(s => s['tier'] == tier);
         }
-        console.log("sponsors by tier", this.sponsors_by_tier);
     },
 
 };
