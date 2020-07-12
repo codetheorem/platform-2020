@@ -1,3 +1,7 @@
 {
-    "USERS_TABLE": "platform-users-test"
+    "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
+    "USERS_TABLE": "platform-users-test",
+    "INVITES_TABLE": "platform-invites-test",
+    "INVITE_TEMPLATE_ID": "d-ad25e68e009e405eb2b71364a8e25722",
+    "BASE_INVITE_URL": "http://platform-staging.gotechnica.org/authenticate"
 }

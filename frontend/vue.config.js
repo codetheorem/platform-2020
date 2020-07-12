@@ -7,7 +7,7 @@ module.exports = {
       awsProfile: 'default',
       overrideEndpoint: false,
       region: 'us-east-1',
-      bucket: 'technica-platform',
+      bucket: 'platform.gotechnica.org',
       createBucket: true,
       staticHosting: true,
       staticIndexPage: 'index.html',

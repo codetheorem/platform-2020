@@ -1,6 +1,24 @@
 @import url('https://fonts.cdnfonts.com/css/dinpro'); /* DINpro */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap'); /* Noto Sans */
 
+/* COLORS */
+:root {
+	--pastel-purple: #A88AA8;
+	--pastel-pink: #EA668E;
+	--bright-purple: #B377DB;
+	--bright-pink: #FF5091;
+	--light-purple: #DED2E5;
+	--light-pink: #F8D2E0;
+
+	--black: #2D2D2D;
+	--grey: #464343;
+	--light-grey: #8B8787;
+	--lighter-grey: #E2DCDC;
+
+	font-family: 'Noto Sans', sans-serif;
+    font-size: 18px;
+}
+
 /* HEADINGS */
 h1, h2, h3, h4, h5 {
     font-family: 'DINPro', sans-serif;
@@ -40,11 +58,6 @@ h5.medium {
 }
 
 /* BODY */
-body {
-    font-family: 'Noto Sans', sans-serif;
-    font-size: 18px;
-}
-
 p.body2 {
 	font-size: 14px;
 }
@@ -53,4 +66,12 @@ p.bold {
 }
 p.semi {
 	font-weight: 500;
+}
+
+a {
+	color: var(--pastel-purple);
+}
+
+a:hover {
+	color: var(--bright-purple);
 }

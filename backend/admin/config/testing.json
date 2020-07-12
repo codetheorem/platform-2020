@@ -1,3 +1,4 @@
 {
+    "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
     "ADMIN_TABLE": "platform-admin-test"
 }

@@ -18,10 +18,13 @@
   },
   "homepage": "https://github.com/gotechnica/platform-2020#readme",
   "dependencies": {
+    "@sentry/node": "^5.19.1",
     "aws-sdk": "^2.691.0",
+    "serverless-sentry-lib": "^2.0.1",
     "uuid": "^8.1.0"
   },
   "devDependencies": {
-    "serverless-jest-plugin": "^0.3.0"
+    "serverless-jest-plugin": "^0.3.0",
+    "serverless-sentry": "^2.0.2"
   }
 }
