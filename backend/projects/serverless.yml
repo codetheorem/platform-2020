@@ -9,6 +9,7 @@ provider:
     SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
     PROJECTS_TABLE: ${file(./config/${self:provider.stage}.json):PROJECTS_TABLE}
     SPONSORS_INFO_TABLE: ${file(./config/${self:provider.stage}.json):SPONSORS_INFO_TABLE}
+    MENTORSHIP_REQUESTS_TABLE: ${file(./config/${self:provider.stage}.json):MENTORSHIP_REQUESTS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -37,6 +38,14 @@ functions:
       - http: 
           path: get_sponsorship_info
           method: get
+          cors: true
+  create_mentorship_request:
+    handler: handler.create_mentorship_request
+    description: adds a new mentorship request to the database
+    events:
+      - http: 
+          path: create_mentorship_request
+          method: post
           cors: true
 
 plugins:
