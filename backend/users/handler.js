@@ -63,7 +63,7 @@ module.exports.add_user = withSentry(async user => {
   body.id = id;
 
   //checks if any field is missing to create a  user
-  if (!body["email"] || !body["full_name"] || !body["access_level"]) {
+  if (!body["email"] || !body["full_name"] || !body["access_level"] || !body["group"]) {
     return {
       statusCode: 500,
       body: "add_user is missing a field"

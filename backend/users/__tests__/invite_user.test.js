@@ -14,7 +14,8 @@ const bootstrap_user = {
   body: JSON.stringify({
     access_level: "Test",
     email: "tech@gotechnica.org",
-    full_name: "Serverless Test"
+    full_name: "Serverless Test",
+    group: "hacker"
     })
 };
 
