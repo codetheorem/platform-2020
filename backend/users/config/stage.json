@@ -1,8 +1,8 @@
 {
     "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
-    "BANNED_USERS_TABLE": "platform-test-banned-users",
-    "USERS_TABLE": "platform-test-users",
-    "INVITES_TABLE": "platform-test-invites",
+    "BANNED_USERS_TABLE": "platform-stage-banned-users",
+    "USERS_TABLE": "platform-stage-users",
+    "INVITES_TABLE": "platform-stage-invites",
     "INVITE_TEMPLATE_ID": "d-ad25e68e009e405eb2b71364a8e25722",
     "BASE_INVITE_URL": "http://platform-staging.gotechnica.org/authenticate"
 }

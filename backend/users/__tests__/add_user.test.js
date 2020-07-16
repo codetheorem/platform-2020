@@ -64,7 +64,7 @@ describe('add_user', () => {
             expect(response).toBeDefined();
             expect(response).toHaveProperty('statusCode', 200);
             const getRequest = {
-                TableName: "platform-users-test",
+                TableName: process.env.USERS_TABLE,
                 Key: { id: { S: JSON.parse(response.body).id.S } },
             };
             const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });

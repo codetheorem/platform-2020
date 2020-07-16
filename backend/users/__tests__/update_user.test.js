@@ -70,7 +70,7 @@ describe('update_user', () => {
 
                 expect(res).toHaveProperty('statusCode', 200);
                 const getRequest = {
-                    TableName: "platform-users-test",
+                    TableName: process.env.USERS_TABLE,
                     Key: { id: { S: id } },
                 };
                 const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
