@@ -123,12 +123,16 @@ module.exports.invite_user = withSentry(async event => {
 
   const user = userResp.Item;
 
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
+  const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.SENDGRID_SECRET_NAME}).promise();
+  const decodedSendgridKey = JSON.parse(SecretsManagerKey.SecretString).SENDGRID_API_KEY;
+
   // TODO: actual invite link logic ----------------------------------//
   invite_link = process.env.BASE_INVITE_URL + "?token=" + user.id.S;  //
   // --------------------------------- TODO: actual invite link logic //
 
   // Send the user an email, using our template
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  sgMail.setApiKey(decodedSendgridKey);
 
   const msg = {
     from: { email:"tech@gotechnica.org" },
@@ -158,6 +162,7 @@ module.exports.invite_user = withSentry(async event => {
   const result = await ddb.putItem({
     TableName: process.env.INVITES_TABLE,
     Item: {
+      id: {S: UUID.v4()},
       user_id: {S: user.id.S},
       email: {S: user.email.S},
       invite_link: {S: invite_link},

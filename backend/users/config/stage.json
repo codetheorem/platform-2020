@@ -4,5 +4,6 @@
     "USERS_TABLE": "platform-stage-users",
     "INVITES_TABLE": "platform-stage-invites",
     "INVITE_TEMPLATE_ID": "d-ad25e68e009e405eb2b71364a8e25722",
-    "BASE_INVITE_URL": "http://platform-staging.gotechnica.org/authenticate"
+    "BASE_INVITE_URL": "http://platform-staging.gotechnica.org/authenticate",
+    "SENDGRID_SECRET_NAME": "SENDGRID_API_KEY"
 }

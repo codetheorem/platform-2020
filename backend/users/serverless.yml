@@ -12,6 +12,7 @@ provider:
     INVITES_TABLE: ${file(./config/${self:provider.stage}.json):INVITES_TABLE}
     INVITE_TEMPLATE_ID: ${file(./config/${self:provider.stage}.json):INVITE_TEMPLATE_ID}
     BASE_INVITE_URL: ${file(./config/${self:provider.stage}.json):BASE_INVITE_URL}
+    SENDGRID_SECRET_NAME: ${file(./config/${self:provider.stage}.json):SENDGRID_SECRET_NAME}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
