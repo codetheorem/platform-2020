@@ -32,5 +32,8 @@ jobs:
       uses: rtCamp/action-slack-notify@master
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_MESSAGE: Completed new frontend deploy to staging.
+        MSG_MINIMAL: true
+        SLACK_TITLE: Event
 
 
