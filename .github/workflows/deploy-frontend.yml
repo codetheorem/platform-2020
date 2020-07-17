@@ -1,0 +1,24 @@
+name: Deploy frontend build 
+
+# Controls when the action will run (manually, and only from master)
+on:
+  repository_dispatch:
+    branches:
+      - master
+
+jobs:
+  frontend-deploy-staging:
+    name: Deploy frontend build to staging 
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+
+    - name: switch to frontend directory and deploy
+      run: |
+        cd frontend
+        npm i && npm run deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+
