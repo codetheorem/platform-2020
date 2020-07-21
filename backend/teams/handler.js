@@ -16,7 +16,28 @@ post_request_body_to_table = async (event, table_name) => {
 
   const id = UUID.v4();
   body.id = id;
-
+  
+  // return 500 on team with no/missing params
+  if(table_name == process.env.TEAMS_TABLE && !body.team_name){
+    return{
+      statusCode: 500,
+      body: "Missing team_name"
+    };
+  }
+  else if((table_name == process.env.INVITES_TABLE || table_name == process.env.MEMBERSHIPS_TABLE) &&
+          (!body.user_id || !body.team_id)){
+    return{
+      statusCode: 500,
+      body: "Missing required ids"
+    };
+  }
+  else if(Object.keys(body).length == 1){
+    return{
+      statusCode: 500,
+      body: "No params"
+    };
+  }
+  
   // dynamically add post request body params to document
   Object.keys(body).forEach(k => {
     params.Item[k] = {S: body[k]}
@@ -28,7 +49,7 @@ post_request_body_to_table = async (event, table_name) => {
   // return 500 on error
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item),
+    body: JSON.stringify(params.Item),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
@@ -52,7 +73,6 @@ module.exports.leave_team = withSentry(async event => {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-  // Call DynamoDB to delete the item
   const delete_params = {
     TableName: process.env.MEMBERSHIPS_TABLE,
     Key: {
@@ -60,15 +80,22 @@ module.exports.leave_team = withSentry(async event => {
     },
   };
   
-  const status_result = await ddb.deleteItem(delete_params).promise();
-
-  // return 500 on error
-  return {
-    statusCode: 200,
-    body: JSON.stringify(status_result),
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
+  try{
+    // Call DynamoDB to delete the item from the table
+    const status_result = await ddb.deleteItem(delete_params).promise();
+    return {
+      statusCode: 200,
+      body: JSON.stringify(status_result),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      }
+    };
+  }
+  catch(error){
+    return{
+      statusCode: 500,
+      body: "Error, id may not be present"
     }
-  };
+  }
 });

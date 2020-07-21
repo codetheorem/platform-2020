@@ -41,13 +41,13 @@
 <script>
 import Button from '@/components/Button.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
+
 export default {
   name: 'Help Desk',
   mixins: [generalMixin],
   components: {
-    Button
-  }
+    Button,
+  },
 };
 </script>
 

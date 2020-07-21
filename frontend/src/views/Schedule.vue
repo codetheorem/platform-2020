@@ -21,27 +21,28 @@
 <script>
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
+
 export default {
   name: 'Schedule',
   props: {
     msg: String,
   },
   mixins: [generalMixin],
-  data(){
+  data() {
     return {
-      schedule: []
-    }
+      schedule: [],
+    };
   },
-  async mounted(){
-    console.log(process.env.NODE_ENV)
-    this.schedule = await this.getData(Config.dev.SCHEDULE_BASE_ENDPOINT, "dev", "schedule");
+  async mounted() {
+    console.log(process.env.NODE_ENV);
+    this.schedule = await this.getData(Config.dev.SCHEDULE_BASE_ENDPOINT, 'dev', 'schedule');
     console.log(this.schedule);
   },
   methods: {
     getFormattedTime(rawDateTime) {
       return (new Date(rawDateTime)).toTimeString();
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -55,7 +56,6 @@ export default {
 #schedule-table {
   margin: 0 auto;
 }
-
 
 td, th {
   border: 1px solid turquoise;

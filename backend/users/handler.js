@@ -1,9 +1,7 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
 const withSentry = require("serverless-sentry-lib");
-
 AWS.config.update({region:'us-east-1'});
-
 
 // delete a single user from the database
 module.exports.delete_user = withSentry(async event => {
@@ -65,7 +63,7 @@ module.exports.add_user = withSentry(async user => {
   body.id = id;
 
   //checks if any field is missing to create a  user
-  if (!body["email"] || !body["full_name"] || !body["access_level"]) {
+  if (!body["email"] || !body["full_name"] || !body["access_level"] || !body["group"]) {
     return {
       statusCode: 500,
       body: "add_user is missing a field"
@@ -125,12 +123,16 @@ module.exports.invite_user = withSentry(async event => {
 
   const user = userResp.Item;
 
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
+  const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.SENDGRID_SECRET_NAME}).promise();
+  const decodedSendgridKey = JSON.parse(SecretsManagerKey.SecretString).SENDGRID_API_KEY;
+
   // TODO: actual invite link logic ----------------------------------//
   invite_link = process.env.BASE_INVITE_URL + "?token=" + user.id.S;  //
   // --------------------------------- TODO: actual invite link logic //
 
   // Send the user an email, using our template
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  sgMail.setApiKey(decodedSendgridKey);
 
   const msg = {
     from: { email:"tech@gotechnica.org" },
@@ -160,6 +162,7 @@ module.exports.invite_user = withSentry(async event => {
   const result = await ddb.putItem({
     TableName: process.env.INVITES_TABLE,
     Item: {
+      id: {S: UUID.v4()},
       user_id: {S: user.id.S},
       email: {S: user.email.S},
       invite_link: {S: invite_link},
@@ -241,6 +244,62 @@ module.exports.update_user = withSentry(async user => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
+    }
+  };
+});
+
+// Adds a user to banned users table
+module.exports.ban_user = withSentry(async event =>{
+  const body = JSON.parse(event.body);
+
+  if(!body.id){
+    return{
+      statusCode: 500,
+      body: "ban_user expects keys \"id\""
+    };
+  }
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const params = {
+    TableName: process.env.BANNED_USERS_TABLE,
+    Item: {}
+  };
+  
+  // Dynamically add post request body params to document
+  Object.keys(body).forEach(k => {
+    params.Item[k] = {S: body[k]}
+  });
+
+  // Call DynamoDB to add the item to the table
+  const result = await ddb.putItem(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
+    }
+  };
+});
+
+// Retrieves all users from banned users table
+module.exports.get_banned_users = withSentry(async event => {
+  const params = {
+    TableName: process.env.BANNED_USERS_TABLE
+  };
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Items),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
     }
   };
 });

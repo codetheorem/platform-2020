@@ -1,7 +1,7 @@
 {
     "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
-    "SCHEDULE_TABLE": "platform-schedule-dev",
-    "USER_EVENTS_TABLE": "platform-user-events-dev",
-    "SHORTLINKS_TABLE": "platform-shortlinks-dev",
-    "SHORTLINK_CLICKS_TABLE": "platform-shortlink-clicks-dev"
+    "SCHEDULE_TABLE": "platform-dev-schedule",
+    "USER_EVENTS_TABLE": "platform-dev-user-events",
+    "SHORTLINKS_TABLE": "platform-dev-shortlinks",
+    "SHORTLINK_CLICKS_TABLE": "platform-dev-shortlink-clicks"
 }

@@ -16,29 +16,41 @@ const insert_user = {
         email: "sample@gmail.com",
         full_name: "OwenLuo",
         access_level: "Hack",
+        group: "hacker"
     })
 };
 
 const no_email = {
     body: JSON.stringify({
         full_name: "where email",
-        access_level: "fail"
+        access_level: "fail",
+        group: "hacker"
     })
 };
 
 const no_full_name = {
     body: JSON.stringify({
         email: "failure@gmail.com",
-        access_level: "fail"
+        access_level: "fail",
+        group: "hacker"
     })
 };
 
 const no_access_level = {
     body: JSON.stringify({
         email: "failure@gmail.com",
-        full_name: "failure person"
+        full_name: "failure person",
+        group: "hacker"
     })
 };
+
+const no_group = {
+    body: JSON.stringify({
+        email: "sample@gmail.com",
+        full_name: "OopWheresMyGroup",
+        access_level: "hecker",
+    })
+}
 
 
 describe('add_user', () => {
@@ -52,7 +64,7 @@ describe('add_user', () => {
             expect(response).toBeDefined();
             expect(response).toHaveProperty('statusCode', 200);
             const getRequest = {
-                TableName: "platform-users-test",
+                TableName: process.env.USERS_TABLE,
                 Key: { id: { S: JSON.parse(response.body).id.S } },
             };
             const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
@@ -80,6 +92,14 @@ describe('add_user', () => {
     it('Correctly rejects a response without an access level', () => {
 
         return adder.run(no_access_level).then(async (response) => {
+            expect(response).toBeDefined();
+            expect(response).toHaveProperty('statusCode', 500);
+        });
+    });
+
+    it('Correctly rejects a response without a group', () => {
+
+        return adder.run(no_group).then(async (response) => {
             expect(response).toBeDefined();
             expect(response).toHaveProperty('statusCode', 500);
         });

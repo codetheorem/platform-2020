@@ -17,6 +17,7 @@ const insert_user = {
         email: "update@gmail.com",
         full_name: "Luo Owen",
         access_level: "Hack",
+        group: "hacker"
     })
 };
 
@@ -31,6 +32,7 @@ const final = {
     email: { S: "update@gmail.com" },
     full_name: { S: "Owen Luo" },
     access_level: { S: "Hack" },
+    group: { S: "hacker" },
     school: { S: "University of Maryland, College Park" },
     age: { S: "18" },
     devpost: { S: "devpost.com/hugoburbelo" }
@@ -41,6 +43,7 @@ const no_id = {
         email: "sample@gmail.com",
         full_name: "OwenLuo",
         access_level: "Hack",
+        group: "hacker"
     })
 };
 
@@ -67,7 +70,7 @@ describe('update_user', () => {
 
                 expect(res).toHaveProperty('statusCode', 200);
                 const getRequest = {
-                    TableName: "platform-users-test",
+                    TableName: process.env.USERS_TABLE,
                     Key: { id: { S: id } },
                 };
                 const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });

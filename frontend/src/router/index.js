@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
-import Config from "../config/general";
+import Config from '../config/general';
 
 Vue.use(VueRouter);
 
@@ -10,7 +10,13 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    displayInNavBar: true
+    displayInNavBar: true,
+  },
+  {
+    path: '/sponsors',
+    name: 'Sponsors',
+    component: () => import('../views/Sponsors.vue'),
+    displayInNavBar: true,
   },
   {
     path: '/sponsors',
@@ -22,7 +28,10 @@ const routes = [
     path: '/sponsorship-fair',
     name: 'Sponsorship Fair',
     component: () => import('../views/SponsorshipFair.vue'),
-    displayInNavBar: true
+    displayInNavBar: true,
+    beforeEnter() {
+      window.open(Config.dev.SPONSORSHIP_LINK, '_blank');
+    },
   },
   {
     path: '/live-stream',
@@ -30,14 +39,14 @@ const routes = [
     component: () => import('../views/LiveStream.vue'),
     displayInNavBar: true,
     beforeEnter() {
-      window.open(Config.dev.LIVESTREAM_LINK, "_blank");
-    }
+      window.open(Config.dev.LIVESTREAM_LINK, '_blank');
+    },
   },
   {
     path: '/schedule',
     name: 'Schedule',
     component: () => import('../views/Schedule.vue'),
-    displayInNavBar: true
+    displayInNavBar: true,
   },
   {
     path: '/profile',
@@ -48,48 +57,48 @@ const routes = [
       {
         path: '/logout',
         name: 'Sign Out',
-      }
-    ]
+      },
+    ],
   },
   {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue'),
-    displayInNavBar: true
+    displayInNavBar: true,
   },
   {
     path: '/register',
     name: 'Register',
     component: () => import('../views/Register.vue'),
-    displayInNavBar: true
+    displayInNavBar: true,
   },
   {
     path: '/help',
     name: 'Help',
     component: () => import('../views/HelpDesk.vue'),
-    displayInNavBar: true
+    displayInNavBar: true,
   },
   {
     path: '/404',
     name: '404',
     component: () => import('../views/404.vue'),
-    displayInNavBar: false
+    displayInNavBar: false,
   },
   {
     path: '/authenticate',
     component: () => import('../views/Authenticate.vue'),
-    displayInNavBar: false
+    displayInNavBar: false,
   },
   {
     path: '/logout',
     component: () => import('../views/Logout.vue'),
-    displayInNavBar: false
+    displayInNavBar: false,
   },
   {
     path: '/:shortlink',
     component: () => import('../views/ShortLink.vue'),
-    displayInNavBar: false
-  }
+    displayInNavBar: false,
+  },
 ];
 
 const router = new VueRouter({

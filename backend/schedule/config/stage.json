@@ -1,0 +1,7 @@
+{
+    "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
+    "SCHEDULE_TABLE": "stage-platform-schedule",
+    "USER_EVENTS_TABLE": "stage-platform-user-events",
+    "SHORTLINKS_TABLE": "stage-platform-shortlinks",
+    "SHORTLINK_CLICKS_TABLE": "stage-platform-shortlink-clicks"
+}

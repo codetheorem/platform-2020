@@ -17,13 +17,12 @@
 
 <script>
 import Button from '@/components/Button.vue';
-import Config from '../config/general';
 import GeneralMixin from '../mixins/general';
 
 export default {
   name: 'Logout',
   components: {
-    Button
+    Button,
   },
   mixins: [GeneralMixin],
   data() {
@@ -31,21 +30,20 @@ export default {
       loginButtonClicked: false,
       userEmail: '',
       emailNotFound: false,
-      emailInvalid: false
-    }
+      emailInvalid: false,
+    };
   },
   methods: {
-      logout() {
-          this.removeUserIdCookie();
-          this.$router.push('Login'); 
-      },
-      goBack() {
-          this.$router.go(-1)
-      }
-  }
+    logout() {
+      this.removeUserIdCookie();
+      this.$router.push('Login');
+    },
+    goBack() {
+      this.$router.go(-1);
+    },
+  },
 };
 </script>
-
 
 <style>
   .page-container {
