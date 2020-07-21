@@ -39,6 +39,30 @@ functions:
           path: get_sponsorship_info
           method: get
           cors: true
+  get_active_mentorship_requests:
+    handler: handler.get_active_mentorship_requests
+    description: gets active mentorship requests from the database
+    events:
+      - http: 
+          path: get_active_mentorship_requests
+          method: get
+          cors: true
+  update_mentorship_request:
+    handler: handler.update_mentorship_request
+    description: update a mentorship request
+    events:
+      - http: 
+          path: update_mentorship_request
+          method: post
+          cors: true
+  get_user_mentorship_requests:
+    handler: handler.get_user_mentorship_requests
+    description: gets mentorship requests created by a specified user
+    events:
+      - http: 
+          path: get_user_mentorship_requests
+          method: get
+          cors: true
   create_mentorship_request:
     handler: handler.create_mentorship_request
     description: adds a new mentorship request to the database
