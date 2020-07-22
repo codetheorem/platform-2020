@@ -51,11 +51,3 @@ jobs:
     - name: Deploy schedule Lambda function in stage
       run: sls deploy -s stage
 
-    # Notify slack that a run has been triggered
-    - name: Slack Notification
-      uses: rtCamp/action-slack-notify@master
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_MESSAGE: View this run at https://github.com/gotechnica/platform-2020/runs/${{ github.run_id }}
-        MSG_MINIMAL: true
-        SLACK_TITLE: ${{ github.action }}
