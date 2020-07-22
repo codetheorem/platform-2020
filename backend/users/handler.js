@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const UUID = require('uuid');
 const withSentry = require("serverless-sentry-lib");
 AWS.config.update({region:'us-east-1'});
-
+ 
 // delete a single user from the database
 module.exports.delete_user = withSentry(async event => {
   const body = JSON.parse(event.body);
