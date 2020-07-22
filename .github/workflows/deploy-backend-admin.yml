@@ -32,6 +32,10 @@ jobs:
     # Install serverless
     - name: Install Serverless Framework
       run: npm install -g serverless
+    
+    # Install all NPM packages
+    - name: Install NPM dependencies
+      run: npm ci
 
     # Add AWS Auth to serverless
     - name: Serverless AWS authentication
@@ -40,11 +44,7 @@ jobs:
         --provider aws \
         --key ${{ secrets.AWS_ACCESS_KEY_ID }} \
         --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-    # Install all NPM packages
-    - name: Install NPM dependencies
-      run: npm ci
-
+      
     # Finally, deploy the service to AWS
     - name: Deploy admin Lambda function in stage
       run: sls deploy -s stage
