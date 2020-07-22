@@ -1,0 +1,65 @@
+name: Deploy users backend service
+
+# Controls when the action will run. Triggers the workflow on a push event in
+# the master branch, when there's a chage in backend/users
+on:
+  repository_dispatch:
+    types: [deploy-backend, deploy-backend-users]
+    branches:
+      - master
+
+  push:
+    branches:
+      - master
+    paths:
+      - backend/admin
+
+# Specify working directory to use for the whole job
+defaults:
+  run:
+    working-directory: backend/users
+
+# Job instructions
+jobs:
+  deploy:
+    name: Deploy users service
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+    # Check out the repository
+    - uses: actions/checkout@master
+
+    # Install node
+    - uses: actions/setup-node@v1
+
+    # Install serverless
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+
+    # Add AWS Auth to serverless
+    - name: Serverless AWS authentication
+      run: |
+        sls config credentials \
+        --provider aws \
+        --key ${{ secrets.AWS_ACCESS_KEY_ID }} \
+        --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    # Install all NPM packages
+    - name: Install NPM dependencies
+      run: npm ci
+
+    # Finally, deploy the service to AWS
+    - name: Deploy users Lambda function in stage
+      run: sls deploy -s stage
+
+    # Notify slack that a run has been triggered
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@master
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_MESSAGE: View this run at https://github.com/gotechnica/platform-2020/runs/${{ github.run_id }}
+        MSG_MINIMAL: true
+        SLACK_TITLE: ${{ github.action }}
