@@ -4,7 +4,7 @@ const withSentry = require("serverless-sentry-lib");
 
 AWS.config.update({region:'us-east-1'});
 
-
+ 
 module.exports.hello = withSentry(async event => {
   return {
     statusCode: 200,
