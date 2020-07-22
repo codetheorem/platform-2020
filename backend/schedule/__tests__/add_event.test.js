@@ -15,6 +15,7 @@ const sample_event = {
   description: "A very cool workshop for Technica!",
   start_time: "2020-6-5T15:00:00Z",
   end_time: "2020-6-5T18:00:00Z",
+  zoom_link: "https://zoom.us/test",
 }
 
 describe('add_event', () => {
