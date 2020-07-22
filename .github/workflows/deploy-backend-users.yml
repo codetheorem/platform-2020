@@ -11,8 +11,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - backend/users
 
 # Specify working directory to use for the whole job
 defaults:
