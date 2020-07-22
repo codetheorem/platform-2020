@@ -5,6 +5,9 @@ name: Deploy admin backend service
 on:
   repository_dispatch:
     types: deploy-all-backend
+  push:
+    branches:
+      - master
 
 # Job simply sends a dispatch to the repository, triggering all the other
 # deploy-backend-{service}.yml jobs

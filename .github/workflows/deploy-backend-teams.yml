@@ -8,12 +8,6 @@ on:
     branches:
       - master
 
-  push:
-    branches:
-      - master
-    paths:
-      - backend/teams
-
 # Specify working directory to use for the whole job
 defaults:
   run:
