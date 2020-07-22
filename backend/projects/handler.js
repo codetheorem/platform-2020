@@ -3,7 +3,7 @@ const UUID = require('uuid');
 const withSentry = require("serverless-sentry-lib");
 
 AWS.config.update({ region: 'us-east-1' });
-
+ 
 // Retrieves all sponsors from the database
 module.exports.get_sponsorship_info = withSentry(async event => {
   const params = {
