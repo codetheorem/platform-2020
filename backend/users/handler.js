@@ -147,7 +147,7 @@ module.exports.invite_user = withSentry(async event => {
     }],
     template_id: process.env.INVITE_TEMPLATE_ID
   };
-
+ 
   sgMail.send(msg);
 
   // update ddb table:"platform-users" so user's `registration_status` is "email_invite_sent"

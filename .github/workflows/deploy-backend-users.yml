@@ -35,7 +35,7 @@ jobs:
 
       # Install all NPM packages
     - name: Install NPM dependencies
-      run: npm ci
+      run: npm i
 
     # Add AWS Auth to serverless
     - name: Serverless AWS authentication
