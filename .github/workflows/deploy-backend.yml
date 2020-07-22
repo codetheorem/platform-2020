@@ -10,7 +10,7 @@ on:
 # deploy-backend-{service}.yml jobs
 jobs:
   deploy:
-    name: Deploy admin service
+    name: Deploy all backend services
     runs-on: ubuntu-latest
 
     steps:

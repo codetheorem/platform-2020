@@ -12,7 +12,7 @@ on:
     branches:
       - master
     paths:
-      - backend/admin
+      - backend/projects
 
 # Specify working directory to use for the whole job
 defaults:
