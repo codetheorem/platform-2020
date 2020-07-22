@@ -9,8 +9,6 @@ on:
   push:
       branches:
         - master
-      paths:
-        - frontend
 
 jobs:
   frontend-deploy-staging:
