@@ -8,6 +8,13 @@ module.exports.delete_user = withSentry(async event => {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 
+  if(!body['id']){
+    return{
+      statusCode: 500,
+      body: "delete_user is missing id"
+    }
+  }
+
   const delete_params = {
     TableName: process.env.USERS_TABLE,
     Key: {
@@ -30,7 +37,7 @@ module.exports.delete_user = withSentry(async event => {
 
 // Retrieves a single user from the database
 module.exports.get_user = withSentry(async event => {
-  const id = event.queryStringParameters.id;
+  const id = String(event.queryStringParameters.id);
 
   const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 
@@ -38,7 +45,7 @@ module.exports.get_user = withSentry(async event => {
     TableName: process.env.USERS_TABLE,
     Key: {
       id: {
-        S: id.toString()
+        S: id
       }
     }
   }).promise();

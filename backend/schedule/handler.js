@@ -27,19 +27,17 @@ module.exports.get_schedule = withSentry(async event => {
 
 // Retrieves a single schedule event from the database
 module.exports.get_event = withSentry(async event => {
-  const id = event.queryStringParameters.id;
+  const id = String(event.queryStringParameters.id);
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
   const item = await ddb.getItem({
     TableName: process.env.SCHEDULE_TABLE,
     Key: {
-      id: {
-        S: id.toString()
-      }
+      id: { S: id }
     }
   }).promise();
-
+  
   return {
     statusCode: 200,
     body: JSON.stringify(item),
@@ -75,7 +73,7 @@ module.exports.add_event = withSentry(async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(result),
+    body: {id: id},
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
@@ -98,7 +96,7 @@ module.exports.update_event = withSentry(async event => {
   }
     
   id = body['id'];
-
+  
   // Initialize UpdateExpression for ddb.updateItem()
   let update = 'SET';
 
@@ -139,7 +137,6 @@ module.exports.update_event = withSentry(async event => {
     
   // Call DynamoDB to update the item to the table
   const result = await ddb.updateItem(params).promise();
-
   return {
     statusCode: 200,
     body: JSON.stringify(result),
@@ -174,7 +171,12 @@ module.exports.delete_event_from_schedule = withSentry(async event => {
   const result = await ddb.deleteItem(params).promise();
 
   return {
-    statusCode: 200
+    statusCode: 200,
+    body: JSON.stringify({id: body.id}),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 });
 
@@ -264,6 +266,12 @@ make_shortlink = (length) => {
 module.exports.add_shortlink = withSentry(async event => {
   const body = JSON.parse(event.body);
 
+  if(!body.link || !body.target){
+    return {
+      statusCode: 500,
+      body: "Missing link or target"
+    }
+  }
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
   const id = UUID.v4();
   let shortlink;
@@ -293,7 +301,7 @@ module.exports.add_shortlink = withSentry(async event => {
   };
 
   body.id = id;
-  body.shortlink = shortlink;
+  body.shortlinks = shortlink;
 
   // dynamically add post request body params to document
   Object.keys(body).forEach(k => {
@@ -302,24 +310,27 @@ module.exports.add_shortlink = withSentry(async event => {
 
   // Call DynamoDB to add the item to the table
   const result = await ddb.putItem(params).promise();
-
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item)
+    body: JSON.stringify(result),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 });
 
 // Retrieves a single shortlink from the database
 module.exports.get_shortlink = withSentry(async event => {
-  const id = event.queryStringParameters.id;
+  const id = String(event.queryStringParameters.shortlinks);
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
   const item = await ddb.getItem({
     TableName: process.env.SHORTLINKS_TABLE,
     Key: {
-      shortlink: {
-        S: id.toString()
+      shortlinks: {
+        S: id
       }
     }
   }).promise();
@@ -337,7 +348,7 @@ module.exports.get_shortlink = withSentry(async event => {
 // Adds a new shortlink click event to the database 
 module.exports.add_shortlink_click = withSentry(async event => {
   const body = JSON.parse(event.body);
-
+  
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
   const id = UUID.v4();
@@ -351,7 +362,7 @@ module.exports.add_shortlink_click = withSentry(async event => {
       timestamp: {S: new Date().toLocaleString()}
     }
   };
-
+  
   // Call DynamoDB to add the item to the table
   const result = await ddb.putItem(params).promise();
 

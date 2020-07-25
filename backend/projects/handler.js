@@ -176,17 +176,17 @@ module.exports.update_mentorship_request = withSentry(async event => {
 // Retrieves mentorship requests by a user from the database
 module.exports.get_user_mentorship_requests = withSentry(async event => {
 
-  let user_id = event.queryStringParameters.user_id;
+  const user_id = event.queryStringParameters.user_id;
 
   const params = {
     TableName: process.env.MENTORSHIP_REQUESTS_TABLE,
-    KeyConditionExpression: `user_id = ${user_id}`,
+    FilterExpression: `user_id = ${user_id}`,
   };
-
+  
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const result = await ddb.scan(params).promise();
-
+  
   return {
     statusCode: 200,
     body: JSON.stringify(result.Items),

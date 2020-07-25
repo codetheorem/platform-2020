@@ -11,29 +11,13 @@ const adder = lambdaWrapper.wrap(mod, { handler: 'add_event' });
 const wrapped = lambdaWrapper.wrap(mod, { handler: 'get_event' });
 const AWS = require('aws-sdk');
 
-let sample_event = {
-  Item: {
-    category: { S: "main"},
-    start_time: { S: "2020-6-5T15:00:00Z"},
-    end_time: { S: "2020-6-5T18:00:00Z"},
-    description: { S: "A very cool workshop for Technica!"},
-    id: { S: "1"},
-  }
-}
 
 const insert_event = {
   body: JSON.stringify({
-    id: "1",
     category: "main",
-    description: "A very cool workshop for Technica!",
-    start_time: "2020-6-5T15:00:00Z",
-    end_time: "2020-6-5T18:00:00Z",
+    description: "Get this event"
   })
 }
-
-const params = {
-  TableName: process.env.SCHEDULE_TABLE,
-};
 
 describe('get_event', () => {
     beforeAll((done) => {
@@ -41,22 +25,13 @@ describe('get_event', () => {
   });
 
   it('Correctly retrieves the event from the database', async () => {
-
-    const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-      
-    let response2 = await adder.run(insert_event);
-
-    const result = await ddb.scan(params).promise();
-      
+    let added = await adder.run(insert_event);
     const event = {
-      queryStringParameters: {id: result.Items[0].id.S}
-    };
-
-    sample_event.Item.id = result.Items[0].id;
-      
+      queryStringParameters: JSON.stringify({id: added.body.id})
+    }
     return wrapped.run(event).then((response) => {
       expect(response).toBeDefined();
-      expect(response).toMatchObject({body: JSON.stringify(sample_event), statusCode: 200})
+      expect(response).toMatchObject({body: {}, statusCode: 200});
     });
   });
 });

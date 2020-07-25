@@ -63,7 +63,6 @@ describe('get_active_mentorship_requests', () => {
   });
 
   it('gets a mentorship request by user, then checks if its correct', async () => {
-
     return await getter_user.run(user_request).then(async (response) => {
         const res = JSON.parse(response.body);
         expect(response).toBeDefined();
