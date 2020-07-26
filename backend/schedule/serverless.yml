@@ -10,6 +10,9 @@ provider:
     USER_EVENTS_TABLE: ${file(./config/${self:provider.stage}.json):USER_EVENTS_TABLE}
     SHORTLINKS_TABLE: ${file(./config/${self:provider.stage}.json):SHORTLINKS_TABLE}
     SHORTLINK_CLICKS_TABLE: ${file(./config/${self:provider.stage}.json):SHORTLINK_CLICKS_TABLE}
+    ZOOM_API_EMAIL_ACCOUNT: ${file(./config/${self:provider.stage}.json):ZOOM_API_EMAIL_ACCOUNT}
+    ZOOM_LINK_TABLE: ${file(./config/${self:provider.stage}.json):ZOOM_LINK_TABLE}
+    ZOOM_API_KEY_SECRET_NAME: ${file(./config/${self:provider.stage}.json):ZOOM_API_KEY_SECRET_NAME}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -109,6 +112,14 @@ functions:
       - http:
           path: get_events_from_user_list
           method: get
+          cors: true
+  create_zoom_meeting:
+    handler: handler.create_zoom_meeting
+    description: Gets a zoom meeting and adds to database
+    events:
+      - http:
+          path: create_zoom_meeting
+          method: post
           cors: true
 
 plugins:

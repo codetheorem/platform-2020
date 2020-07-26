@@ -3,5 +3,8 @@
     "SCHEDULE_TABLE": "platform-dev-schedule",
     "USER_EVENTS_TABLE": "platform-dev-user-events",
     "SHORTLINKS_TABLE": "platform-dev-shortlinks",
-    "SHORTLINK_CLICKS_TABLE": "platform-dev-shortlink-clicks"
+    "SHORTLINK_CLICKS_TABLE": "platform-dev-shortlink-clicks",
+    "ZOOM_API_EMAIL_ACCOUNT": "hugoburbelo@gmail.com",
+    "ZOOM_LINK_TABLE": "platform-dev-meetings",
+    "ZOOM_API_KEY_SECRET_NAME": "ZOOM_TESTING_API_KEY"
 }

@@ -20,6 +20,9 @@
   "dependencies": {
     "@sentry/node": "^5.19.1",
     "aws-sdk": "^2.691.0",
+    "axios": "^0.19.2",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
     "serverless-sentry-lib": "^2.0.1",
     "uuid": "^8.1.0"
   },

@@ -1,6 +1,8 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
+const Axios = require('axios');
 const withSentry = require("serverless-sentry-lib");
+const rp = require("request-promise")
 
 AWS.config.update({region:'us-east-1'});
 
@@ -420,3 +422,85 @@ module.exports.get_events_from_user_list = withSentry(async event => {
     }
   };
 });
+
+module.exports.create_zoom_meeting = withSentry(async event => {
+  
+  const body = JSON.parse(event.body);
+  
+  // Check for validity
+  if (!body.event_name) {
+    return {
+      statusCode: 500,
+      body: "create_zoom_meeting expects 1 parameter: event_name"
+    }
+  }
+  
+  const event_name = body.event_name;
+
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
+  const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.ZOOM_API_KEY_SECRET_NAME}).promise();
+  const decodedZoomAPIKey = JSON.parse(SecretsManagerKey.SecretString).ZOOM_TESTING_API_KEY;
+
+  //Make Zoom API call
+  const zoom_api_email = process.env.ZOOM_API_EMAIL_ACCOUNT
+  const zoom_api_token = decodedZoomAPIKey
+  const zoom_link_table = process.env.ZOOM_LINK_TABLE
+  
+  var options = {
+    method: 'POST',
+    uri: `https://api.zoom.us/v2/users/${zoom_api_email}/meetings`,
+    qs: {
+        userId: zoom_api_email
+    },
+    auth: {
+      //Provide your token here
+        'bearer': zoom_api_token
+    },
+    headers: {
+        'User-Agent': 'Zoom-Jwt-Request',
+        'content-type': 'application/json'
+    },
+    
+    body: {
+        "topic": "Instant meeting",
+        "type": 1
+    },
+    json: true // Automatically parses the JSON string in the response
+  };
+
+  let result = await rp.post(options);
+  
+  if (result.status > 201) {
+    return {
+      statusCode: 500,
+      body: "Failed"
+    }
+  }
+  
+  let parsed_result = (result)            
+
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const id = UUID.v4();
+
+  const params = {
+    TableName: zoom_link_table,
+    Item: {
+      id: {S: id},
+      meeting_link: {S: parsed_result.join_url},
+      event_name: {S: event_name},
+    }
+  };
+  
+  const database_return = await ddb.putItem(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({zoom_link: parsed_result.join_url}),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
+    }
+  };
+});
+        
