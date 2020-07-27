@@ -1,0 +1,221 @@
+name: Test all backend services on a pull request
+
+# Controls when the action will run. Triggers the workflow whenever a pull
+# request has been made, and a review has been requested
+on:
+  pull_request:
+    types: [review_requested, synchronize]
+
+# Job instructions
+jobs:
+
+# TEST ADMIN SERVICE -------------------------------------------------------
+  test-admin:
+    name: Test admin service
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
+    defaults:
+      run:
+        working-directory: backend/admin
+    
+    steps:
+    # Check out the repository
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    # Install node
+    - uses: actions/setup-node@v1
+
+    # Install serverless
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+    
+    # Install all NPM packages
+    - name: Install NPM dependencies
+      run: npm ci
+
+    # Add AWS Auth to serverless
+    - name: Serverless AWS authentication
+      run: |
+        sls config credentials \
+        --provider aws \
+        --key ${{ secrets.AWS_ACCESS_KEY_ID }} \
+        --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
+    # Finally, test the service
+    - name: Test the admin lambda function, using the testing environment
+      run: sls --passWithNoTests invoke -s testing test # No tests for admin yet
+
+# TEST PROJECTS SERVICE -------------------------------------------------------
+  test-projects:
+    name: Test projects service
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
+    defaults:
+      run:
+        working-directory: backend/projects
+    
+    steps:
+    # Check out the repository
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    # Install node
+    - uses: actions/setup-node@v1
+
+    # Install serverless
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+    
+    # Install all NPM packages
+    - name: Install NPM dependencies
+      run: npm ci
+
+    # Add AWS Auth to serverless
+    - name: Serverless AWS authentication
+      run: |
+        sls config credentials \
+        --provider aws \
+        --key ${{ secrets.AWS_ACCESS_KEY_ID }} \
+        --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
+    # Finally, test the service
+    - name: Test the projects lambda function, using the testing environment
+      run: sls invoke -s testing test
+
+# TEST SCHEDULE SERVICE -------------------------------------------------------
+  test-schedule:
+    name: Test schedule service
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
+    defaults:
+      run:
+        working-directory: backend/schedule
+    
+    steps:
+    # Check out the repository
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    # Install node
+    - uses: actions/setup-node@v1
+
+    # Install serverless
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+    
+    # Install all NPM packages
+    - name: Install NPM dependencies
+      run: npm ci
+
+    # Add AWS Auth to serverless
+    - name: Serverless AWS authentication
+      run: |
+        sls config credentials \
+        --provider aws \
+        --key ${{ secrets.AWS_ACCESS_KEY_ID }} \
+        --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
+    # Finally, test the service
+    - name: Test the schedule lambda function, using the testing environment
+      run: sls invoke -s testing test
+
+# TEST TEAMS SERVICE -------------------------------------------------------
+  test-teams:
+    name: Test teams service
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
+    defaults:
+      run:
+        working-directory: backend/teams
+    
+    steps:
+    # Check out the repository
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    # Install node
+    - uses: actions/setup-node@v1
+
+    # Install serverless
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+    
+    # Install all NPM packages
+    - name: Install NPM dependencies
+      run: npm ci
+
+    # Add AWS Auth to serverless
+    - name: Serverless AWS authentication
+      run: |
+        sls config credentials \
+        --provider aws \
+        --key ${{ secrets.AWS_ACCESS_KEY_ID }} \
+        --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
+    # Finally, test the service
+    - name: Test the teams lambda function, using the testing environment
+      run: sls invoke -s testing test
+
+# TEST USERS SERVICE -------------------------------------------------------
+  test-users:
+    name: Test users service
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
+    defaults:
+      run:
+        working-directory: backend/users
+    
+    steps:
+    # Check out the repository
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    # Install node
+    - uses: actions/setup-node@v1
+
+    # Install serverless
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+    
+    # Install all NPM packages
+    - name: Install NPM dependencies
+      run: npm ci
+
+    # Add AWS Auth to serverless
+    - name: Serverless AWS authentication
+      run: |
+        sls config credentials \
+        --provider aws \
+        --key ${{ secrets.AWS_ACCESS_KEY_ID }} \
+        --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
+    # Finally, test the service
+    - name: Test the users lambda function, using the testing environment
+      run: sls invoke -s testing test
+
