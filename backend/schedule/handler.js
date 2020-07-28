@@ -75,7 +75,7 @@ module.exports.add_event = withSentry(async event => {
 
   return {
     statusCode: 200,
-    body: {id: id},
+    body: JSON.stringify({id: id}),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
