@@ -39,21 +39,19 @@ describe('update_mentorship_request', () => {
         expect(response).toHaveProperty('statusCode', 200);
 
         //check if mentorship is updated
-        const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+        const ddb = new AWS.DynamoDB.DocumentClient();
 
         const request = {
             TableName: process.env.MENTORSHIP_REQUESTS_TABLE,
             Key:{
-                id: {S: myId},
+                id: myId,
             }
         }
 
-        const result = await ddb.getItem(request).promise();
+        const result = await ddb.get(request).promise();
 
-        const descrip = {
-            "S": "i am powerrr"
-        }
-        expect(result.Item.description).toMatchObject(descrip);
+        const descrip = "i am powerrr";
+        expect(result.Item.description).toMatch(descrip);
         
     });
   });

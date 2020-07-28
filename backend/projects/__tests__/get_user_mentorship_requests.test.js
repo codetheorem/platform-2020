@@ -39,16 +39,14 @@ describe('get_user_mentorship_requests', () => {
         const request = {
             TableName: process.env.MENTORSHIP_REQUESTS_TABLE,
             Key:{
-                id: {S: addedId},
+                id: addedId,
             }
         }
 
-        const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-        const result = await ddb.getItem(request).promise();
-        const descrip = {
-            "S": "Que es programacion"
-        }
-        expect(result.Item.description).toMatchObject(descrip);
+        const ddb = new AWS.DynamoDB.DocumentClient();
+        const result = await ddb.get(request).promise();
+        const descrip = "Que es programacion";
+        expect(result.Item.description).toMatch(descrip);
     });
   });
 

@@ -47,15 +47,15 @@ describe('delete_event_from_schedule', () => {
       expect(response).toMatchObject({body: {}, statusCode: 200});
 
       // Check to see if event deleted
-      const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+      const ddb = new AWS.DynamoDB.DocumentClient();
       const id = JSON.parse(delete_event.body).id;
       
       const getChange = {
         TableName: process.env.SCHEDULE_TABLE,
-        Key: {id: {S: id}},
+        Key: {id: id},
       };
 
-      const result = await ddb.getItem(getChange).promise();
+      const result = await ddb.get(getChange).promise();
       
       expect(result).toMatchObject({});
   

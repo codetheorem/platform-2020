@@ -7,7 +7,7 @@ AWS.config.update({region:'us-east-1'});
 // delete a single user from the database
 module.exports.delete_user = withSentry(async event => {
   const body = JSON.parse(event.body);
-  const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   if(!body['id']){
     return{
@@ -18,12 +18,10 @@ module.exports.delete_user = withSentry(async event => {
 
   const delete_params = {
     TableName: process.env.USERS_TABLE,
-    Key: {
-      'id': { S: body['id'] },
-    },
+    Key: { id: body['id'] },
   };
 
-  const status_result = await ddb.deleteItem(delete_params).promise();
+  const status_result = await ddb.delete(delete_params).promise();
 
   // return 500 on error
   return {
@@ -40,15 +38,11 @@ module.exports.delete_user = withSentry(async event => {
 module.exports.get_user = withSentry(async event => {
   const id = String(event.queryStringParameters.id);
 
-  const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
-  const item = await ddb.getItem({
+  const item = await ddb.get({
     TableName: process.env.USERS_TABLE,
-    Key: {
-      id: {
-        S: id
-      }
-    }
+    Key: { id: id }
   }).promise();
 
   return {
@@ -65,7 +59,7 @@ module.exports.get_user = withSentry(async event => {
 module.exports.add_user = withSentry(async user => {
 
   const body = JSON.parse(user.body);
-  const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const id = UUID.v4();
   body.id = id;
@@ -85,11 +79,11 @@ module.exports.add_user = withSentry(async user => {
 
   // dynamically add post request body params to document
   Object.keys(body).forEach(k => {
-    params.Item[k] = { S: body[k] }
+    params.Item[k] = body[k] 
   });
 
   // Call DynamoDB to add the item to the table
-  const result = await ddb.putItem(params).promise();
+  const result = await ddb.put(params).promise();
 
   // Returns status code 200 and JSON string of 'result'
   return {
@@ -117,16 +111,12 @@ module.exports.invite_user = withSentry(async event => {
     }
   }
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   // Get the user's info to send email and update dbs
-  const userResp = await ddb.getItem({
+  const userResp = await ddb.get({
     TableName: process.env.USERS_TABLE,
-    Key: {
-      id: {
-        S: body.id
-      }
-    }
+    Key: { id: body.id }
   }).promise();
 
   const user = userResp.Item;
@@ -136,7 +126,7 @@ module.exports.invite_user = withSentry(async event => {
   const decodedSendgridKey = JSON.parse(SecretsManagerKey.SecretString).SENDGRID_API_KEY;
 
   // TODO: actual invite link logic ----------------------------------//
-  invite_link = process.env.BASE_INVITE_URL + "?token=" + user.id.S;  //
+  invite_link = process.env.BASE_INVITE_URL + "?token=" + user.id;  //
   // --------------------------------- TODO: actual invite link logic //
 
   // Send the user an email, using our template
@@ -146,10 +136,10 @@ module.exports.invite_user = withSentry(async event => {
     from: { email:"tech@gotechnica.org" },
     personalizations: [{
       "to":[{
-        "email": user.email.S
+        "email": user.email
       }],
       "dynamic_template_data":{
-        "user_name": user.full_name.S,
+        "user_name": user.full_name,
         "invite_link": invite_link
       }
     }],
@@ -159,23 +149,23 @@ module.exports.invite_user = withSentry(async event => {
   sgMail.send(msg);
 
   // update ddb table:"platform-users" so user's `registration_status` is "email_invite_sent"
-  const updateResp = await ddb.updateItem({
+  const updateResp = await ddb.update({
     TableName: process.env.USERS_TABLE,
-    Key: { id: { S: user.id.S.toString() } },
+    Key: { id: user.id.toString() } ,
     UpdateExpression: "SET registration_status = :s",
-    ExpressionAttributeValues: {":s": {"S":"email_invite_sent"}}
+    ExpressionAttributeValues: {":s": "email_invite_sent"}
   }).promise()
 
   // new item in "platform-invites" table with pertinent information
-  const result = await ddb.putItem({
+  const result = await ddb.put({
     TableName: process.env.INVITES_TABLE,
     Item: {
-      id: {S: UUID.v4()},
-      user_id: {S: user.id.S},
-      email: {S: user.email.S},
-      invite_link: {S: invite_link},
-      timestamp: {S: new Date().toString()},
-      accepted: {S: "false"}
+      id: UUID.v4(),
+      user_id: user.id,
+      email: user.email,
+      invite_link: invite_link,
+      timestamp: new Date().toString(),
+      accepted: "false"
     }
   }).promise();
 
@@ -192,7 +182,7 @@ module.exports.invite_user = withSentry(async event => {
 // Updates an existing schedule user in the database
 module.exports.update_user = withSentry(async user => {
 
-  const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const body = JSON.parse(user.body);
 
@@ -205,10 +195,10 @@ module.exports.update_user = withSentry(async user => {
 
   id = body['id'];
 
-  // Initialize UpdateExpression for ddb.updateItem()
+  // Initialize UpdateExpression for ddb.update()
   let update = 'SET';
 
-  // Initialize ExpressionAttributeNames for ddb.updateItem()
+  // Initialize ExpressionAttributeNames for ddb.update()
   let exprAttrNames = {};
 
   // Initialize ExpressionAttributeValues for ddb,updateItem()
@@ -223,7 +213,7 @@ module.exports.update_user = withSentry(async user => {
       let updateElement = ' #' + k + ' =:' + ref + ','
       update = update.concat(updateElement)
       exprAttrNames['#' + k] = k
-      exprAttrValues[':' + ref] = { S: body[k] }
+      exprAttrValues[':' + ref] = body[k] 
       counter++
     }
   });
@@ -234,9 +224,7 @@ module.exports.update_user = withSentry(async user => {
   const params = {
     TableName: process.env.USERS_TABLE,
     Key: {
-      id: {
-        S: id.toString()
-      }
+      id: id.toString()
     },
     UpdateExpression: update,
     ExpressionAttributeNames: exprAttrNames,
@@ -244,7 +232,7 @@ module.exports.update_user = withSentry(async user => {
   };
 
   // Call DynamoDB to update the item to the table
-  const result = await ddb.updateItem(params).promise();
+  const result = await ddb.update(params).promise();
 
   return {
     statusCode: 200,
@@ -267,7 +255,7 @@ module.exports.ban_user = withSentry(async event =>{
     };
   }
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const params = {
     TableName: process.env.BANNED_USERS_TABLE,
@@ -276,11 +264,11 @@ module.exports.ban_user = withSentry(async event =>{
   
   // Dynamically add post request body params to document
   Object.keys(body).forEach(k => {
-    params.Item[k] = {S: body[k]}
+    params.Item[k] = body[k]
   });
 
   // Call DynamoDB to add the item to the table
-  const result = await ddb.putItem(params).promise();
+  const result = await ddb.put(params).promise();
 
   return {
     statusCode: 200,
@@ -298,7 +286,7 @@ module.exports.get_banned_users = withSentry(async event => {
     TableName: process.env.BANNED_USERS_TABLE
   };
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const result = await ddb.scan(params).promise();
 

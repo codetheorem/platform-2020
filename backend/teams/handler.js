@@ -7,7 +7,7 @@ AWS.config.update({region:'us-east-1'});
 // Posts the request body fields to a DynamoDB table
 post_request_body_to_table = async (event, table_name) => {
   const body = JSON.parse(event.body);
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const params = {
     TableName: table_name,
@@ -40,11 +40,11 @@ post_request_body_to_table = async (event, table_name) => {
   
   // dynamically add post request body params to document
   Object.keys(body).forEach(k => {
-    params.Item[k] = {S: body[k]}
+    params.Item[k] = body[k]
   });
 
   // Call DynamoDB to add the item to the table
-  const result = await ddb.putItem(params).promise()
+  const result = await ddb.put(params).promise()
 
   // return 500 on error
   return {
@@ -71,18 +71,18 @@ module.exports.join_team = withSentry(async event => {
 
 module.exports.leave_team = withSentry(async event => {
   const body = JSON.parse(event.body);
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const delete_params = {
     TableName: process.env.MEMBERSHIPS_TABLE,
     Key: {
-      'id': {S: body['id']},
+      'id': body['id'],
     },
   };
   
   try{
     // Call DynamoDB to delete the item from the table
-    const status_result = await ddb.deleteItem(delete_params).promise();
+    const status_result = await ddb.delete(delete_params).promise();
     return {
       statusCode: 200,
       body: JSON.stringify(status_result),

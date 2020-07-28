@@ -39,19 +39,19 @@ describe('leave_team', () => {
         const response = await adder.run(valid_request);
 
         // id of team that was added
-        const id = JSON.parse(response.body).id.S;   
+        const id = JSON.parse(response.body).id;   
 
         return await wrapper.run(valid_request).then(async (response) =>{
             expect(response).toBeDefined();
             expect(response).toHaveProperty('statusCode', 200);
             
             //check team with id was removed
-            const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+            const ddb = new AWS.DynamoDB.DocumentClient();
             const getRequest = {
               TableName: process.env.MEMBERSHIPS_TABLE,
-              Key: {id: {S: id}},
+              Key: {id: id},
             };
-            const result = await ddb.getItem(getRequest).promise();
+            const result = await ddb.get(getRequest).promise();
             expect(result).toMatchObject({});
         }); 
     });

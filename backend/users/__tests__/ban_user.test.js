@@ -20,13 +20,13 @@ const invalid_case = {
 
 describe('ban_user', () => {
     beforeAll(async (done) => {
-        const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+        const ddb = new AWS.DynamoDB.DocumentClient();
         const params = {
             TableName: process.env.BANNED_USERS_TABLE
         }
         const result = await ddb.scan(params).promise();
         result.Items.forEach((item) => {
-            ddb.deleteItem(item);
+            ddb.delete(item);
         })
         done();
     });

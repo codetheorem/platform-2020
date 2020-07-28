@@ -49,20 +49,18 @@ describe('update_event', () => {
       expect(response).toMatchObject({body: {}, statusCode: 200});
 
       // Check to see if event updated
-      const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+      const ddb = new AWS.DynamoDB.DocumentClient();
       const id = JSON.parse(new_event.body).id;
       
       const getChange = {
         TableName: process.env.SCHEDULE_TABLE,
-        Key: {id: {S: id}},
+        Key: {id: id},
       };
 
-      const result = await ddb.getItem(getChange).promise();
+      const result = await ddb.get(getChange).promise();
       
-      const descrip = {
-          "S": "This workshop is updated for Technica!",
-      }
-      expect(result.Item.description).toMatchObject(descrip);
+      const descrip = "This workshop is updated for Technica!";
+      expect(result.Item.description).toMatch(descrip);
   
     });
   });

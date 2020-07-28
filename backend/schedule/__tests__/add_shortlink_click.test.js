@@ -29,20 +29,19 @@ describe('add_shortlink_click', () => {
       expect(response).toMatchObject({body: {}, statusCode: 200});
 
        // Check to see if click added
-       const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+       const ddb = new AWS.DynamoDB.DocumentClient();
        const id = JSON.parse(response.body).id;
        
        const getChange = {
          TableName: process.env.SHORTLINK_CLICKS_TABLE,
-         Key: {id: {S: id}},
+         Key: {id: id},
        };
  
-       const result = await ddb.getItem(getChange).promise();
+       const result = await ddb.get(getChange).promise();
        
-       const link_id = {
-           "S": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
-       }
-       expect(result.Item.link_id).toMatchObject(link_id);
+       const link_id = "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"
+       
+       expect(result.Item.link_id).toMatch(link_id);
     });
   });
 

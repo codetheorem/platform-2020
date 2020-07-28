@@ -19,8 +19,8 @@ const banned_users = {
 };
 
 const received_banned_users = [{
-    "id": { S : "sdfjskddfjsdfs-fsdjf1231"},
-    "reason": { S : "did a bad"}
+    "id": "sdfjskddfjsdfs-fsdjf1231",
+    "reason": "did a bad"
 }];
 describe('get_banned_users', () =>{
     beforeAll((done) => {

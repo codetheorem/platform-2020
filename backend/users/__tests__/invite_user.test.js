@@ -39,11 +39,9 @@ describe('invite_user', () => {
   });
   
   it('Valid case', async () => {
-    console.log("WARNING: SENDGRID_API_KEY must be exposed as an env var!")
-
     // Add a user into the DB
     const response = await adder.run(bootstrap_user);
-    const test_user_id = (JSON.parse(response.body).id.S);
+    const test_user_id = (JSON.parse(response.body).id);
    
     const event = {
       body: JSON.stringify({

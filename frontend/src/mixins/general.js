@@ -30,7 +30,7 @@ export default {
     formatDynamoItem(item) {
       const formattedItem = {};
       Object.keys(item).forEach((key) => {
-        formattedItem[key] = item[key].S;
+        formattedItem[key] = item[key];
       });
       return formattedItem;
     },

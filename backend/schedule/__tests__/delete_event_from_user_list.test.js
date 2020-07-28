@@ -40,14 +40,14 @@ describe('delete_event_from_user_list', () => {
       expect(response).toHaveProperty('statusCode', 200);
 
       // Check to see if item was actually deleted
-      const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+      const ddb = new AWS.DynamoDB.DocumentClient();
 
       const getRequest = {
         TableName: process.env.USER_EVENTS_TABLE,
-        Key: {id: {S: id}},
+        Key: {id: id},
       };
 
-      const result = await ddb.getItem(getRequest).promise();
+      const result = await ddb.get(getRequest).promise();
       expect(result).toMatchObject({});
     });
   });

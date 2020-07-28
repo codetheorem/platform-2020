@@ -65,10 +65,10 @@ describe('add_user', () => {
             expect(response).toHaveProperty('statusCode', 200);
             const getRequest = {
                 TableName: process.env.USERS_TABLE,
-                Key: { id: { S: JSON.parse(response.body).id.S } },
+                Key: { id: JSON.parse(response.body).id } ,
             };
-            const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
-            const result = await ddb.getItem(getRequest).promise();
+            const ddb = new AWS.DynamoDB.DocumentClient();
+            const result = await ddb.get(getRequest).promise();
             expect(result.Item).toMatchObject(JSON.parse(response.body));
         });
     });

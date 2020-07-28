@@ -29,13 +29,13 @@ const update = {
 };
 
 const final = {
-    email: { S: "update@gmail.com" },
-    full_name: { S: "Owen Luo" },
-    access_level: { S: "Hack" },
-    group: { S: "hacker" },
-    school: { S: "University of Maryland, College Park" },
-    age: { S: "18" },
-    devpost: { S: "devpost.com/hugoburbelo" }
+    email: "update@gmail.com" ,
+    full_name: "Owen Luo" ,
+    access_level: "Hack" ,
+    group: "hacker" ,
+    school: "University of Maryland, College Park" ,
+    age: "18" ,
+    devpost: "devpost.com/hugoburbelo" 
 };
 
 const no_id = {
@@ -57,9 +57,9 @@ describe('update_user', () => {
         return await adder.run(insert_user).then(async (response) => {
             expect(response).toBeDefined();
             expect(response).toHaveProperty('statusCode', 200);
-            const id = JSON.parse(response.body).id.S;
+            const id = JSON.parse(response.body).id;
             update["id"] = id;
-            final["id"] = { S: id };
+            final["id"] = id ;
 
             const update_user = {
                 body: JSON.stringify(update)
@@ -71,10 +71,10 @@ describe('update_user', () => {
                 expect(res).toHaveProperty('statusCode', 200);
                 const getRequest = {
                     TableName: process.env.USERS_TABLE,
-                    Key: { id: { S: id } },
+                    Key: { id: id } ,
                 };
-                const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
-                const result = await ddb.getItem(getRequest).promise();
+                const ddb = new AWS.DynamoDB.DocumentClient();
+                const result = await ddb.get(getRequest).promise();
                 expect(result.Item).toMatchObject(final);
             })
         });

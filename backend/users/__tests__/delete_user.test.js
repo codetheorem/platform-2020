@@ -28,7 +28,7 @@ describe('delete_user', () => {
   it('Correctly adds and deletes the user', async () => {
     const added = await adder.run(delete_user);
 
-    const myId = JSON.parse(added.body).id.S
+    const myId = JSON.parse(added.body).id
     const valid_request = {
         body: JSON.stringify({
             id: myId
@@ -40,14 +40,14 @@ describe('delete_user', () => {
       expect(response).toMatchObject({body: {}, statusCode: 200});
 
       // Check to see if user deleted
-      const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+      const ddb = new AWS.DynamoDB.DocumentClient();
       
       const getChange = {
         TableName: process.env.USERS_TABLE,
-        Key: {id: {S: myId}},
+        Key: {id: myId},
       };
 
-      const result = await ddb.getItem(getChange).promise();
+      const result = await ddb.get(getChange).promise();
       
       expect(result).toMatchObject({});
   

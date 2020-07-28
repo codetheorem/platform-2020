@@ -27,7 +27,7 @@ describe('get_user', () => {
 
   it('Successfully gets user', async () => {
     const added = await adder.run(add_user);
-    const myId = JSON.parse(added.body).id.S
+    const myId = JSON.parse(added.body).id
     const valid_request = {
       queryStringParameters: JSON.stringify({id: myId})
     }

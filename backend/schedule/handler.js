@@ -13,7 +13,7 @@ module.exports.get_schedule = withSentry(async event => {
     TableName: process.env.SCHEDULE_TABLE,
   };
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const result = await ddb.scan(params).promise();
 
@@ -31,12 +31,12 @@ module.exports.get_schedule = withSentry(async event => {
 module.exports.get_event = withSentry(async event => {
   const id = String(event.queryStringParameters.id);
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
-  const item = await ddb.getItem({
+  const item = await ddb.get({
     TableName: process.env.SCHEDULE_TABLE,
     Key: {
-      id: { S: id }
+      id: id
     }
   }).promise();
   
@@ -54,7 +54,7 @@ module.exports.get_event = withSentry(async event => {
 module.exports.add_event = withSentry(async event => {
   const body = JSON.parse(event.body);
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const id = UUID.v4();
 
@@ -67,11 +67,11 @@ module.exports.add_event = withSentry(async event => {
 
   // dynamically add post request body params to document
   Object.keys(body).forEach(k => {
-    params.Item[k] = {S: body[k]}
+    params.Item[k] = body[k];
   });
 
   // Call DynamoDB to add the item to the table
-  const result = await ddb.putItem(params).promise();
+  const result = await ddb.put(params).promise();
 
   return {
     statusCode: 200,
@@ -86,7 +86,7 @@ module.exports.add_event = withSentry(async event => {
 // Updates an existing schedule event in the database
 module.exports.update_event = withSentry(async event => {
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
     
   const body = JSON.parse(event.body);
 
@@ -98,11 +98,11 @@ module.exports.update_event = withSentry(async event => {
   }
     
   id = body['id'];
-  
-  // Initialize UpdateExpression for ddb.updateItem()
+
+  // Initialize UpdateExpression for ddb.update()
   let update = 'SET';
 
-  // Initialize ExpressionAttributeNames for ddb.updateItem()
+  // Initialize ExpressionAttributeNames for ddb.update()
   let exprAttrNames = {};
 
   // Initialize ExpressionAttributeValues for ddb,updateItem()
@@ -114,23 +114,21 @@ module.exports.update_event = withSentry(async event => {
   Object.keys(body).forEach(k => {
     if (k != 'id') {
       const ref = 'val' + counter;
-      let updateElement = ' #' + k + ' =:' + ref + ','
-      update = update.concat(updateElement)
-      exprAttrNames['#' + k] = k
-      exprAttrValues[':' + ref] = {S: body[k]}
-      counter++
+      let updateElement = ' #' + k + ' =:' + ref + ',';
+      update = update.concat(updateElement);
+      exprAttrNames['#' + k] = k;
+      exprAttrValues[':' + ref] = body[k];
+      counter++;
     }
   });
 
   // Remove trailing comma from UpdateExpression
-  update = update.slice(0, -1)
+  update = update.slice(0, -1);
     
   const params = {
     TableName: process.env.SCHEDULE_TABLE,
     Key: {
-      id: {
-        S: id.toString()
-      }
+      id: id.toString()
     },
     UpdateExpression: update,
     ExpressionAttributeNames: exprAttrNames,
@@ -138,7 +136,8 @@ module.exports.update_event = withSentry(async event => {
   };
     
   // Call DynamoDB to update the item to the table
-  const result = await ddb.updateItem(params).promise();
+  const result = await ddb.update(params).promise();
+
   return {
     statusCode: 200,
     body: JSON.stringify(result),
@@ -153,7 +152,7 @@ module.exports.update_event = withSentry(async event => {
 module.exports.delete_event_from_schedule = withSentry(async event => {
   const body = JSON.parse(event.body);
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
     
   if (!body.id) {
     return {
@@ -165,12 +164,12 @@ module.exports.delete_event_from_schedule = withSentry(async event => {
   const params = {
     TableName: process.env.SCHEDULE_TABLE,
     Key: {
-      id: {S: body.id},
+      id: body.id,
     }
   };
 
   // Call DynamoDB to delete the item in the table
-  const result = await ddb.deleteItem(params).promise();
+  const result = await ddb.delete(params).promise();
 
   return {
     statusCode: 200,
@@ -193,21 +192,21 @@ module.exports.add_event_to_user_list = withSentry(async event => {
     }
   }
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const id = body.user_id + "-" + body.event_id;
 
   const params = {
     TableName: process.env.USER_EVENTS_TABLE,
     Item: {
-      id: {S: id},
-      event_id: {S: body.event_id},
-      user_id: {S: body.user_id}
+      id: id,
+      event_id: body.event_id,
+      user_id: body.user_id
     }
   };
 
   // Call DynamoDB to add the item to the table
-  const result = await ddb.putItem(params).promise();
+  const result = await ddb.put(params).promise();
 
   return {
     statusCode: 200,
@@ -232,17 +231,17 @@ module.exports.delete_event_from_user_list = withSentry(async event => {
   }
 
   // Vars to be used later (db instance)
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const params = {
     TableName: process.env.USER_EVENTS_TABLE,
     Key: {
-      id: {S: body.id},
+      id: body.id,
     }
   };
 
   // Call DynamoDB to delete the item from the table
-  const result = await ddb.deleteItem(params).promise();
+  const result = await ddb.delete(params).promise();
 
   return {
     statusCode: 200,
@@ -274,7 +273,9 @@ module.exports.add_shortlink = withSentry(async event => {
       body: "Missing link or target"
     }
   }
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
   const id = UUID.v4();
   let shortlink;
   let checker_result;
@@ -285,9 +286,7 @@ module.exports.add_shortlink = withSentry(async event => {
 
     checker_params = {
       ExpressionAttributeValues: {
-       ":a": {
-         S: shortlink
-        }
+       ":a": shortlink
       }, 
       FilterExpression: "shortlink = :a", 
       TableName: process.env.SHORTLINKS_TABLE
@@ -307,11 +306,12 @@ module.exports.add_shortlink = withSentry(async event => {
 
   // dynamically add post request body params to document
   Object.keys(body).forEach(k => {
-    params.Item[k] = {S: body[k]}
+    params.Item[k] = body[k]
   });
 
   // Call DynamoDB to add the item to the table
-  const result = await ddb.putItem(params).promise();
+  const result = await ddb.put(params).promise();
+
   return {
     statusCode: 200,
     body: JSON.stringify(result),
@@ -326,14 +326,12 @@ module.exports.add_shortlink = withSentry(async event => {
 module.exports.get_shortlink = withSentry(async event => {
   const id = String(event.queryStringParameters.shortlinks);
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
-  const item = await ddb.getItem({
+  const item = await ddb.get({
     TableName: process.env.SHORTLINKS_TABLE,
     Key: {
-      shortlinks: {
-        S: id
-      }
+      shortlinks: id
     }
   }).promise();
 
@@ -350,23 +348,23 @@ module.exports.get_shortlink = withSentry(async event => {
 // Adds a new shortlink click event to the database 
 module.exports.add_shortlink_click = withSentry(async event => {
   const body = JSON.parse(event.body);
-  
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const id = UUID.v4();
 
   const params = {
     TableName: process.env.SHORTLINK_CLICKS_TABLE,
     Item: {
-      id: {S: id},
-      link_id: {S: body["link_id"]},
-      user_id: {S: body["user_id"]},
-      timestamp: {S: new Date().toLocaleString()}
+      id: id,
+      link_id: body["link_id"],
+      user_id: body["user_id"],
+      timestamp: new Date().toLocaleString()
     }
   };
   
   // Call DynamoDB to add the item to the table
-  const result = await ddb.putItem(params).promise();
+  const result = await ddb.put(params).promise();
 
   return {
     statusCode: 200,
@@ -390,13 +388,13 @@ module.exports.get_events_from_user_list = withSentry(async event => {
 
   // Vars to be used later (db instance)
   const user_id = event.queryStringParameters.user_id;
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
   const params = {
     TableName: process.env.USER_EVENTS_TABLE,
     FilterExpression: "user_id = :val",
     ExpressionAttributeValues: {
-      ":val" : {S: user_id},
+      ":val" : user_id,
     }
   };
 
@@ -410,7 +408,7 @@ module.exports.get_events_from_user_list = withSentry(async event => {
   };
 
   result.Items.forEach(k => {
-    response.event_ids.push(k.event_id.S)
+    response.event_ids.push(k.event_id)
   });
 
   return {
@@ -480,19 +478,19 @@ module.exports.create_zoom_meeting = withSentry(async event => {
   let parsed_result = (result)            
 
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const ddb = new AWS.DynamoDB.DocumentClient();
   const id = UUID.v4();
 
   const params = {
     TableName: zoom_link_table,
     Item: {
-      id: {S: id},
-      meeting_link: {S: parsed_result.join_url},
-      event_name: {S: event_name},
+      id: id,
+      meeting_link: parsed_result.join_url,
+      event_name: event_name,
     }
   };
   
-  const database_return = await ddb.putItem(params).promise();
+  const database_return = await ddb.put(params).promise();
 
   return {
     statusCode: 200,
