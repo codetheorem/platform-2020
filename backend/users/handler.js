@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
 const withSentry = require("serverless-sentry-lib");
+const { IncomingWebhook } = require('@slack/webhook');
 AWS.config.update({region:'us-east-1'});
  
 // delete a single user from the database
@@ -307,6 +308,80 @@ module.exports.get_banned_users = withSentry(async event => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true
+    }
+  };
+});
+
+// Sends a confirmation email to the user after they register with a unique referral code
+module.exports.send_registration_email = withSentry(async event => {
+  // Lazy load the sendgrid api - we don't want to load it for other endpoints
+  const sgMail = require('@sendgrid/mail');
+  let email = '';
+  let firstName = '';
+
+  const body = JSON.parse(event.body);
+
+  body.form_response.answers.forEach(answer => {
+    if(answer.email) {
+      email = answer.email;
+    } else if(answer.field && answer.field.ref === "first_name") {
+      firstName = answer.text;
+    }
+  });
+
+
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+  const referralId = UUID.v4().substring(0, 5);
+
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
+  const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.SENDGRID_SECRET_NAME}).promise();
+  const decodedSendgridKey = JSON.parse(SecretsManagerKey.SecretString).SENDGRID_API_KEY;
+
+  invite_link = process.env.REGISTRATION_INVITE_URL + "?r=" + referralId;
+
+  // Send the user an email, using our template
+  sgMail.setApiKey(decodedSendgridKey);
+
+  const msg = {
+    from: { email:"tech@gotechnica.org" },
+    personalizations: [{
+      "to":[{
+        "email": email
+      }],
+      "dynamic_template_data":{
+        "user_name": firstName,
+        "invite_link": invite_link
+      }
+    }],
+    template_id: process.env.REGISTRATION_TEMPLATE_ID
+  };
+ 
+  sgMail.send(msg);
+
+  const result = await ddb.putItem({
+    TableName: process.env.REGISTRATION_REFERRAL_TABLE,
+    Item: {
+      id: {S: UUID.v4()},
+      email: {S: email},
+      invite_link: {S: invite_link},
+      timestamp: {S: new Date().toString()}
+    }
+  }).promise();
+
+  const SecretsManagerSlackKey = await SecretsManager.getSecretValue({SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME}).promise();
+  const webhookUrl = JSON.parse(SecretsManagerSlackKey.SecretString).PLATFORM_ACTVITY_SLACK_WEBHOOK;
+  const webhook = new IncomingWebhook(webhookUrl);
+  await webhook.send({
+    text: "Successfully sent registration email confirmation to " + email + ".",
+  });
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
     }
   };
 });

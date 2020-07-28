@@ -13,6 +13,10 @@ provider:
     INVITE_TEMPLATE_ID: ${file(./config/${self:provider.stage}.json):INVITE_TEMPLATE_ID}
     BASE_INVITE_URL: ${file(./config/${self:provider.stage}.json):BASE_INVITE_URL}
     SENDGRID_SECRET_NAME: ${file(./config/${self:provider.stage}.json):SENDGRID_SECRET_NAME}
+    REGISTRATION_REFERRAL_TABLE: ${file(./config/${self:provider.stage}.json):REGISTRATION_REFERRAL_TABLE}
+    REGISTRATION_TEMPLATE_ID: ${file(./config/${self:provider.stage}.json):REGISTRATION_TEMPLATE_ID}
+    REGISTRATION_INVITE_URL: ${file(./config/${self:provider.stage}.json):REGISTRATION_INVITE_URL}
+    SLACK_WEBHOOK_SECRET_NAME: ${file(./config/${self:provider.stage}.json):SLACK_WEBHOOK_SECRET_NAME}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -23,6 +27,11 @@ provider:
        - dynamodb:UpdateItem
        - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*"
+    - Effect: "Allow"
+      Action:
+        - secretsmanager:DescribeSecret
+        - secretsmanager:GetSecretValue
+      Resource: "arn:aws:secretsmanager:us-east-1:*"
 
 functions:
   delete_user:
@@ -75,6 +84,14 @@ functions:
       - http:
           path: get_banned_users
           method: get
+          cors: true
+  send_registration_email:
+    handler: handler.send_registration_email
+    description: Sends a registration confirmation email with a referral link
+    events:
+      - http:
+          path: send_registration_email
+          method: post
           cors: true
 plugins:
   - serverless-sentry

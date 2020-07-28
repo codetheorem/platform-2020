@@ -1,12 +1,12 @@
 {
     "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
-    "BANNED_USERS_TABLE": "platform-test-banned-users",
-    "USERS_TABLE": "platform-test-users",
-    "INVITES_TABLE": "platform-test-invites",
+    "BANNED_USERS_TABLE": "platform-prod-banned-users",
+    "USERS_TABLE": "platform-prod-users",
+    "INVITES_TABLE": "platform-prod-invites",
     "INVITE_TEMPLATE_ID": "d-ad25e68e009e405eb2b71364a8e25722",
     "BASE_INVITE_URL": "http://platform-staging.gotechnica.org/authenticate",
     "SENDGRID_SECRET_NAME": "SENDGRID_API_KEY",
-    "REGISTRATION_REFERRAL_TABLE": "platform-dev-referrals",
+    "REGISTRATION_REFERRAL_TABLE": "platform-prod-referrals",
     "REGISTRATION_TEMPLATE_ID": "d-37d309451576469988ffa38d21309133",
     "REGISTRATION_INVITE_URL": "http://gotechnica.org/r",
     "SLACK_WEBHOOK_SECRET_NAME": "PLATFORM_ACTVITY_SLACK_WEBHOOK"

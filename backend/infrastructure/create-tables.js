@@ -18,6 +18,7 @@ const TABLE_LIST = [
     {'name': 'users', 'keyName': 'id'},
     {'name': 'banned-users', 'keyName': 'id'},
     {'name': 'meetings', 'keyName': 'id'},
+    {'name': 'referrals', 'keyName': 'id'},
 ];
 
 const STAGE_LIST = ['prod', 'stage', 'dev', 'test']
