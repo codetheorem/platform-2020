@@ -306,8 +306,14 @@ module.exports.send_registration_email = withSentry(async event => {
   const sgMail = require('@sendgrid/mail');
   let email = '';
   let firstName = '';
+  let referral = '';
 
   const body = JSON.parse(event.body);
+
+  // if the body includes a referral link, include it
+  if(body.form_response.hidden && body.form_response.hidden.referral) {
+    referral = body.form_response.hidden.referral;
+  }
 
   body.form_response.answers.forEach(answer => {
     if(answer.email) {
@@ -351,9 +357,12 @@ module.exports.send_registration_email = withSentry(async event => {
     TableName: process.env.REGISTRATION_REFERRAL_TABLE,
     Item: {
       id: {S: UUID.v4()},
+      firstname: {S: firstName},
       email: {S: email},
       invite_link: {S: invite_link},
-      timestamp: {S: new Date().toString()}
+      timestamp: {S: new Date().toString()},
+      referral_origin: {S: referral},
+      registration_data: {S: JSON.stringify(body.form_response)}
     }
   }).promise();
 
