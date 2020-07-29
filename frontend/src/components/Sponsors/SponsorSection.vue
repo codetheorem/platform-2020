@@ -3,7 +3,7 @@
       <b-row class="section-banner">
         <b-col class="hl"></b-col>
         <b-col class="section-title">
-            <h2>{{tier.toUpperCase()}}</h2>
+            <h3 class="medium">{{tier.toUpperCase()}}</h3>
         </b-col>
         <b-col class="hl"></b-col>
 
@@ -65,8 +65,8 @@ export default {
 }
 
 .section-title {
-  min-width: 15rem;
-  max-width: 15rem;
+  min-width: 15em;
+  max-width: 15em;
 }
 
 .row {
@@ -82,7 +82,8 @@ export default {
     padding-bottom: 1em;
 }
 
-.hl {
+/* horizontal line */
+.hl { 
   border-top: 6px solid #B377DB;
   width: 100%;
   height: 10px;

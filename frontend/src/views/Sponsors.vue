@@ -1,6 +1,6 @@
 <template>
   <b-container class="sponsors-container">
-    <h1>Sponsors</h1>
+    <h2>Sponsors</h2>
     <div v-for="section in sponsorTiers" :key="section" class="sponsor-section">
         <sponsor-section :tier="section" :sponsorList="sponsorsByTier[section]"/>
     </div>
@@ -55,7 +55,7 @@ body {background-color: #F6F4F7;}
 
 }
 
-h1 {
+h2 {
     color: #B377DB;
 }
 
