@@ -1,11 +1,11 @@
 <template>
   <div class="page-container">
     <div class="login-container">
-      <div v-if="!loginButtonClicked" class="container content-container col-md-7 col-lg-8 col-xl-4">
-        <div class="content-container-title">
+      <content-container v-if="!loginButtonClicked">
+        <template v-slot:title>
           <h3>Login</h3>
-        </div>
-        <div class="content-container-body">
+        </template>
+        <template v-slot:body>
           <p class="description-text">Instead of using a complex password, enter your email so Technica can send you a magic link to sign in.</p>
           <p v-if="emailNotFound" class="text-error">We could not find your email in our records. For further assistance, please contact our support team.</p>
           <p v-if="emailInvalid" class="text-error">Please enter a valid email address.</p>
@@ -21,30 +21,32 @@
               </a>
             </div>
           </form>
-        </div>
-      </div>
+        </template>
+      </content-container>
 
-      <div v-else class="container content-container col-md-7 col-lg-8 col-xl-4">
-        <div class="content-container-title">
+      <content-container v-else>
+        <template v-slot:title>
           <h3>Check Your Email...</h3>
-        </div>
-        <div class="content-container-body">
+        </template>
+        <template v-slot:body>
           <p class="description-text" style="margin-bottom: 3rem">We sent an email to <b>{{ userEmail }}</b>! It has a magic link to help sign you in to Technica.</p>
           <img alt="Mail icon" src="../assets/mail-icon.svg"  height="120">
-        </div>
-      </div>
+        </template>
+      </content-container>
     </div>
   </div>
 </template>
 
 <script>
 import Button from '@/components/Button.vue';
+import ContentContainer from '@/components/ContentContainer.vue';
 import Config from '../config/general';
 
 export default {
   name: 'Login',
   components: {
     Button,
+    ContentContainer,
   },
   data() {
     return {
@@ -86,28 +88,10 @@ export default {
     height: 90%;
   }
 
-  .content-container {
-    background: #FFFFFF;
-    border-radius: 8px;
-    padding: 3rem;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 4px;
-  }
-
-  @media (max-width: 800px) {
-    .content-container {
-      padding: 1rem;
-    }
-  }
-
   @media (min-width: 900px) {
     .form-control {
       max-width: 415px;
     }
-  }
-
-  .content-container-title {
-    margin-top: 3rem;
   }
 
   .description-text {

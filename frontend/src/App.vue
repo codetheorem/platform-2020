@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     displayRouteList() {
-      return this.$route.name !== 'Login';
+      return this.$route.name !== 'Login' && this.$route.name !== 'Register';
     },
   },
 };

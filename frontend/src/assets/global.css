@@ -75,3 +75,12 @@ a {
 a:hover {
 	color: var(--bright-purple);
 }
+
+.form-control {
+	border: 1px solid var(--pastel-pink) !important;
+}
+  
+.form-control:focus {
+	outline: 0 !important;
+	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .25) !important;
+}

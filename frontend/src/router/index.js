@@ -61,6 +61,12 @@ const routes = [
     displayInNavBar: true,
   },
   {
+    path: '/project',
+    name: 'Project',
+    component: () => import('../views/Project.vue'),
+    displayInNavBar: true,
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import('../views/Register.vue'),
