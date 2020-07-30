@@ -61,5 +61,15 @@ export default {
     removeUserIdCookie() {
       this.$cookie.delete('userId');
     },
+    getCurrentEnvironment() {
+      console.log(window.location.hostname);
+      if (window.location.hostname === 'platform.gotechnica.org') {
+        return 'production';
+      }
+      if (window.location.hostname === 'platform-staging.gotechnica.org') {
+        return 'stage';
+      }
+      return 'dev';
+    },
   },
 };

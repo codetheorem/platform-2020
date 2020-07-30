@@ -17,18 +17,19 @@ export default {
     };
   },
   async mounted() {
-    this.setUserIdCookie(Config.dev.SAMPLE_USER_ID);
+    const env = this.getCurrentEnvironment();
+    this.setUserIdCookie(Config[env].SAMPLE_USER_ID);
     const params = {
-      id: this.$route.params.shortlink,
+      shortlinks: this.$route.params.shortlink,
     };
-    const shortlink = await this.performGetRequest(Config.dev.SCHEDULE_BASE_ENDPOINT, 'dev', 'get_shortlink', params);
+    const shortlink = await this.performGetRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'get_shortlink', params);
 
     if (shortlink && shortlink.link) {
       const postParams = {
         link_id: shortlink.id,
         user_id: this.getUserId(),
       };
-      this.performPostRequest(Config.dev.SCHEDULE_BASE_ENDPOINT, 'dev', 'add_shortlink_click', postParams);
+      this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'add_shortlink_click', postParams);
       window.location = shortlink.link;
     } else {
       // redirect to 404

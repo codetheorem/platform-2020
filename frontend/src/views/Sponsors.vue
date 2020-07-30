@@ -33,7 +33,8 @@ export default {
     };
   },
   async mounted() {
-    this.sponsors = await this.getDataSimple(Config.dev.SPONSORS_INFO_ENDPOINT, 'dev', 'get_sponsorship_info');
+    const env = this.getCurrentEnvironment();
+    this.sponsors = await this.getDataSimple(Config[env].SPONSORS_INFO_ENDPOINT, env, 'get_sponsorship_info');
 
     this.sponsorTiers.forEach((tier) => {
       this.sponsorsByTier[tier] = this.sponsors.filter((s) => s.tier === tier);

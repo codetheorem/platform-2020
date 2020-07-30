@@ -83,7 +83,7 @@ export default {
 }
 
 /* horizontal line */
-.hl { 
+.hl {
   border-top: 6px solid #B377DB;
   width: 100%;
   height: 10px;

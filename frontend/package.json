@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "serve": "npm i && vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --mode staging",
+    "build-prod": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
     "deploy": "npm run build && vue-cli-service s3-deploy --mode staging",
-    "deploy-prod": "npm run build && vue-cli-service s3-deploy --mode production",
+    "deploy-prod": "npm run build-prod && vue-cli-service s3-deploy --mode production",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },

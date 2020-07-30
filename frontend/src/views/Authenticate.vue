@@ -19,7 +19,8 @@ export default {
     const params = {
       id: this.$route.query.token,
     };
-    const userId = await this.performGetRequest(Config.dev.USERS_BASE_ENDPOINT, 'dev', 'get_user', params);
+    const env = this.getCurrentEnvironment();
+    const userId = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', params);
     console.log(userId);
     // if user does not exist, redirect to login screen
     if (userId && userId.id) {

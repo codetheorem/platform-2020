@@ -35,7 +35,8 @@ export default {
   },
   async mounted() {
     console.log(process.env.NODE_ENV);
-    this.schedule = await this.getData(Config.dev.SCHEDULE_BASE_ENDPOINT, 'dev', 'schedule');
+    const env = this.getCurrentEnvironment();
+    this.schedule = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
     console.log(this.schedule);
   },
   methods: {
