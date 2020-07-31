@@ -2,8 +2,9 @@ const AWS = require('aws-sdk');
 const UUID = require('uuid');
 const withSentry = require("serverless-sentry-lib");
 const { IncomingWebhook } = require('@slack/webhook');
+const TESTING_STAGE = 'testing';
 AWS.config.update({region:'us-east-1'});
- 
+
 // delete a single user from the database
 module.exports.delete_user = withSentry(async event => {
   const body = JSON.parse(event.body);
@@ -145,8 +146,11 @@ module.exports.invite_user = withSentry(async event => {
     }],
     template_id: process.env.INVITE_TEMPLATE_ID
   };
- 
-  sgMail.send(msg);
+  
+  //If not running integration suites, send email
+  if(process.env.STAGE != TESTING_STAGE){
+    sgMail.send(msg);
+  }
 
   // update ddb table:"platform-users" so user's `registration_status` is "email_invite_sent"
   const updateResp = await ddb.update({
@@ -351,7 +355,10 @@ module.exports.send_registration_email = withSentry(async event => {
     template_id: process.env.REGISTRATION_TEMPLATE_ID
   };
  
-  sgMail.send(msg);
+  //If not running integration suites, send email
+  if(process.env.STAGE != TESTING_STAGE){
+    sgMail.send(msg);
+  }
 
   const result = await ddb.putItem({
     TableName: process.env.REGISTRATION_REFERRAL_TABLE,
