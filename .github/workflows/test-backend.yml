@@ -1,4 +1,4 @@
-name: Test all backend services on a pull request
+name: Backend CI Test Suite
 
 # Controls when the action will run. Triggers the workflow whenever a pull
 # request has been made, and a review has been requested
