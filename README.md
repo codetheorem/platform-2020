@@ -1,4 +1,5 @@
 # platform-2020
+![Backend Test Suite](https://github.com/gotechnica/platform-2020/workflows/Test%20all%20backend%20services%20on%20a%20pull%20request/badge.svg)
 
 ## Frontend
 To run the frontend on your local machine:
