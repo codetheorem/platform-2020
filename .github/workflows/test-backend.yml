@@ -4,7 +4,7 @@ name: Backend CI Test Suite
 # request has been made, and a review has been requested
 on:
   pull_request:
-    types: [review_requested, synchronize]
+    types: [opened, review_requested, synchronize]
 
 # Job instructions
 jobs:
