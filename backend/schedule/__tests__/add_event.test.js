@@ -12,6 +12,7 @@ const wrapped = lambdaWrapper.wrap(mod, { handler: 'add_event' });
 const sample_event = {
   id: "1",
   category: "main",
+  event_name: "hugo's awesome workshop",
   description: "A very cool workshop for Technica!",
   start_time: "2020-6-5T15:00:00Z",
   end_time: "2020-6-5T18:00:00Z",

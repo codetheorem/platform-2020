@@ -6,5 +6,6 @@
     "SHORTLINK_CLICKS_TABLE": "platform-stage-shortlink-clicks",
     "ZOOM_API_EMAIL_ACCOUNT": "hugoburbelo@gmail.com",
     "ZOOM_LINK_TABLE": "platform-stage-meetings",
-    "ZOOM_API_KEY_SECRET_NAME": "ZOOM_TESTING_API_KEY"
+    "ZOOM_API_KEY_SECRET_NAME": "ZOOM_TESTING_API_KEY",
+    "PLATFORM_BASE_URL": "http://platform-staging.gotechnica.org"
 }

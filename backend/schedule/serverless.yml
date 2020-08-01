@@ -13,6 +13,8 @@ provider:
     ZOOM_API_EMAIL_ACCOUNT: ${file(./config/${self:provider.stage}.json):ZOOM_API_EMAIL_ACCOUNT}
     ZOOM_LINK_TABLE: ${file(./config/${self:provider.stage}.json):ZOOM_LINK_TABLE}
     ZOOM_API_KEY_SECRET_NAME: ${file(./config/${self:provider.stage}.json):ZOOM_API_KEY_SECRET_NAME}
+    STAGE: ${self:provider.stage}
+    PLATFORM_BASE_URL: ${file(./config/${self:provider.stage}.json):PLATFORM_BASE_URL}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -23,6 +25,11 @@ provider:
        - dynamodb:UpdateItem
        - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*"
+    - Effect: "Allow"
+      Action:
+        - secretsmanager:DescribeSecret
+        - secretsmanager:GetSecretValue
+      Resource: "arn:aws:secretsmanager:us-east-1:*"
 
 functions:
   get_schedule:

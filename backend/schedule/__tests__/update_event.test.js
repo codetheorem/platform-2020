@@ -16,6 +16,7 @@ const old_event = {
         id: "hwat",
         category: "main",
         description: "Update this workshop for Technica!",
+        event_name: "hugo's awesome workshop",
     })
 }
 
@@ -24,6 +25,7 @@ const new_event = {
         id: "hwat",
         category: "main",
         description: "This workshop is updated for Technica!",
+        event_name: "hugo's awesome workshop",
     })
 }
 

@@ -7,15 +7,16 @@
 </template>
 
 <script>
-import Button from "@/components/Button.vue";
+import Button from '@/components/Button.vue';
+
 export default {
-  name: "404",
+  name: '404',
   components: {
     Button,
   },
   methods: {
     goBack() {
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: 'Home' });
     },
   },
 };

@@ -20,6 +20,7 @@ const sample_event = {
   start_time: "2020-6-5T15:00:00Z",
   end_time: "2020-6-5T18:00:00Z",
   description: "A very cool workshop for Technica!",
+  event_name: "hugo's awesome workshop",
   id: "1",
 }
 
@@ -30,6 +31,7 @@ const insert_event = {
     description: "A very cool workshop for Technica!",
     start_time: "2020-6-5T15:00:00Z",
     end_time: "2020-6-5T18:00:00Z",
+    event_name: "hugo's awesome workshop",
   })
 }
 

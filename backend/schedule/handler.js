@@ -65,6 +65,11 @@ module.exports.add_event = withSentry(async event => {
 
   body.id = id;
 
+  const zoomLink = await create_meeting_helper(body.event_name);
+  const shortlink = await create_shortlink_helper({link: zoomLink, target: body.event_name});
+
+  body.link = shortlink.full_link;
+
   // dynamically add post request body params to document
   Object.keys(body).forEach(k => {
     params.Item[k] = body[k];
@@ -75,7 +80,7 @@ module.exports.add_event = withSentry(async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({id: id}),
+    body: JSON.stringify(params.Item),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
@@ -263,17 +268,7 @@ make_shortlink = (length) => {
   return result;
 };
 
-// Creates and adds a new unique shortlink to the database, checking for duplicates
-module.exports.add_shortlink = withSentry(async event => {
-  const body = JSON.parse(event.body);
-
-  if(!body.link || !body.target){
-    return {
-      statusCode: 500,
-      body: "Missing link or target"
-    }
-  }
-
+const create_shortlink_helper = async (body) => {
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const id = UUID.v4();
@@ -303,6 +298,7 @@ module.exports.add_shortlink = withSentry(async event => {
 
   body.id = id;
   body.shortlinks = shortlink;
+  body.full_link = process.env.PLATFORM_BASE_URL + "/" + shortlink;
 
   // dynamically add post request body params to document
   Object.keys(body).forEach(k => {
@@ -311,6 +307,21 @@ module.exports.add_shortlink = withSentry(async event => {
 
   // Call DynamoDB to add the item to the table
   const result = await ddb.put(params).promise();
+  return params.Item;
+}
+
+// Creates and adds a new unique shortlink to the database, checking for duplicates
+module.exports.add_shortlink = withSentry(async event => {
+  const body = JSON.parse(event.body);
+
+  if(!body.link || !body.target){
+    return {
+      statusCode: 500,
+      body: "Missing link or target"
+    }
+  }
+
+  const result = await create_shortlink_helper(body);
 
   return {
     statusCode: 200,
@@ -421,20 +432,7 @@ module.exports.get_events_from_user_list = withSentry(async event => {
   };
 });
 
-module.exports.create_zoom_meeting = withSentry(async event => {
-  
-  const body = JSON.parse(event.body);
-  
-  // Check for validity
-  if (!body.event_name) {
-    return {
-      statusCode: 500,
-      body: "create_zoom_meeting expects 1 parameter: event_name"
-    }
-  }
-  
-  const event_name = body.event_name;
-
+const create_meeting_helper = async (event_name) => {
   const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
   const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.ZOOM_API_KEY_SECRET_NAME}).promise();
   const decodedZoomAPIKey = JSON.parse(SecretsManagerKey.SecretString).ZOOM_TESTING_API_KEY;
@@ -466,14 +464,22 @@ module.exports.create_zoom_meeting = withSentry(async event => {
     json: true // Automatically parses the JSON string in the response
   };
 
-  let result = await rp.post(options);
-  
-  if (result.status > 201) {
-    return {
-      statusCode: 500,
-      body: "Failed"
+  let result;
+  if(process.env.STAGE !== "testing") {
+    result = await rp.post(options);
+    if (result.status > 201) {
+      return {
+        statusCode: 500,
+        body: "Failed"
+      }
+    }
+  } else {
+    result = {
+      join_url: "https://zoom.us/12345_TEST"
     }
   }
+
+  
   
   let parsed_result = (result)            
 
@@ -491,14 +497,31 @@ module.exports.create_zoom_meeting = withSentry(async event => {
   };
   
   const database_return = await ddb.put(params).promise();
+  return parsed_result.join_url;
+}
+
+module.exports.create_zoom_meeting = withSentry(async event => {
+  
+  const body = JSON.parse(event.body);
+  
+  // Check for validity
+  if (!body.event_name) {
+    return {
+      statusCode: 500,
+      body: "create_zoom_meeting expects 1 parameter: event_name"
+    }
+  }
+  
+  const event_name = body.event_name;
+
+  const zoom_url = await create_meeting_helper(event_name);
 
   return {
     statusCode: 200,
-    body: JSON.stringify({zoom_link: parsed_result.join_url}),
+    body: JSON.stringify({zoom_link: zoom_url}),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true
     }
   };
 });
-        

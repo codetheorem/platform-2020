@@ -11,11 +11,11 @@
 
 <script>
 export default {
-  name: "Button",
+  name: 'Button',
   props: {
     size: {
       type: String,
-      default: "lg",
+      default: 'lg',
     },
     text: String,
     outlineStyle: {
@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     clicked() {
-      this.$emit("click");
+      this.$emit('click');
     },
   },
 };

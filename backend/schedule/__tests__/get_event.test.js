@@ -15,7 +15,8 @@ const AWS = require('aws-sdk');
 const insert_event = {
   body: JSON.stringify({
     category: "main",
-    description: "Get this event"
+    description: "Get this event",
+    event_name: "hugo's awesome workshop",
   })
 }
 

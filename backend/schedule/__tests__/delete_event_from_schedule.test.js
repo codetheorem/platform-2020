@@ -15,6 +15,7 @@ const delete_event = {
     body: JSON.stringify({
         id: "delete moi",
         category: "main",
+        event_name: "hugo's awesome workshop",
         description: "Delete this workshop for Technica!",
     })
 }
