@@ -4,7 +4,7 @@
     "USERS_TABLE": "platform-dev-users",
     "INVITES_TABLE": "platform-dev-invites",
     "INVITE_TEMPLATE_ID": "d-ad25e68e009e405eb2b71364a8e25722",
-    "BASE_INVITE_URL": "http://platform-staging.gotechnica.org/authenticate",
+    "BASE_INVITE_URL": "http://localhost:8080/authenticate",
     "SENDGRID_SECRET_NAME": "SENDGRID_API_KEY",
     "REGISTRATION_REFERRAL_TABLE": "platform-dev-referrals",
     "REGISTRATION_TEMPLATE_ID": "d-37d309451576469988ffa38d21309133",

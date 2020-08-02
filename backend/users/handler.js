@@ -86,6 +86,9 @@ module.exports.add_user = withSentry(async user => {
   // Call DynamoDB to add the item to the table
   const result = await ddb.put(params).promise();
 
+  // Send the user an invite email
+  const inviteResult = await invite_user_helper(body);
+
   // Returns status code 200 and JSON string of 'result'
   return {
     statusCode: 200,
@@ -97,11 +100,114 @@ module.exports.add_user = withSentry(async user => {
   };
 });
 
+
+const invite_user_helper = async (body) => {
+    // Lazy load the sendgrid api - we don't want to load it for other endpoints
+    const sgMail = require('@sendgrid/mail');    
+  
+    const ddb = new AWS.DynamoDB.DocumentClient();
+  
+    // Get the user's info to send email and update dbs
+    const userResp = await ddb.get({
+      TableName: process.env.USERS_TABLE,
+      Key: { id: body.id }
+    }).promise();
+  
+    const user = userResp.Item;
+  
+    const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
+    const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.SENDGRID_SECRET_NAME}).promise();
+    const decodedSendgridKey = JSON.parse(SecretsManagerKey.SecretString).SENDGRID_API_KEY;
+  
+    // TODO: actual invite link logic ----------------------------------//
+    invite_link = process.env.BASE_INVITE_URL + "?token=" + user.id;  //
+    // --------------------------------- TODO: actual invite link logic //
+  
+    // Send the user an email, using our template
+    sgMail.setApiKey(decodedSendgridKey);
+  
+    const msg = {
+      from: { email:"tech@gotechnica.org" },
+      personalizations: [{
+        "to":[{
+          "email": user.email
+        }],
+        "dynamic_template_data":{
+          "user_name": user.full_name,
+          "invite_link": invite_link
+        }
+      }],
+      template_id: process.env.INVITE_TEMPLATE_ID
+    };
+    
+    //If not running integration suites, send email
+    if(process.env.STAGE != TESTING_STAGE){
+      await sgMail.send(msg);
+    }
+  
+    // We can set a flag in the body to not update their registration status if they're just logging back in
+    if(!body.setRegistrationStatus) {
+      // update ddb table:"platform-users" so user's `registration_status` is "email_invite_sent"
+      const updateResp = await ddb.update({
+        TableName: process.env.USERS_TABLE,
+        Key: { id: user.id.toString() } ,
+        UpdateExpression: "SET registration_status = :s",
+        ExpressionAttributeValues: {":s": "email_invite_sent"}
+      }).promise()
+    }
+  
+    // new item in "platform-invites" table with pertinent information
+    const result = await ddb.put({
+      TableName: process.env.INVITES_TABLE,
+      Item: {
+        id: UUID.v4(),
+        user_id: user.id,
+        email: user.email,
+        invite_link: invite_link,
+        timestamp: new Date().toString(),
+        accepted: "false"
+      }
+    }).promise();
+  
+    return result.Item;
+}
+
+module.exports.find_user_by_email = withSentry(async event => {
+  const email = String(event.queryStringParameters.email);
+
+  // check for email in request
+  if (!email) {
+    return {
+      statusCode: 500,
+      body: "find_user_by_email expects keys \"email\""
+    }
+  }
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const params = {
+    TableName: process.env.USERS_TABLE,
+    FilterExpression: "email = :val",
+    ExpressionAttributeValues: {
+      ":val" : email,
+    }
+  };
+
+  // Call DynamoDB to scan through *all* items in the table
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Items),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };
+})
+
 // Sends an email invite to a user for registering/logging in
 module.exports.invite_user = withSentry(async event => {
-  // Lazy load the sendgrid api - we don't want to load it for other endpoints
-  const sgMail = require('@sendgrid/mail');
-
   const body = JSON.parse(event.body);
 
   // check for id in request
@@ -112,70 +218,10 @@ module.exports.invite_user = withSentry(async event => {
     }
   }
 
-  const ddb = new AWS.DynamoDB.DocumentClient();
-
-  // Get the user's info to send email and update dbs
-  const userResp = await ddb.get({
-    TableName: process.env.USERS_TABLE,
-    Key: { id: body.id }
-  }).promise();
-
-  const user = userResp.Item;
-
-  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
-  const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.SENDGRID_SECRET_NAME}).promise();
-  const decodedSendgridKey = JSON.parse(SecretsManagerKey.SecretString).SENDGRID_API_KEY;
-
-  // TODO: actual invite link logic ----------------------------------//
-  invite_link = process.env.BASE_INVITE_URL + "?token=" + user.id;  //
-  // --------------------------------- TODO: actual invite link logic //
-
-  // Send the user an email, using our template
-  sgMail.setApiKey(decodedSendgridKey);
-
-  const msg = {
-    from: { email:"tech@gotechnica.org" },
-    personalizations: [{
-      "to":[{
-        "email": user.email
-      }],
-      "dynamic_template_data":{
-        "user_name": user.full_name,
-        "invite_link": invite_link
-      }
-    }],
-    template_id: process.env.INVITE_TEMPLATE_ID
-  };
-  
-  //If not running integration suites, send email
-  if(process.env.STAGE != TESTING_STAGE){
-    sgMail.send(msg);
-  }
-
-  // update ddb table:"platform-users" so user's `registration_status` is "email_invite_sent"
-  const updateResp = await ddb.update({
-    TableName: process.env.USERS_TABLE,
-    Key: { id: user.id.toString() } ,
-    UpdateExpression: "SET registration_status = :s",
-    ExpressionAttributeValues: {":s": "email_invite_sent"}
-  }).promise()
-
-  // new item in "platform-invites" table with pertinent information
-  const result = await ddb.put({
-    TableName: process.env.INVITES_TABLE,
-    Item: {
-      id: UUID.v4(),
-      user_id: user.id,
-      email: user.email,
-      invite_link: invite_link,
-      timestamp: new Date().toString(),
-      accepted: "false"
-    }
-  }).promise();
-
+  const result = await invite_user_helper(body);
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item),
+    body: JSON.stringify(result),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
@@ -357,7 +403,7 @@ module.exports.send_registration_email = withSentry(async event => {
  
   //If not running integration suites, send email
   if(process.env.STAGE != TESTING_STAGE){
-    sgMail.send(msg);
+    await sgMail.send(msg);
   }
 
   const result = await ddb.putItem({

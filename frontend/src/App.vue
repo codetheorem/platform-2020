@@ -7,14 +7,19 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue';
+import generalMixin from '@/mixins/general';
 import Vue from 'vue';
 import * as Sentry from '@sentry/browser';
 import { Vue as VueIntegration } from '@sentry/integrations';
 
-Sentry.init({
-  dsn: 'https://cc58a94e8e7b4864aaa9f01242666f46@o414418.ingest.sentry.io/5320099',
-  integrations: [new VueIntegration({ Vue, attachProps: true })],
-});
+if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test') {
+  Sentry.init({
+    dsn: 'https://cc58a94e8e7b4864aaa9f01242666f46@o414418.ingest.sentry.io/5320099',
+    integrations: [new VueIntegration({ Vue, attachProps: true })],
+  });
+}
+
+const routesWithoutNavBar = ['Login', 'Register', 'Authenticate'];
 
 export default {
   name: 'App',
@@ -23,7 +28,25 @@ export default {
   },
   computed: {
     displayRouteList() {
-      return this.$route.name !== 'Login' && this.$route.name !== 'Register';
+      return !routesWithoutNavBar.includes(this.$route.name);
+    },
+  },
+  async mounted() {
+    while (!this.$route.name) {
+      // eslint-disable-next-line no-await-in-loop
+      await this.sleep(50);
+    }
+    this.verifyUserId();
+  },
+  mixins: [generalMixin],
+  methods: {
+    verifyUserId() {
+      if ((!this.getUserId()) && ((this.$route.name !== 'Login' && this.$route.name !== 'authenticate'))) {
+        this.$router.push('Login');
+      }
+    },
+    sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
     },
   },
 };

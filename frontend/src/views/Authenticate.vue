@@ -15,7 +15,7 @@ export default {
 
     };
   },
-  async mounted() {
+  async created() {
     const params = {
       id: this.$route.query.token,
     };

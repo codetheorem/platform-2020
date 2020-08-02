@@ -6,7 +6,7 @@
           <h3>Login</h3>
         </template>
         <template v-slot:body>
-          <p class="description-text">Instead of using a complex password, enter your email so Technica can send you a magic link to sign in.</p>
+          <p class="description-text">Instead of using a password, enter your email so Technica can send you a magic link to sign in.</p>
           <p v-if="emailNotFound" class="text-error">We could not find your email in our records. For further assistance, please contact our support team.</p>
           <p v-if="emailInvalid" class="text-error">Please enter a valid email address.</p>
           <form @submit.prevent="sendMagicLink">
@@ -40,6 +40,7 @@
 <script>
 import Button from '@/components/Button.vue';
 import ContentContainer from '@/components/ContentContainer.vue';
+import generalMixin from '@/mixins/general';
 import Config from '../config/general';
 
 export default {
@@ -48,6 +49,7 @@ export default {
     Button,
     ContentContainer,
   },
+  mixins: [generalMixin],
   data() {
     return {
       loginButtonClicked: false,
@@ -57,11 +59,36 @@ export default {
     };
   },
   methods: {
-    sendMagicLink() {
+    async sendMagicLink() {
+      const env = this.getCurrentEnvironment();
       if (this.userEmail !== '') {
         this.loginButtonClicked = true;
+        const getParams = {
+          email: this.userEmail,
+        };
+        const user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'find_user_by_email', getParams);
+
+        if (user[0]) {
+          const postParams = {
+            id: user[0].id,
+            setRegistrationStatus: false,
+          };
+          this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'invite_user', postParams);
+        }
       } else {
         this.emailInvalid = true;
+      }
+    },
+    verifyUserId() {
+      if ((!this.getUserId())) {
+        this.$router.push('Login');
+      }
+    },
+  },
+  watch: {
+    $route(to) { // watch route changes and kick the user out if they're not properly logged in
+      if (to.name !== 'Login') {
+        this.verifyUserId();
       }
     },
   },
