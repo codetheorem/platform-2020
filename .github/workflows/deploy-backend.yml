@@ -27,6 +27,6 @@ jobs:
       uses: rtCamp/action-slack-notify@master
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_MESSAGE: Initiated new backend deploy to staging. View this deployment at https://github.com/gotechnica/platform-2020/actions
+        SLACK_MESSAGE: Initiated new backend platform deploy to staging. View this deployment at https://github.com/gotechnica/platform-2020/actions
         MSG_MINIMAL: true
         SLACK_TITLE: Event
