@@ -2,7 +2,9 @@
   <span>
     <li v-if="!dropdown" class="nav-item">
     <router-link :to="destinationRoute">
-        <a class="nav-link" href="#">{{ title }}</a>
+        <a class="nav-link" href="#">
+          <span class="nav-inner-text">{{ title }}</span>
+        </a>
     </router-link>
   </li>
   <li v-else class="nav-item dropdown">
@@ -36,10 +38,25 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .nav-link {
-        color: #B6A1C4 !important;
-        font-size: 18px;
-        font-weight: 600;
+    .nav-inner-text, .nav-link.dropdown-toggle, .dropdown-menu, .dropdown-item{
+      color: #B6A1C4 !important;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .nav-inner-text, .nav-link.dropdown-toggle{
+      padding: 10px!important;
+    }
+    .dropdown-menu{
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    .dropdown-item{
+      padding-left: 5px;
+    }
+    .nav-inner-text:hover, .nav-link.dropdown-toggle:hover, .dropdown-item:hover{
+      color: #B377DB !important;
+      background: rgba(182, 161, 196, 0.25);  
+      border-radius: 4px;
     }
 
     @media (min-width: 992px) {
