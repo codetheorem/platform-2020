@@ -22,10 +22,7 @@ const routes = [
     path: '/sponsorship-fair',
     name: 'Sponsorship Fair',
     component: () => import('../views/SponsorshipFair.vue'),
-    displayInNavBar: true,
-    beforeEnter() {
-      window.open(Config.dev.SPONSORSHIP_LINK, '_blank');
-    },
+    displayInNavBar: false,
   },
   {
     path: '/live-stream',
