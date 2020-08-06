@@ -3,7 +3,7 @@
     "BANNED_USERS_TABLE": "platform-prod-banned-users",
     "USERS_TABLE": "platform-prod-users",
     "INVITES_TABLE": "platform-prod-invites",
-    "INVITE_TEMPLATE_ID": "d-ad25e68e009e405eb2b71364a8e25722",
+    "INVITE_TEMPLATE_ID": "d-b55f945d51b04bc38aa12f69c4c65d28",
     "BASE_INVITE_URL": "http://platform-staging.gotechnica.org/authenticate",
     "SENDGRID_SECRET_NAME": "SENDGRID_API_KEY",
     "REGISTRATION_REFERRAL_TABLE": "platform-prod-referrals",
