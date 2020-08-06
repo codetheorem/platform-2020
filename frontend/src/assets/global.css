@@ -69,6 +69,8 @@ p.semi {
 }
 
 a {
+	box-sizing: content-box !important;
+	width: max-content;
 	color: var(--pastel-purple);
 }
 

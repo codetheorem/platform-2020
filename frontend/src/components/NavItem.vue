@@ -43,22 +43,29 @@ export default {
       font-size: 18px;
       font-weight: 600;
     }
+    .nav-link{
+      margin: 10px !important;
+      padding: 10px !important;
+    }
     .nav-inner-text, .nav-link.dropdown-toggle{
-      padding: 10px!important;
+      padding: 10px !important;
+    }
+    .dropdown{
+      padding-left: 10px;
     }
     .dropdown-menu{
       padding-left: 5px;
-      padding-right: 5px;
+      padding-right: 15px;
+      margin-left: 20px !important;
     }
     .dropdown-item{
-      padding-left: 5px;
+      padding: 5px;
     }
     .nav-inner-text:hover, .nav-link.dropdown-toggle:hover, .dropdown-item:hover{
       color: #B377DB !important;
       background: rgba(182, 161, 196, 0.25);
       border-radius: 4px;
     }
-
     @media (min-width: 992px) {
         .navbar-expand-lg .navbar-nav .nav-link {
             padding-right: 2.5rem;
