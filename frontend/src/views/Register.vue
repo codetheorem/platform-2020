@@ -106,6 +106,7 @@ export default {
       };
       this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
       this.nextButtonClicked = true;
+      this.setUserNameCookie(this.name.split(" ")[0]);
     },
     goHome() {
       this.$router.push('/');

@@ -1,7 +1,7 @@
 <template>
   <div class="home-page">
     <div class="home-header">
-      <h2>Welcome, Hugo</h2>
+      <h2>Welcome, {{ getUserName() }}</h2>
     </div>
     <div class="home-main">
       <div class="home-links">
@@ -25,12 +25,14 @@
 
 <script>
 import Banner from '@/components/Banner.vue';
+import generalMixin from '../mixins/general';
 
 export default {
   name: 'Home',
   components: {
     Banner,
   },
+  mixins: [generalMixin]
 };
 </script>
 

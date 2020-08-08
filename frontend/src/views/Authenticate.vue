@@ -28,6 +28,7 @@ export default {
         this.$router.push('Register');
       } else {
         this.$router.push('/');
+        this.setUserNameCookie(user.full_name.split(" ")[0]);
       }
     } else {
       this.$router.push('Login');

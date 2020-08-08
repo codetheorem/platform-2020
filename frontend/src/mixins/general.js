@@ -61,6 +61,15 @@ export default {
     removeUserIdCookie() {
       this.$cookie.delete('userId');
     },
+    getUserName() {
+      return this.$cookie.get('userName');
+    },
+    setUserNameCookie(name) {
+      this.$cookie.set('userName', name, 100);
+    },
+    removeUserNameCookie() {
+      this.$cookie.delete('userName');
+    },
     getCurrentEnvironment() {
       if (window.location.hostname === 'platform.gotechnica.org') {
         return 'production';
