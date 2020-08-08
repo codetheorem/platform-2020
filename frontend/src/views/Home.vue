@@ -32,7 +32,7 @@ export default {
   components: {
     Banner,
   },
-  mixins: [generalMixin]
+  mixins: [generalMixin],
 };
 </script>
 
