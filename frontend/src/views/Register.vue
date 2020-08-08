@@ -57,7 +57,7 @@
           <h5>2) Your Hacker Profile</h5>
           <p class="description-text">Your hacker profile is an optional way for you to share more information about yourselves with the event sponsors. Describe yourself in 1-2 sentences:</p>
           <form>
-            <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text"></textarea>
+            <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text"></textarea>
             <!-- <Button size="lg" text="Upload Profile Picture" @click="goToProfile()"/> -->
           </form>
           <Button size="lg" text="Finish" @click="goHome()"/>
@@ -70,7 +70,8 @@
 <script>
 import Button from '@/components/Button.vue';
 import ContentContainer from '@/components/ContentContainer.vue';
-// import Config from '../config/general';
+import generalMixin from '../mixins/general';
+import Config from '../config/general';
 
 export default {
   name: 'Register',
@@ -78,6 +79,7 @@ export default {
     Button,
     ContentContainer,
   },
+  mixins: [generalMixin],
   data() {
     return {
       getStartedButtonClicked: false,
@@ -86,6 +88,7 @@ export default {
       email: '',
       school: '',
       phone: '',
+      profile_text: '',
     };
   },
   methods: {
@@ -93,10 +96,26 @@ export default {
       this.getStartedButtonClicked = true;
     },
     goToProfile() {
+      const env = this.getCurrentEnvironment();
+      const postParams = {
+        id: this.getUserId(),
+        email: this.email,
+        full_name: this.name,
+        school: this.school,
+        phone: this.phone,
+      };
+      this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
       this.nextButtonClicked = true;
     },
     goHome() {
       this.$router.push('/');
+      const env = this.getCurrentEnvironment();
+      const postParams = {
+        id: this.getUserId(),
+        profile_text: this.profile_text,
+        registration_status: 'registered',
+      };
+      this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
     },
   },
 };

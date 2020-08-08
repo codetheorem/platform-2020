@@ -18,7 +18,6 @@ export default {
   },
   async mounted() {
     const env = this.getCurrentEnvironment();
-    this.setUserIdCookie(Config[env].SAMPLE_USER_ID);
     const params = {
       shortlinks: this.$route.params.shortlink,
     };

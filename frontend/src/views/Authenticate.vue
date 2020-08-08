@@ -20,12 +20,15 @@ export default {
       id: this.$route.query.token,
     };
     const env = this.getCurrentEnvironment();
-    const userId = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', params);
-    console.log(userId);
+    const user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', params);
     // if user does not exist, redirect to login screen
-    if (userId && userId.id) {
+    if (user && user.id) {
       this.setUserIdCookie(this.$route.query.token);
-      this.$router.push('/');
+      if (!user.registration_status || user.registration_status === 'email_invite_sent') {
+        this.$router.push('Register');
+      } else {
+        this.$router.push('/');
+      }
     } else {
       this.$router.push('Login');
     }

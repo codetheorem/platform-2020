@@ -86,6 +86,8 @@ module.exports.add_user = withSentry(async user => {
   // Call DynamoDB to add the item to the table
   const result = await ddb.put(params).promise();
 
+  body.setRegistrationStatus = true;
+
   // Send the user an invite email
   const inviteResult = await invite_user_helper(body);
 
@@ -146,7 +148,7 @@ const invite_user_helper = async (body) => {
     }
   
     // We can set a flag in the body to not update their registration status if they're just logging back in
-    if(!body.setRegistrationStatus) {
+    if(body.setRegistrationStatus) {
       // update ddb table:"platform-users" so user's `registration_status` is "email_invite_sent"
       const updateResp = await ddb.update({
         TableName: process.env.USERS_TABLE,
