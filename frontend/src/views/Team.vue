@@ -26,7 +26,7 @@
               {{ teamMember.email }}
             </span>
             <span>
-              {{ teamMember.id }}
+              {{ teamMember.school }}
             </span>
           </div>
         </b-row>
@@ -136,6 +136,10 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+  color: var(--bright-purple);
+}
+
 .page-container {
   background-color: #F6F4F7;
   width: 100vw;

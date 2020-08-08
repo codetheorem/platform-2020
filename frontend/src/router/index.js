@@ -40,22 +40,10 @@ const routes = [
     displayInNavBar: true,
   },
   {
-    path: '/profile',
-    name: 'Profile',
-    component: () => import('../views/Profile.vue'),
-    displayInNavBar: true,
-    dropdown: [
-      {
-        path: '/logout',
-        name: 'Sign Out',
-      },
-    ],
-  },
-  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/project',
@@ -70,6 +58,12 @@ const routes = [
     displayInNavBar: true,
   },
   {
+    path: '/team-room',
+    name: 'Team Room',
+    component: () => import('../views/TeamRoom.vue'),
+    displayInNavBar: true,
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import('../views/Register.vue'),
@@ -80,6 +74,18 @@ const routes = [
     name: 'Help',
     component: () => import('../views/HelpDesk.vue'),
     displayInNavBar: true,
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import('../views/Profile.vue'),
+    displayInNavBar: true,
+    dropdown: [
+      {
+        path: '/logout',
+        name: 'Sign Out',
+      },
+    ],
   },
   {
     path: '/404',

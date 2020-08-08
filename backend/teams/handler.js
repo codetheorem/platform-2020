@@ -169,7 +169,7 @@ module.exports.get_users_for_team = withSentry(async event => {
   let queryParams = {RequestItems: {}};
   queryParams.RequestItems[process.env.USERS_TABLE] = {
     Keys: userIds,
-    ProjectionExpression: 'id, full_name, email'
+    ProjectionExpression: 'id, full_name, email, school'
   };
 
   const usersResult = await ddb.batchGet(queryParams).promise();
