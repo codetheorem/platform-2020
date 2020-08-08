@@ -43,7 +43,7 @@ import Button from '@/components/Button.vue';
 import generalMixin from '../mixins/general';
 
 export default {
-  name: 'Help Desk',
+  name: 'HelpDesk',
   mixins: [generalMixin],
   components: {
     Button,
