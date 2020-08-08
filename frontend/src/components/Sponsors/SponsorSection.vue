@@ -1,13 +1,6 @@
 <template>
   <div>
-      <b-row class="section-banner">
-        <b-col class="hl"></b-col>
-        <b-col class="section-title">
-            <h3 class="medium">{{tier.toUpperCase()}}</h3>
-        </b-col>
-        <b-col class="hl"></b-col>
-
-          </b-row>
+    <SectionTitle :title="tier" />
     <b-row v-for="row in sponsorGrid" :key="row.id" class="row">
         <b-col v-for="sponsor in row" :key="sponsor.id" class="col-sm">
             <SponsorCard v-bind:sponsor="sponsor"/>
@@ -18,11 +11,13 @@
 
 <script>
 import SponsorCard from '@/components/Sponsors/SponsorCard.vue';
+import SectionTitle from '@/components/SectionTitle.vue';
 
 export default {
   name: 'SponsorSection',
   components: {
     SponsorCard,
+    SectionTitle,
   },
   props: {
     tier: String,

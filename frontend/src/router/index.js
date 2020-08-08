@@ -64,10 +64,16 @@ const routes = [
     displayInNavBar: true,
   },
   {
+    path: '/team',
+    name: 'Team',
+    component: () => import('../views/Team.vue'),
+    displayInNavBar: true,
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import('../views/Register.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/help',

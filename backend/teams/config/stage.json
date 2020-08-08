@@ -2,5 +2,6 @@
     "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
     "TEAMS_TABLE": "platform-stage-teams",
     "INVITES_TABLE": "platform-stage-team-invites",
-    "MEMBERSHIPS_TABLE": "platform-stage-team-memberships"
+    "MEMBERSHIPS_TABLE": "platform-stage-team-memberships",
+    "USERS_TABLE": "platform-stage-users"
 }

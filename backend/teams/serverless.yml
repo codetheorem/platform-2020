@@ -9,6 +9,7 @@ provider:
     TEAMS_TABLE: ${file(./config/${self:provider.stage}.json):TEAMS_TABLE}
     INVITES_TABLE: ${file(./config/${self:provider.stage}.json):INVITES_TABLE}
     MEMBERSHIPS_TABLE: ${file(./config/${self:provider.stage}.json):MEMBERSHIPS_TABLE}
+    USERS_TABLE: ${file(./config/${self:provider.stage}.json):USERS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -18,6 +19,7 @@ provider:
        - dynamodb:PutItem
        - dynamodb:UpdateItem
        - dynamodb:DeleteItem
+       - dynamodb:BatchGetItem
       Resource: "arn:aws:dynamodb:us-east-1:*"
 
 
@@ -50,7 +52,27 @@ functions:
           path: leave_team
           method: post
           cors: true
-
+  get_team_invites:
+    handler: handler.get_team_invites
+    events:
+      - http: 
+          path: get_team_invites
+          method: get
+          cors: true
+  get_users_for_team:
+    handler: handler.get_users_for_team
+    events:
+      - http: 
+          path: get_users_for_team
+          method: get
+          cors: true
+  get_team_membership_for_user:
+    handler: handler.get_team_membership_for_user
+    events:
+      - http: 
+          path: get_team_membership_for_user
+          method: get
+          cors: true
 plugins:
   - serverless-sentry
   - serverless-jest-plugin
