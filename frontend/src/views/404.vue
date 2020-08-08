@@ -8,16 +8,24 @@
 
 <script>
 import Button from '@/components/Button.vue';
+import generalMixin from '../mixins/general';
 
 export default {
   name: '404',
   components: {
     Button,
   },
+  mixins: [generalMixin],
   methods: {
     goBack() {
       this.$router.push({ name: 'Home' });
     },
+  },
+  async created() {
+    // if user does not exist, redirect to login screen
+    if (!this.getUserId()) {
+      this.$router.push('Login');
+    }
   },
 };
 </script>

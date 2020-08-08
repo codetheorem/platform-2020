@@ -3,9 +3,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light navigation-box">
       <div class="logo-nav">
         <a class="navbar-brand" href="#">
-          <router-link to="/">
-            <img alt="Vue logo" src="../assets/technica-logo.svg" class="img-responsive" />
-          </router-link>
+          <img alt="Vue logo" src="../assets/technica-logo.svg" class="img-responsive" />
         </a>
       </div>
       <span v-if="displayRouteList" class="mx-auto">
