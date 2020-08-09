@@ -44,7 +44,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
 body {background-color: #F6F4F7;}
 

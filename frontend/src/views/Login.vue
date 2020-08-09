@@ -100,7 +100,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
   .page-container {
     background: conic-gradient(from 212.03deg at 50% 33.82%,rgb(255,107,152, .6) -123.4deg, rgb(182,161,196, .6) 11.75deg, rgb(35,216,216, .6) 79.77deg, rgb(255,107,152, .6) 236.6deg, rgb(182,161,196, .6) 371.75deg);
     backdrop-filter: blur(40px);
