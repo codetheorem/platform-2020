@@ -72,7 +72,7 @@ export default {
     },
     getCurrentEnvironment() {
       if (window.location.hostname === 'platform.gotechnica.org') {
-        return 'production';
+        return 'prod';
       }
       if (window.location.hostname === 'platform-staging.gotechnica.org') {
         return 'stage';
