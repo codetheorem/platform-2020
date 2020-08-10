@@ -378,8 +378,24 @@ module.exports.send_registration_email = withSentry(async event => {
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-  const referralId = UUID.v4().substring(0, 5);
+  let referralId;
+  let checker_result;
+  let checker_params;
+  //check that the referral ID is unique
+  do {
+    referralId = UUID.v4().substring(0, 5);
 
+    checker_params = {
+      ExpressionAttributeValues: {
+	  ":a": { "S": process.env.REGISTRATION_INVITE_URL + "?r=" + referralId }
+      },
+      FilterExpression: "invite_link = :a",
+      TableName: process.env.REGISTRATION_REFERRAL_TABLE
+     };
+
+    checker_result = await ddb.scan(checker_params).promise();
+  } while (checker_result["Count"] > 0);
+    
   const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
   const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.SENDGRID_SECRET_NAME}).promise();
   const decodedSendgridKey = JSON.parse(SecretsManagerKey.SecretString).SENDGRID_API_KEY;
@@ -408,17 +424,19 @@ module.exports.send_registration_email = withSentry(async event => {
     await sgMail.send(msg);
   }
 
+  const refItem = {
+    id: {S: UUID.v4()},
+    firstname: {S: firstName},
+    email: {S: email},
+    invite_link: {S: invite_link},
+    timestamp: {S: new Date().toString()},
+    referral_origin: {S: referral},
+    registration_data: {S: JSON.stringify(body.form_response)}
+  }
+    
   const result = await ddb.putItem({
     TableName: process.env.REGISTRATION_REFERRAL_TABLE,
-    Item: {
-      id: {S: UUID.v4()},
-      firstname: {S: firstName},
-      email: {S: email},
-      invite_link: {S: invite_link},
-      timestamp: {S: new Date().toString()},
-      referral_origin: {S: referral},
-      registration_data: {S: JSON.stringify(body.form_response)}
-    }
+    Item: refItem,
   }).promise();
 
   const SecretsManagerSlackKey = await SecretsManager.getSecretValue({SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME}).promise();
@@ -432,7 +450,7 @@ module.exports.send_registration_email = withSentry(async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(result.Item),
+    body: JSON.stringify(refItem),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
