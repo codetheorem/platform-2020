@@ -69,6 +69,7 @@ module.exports.join_team = withSentry(async event => {
   return post_request_body_to_table(event, process.env.MEMBERSHIPS_TABLE);
 });
 
+// find a membership item, delete it
 module.exports.leave_team = withSentry(async event => {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB.DocumentClient();
@@ -82,6 +83,14 @@ module.exports.leave_team = withSentry(async event => {
   };
 
   const result = await ddb.scan(params).promise();
+  
+  //if no matches, return
+  if (result.Count == 0) {
+    return{
+      statusCode: 500,
+      body: "Error, no membership found"
+    }
+  }
 
   const delete_params = {
     TableName: process.env.MEMBERSHIPS_TABLE,

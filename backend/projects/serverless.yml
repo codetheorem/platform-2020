@@ -10,6 +10,7 @@ provider:
     PROJECTS_TABLE: ${file(./config/${self:provider.stage}.json):PROJECTS_TABLE}
     SPONSORS_INFO_TABLE: ${file(./config/${self:provider.stage}.json):SPONSORS_INFO_TABLE}
     MENTORSHIP_REQUESTS_TABLE: ${file(./config/${self:provider.stage}.json):MENTORSHIP_REQUESTS_TABLE}
+    PROJECT_SUBMISSION_CHECKLIST_ITEMS_TABLE: ${file(./config/${self:provider.stage}.json):PROJECT_SUBMISSION_CHECKLIST_ITEMS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -69,6 +70,30 @@ functions:
     events:
       - http: 
           path: create_mentorship_request
+          method: post
+          cors: true
+  create_project_checklist_item:
+    handler: handler.create_project_checklist_item
+    description: adds a new project submission checklist item to the database
+    events:
+      - http: 
+          path: create_project_checklist_item
+          method: post
+          cors: true
+  get_project_checklist_item:
+    handler: handler.get_project_checklist_item
+    description: gets a project submission checklist item from the database
+    events:
+      - http: 
+          path: get_project_checklist_item
+          method: get
+          cors: true
+  update_project_checklist_item:
+    handler: handler.update_project_checklist_item
+    description: updates an existing project submission checklist item in the database
+    events:
+      - http: 
+          path: update_project_checklist_item
           method: post
           cors: true
 

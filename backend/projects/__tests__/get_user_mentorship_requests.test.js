@@ -19,6 +19,11 @@ let add_request = {
         user_id: "its meee"
     })
 };
+
+const get_request = {
+  queryStringParameters: {user_id: "its meee"}
+}
+
 describe('get_user_mentorship_requests', () => {
   beforeAll((done) => {
     done();
@@ -28,10 +33,7 @@ describe('get_user_mentorship_requests', () => {
     const added = await adder.run(add_request);
     const addedId = JSON.parse(added.body).id;
 
-    const request = {
-        queryStringParameters: JSON.stringify({user_id: "its meee"})
-    }
-    return await wrapped.run(request).then(async (response) => {
+    return await wrapped.run(get_request).then(async (response) => {
         expect(response).toBeDefined();
         expect(response).toHaveProperty('statusCode', 200);
 

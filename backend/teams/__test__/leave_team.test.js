@@ -6,7 +6,7 @@ const mod = require('../handler');
 
 const jestPlugin = require('serverless-jest-plugin');
 const lambdaWrapper = jestPlugin.lambdaWrapper;
-const adder = lambdaWrapper.wrap(mod, { handler: 'invite_to_team' });
+const adder = lambdaWrapper.wrap(mod, { handler: 'join_team' });
 const wrapper = lambdaWrapper.wrap(mod, { handler: 'leave_team' });
 
 const AWS = require('aws-sdk');
@@ -17,6 +17,13 @@ const valid_request = {
         id: "testin",
         user_id: "the one that got away",
         team_id: ":,)"
+    })
+};
+
+const valid_team_to_join = {
+    body: JSON.stringify({
+        "team_id": ":,)",
+        "user_id": "the one that got away"
     })
 };
 
@@ -36,7 +43,7 @@ describe('leave_team', () => {
 
     it('Successfully accepts request to leave a team with id', async() =>{
         // Add team into the membership db
-        const response = await adder.run(valid_request);
+        const response = await adder.run(valid_team_to_join);
 
         // id of team that was added
         const id = JSON.parse(response.body).id;   
