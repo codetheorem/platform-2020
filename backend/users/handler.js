@@ -424,9 +424,11 @@ module.exports.send_registration_email = withSentry(async event => {
   const SecretsManagerSlackKey = await SecretsManager.getSecretValue({SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME}).promise();
   const webhookUrl = JSON.parse(SecretsManagerSlackKey.SecretString).PLATFORM_ACTVITY_SLACK_WEBHOOK;
   const webhook = new IncomingWebhook(webhookUrl);
-  await webhook.send({
-    text: "Successfully sent registration email confirmation to " + email + ".",
-  });
+  if(process.env.STAGE != TESTING_STAGE){
+    await webhook.send({
+      text: "Successfully sent registration email confirmation to " + email + ".",
+    });
+  }
 
   return {
     statusCode: 200,
