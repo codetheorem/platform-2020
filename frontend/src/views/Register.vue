@@ -32,6 +32,10 @@
                 <input type="text" class="form-control mx-auto" id="nameInput" placeholder="Grace Hopper" v-model="name">
               </div>
               <div class="input-wrapper">
+                <label for="exampleInputEmail1" class="input-label">My Pronouns</label>
+                <input type="text" class="form-control mx-auto" id="pronounInput" placeholder="she/her" v-model="pronoun">
+              </div>
+              <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My Email</label>
                 <input type="email" class="form-control mx-auto" id="emailInput" placeholder="hello@gotechnica.org" v-model="email">
               </div>
@@ -100,6 +104,7 @@ export default {
       const postParams = {
         id: this.getUserId(),
         email: this.email,
+        pronoun: this.pronoun,
         full_name: this.name,
         school: this.school,
         phone: this.phone,
