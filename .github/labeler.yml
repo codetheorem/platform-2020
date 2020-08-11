@@ -1,0 +1,39 @@
+############################################################ GENERAL LABELS ####
+
+# Add 'frontend' to any changes within 'frontend' folder or any subfolders
+frontend:
+  - frontend/**/*
+
+# Add 'frontend' to any changes within 'frontend' folder or any subfolders
+backend:
+  - backend/**/*
+
+# Add 'cicd' to any changes within '.github' folder or any subfolders
+cicd:
+  - .github/**/*
+
+################################################### DETAILED BACKEND LABELS ####
+
+# Add 'admin' to any changes within 'backend/admin' folder or any subfolders
+admin:
+  - backend/admin/**/*
+
+# Add 'infrastructure' to any changes within 'backend/infrastructure' folder or any subfolders
+infrastructure:
+  - backend/infrastructure/**/*
+
+# Add 'projects' to any changes within 'backend/projects' folder or any subfolders
+projects:
+  - backend/projects/**/*
+
+# Add 'schedule' to any changes within 'backend/schedule' folder or any subfolders
+schedule:
+  - backend/schedule/**/*
+
+# Add 'teams' to any changes within 'backend/teams' folder or any subfolders
+teams:
+  - backend/teams/**/*
+
+# Add 'users' to any changes within 'backend/users' folder or any subfolders
+users:
+  - backend/users/**/*
