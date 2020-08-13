@@ -3,6 +3,8 @@ const UUID = require('uuid');
 const withSentry = require("serverless-sentry-lib");
 const { IncomingWebhook } = require('@slack/webhook');
 const TESTING_STAGE = 'testing';
+const ADD_USER_EVENT = 'REGISTER';
+const INVITE_USER_EVENT = 'LOGIN';
 AWS.config.update({region:'us-east-1'});
 
 // delete a single user from the database
@@ -86,6 +88,21 @@ module.exports.add_user = withSentry(async user => {
   // Call DynamoDB to add the item to the table
   const result = await ddb.put(params).promise();
 
+  // Create parameters for activity item
+  const activity_id = UUID.v4();
+    
+  const activity_params = {
+    TableName: process.env.ACTIVITY_TABLE,
+    Item: {
+      id: activity_id,
+      user_id: body.id,
+      event: ADD_USER_EVENT
+    }
+  };
+
+  // Call DynamoDB to add activity item to the table
+  const activity_result = await ddb.put(activity_params).promise();
+    
   body.setRegistrationStatus = true;
 
   // Send the user an invite email
@@ -212,6 +229,8 @@ module.exports.find_user_by_email = withSentry(async event => {
 module.exports.invite_user = withSentry(async event => {
   const body = JSON.parse(event.body);
 
+  const ddb = new AWS.DynamoDB.DocumentClient();
+    
   // check for id in request
   if (!body.id) {
     return {
@@ -220,6 +239,21 @@ module.exports.invite_user = withSentry(async event => {
     }
   }
 
+  // Create parameters for activity item
+  const activity_id = UUID.v4();
+    
+  const activity_params = {
+    TableName: process.env.ACTIVITY_TABLE,
+    Item: {
+      id: activity_id,
+      user_id: body.id,
+      event: INVITE_USER_EVENT
+    }
+  };
+
+  // Call DynamoDB to add activity item to the table
+  const activity_result = await ddb.put(activity_params).promise();
+    
   const result = await invite_user_helper(body);
   return {
     statusCode: 200,

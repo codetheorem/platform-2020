@@ -17,6 +17,7 @@ provider:
     REGISTRATION_TEMPLATE_ID: ${file(./config/${self:provider.stage}.json):REGISTRATION_TEMPLATE_ID}
     REGISTRATION_INVITE_URL: ${file(./config/${self:provider.stage}.json):REGISTRATION_INVITE_URL}
     SLACK_WEBHOOK_SECRET_NAME: ${file(./config/${self:provider.stage}.json):SLACK_WEBHOOK_SECRET_NAME}
+    ACTIVITY_TABLE: ${file(./config/${self:provider.stage}.json):ACTIVITY_TABLE}
     STAGE: ${self:provider.stage}
   iamRoleStatements:
     - Effect: "Allow"
