@@ -96,7 +96,8 @@ module.exports.add_user = withSentry(async user => {
     Item: {
       id: activity_id,
       user_id: body.id,
-      event: ADD_USER_EVENT
+      event: ADD_USER_EVENT,
+      timestamp: new Date().toString()
     }
   };
 
@@ -247,7 +248,8 @@ module.exports.invite_user = withSentry(async event => {
     Item: {
       id: activity_id,
       user_id: body.id,
-      event: INVITE_USER_EVENT
+      event: INVITE_USER_EVENT,
+      timestamp: new Date().toString()
     }
   };
 
