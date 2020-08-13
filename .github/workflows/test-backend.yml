@@ -5,6 +5,8 @@ name: Backend CI Test Suite
 on:
   pull_request:
     types: [opened, review_requested, synchronize]
+    paths:
+     - 'backend/**'
 
 # Job instructions
 jobs:

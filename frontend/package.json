@@ -35,7 +35,8 @@
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
     "chromedriver": "83",
-    "eslint": "^6.7.2",
+    "eslint": "^7.6.0",
+    "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
     "geckodriver": "^1.19.1",
@@ -43,13 +44,14 @@
     "lint-staged": "^9.5.0",
     "vue-template-compiler": "^2.6.11"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
   "lint-staged": {
-    "*.{js,jsx,vue}": [
-      "vue-cli-service lint",
-      "git add"
+    "src/**/*.{js,jsx,vue}": [
+      "eslint . --fix", "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
