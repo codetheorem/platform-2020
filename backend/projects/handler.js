@@ -200,6 +200,44 @@ module.exports.get_user_mentorship_requests = withSentry(async event => {
   };
 });
 
+// Implement backend endpoint to create a new devpost submission for a team
+module.exports.create_project_submission = withSentry(async event => {
+  const body = JSON.parse(event.body);
+  const devpost_link_table = process.env.DEVPOST_LINK_TABLE;
+  
+  // Check for validity
+  if (!body.team_id || !body.team_name || !body.devpost_link) {
+    return {
+      statusCode: 500,
+      body: "create_project_submission expects params: team_id, team_name, devpost_link"
+    }
+  }
+  
+  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+  const id = UUID.v4();
+
+  const params = {
+    TableName: devpost_link_table,
+    Item: {
+      id: {S: id},
+      team_id: {S: body["team_id"]},
+      team_name: {S: body["team_name"]},
+      devpost_link: {S: body["devpost_link"]}
+    }
+  };
+  
+  // Call DynamoDB to add the item to the table
+  const result = await ddb.putItem(params).promise();
+  return {
+    statusCode: 200,
+    body: JSON.stringify(params.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
+    }
+  };
+});
+
 // adds a new project submission checklist item to the database
 module.exports.create_project_checklist_item = withSentry(async request => {
 

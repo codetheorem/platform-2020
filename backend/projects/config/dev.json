@@ -3,5 +3,6 @@
     "PROJECTS_TABLE": "platform-dev-projects",
     "SPONSORS_INFO_TABLE": "platform-dev-sponsorship-info",
     "MENTORSHIP_REQUESTS_TABLE": "platform-dev-mentorship-requests",
+    "DEVPOST_LINK_TABLE": "platform-dev-project-submissions",
     "PROJECT_SUBMISSION_CHECKLIST_ITEMS_TABLE": "platform-dev-project-checklist-items"
 }

@@ -10,6 +10,7 @@ provider:
     PROJECTS_TABLE: ${file(./config/${self:provider.stage}.json):PROJECTS_TABLE}
     SPONSORS_INFO_TABLE: ${file(./config/${self:provider.stage}.json):SPONSORS_INFO_TABLE}
     MENTORSHIP_REQUESTS_TABLE: ${file(./config/${self:provider.stage}.json):MENTORSHIP_REQUESTS_TABLE}
+    DEVPOST_LINK_TABLE: ${file(./config/${self:provider.stage}.json):DEVPOST_LINK_TABLE}
     PROJECT_SUBMISSION_CHECKLIST_ITEMS_TABLE: ${file(./config/${self:provider.stage}.json):PROJECT_SUBMISSION_CHECKLIST_ITEMS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
@@ -70,6 +71,14 @@ functions:
     events:
       - http: 
           path: create_mentorship_request
+          method: post
+          cors: true
+  create_project_submission:
+    handler: handler.create_project_submission
+    description: creates a project submission to devpost
+    events:
+      - http:
+          path: create_project_submission
           method: post
           cors: true
   create_project_checklist_item:

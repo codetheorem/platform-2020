@@ -432,6 +432,7 @@ module.exports.get_events_from_user_list = withSentry(async event => {
   };
 });
 
+
 const create_meeting_helper = async (event_name) => {
   const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
   const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.ZOOM_API_KEY_SECRET_NAME}).promise();
@@ -484,6 +485,7 @@ const create_meeting_helper = async (event_name) => {
   let parsed_result = (result)            
 
 
+
   const ddb = new AWS.DynamoDB.DocumentClient();
   const id = UUID.v4();
 
@@ -525,3 +527,4 @@ module.exports.create_zoom_meeting = withSentry(async event => {
     }
   };
 });
+
