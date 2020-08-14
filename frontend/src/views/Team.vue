@@ -17,6 +17,9 @@
         <b-row v-if="!currentTeam && invites.length === 0" class="pending-invites">
           <span>You have no pending invites!</span>
         </b-row>
+        <b-row v-if="!currentTeam && invites.length > 0" class="invite-list">
+          <Banner v-for="invite in invites" :text="'You have an invite for invite ' + invite.id" :key="invite.id"/>
+        </b-row>
         <b-row v-if="currentTeam" class="team-list-container">
           <div v-for="teamMember in currentTeam.members" :key="teamMember.id" class="team-list-item">
             <span class="team-list-segment">
@@ -51,6 +54,7 @@
 <script>
 import SectionTitle from '@/components/SectionTitle.vue';
 import Button from '@/components/Button.vue';
+import Banner from '@/components/Banner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
@@ -59,6 +63,7 @@ export default {
   components: {
     SectionTitle,
     Button,
+    Banner,
   },
   mixins: [generalMixin],
   data() {
@@ -100,8 +105,13 @@ export default {
       };
       const env = this.getCurrentEnvironment();
       const invites = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_invites', params);
-      if (invites.length > 0) {
-        this.invites = invites;
+      const formattedInvites = [];
+      Object.keys(invites).forEach((k) => {
+        formattedInvites[k] = invites[k];
+      });
+      console.log(formattedInvites);
+      if (formattedInvites.length > 0) {
+        this.invites = formattedInvites;
       }
     },
     async getTeam() {
@@ -118,10 +128,18 @@ export default {
         this.currentTeam = {};
         this.currentTeam.members = teamMembers;
         this.currentTeam.name = 'My Team';
+        this.currentTeam.team_id = team[0].team_id;
       }
     },
     async inviteHacker() {
+      const env = this.getCurrentEnvironment();
+      console.log(this.currentTeam.team_id);
+      const createTeamPostParams = {
+        team_id: this.currentTeam.team_id,
+        email: this.inviteEmail,
+      };
       this.inviteEmail = '';
+      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'invite_to_team', createTeamPostParams);
     },
     async leaveTeam() {
       const env = this.getCurrentEnvironment();
@@ -188,6 +206,12 @@ h2 {
   justify-content: center;
   align-items: center;
   height: 2rem;
+}
+
+.invite-list {
+  flex: auto;
+  justify-content: center;
+  align-items: center;
 }
 
 .invites-divider {

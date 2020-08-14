@@ -62,6 +62,33 @@ module.exports.create_team = withSentry(async event => {
 });
 
 module.exports.invite_to_team = withSentry(async event => {
+  const body = JSON.parse(event.body);
+  const email = body.email;
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const params = {
+    TableName: process.env.USERS_TABLE,
+    FilterExpression: "email = :val",
+    ExpressionAttributeValues: {
+      ":val" : email,
+    }
+  };
+
+  const result = await ddb.scan(params).promise();
+  if(result.Items && result.Items.length > 0) {
+    const newBody = body;
+    newBody.user_id = result.Items[0].id;
+    event.body = JSON.stringify(newBody);
+  } else {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({}),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      }
+    };
+  }
   return post_request_body_to_table(event, process.env.INVITES_TABLE);
 });
 
