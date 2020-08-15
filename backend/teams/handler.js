@@ -146,6 +146,7 @@ module.exports.leave_team = withSentry(async event => {
   }
 });
 
+// Retrieves the team invites for a hacker
 module.exports.get_team_invites = withSentry(async event => {
   const user_id = String(event.queryStringParameters.user_id);
 
@@ -163,6 +164,39 @@ module.exports.get_team_invites = withSentry(async event => {
     FilterExpression: "user_id = :val",
     ExpressionAttributeValues: {
       ":val" : user_id,
+    }
+  };
+
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Items),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };
+});
+
+// Retrieves all the invites for a team
+module.exports.get_hackers_invited_to_team = withSentry(async event => {
+  const team_id = String(event.queryStringParameters.team_id);
+
+  if (!team_id) {
+    return {
+      statusCode: 500,
+      body: "get_hackers_invited_to_team expects keys \"team_id\""
+    }
+  }
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const params = {
+    TableName: process.env.INVITES_TABLE,
+    FilterExpression: "team_id = :val",
+    ExpressionAttributeValues: {
+      ":val" : team_id,
     }
   };
 

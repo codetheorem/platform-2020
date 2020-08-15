@@ -75,7 +75,7 @@ export default {
     };
   },
   async mounted() {
-    await this.getInvites();
+    await this.getInvitesForHacker();
     await this.getTeam();
   },
   computed: {
@@ -99,7 +99,22 @@ export default {
       await this.getTeam();
       this.teamName = '';
     },
-    async getInvites() {
+    async getInvitesForHacker() {
+      const params = {
+        user_id: this.getUserId(),
+      };
+      const env = this.getCurrentEnvironment();
+      const invites = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_invites', params);
+      const formattedInvites = [];
+      Object.keys(invites).forEach((k) => {
+        formattedInvites[k] = invites[k];
+      });
+      console.log(formattedInvites);
+      if (formattedInvites.length > 0) {
+        this.invites = formattedInvites;
+      }
+    },
+    async getInvitesForTeam() {
       const params = {
         user_id: this.getUserId(),
       };
@@ -137,6 +152,7 @@ export default {
       const createTeamPostParams = {
         team_id: this.currentTeam.team_id,
         email: this.inviteEmail,
+        team_name: this.currentTeam.name,
       };
       this.inviteEmail = '';
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'invite_to_team', createTeamPostParams);

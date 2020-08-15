@@ -59,6 +59,13 @@ functions:
           path: get_team_invites
           method: get
           cors: true
+  get_hackers_invited_to_team:
+    handler: handler.get_hackers_invited_to_team
+    events:
+      - http: 
+          path: get_hackers_invited_to_team
+          method: get
+          cors: true
   get_users_for_team:
     handler: handler.get_users_for_team
     events:
