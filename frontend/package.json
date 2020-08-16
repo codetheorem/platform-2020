@@ -7,8 +7,8 @@
     "build": "vue-cli-service build --mode staging",
     "build-prod": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
-    "deploy": "npm run build && vue-cli-service s3-deploy --mode staging",
-    "deploy-prod": "npm run build-prod && vue-cli-service s3-deploy --mode production",
+    "deploy": "npm run build && sls deploy --stage staging",
+    "deploy-prod": "npm run build-prod && sls deploy --stage prod",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },
@@ -35,6 +35,7 @@
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
     "chromedriver": "83",
+    "cross-env": "^7.0.2",
     "eslint": "^7.6.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.20.2",
@@ -46,7 +47,8 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,vue}": [
-      "eslint . --fix", "git add"
+      "eslint . --fix",
+      "git add"
     ]
   },
   "husky": {

@@ -1,0 +1,8 @@
+name: platform-frontend
+component: website
+inputs:
+  src:
+    src: ./src
+    hook: npm run build
+    dist: ./dist
+app: platform-frontend
