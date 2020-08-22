@@ -27,7 +27,7 @@ export default {
     USERS_BASE_ENDPOINT: 'https://xhy30yrm0f.execute-api.us-east-1.amazonaws.com',
     LIVESTREAM_LINK: 'https://www.youtube.com/channel/UC-Wo4UqhGUKQEp4o-51VMIw',
     SPONSORSHIP_LINK: 'https://www.vfairs.com/',
-    TEAMS_BASE_ENDPOINT: 'https://e2hezie6kb.execute-api.us-east-1.amazonaws.com',
+    TEAMS_BASE_ENDPOINT: 'https://c6vffjuklb.execute-api.us-east-1.amazonaws.com',
   },
   prod: {
     SPONSORS_INFO_ENDPOINT: 'https://jxeehdxaq6.execute-api.us-east-1.amazonaws.com',
