@@ -10,63 +10,65 @@
       <div class="schedule-body">
         <div class="time-container">
           <span v-for="time in times" :key="time" class="time-item">
-            <span style="display: inline-block; width: 5px;">{{ time }} AM</span>
+            <span style="display: inline-block; width: 5px;">{{ time }}</span>
           </span>
         </div>
-        <div class="event-container" v-if="selectedDay === 'Saturday'">
-          <div class="event-line">
-            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Midnight Meetup</span>
-            <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-            <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Breakfast</span>
-            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Atlassian</span>
+        <a href="https://zoom.us" target="_blank" style="cursor: normal;">
+          <div class="event-container" v-if="selectedDay === 'Saturday'">
+            <div class="event-line">
+              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Midnight Meetup</span>
+              <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+              <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Breakfast</span>
+              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Atlassian</span>
+            </div>
+            <div class="event-line">
+              <span class="event-item event-120" style="margin-left: 40px; margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
+              <span class="event-item event-90" style="margin-left: 230px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Team Snack!</span>
+              <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Lunch</span>
+              <span class="event-item event-120" style="margin-left: 200px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+            </div>
+            <div class="event-line">
+              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+              <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
+              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
+              <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Uber Techni-Chat</span>
+              <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
+            </div>
+            <div class="event-line">
+              <span class="event-item event-90" style="margin-left: 600px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Google</span>
+              <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>LGBTQ Meetup</span>
+            </div>
           </div>
-          <div class="event-line">
-            <span class="event-item event-120" style="margin-left: 40px; margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
-            <span class="event-item event-90" style="margin-left: 230px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Team Snack!</span>
-            <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Lunch</span>
-            <span class="event-item event-120" style="margin-left: 200px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+          <div class="event-container" v-else>
+            <div class="event-line">
+              <span class="event-item event-120" style="margin-left: 40px; margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
+              <span class="event-item event-90" style="margin-left: 230px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Team Snack!</span>
+              <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Lunch</span>
+              <span class="event-item event-120" style="margin-left: 200px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+            </div>
+            <div class="event-line">
+              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+              <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
+              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
+              <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Uber Techni-Chat</span>
+            </div>
+            <div class="event-line">
+              <span class="event-item event-90" style="margin-left: 600px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Google</span>
+              <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>LGBTQ Meetup</span>
+              <span class="event-item event-120" style="margin-left: 400px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Techni-Chat with Lyft</span>
+            </div>
+            <div class="event-line">
+              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Midnight Meetup</span>
+              <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+              <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Breakfast</span>
+              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Atlassian</span>
+            </div>
           </div>
-          <div class="event-line">
-            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-            <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
-            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
-            <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Uber Techni-Chat</span>
-            <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
-          </div>
-          <div class="event-line">
-            <span class="event-item event-90" style="margin-left: 600px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Google</span>
-            <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>LGBTQ Meetup</span>
-          </div>
-        </div>
-        <div class="event-container" v-else>
-          <div class="event-line">
-            <span class="event-item event-120" style="margin-left: 40px; margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
-            <span class="event-item event-90" style="margin-left: 230px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Team Snack!</span>
-            <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Lunch</span>
-            <span class="event-item event-120" style="margin-left: 200px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-          </div>
-          <div class="event-line">
-            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-            <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
-            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
-            <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Uber Techni-Chat</span>
-          </div>
-          <div class="event-line">
-            <span class="event-item event-90" style="margin-left: 600px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Google</span>
-            <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>LGBTQ Meetup</span>
-            <span class="event-item event-120" style="margin-left: 400px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Techni-Chat with Lyft</span>
-          </div>
-          <div class="event-line">
-            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Midnight Meetup</span>
-            <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-            <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Breakfast</span>
-            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Atlassian</span>
-          </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>
@@ -84,7 +86,7 @@ export default {
       events: [],
       selectedDay: 'Saturday',
       days: ['Saturday', 'Sunday'],
-      times: ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
+      times: ['12 AM', '1 AM', '2 AM', '3 AM', '4 AM', '5 AM', '6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM', '9 PM', '10 PM', '11 PM'],
     };
   },
   async mounted() {
@@ -175,6 +177,7 @@ h2 {
 
 .event-container {
   padding-left: 1rem;
+  cursor: default;
 }
 
 .event-item {
@@ -220,5 +223,10 @@ h2 {
   height: fit-content;
   display: flex;
   flex-flow: row;
+}
+
+.event-item:hover {
+  box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.15) !important;
+  cursor: pointer;
 }
 </style>
