@@ -25,7 +25,6 @@ provider:
        - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*"
 
-
 functions:
   add_sponsor:
     handler: handler.add_sponsor
@@ -107,6 +106,8 @@ functions:
           path: update_project_checklist_item
           method: post
           cors: true
+    layers:
+      - {Ref: DependenciesLambdaLayer}
 
 plugins:
   - serverless-sentry
@@ -118,3 +119,12 @@ custom:
   # see https://github.com/nordcloud/serverless-jest-plugin
   jest:
     collectCoverage: true
+
+
+# package:
+#   exclude:
+#     - node_modules/**
+
+layers:
+  dependencies:
+    path: node_modules
