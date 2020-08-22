@@ -1,52 +1,90 @@
 <template>
   <div class="schedule-page">
     <div>
-      <h2 style="padding-top: 1rem;">Events</h2>
+      <h2 style="padding-top: 1rem; margin-bottom: 1.5rem;">Events</h2>
     </div>
-    <div class="event-carousel">
-      <h4 style="margin-top: 1rem;">BEGINNER TRACK</h4>
-      <div class="carousel-inner">
-        <div class="event-container" v-for="(event, id) in events" :key="id">
-          <div class="event-title">{{ event.title }}</div>
-          <div>{{ event.description }}</div>
-          <div>10:30 pm - 11:30 pm Sunday</div>
-          <Button size="sm" text="More Info" @click="viewEvent()" class="create-team-button" style="background: #EA668E !important; border: 2px solid #EA668E !important; margin-top: .5rem; margin-left: 0rem;"/>
-          <Button size="sm" text="Cancel" @click="viewEvent()" class="create-team-button" style="margin-top: .5rem; margin-left: 1rem;"/>
+    <div class="schedule-list">
+      <div class="schedule-list-title">
+        <span v-for="day in days" :key="day" class="schedule-list-title-item" :class="{'schedule-list-title-item-selected': day === selectedDay}" @click="selectTitleItem(day)">{{ day.toUpperCase() }}</span>
+      </div>
+      <div class="schedule-body">
+        <div class="time-container">
+          <span v-for="time in times" :key="time" class="time-item">
+            <span style="display: inline-block; width: 5px;">{{ time }} AM</span>
+          </span>
+        </div>
+        <div class="event-container" v-if="selectedDay === 'Saturday'">
+          <div class="event-line">
+            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Midnight Meetup</span>
+            <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+            <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Breakfast</span>
+            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Atlassian</span>
+          </div>
+          <div class="event-line">
+            <span class="event-item event-120" style="margin-left: 40px; margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
+            <span class="event-item event-90" style="margin-left: 230px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Team Snack!</span>
+            <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Lunch</span>
+            <span class="event-item event-120" style="margin-left: 200px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+          </div>
+          <div class="event-line">
+            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+            <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
+            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
+            <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Uber Techni-Chat</span>
+            <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
+          </div>
+          <div class="event-line">
+            <span class="event-item event-90" style="margin-left: 600px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Google</span>
+            <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>LGBTQ Meetup</span>
+          </div>
+        </div>
+        <div class="event-container" v-else>
+          <div class="event-line">
+            <span class="event-item event-120" style="margin-left: 40px; margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
+            <span class="event-item event-90" style="margin-left: 230px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Team Snack!</span>
+            <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Lunch</span>
+            <span class="event-item event-120" style="margin-left: 200px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+          </div>
+          <div class="event-line">
+            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+            <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
+            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
+            <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Uber Techni-Chat</span>
+          </div>
+          <div class="event-line">
+            <span class="event-item event-90" style="margin-left: 600px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Google</span>
+            <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>LGBTQ Meetup</span>
+            <span class="event-item event-120" style="margin-left: 400px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Techni-Chat with Lyft</span>
+          </div>
+          <div class="event-line">
+            <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Midnight Meetup</span>
+            <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
+            <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Breakfast</span>
+            <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Atlassian</span>
+          </div>
         </div>
       </div>
     </div>
-    <table id="schedule-table">
-      <tr>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Description</th>
-        <th>Start Time</th>
-      </tr>
-      <tr v-for="event in events" :key="event.id" class="schedule-item">
-        <td>{{ event.title }}</td>
-        <td>{{ event.category}}</td>
-        <td>{{ event.description}}</td>
-        <td>10:30 pm - 11:30 pm Sunday</td>
-      </tr>
-    </table>
   </div>
 </template>
 
 <script>
-import Button from '@/components/Button.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
 export default {
   name: 'Schedule',
-  props: {
-    msg: String,
-  },
-  components: { Button },
   mixins: [generalMixin],
   data() {
     return {
       events: [],
+      selectedDay: 'Saturday',
+      days: ['Saturday', 'Sunday'],
+      times: ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
     };
   },
   async mounted() {
@@ -58,6 +96,9 @@ export default {
   methods: {
     getFormattedTime(rawDateTime) {
       return (new Date(rawDateTime)).toTimeString();
+    },
+    selectTitleItem(day) {
+      this.selectedDay = day;
     },
   },
 };
@@ -78,46 +119,106 @@ h2 {
   color: var(--bright-purple);
 }
 
-.event-carousel {
-  background: #FFFFFF;
-  border-radius: 8px;
-  width: 80%;
-  height: 30%;
+.schedule-list {
+
 }
 
-.event-container {
-  background: #DED2E5;
-  border-radius: 12px;
-  width: 25%;
-  height: 60%;
-  display:inline-block;
-  margin: 2rem;
+.schedule-list-title-item {
+  background: #FFFFFF;
+  box-sizing: border-box;
+  border-radius: 4px 0px 0px 4px;
+  padding: 10px;
+  font-family: DINPro;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  margin-right: 3px;
+  border: 5px solid #DED2E6;
+  color: #B6A1C4;
+  cursor: pointer;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.schedule-list-title-item-selected {
+  border: 4px solid #B377DB;
+  box-shadow: 0px 4px 4px rgba(179, 119, 219, 0.25);
+  color: #B377DB;
+}
+
+.schedule-body {
+  margin-top: 2rem;
+  background: #FFFFFF;
+  border-radius: 8px;
+  height: 50vh;
+  width: 80vw;
+  white-space: nowrap;
+  overflow-x: auto;
   padding: 1rem;
 }
 
-.carousel-inner {
-  height: 70%;
+.time-container {
 }
 
-.event-title {
+.time-item {
+  /* border: 1px solid blue; */
+  padding-right: 5rem;
+  height: fit-content;
+  font-family: Noto Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+  color: #A88AA8;
+  padding-left: 1rem;
+}
+
+.event-container {
+  padding-left: 1rem;
+}
+
+.event-item {
+  background: #A88AA8;
+  border-radius: 8px;
+  min-width: fit-content;
+  width: 150px;
+  padding: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   font-family: Noto Sans;
   font-style: normal;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 20px;
-  color: #000000;
+  color: #FFFFFF;
+  margin-right: 10px;
 }
 
-.schedule-item {
-  padding: 10px;
-  border: 1px solid var(--pastel-purple);
+.event-hour {
+
 }
-#schedule-table {
-  margin: 0 auto;
-  margin-top: 2rem;
+
+.event-90 {
+  width: 190px;
 }
-td, th {
-  border: 1px solid var(--pastel-purple);
-  padding: 10px;
+
+.event-120 {
+  width: 240px;
+  background: #B377DB;
+}
+
+.event-60 {
+  width: 120px;
+  background: #DED2E5;
+  color: #B377DB;
+}
+
+.event-line {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-flow: row;
 }
 </style>
