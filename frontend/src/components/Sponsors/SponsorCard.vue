@@ -7,14 +7,14 @@
                     <h4>Sponsor Information: </h4>
                     {{sponsor.info}}
                 </b-col>
-                <b-col>
-                    <h4>Events Hosted: </h4>
+                <b-col v-if="sponsor.events_hosted || sponsor.prizes">
+                    <h4 v-if="sponsor.events_hosted">Events Hosted: </h4>
                     <ul>
                         <li v-for="event in sponsor.events_hosted" :key="event">
                             {{ event }}
                         </li>
                     </ul>
-                    <h4>Sponsor Prizes: </h4>
+                    <h4 v-if="sponsor.prizes">Sponsor Prizes: </h4>
                     <ul>
                         <li v-for="prize in sponsor.prizes" :key="prize">
                             {{ prize }}
@@ -51,13 +51,6 @@ export default {
   padding: 30px;
   display: inline-block;
   border-radius: 1em;
-}
-
-.tooltip .tooltip-inner{
-  max-width: 800px !important;
-  padding: 10px;
-  background-color: #DED2E5;
-  opacity: 1.0!important;
 }
 
 .tooltip-text{

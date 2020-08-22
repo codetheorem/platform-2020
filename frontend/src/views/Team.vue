@@ -17,6 +17,9 @@
         <b-row v-if="!currentTeam && invites.length === 0" class="pending-invites">
           <span>You have no pending invites!</span>
         </b-row>
+        <b-row v-if="!currentTeam && invites.length > 0" class="invite-list">
+          <Banner v-for="invite in invites" :text="'You have an invite for invite ' + invite.id" :key="invite.id"/>
+        </b-row>
         <b-row v-if="currentTeam" class="team-list-container">
           <div v-for="teamMember in currentTeam.members" :key="teamMember.id" class="team-list-item">
             <span class="team-list-segment">
@@ -27,6 +30,14 @@
             </span>
             <span>
               {{ teamMember.school }}
+            </span>
+          </div>
+          <div v-for="teamMember in invitesToCurrentTeam" :key="teamMember.id" class="team-list-item invited-list-item">
+            <span>
+              {{ teamMember.email }}
+            </span>
+            <span class="invited-list-pending">
+              PENDING
             </span>
           </div>
         </b-row>
@@ -51,6 +62,7 @@
 <script>
 import SectionTitle from '@/components/SectionTitle.vue';
 import Button from '@/components/Button.vue';
+import Banner from '@/components/Banner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
@@ -59,18 +71,20 @@ export default {
   components: {
     SectionTitle,
     Button,
+    Banner,
   },
   mixins: [generalMixin],
   data() {
     return {
       teamName: '',
       invites: [],
+      invitesToCurrentTeam: [],
       inviteEmail: '',
       currentTeam: null,
     };
   },
   async mounted() {
-    await this.getInvites();
+    await this.getInvitesForHacker();
     await this.getTeam();
   },
   computed: {
@@ -94,14 +108,34 @@ export default {
       await this.getTeam();
       this.teamName = '';
     },
-    async getInvites() {
+    async getInvitesForHacker() {
       const params = {
         user_id: this.getUserId(),
       };
       const env = this.getCurrentEnvironment();
       const invites = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_invites', params);
-      if (invites.length > 0) {
-        this.invites = invites;
+      const formattedInvites = [];
+      Object.keys(invites).forEach((k) => {
+        formattedInvites[k] = invites[k];
+      });
+      console.log(formattedInvites);
+      if (formattedInvites.length > 0) {
+        this.invites = formattedInvites;
+      }
+    },
+    async getInvitesForTeam() {
+      const params = {
+        team_id: this.currentTeam.id,
+      };
+      const env = this.getCurrentEnvironment();
+      const invites = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_hackers_invited_to_team', params);
+      const formattedInvites = [];
+      Object.keys(invites).forEach((k) => {
+        formattedInvites[k] = invites[k];
+      });
+      console.log(formattedInvites);
+      if (formattedInvites.length > 0) {
+        this.invitesToCurrentTeam = formattedInvites;
       }
     },
     async getTeam() {
@@ -118,10 +152,22 @@ export default {
         this.currentTeam = {};
         this.currentTeam.members = teamMembers;
         this.currentTeam.name = 'My Team';
+        this.currentTeam.id = team[0].team_id;
+        console.log(this.currentTeam.id);
+        await this.getInvitesForTeam();
       }
     },
     async inviteHacker() {
+      const env = this.getCurrentEnvironment();
+      console.log(this.currentTeam.id);
+      const createTeamPostParams = {
+        team_id: this.currentTeam.id,
+        email: this.inviteEmail,
+        team_name: this.currentTeam.name,
+      };
+      this.invitesToCurrentTeam.push({ email: this.inviteEmail, id: (new Date()).toString() });
       this.inviteEmail = '';
+      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'invite_to_team', createTeamPostParams);
     },
     async leaveTeam() {
       const env = this.getCurrentEnvironment();
@@ -201,6 +247,7 @@ h2 {
   margin-top: 3rem;
   height: 30vh;
   padding: 20px;
+  flex-flow: column;
 }
 
 .team-list-item {
@@ -211,6 +258,7 @@ h2 {
   padding: 10px;
   border: 1px solid #B6A1C4;
   border-radius: 4px;
+  margin-bottom: 1rem;
 }
 
 .team-list-segment {
@@ -220,5 +268,21 @@ h2 {
 
 .invite-container {
   margin-bottom: 2rem;
+}
+
+.invite-list {
+  flex: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.invited-list-item {
+  background: #E5E5E5;
+  border: 1px solid #B6A1C4;
+}
+
+.invited-list-pending {
+  color: #A88AA8 !important;
+  font-weight: bold;
 }
 </style>

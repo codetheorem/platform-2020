@@ -4,6 +4,8 @@ const withSentry = require('serverless-sentry-lib');
 
 AWS.config.update({ region: 'us-east-1' });
 
+const NO_EMAIL = "noemail@gmail.com";
+
 // Posts the request body fields to a DynamoDB table
 const postRequestToTable = async (event, tableName) => {
   const body = JSON.parse(event.body);
@@ -27,7 +29,7 @@ const postRequestToTable = async (event, tableName) => {
   if (
     (tableName === process.env.INVITES_TABLE
       || tableName === process.env.MEMBERSHIPS_TABLE)
-    && (!body.user_id || !body.team_id)
+    && (!body.user_id && !body.team_id)
   ) {
     return {
       statusCode: 500,
@@ -62,7 +64,28 @@ const postRequestToTable = async (event, tableName) => {
 
 module.exports.create_team = withSentry(async (event) => postRequestToTable(event, process.env.TEAMS_TABLE));
 
-module.exports.invite_to_team = withSentry(async (event) => postRequestToTable(event, process.env.INVITES_TABLE));
+module.exports.invite_to_team = withSentry(async (event) => {
+  const body = JSON.parse(event.body);
+  const email = body.email || NO_EMAIL;
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const params = {
+    TableName: process.env.USERS_TABLE,
+    FilterExpression: "email = :val",
+    ExpressionAttributeValues: {
+      ":val" : email,
+    }
+  };
+
+  const result = await ddb.scan(params).promise();
+  if(result.Items && result.Items.length > 0) {
+    const newBody = body;
+    newBody.user_id = result.Items[0].id;
+    event.body = JSON.stringify(newBody);
+  }
+
+  return postRequestToTable(event, process.env.INVITES_TABLE)
+});
 
 module.exports.join_team = withSentry(async (event) => postRequestToTable(event, process.env.MEMBERSHIPS_TABLE));
 
@@ -115,6 +138,7 @@ module.exports.leave_team = withSentry(async (event) => {
   }
 });
 
+// Retrieves the team invites for a hacker
 module.exports.get_team_invites = withSentry(async (event) => {
   const userId = String(event.queryStringParameters.user_id);
 
@@ -220,5 +244,38 @@ module.exports.get_team_membership_for_user = withSentry(async (event) => {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     },
+  };
+});
+
+// Retrieves all the invites for a team
+module.exports.get_hackers_invited_to_team = withSentry(async event => {
+  const team_id = String(event.queryStringParameters.team_id);
+
+  if (!team_id) {
+    return {
+      statusCode: 500,
+      body: "get_hackers_invited_to_team expects keys \"team_id\""
+    }
+  }
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const params = {
+    TableName: process.env.INVITES_TABLE,
+    FilterExpression: "team_id = :val",
+    ExpressionAttributeValues: {
+      ":val" : team_id,
+    }
+  };
+
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Items),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 });

@@ -55,18 +55,4 @@ describe('join_team', () => {
             expect(response).toHaveProperty('statusCode', 500);
         }); 
     });
-
-    it('Successfully rejects request to join a team without team id', async() =>{
-        return await wrapper.run(missing_team_id).then(async (response) =>{
-            expect(response).toBeDefined();
-            expect(response).toHaveProperty('statusCode', 500);
-        }); 
-    });
-
-    it('Successfully rejects request to join a team without user id', async() =>{
-        return await wrapper.run(missing_user_id).then(async (response) =>{
-            expect(response).toBeDefined();
-            expect(response).toHaveProperty('statusCode', 500);
-        }); 
-    });
 });
