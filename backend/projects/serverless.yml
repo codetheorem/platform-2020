@@ -43,6 +43,8 @@ functions:
           path: get_sponsorship_info
           method: get
           cors: true
+    layers:
+      - {Ref: DependenciesLambdaLayer}
   get_active_mentorship_requests:
     handler: handler.get_active_mentorship_requests
     description: gets active mentorship requests from the database
@@ -107,6 +109,14 @@ functions:
           path: update_project_checklist_item
           method: post
           cors: true
+
+layers:
+  dependencies:
+    path: nodejs
+    
+# package:
+#   exclude:
+#     - node_modules/**
 
 plugins:
   - serverless-sentry
