@@ -16,7 +16,7 @@ const routes = [
     path: '/sponsors',
     name: 'Sponsors',
     component: () => import('../views/Sponsors.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/sponsorship-fair',
@@ -28,7 +28,7 @@ const routes = [
     path: '/live-stream',
     name: 'Live Stream',
     component: () => import('../views/LiveStream.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
     beforeEnter() {
       window.open(Config.dev.LIVESTREAM_LINK, '_blank');
     },
@@ -37,7 +37,7 @@ const routes = [
     path: '/schedule',
     name: 'Schedule',
     component: () => import('../views/Schedule.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/login',
@@ -49,19 +49,19 @@ const routes = [
     path: '/project',
     name: 'Project',
     component: () => import('../views/Project.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/team',
     name: 'Team',
     component: () => import('../views/Team.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/team-room',
     name: 'Team Room',
     component: () => import('../views/TeamRoom.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/register',
@@ -73,7 +73,64 @@ const routes = [
     path: '/help',
     name: 'Help',
     component: () => import('../views/HelpDesk.vue'),
+    displayInNavBar: false,
+  },
+  {
+    path: '/events',
+    name: 'Events',
     displayInNavBar: true,
+    dropdown: [
+      {
+        path: '/schedule',
+        name: 'Schedule',
+      },
+      {
+        path: '/live-stream',
+        name: 'Live Stream',
+      },
+      {
+        path: '/sponsors',
+        name: 'Sponsors',
+      },
+    ],
+  },
+  {
+    path: '/hack',
+    name: 'Hack',
+    displayInNavBar: true,
+    dropdown: [
+      {
+        path: '/team',
+        name: 'My Team',
+      },
+      {
+        path: '/team-room',
+        name: 'Team Room',
+      },
+      {
+        path: '/project',
+        name: 'Submit Project',
+      },
+    ],
+  },
+  {
+    path: '/social',
+    name: 'Social',
+    displayInNavBar: true,
+    dropdown: [
+
+    ],
+  },
+  {
+    path: '/resources',
+    name: 'Resources',
+    displayInNavBar: true,
+    dropdown: [
+      {
+        path: '/help',
+        name: 'Help Desk',
+      },
+    ],
   },
   {
     path: '/profile',
