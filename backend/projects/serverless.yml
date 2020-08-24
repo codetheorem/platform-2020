@@ -107,6 +107,14 @@ functions:
           path: update_project_checklist_item
           method: post
           cors: true
+  update_project_submission:
+    handler: handler.update_project_submission
+    description: updates an existing project submission
+    events:
+      - http: 
+          path: update_project_submission
+          method: post
+          cors: true
 
 plugins:
   - serverless-sentry
