@@ -30,7 +30,7 @@ export default {
     TEAMS_BASE_ENDPOINT: 'https://c6vffjuklb.execute-api.us-east-1.amazonaws.com',
   },
   prod: {
-    SPONSORS_INFO_ENDPOINT: 'https://jxeehdxaq6.execute-api.us-east-1.amazonaws.com',
+    SPONSORS_INFO_ENDPOINT: 'https://phqk5kktqi.execute-api.us-east-1.amazonaws.com',
     SCHEDULE_BASE_ENDPOINT: 'https://n1zcgon3ub.execute-api.us-east-1.amazonaws.com',
     SAMPLE_USER_ID: 'SAMPLE_USER_ID',
     SIGNUP_FORM_LINK: 'https://gotechnica.org',
