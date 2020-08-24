@@ -408,7 +408,7 @@ const referralIdGenerator = async (length) => {
   const checkerResult = await ddb.scan(checkerParams).promise();
 
   if (checkerResult.Count > 0) {
-    return referralIdGenerator(length);
+    return await referralIdGenerator(length);
   }
 
   return referralId;
@@ -436,7 +436,7 @@ module.exports.send_registration_email = withSentry(async (event) => {
     }
   });
 
-  const referralId = referralIdGenerator(5);
+  const referralId = await referralIdGenerator(5);
 
   const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
   const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
