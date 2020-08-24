@@ -367,3 +367,63 @@ module.exports.update_project_checklist_item = withSentry(async (event) => {
     },
   };
 });
+
+// Implement backend endpoint to update a devpost submission for a team
+module.exports.update_project_submission = withSentry(async event => {
+  const body = JSON.parse(event.body);
+  const devpost_link_table = process.env.DEVPOST_LINK_TABLE;
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  if (!body["id"]) {
+    return {
+      statusCode: 500,
+      body: "update_project_submission expects key \"id\""
+    }
+  }
+
+  id = body['id'];
+  // Initialize UpdateExpression for ddb.update()
+  let update = 'SET';
+  // Initialize ExpressionAttributeNames for ddb.update()
+  let exprAttrNames = {};
+  // Initialize ExpressionAttributeValues for ddb,updateItem()
+  let exprAttrValues = {};
+  let counter = 0;
+
+  // dynamically update post request body params to document
+  Object.keys(body).forEach(k => {
+    if (k != 'id') {
+      const ref = 'val' + counter;
+      let updateElement = ' #' + k + ' =:' + ref + ',';
+      update = update.concat(updateElement);
+      exprAttrNames['#' + k] = k;
+      exprAttrValues[':' + ref] = body[k];
+      counter++;
+    }
+  });
+
+  // Remove trailing comma from UpdateExpression added on line 405
+  update = update.slice(0, -1);
+
+  const params = {
+    TableName: devpost_link_table,
+    Key: {
+      id: id.toString()
+    },	    
+    UpdateExpression: update,
+    ExpressionAttributeNames: exprAttrNames,
+    ExpressionAttributeValues: exprAttrValues
+  };
+
+  // Call DynamoDB to update the item to the table
+  const result = await ddb.update(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };	 
+});
