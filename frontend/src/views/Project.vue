@@ -25,7 +25,7 @@
         <div class="content-container row-xl-6">
           <div class="checklist-body">
             <div v-for="checklistItem in checklistItems" :key="checklistItem.title" class="checklist-item">
-              <checklist-item>
+              <checklist-item :isChecked="checklistItem.checked" :id="checklistItem.id">
                   <template v-slot:text>
                       <label>{{ checklistItem.title }} <a :href="checklistItem.link" target="_blank" class="project-checklist-link">{{ checklistItem.linkText }}</a></label>
                   </template>
@@ -54,6 +54,7 @@
 import Button from '@/components/Button.vue';
 import ChecklistItem from '@/components/ChecklistItem.vue';
 import generalMixin from '../mixins/general';
+import Config from '../config/general';
 
 export default {
   name: 'Project',
@@ -87,7 +88,12 @@ export default {
           link: '',
         },
       ],
+
+      currentTeamId: null,
     };
+  },
+  async created() {
+    await this.getTeam();
   },
   methods: {
     clickSubmitButton() {
@@ -95,6 +101,28 @@ export default {
     },
     clickReadyButton() {
       this.readyButtonClicked = true;
+    },
+    async getTeam() {
+      const env = this.getCurrentEnvironment();
+      const teamParams = {
+        user_id: this.getUserId(),
+      };
+      const team = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_membership_for_user', teamParams);
+      if (team[0]) {
+        const params = {
+          team_id: team[0].team_id,
+        };
+        const checklist = await this.performGetRequest(Config[env].SPONSORS_INFO_ENDPOINT, env, 'get_project_checklist_item', params);
+        Object.values(checklist).forEach((k) => {
+          const item = this.checklistItems.find((j) => k.checklist_item_id === j.title);
+          item.id = k.id;
+          item.checked = k.is_checked;
+          if (item.checked) {
+            this.readyButtonClicked = true;
+          }
+        });
+        this.currentTeamId = team[0].team_id;
+      }
     },
   },
 };

@@ -81,6 +81,7 @@ export default {
       invitesToCurrentTeam: [],
       inviteEmail: '',
       currentTeam: null,
+      checklistItems: ['submitted my hack on Devpost:', 'signed up for a demo slot with judges', 'signed up for an expo slot to show off my hack:', 'submitted my hack to Technica below:'],
     };
   },
   async mounted() {
@@ -107,6 +108,18 @@ export default {
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'join_team', joinTeamPostParams);
       await this.getTeam();
       this.teamName = '';
+      // create checklist items for the team
+      await this.createChecklist();
+    },
+    async createChecklist() {
+      const env = this.getCurrentEnvironment();
+      this.checklistItems.forEach(async (item) => {
+        const createChecklistPostParams = {
+          team_id: this.currentTeam.id,
+          checklist_item_id: item,
+        };
+        await this.performPostRequest(Config[env].SPONSORS_INFO_ENDPOINT, env, 'create_project_checklist_item', createChecklistPostParams);
+      });
     },
     async getInvitesForHacker() {
       const params = {
@@ -153,7 +166,6 @@ export default {
         this.currentTeam.members = teamMembers;
         this.currentTeam.name = 'My Team';
         this.currentTeam.id = team[0].team_id;
-        console.log(this.currentTeam.id);
         await this.getInvitesForTeam();
       }
     },

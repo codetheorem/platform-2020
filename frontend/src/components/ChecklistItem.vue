@@ -1,23 +1,48 @@
 <template>
     <div :class="{'item-clicked': checked}">
-        <input type="checkbox" aria-label="Checkbox for following text input" class="list-checkbox" @change="clicked($event)">
+        <input v-model="checked" type="checkbox" aria-label="Checkbox for following text input" class="list-checkbox" @change="clicked($event)">
         <slot name="text" ></slot>
     </div>
 </template>
 
 <script>
+import generalMixin from '../mixins/general';
+import Config from '../config/general';
+
 export default {
   name: 'ChecklistItem',
+  mixins: [generalMixin],
   data() {
     return {
       checked: false,
     };
   },
+  props: {
+    isChecked: {
+      type: Boolean,
+      default: false,
+    },
+    id: {
+      type: String,
+      default: 'None',
+    },
+  },
   methods: {
     clicked() {
       this.$emit('click');
-      this.checked = !this.checked;
+      this.update();
     },
+    async update() {
+      const env = this.getCurrentEnvironment();
+      const updateChecklistPostParams = {
+        id: this.id,
+        is_checked: this.checked,
+      };
+      await this.performPostRequest(Config[env].SPONSORS_INFO_ENDPOINT, env, 'update_project_checklist_item', updateChecklistPostParams);
+    },
+  },
+  async mounted() {
+    this.checked = this.isChecked;
   },
 };
 </script>
