@@ -452,6 +452,9 @@ module.exports.send_registration_email = withSentry(async (event) => {
 
   const msg = {
     from: { email: 'tech@gotechnica.org' },
+    reply_to: {
+      email: "eventops@gotechnica.org"
+    },
     personalizations: [{
       to: [{
         email,
