@@ -42,6 +42,14 @@ const routes = [
     },
   },
   {
+    path: '/resources',
+    name: 'Helpful Resources',
+    displayInNavBar: false,
+    beforeEnter() {
+      window.open(Config.dev.HACKER_RESOURCES_LINK, '_blank');
+    },
+  },
+  {
     path: '/schedule',
     name: 'Schedule',
     component: () => import('../views/Schedule.vue'),
@@ -141,6 +149,10 @@ const routes = [
       {
         path: '/help',
         name: 'Help Desk',
+      },
+      {
+        path: '/resources',
+        name: 'Helpful Resources',
       },
     ],
   },
