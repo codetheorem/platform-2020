@@ -34,6 +34,14 @@ const routes = [
     },
   },
   {
+    path: '/prizes',
+    name: 'Prizes',
+    displayInNavBar: false,
+    beforeEnter() {
+      window.open(Config.dev.PRIZES_LINK, '_blank');
+    },
+  },
+  {
     path: '/schedule',
     name: 'Schedule',
     component: () => import('../views/Schedule.vue'),
@@ -110,6 +118,10 @@ const routes = [
       {
         path: '/project',
         name: 'Submit Project',
+      },
+      {
+        path: '/prizes',
+        name: 'Prizes',
       },
     ],
   },
