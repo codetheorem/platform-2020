@@ -8,7 +8,7 @@ export default {
     LIVESTREAM_LINK: 'https://www.youtube.com/channel/UC-Wo4UqhGUKQEp4o-51VMIw',
     SPONSORSHIP_LINK: 'https://www.vfairs.com/',
     TEAMS_BASE_ENDPOINT: 'https://e2hezie6kb.execute-api.us-east-1.amazonaws.com',
-    PRIZES_LINK: 'https://technica2019.devpost.com',
+    PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
   },
   testing: {
     SCHEDULE_BASE_ENDPOINT: 'https://dxz39cp5d0.execute-api.us-east-1.amazonaws.com',
@@ -19,7 +19,7 @@ export default {
     LIVESTREAM_LINK: 'https://www.youtube.com/channel/UC-Wo4UqhGUKQEp4o-51VMIw',
     SPONSORSHIP_LINK: 'https://www.vfairs.com/',
     TEAMS_BASE_ENDPOINT: 'https://e2hezie6kb.execute-api.us-east-1.amazonaws.com',
-    PRIZES_LINK: 'https://technica2019.devpost.com',
+    PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
   },
   stage: {
     SPONSORS_INFO_ENDPOINT: 'https://jxeehdxaq6.execute-api.us-east-1.amazonaws.com',
@@ -30,7 +30,7 @@ export default {
     LIVESTREAM_LINK: 'https://www.youtube.com/channel/UC-Wo4UqhGUKQEp4o-51VMIw',
     SPONSORSHIP_LINK: 'https://www.vfairs.com/',
     TEAMS_BASE_ENDPOINT: 'https://c6vffjuklb.execute-api.us-east-1.amazonaws.com',
-    PRIZES_LINK: 'https://technica2019.devpost.com',
+    PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
   },
   prod: {
     SPONSORS_INFO_ENDPOINT: 'https://phqk5kktqi.execute-api.us-east-1.amazonaws.com',
@@ -41,6 +41,6 @@ export default {
     LIVESTREAM_LINK: 'https://www.youtube.com/channel/UC-Wo4UqhGUKQEp4o-51VMIw',
     SPONSORSHIP_LINK: 'https://www.vfairs.com/',
     TEAMS_BASE_ENDPOINT: ' https://v0usve1q3f.execute-api.us-east-1.amazonaws.com',
-    PRIZES_LINK: 'https://technica2019.devpost.com',
+    PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
   },
 };
