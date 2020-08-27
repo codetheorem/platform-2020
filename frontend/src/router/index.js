@@ -92,6 +92,18 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/water-cooler',
+    name: 'Water Cooler',
+    component: () => import('../views/WaterCooler.vue'),
+    displayInNavBar: false,
+  },
+  {
+    path: '/photo-booth',
+    name: 'Photo Booth',
+    component: () => import('../views/PhotoBooth.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/events',
     name: 'Events',
     displayInNavBar: true,
@@ -138,7 +150,14 @@ const routes = [
     name: 'Social',
     displayInNavBar: true,
     dropdown: [
-
+      {
+        path: '/water-cooler',
+        name: 'Water Cooler',
+      },
+      {
+        path: '/photo-booth',
+        name: 'Photo Booth',
+      },
     ],
   },
   {
