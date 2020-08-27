@@ -7,7 +7,7 @@
       <div class="schedule-list-title">
         <span v-for="day in days" :key="day" class="schedule-list-title-item" :class="{'schedule-list-title-item-selected': day === selectedDay}" @click="selectTitleItem(day)">{{ day.toUpperCase() }}</span>
       </div>
-      <div class="schedule-body">
+      <div id="schedule-body" class="schedule-body">
         <div class="time-container">
           <span v-for="time in times" :key="time" class="time-item">
             <span style="display: inline-block; width: 5px;">{{ time }}</span>

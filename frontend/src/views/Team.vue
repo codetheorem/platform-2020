@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <b-container class="teams-container">
+    <b-container id="team-container" class="teams-container">
       <h2 style="margin-bottom: 1.5rem;">Team Formation</h2>
       <div v-if="!currentTeam" class="create-team-container">
         <form @submit.prevent="goToProfile" class="create-team-form">

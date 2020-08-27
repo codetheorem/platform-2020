@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <div class="container my-3 my-md-5">
+    <div id="help-body" class="container my-3 my-md-5">
       <h2 class="heading my-3 my-md-5">Help Desk</h2>
       <div class="row">
         <div class="col-md-1"></div>

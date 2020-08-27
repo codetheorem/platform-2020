@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="home-page" id="home-page">
     <div class="home-header">
       <h2>Welcome, {{ getUserName() }}</h2>
     </div>
