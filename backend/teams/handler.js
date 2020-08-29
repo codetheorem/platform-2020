@@ -14,7 +14,7 @@ const postRequestToTable = async (event, tableName) => {
   const params = {
     TableName: tableName,
     Item: {
-	timestamp: new Date().toLocaleString(),new Date().toString(),
+	timestamp: new Date().toLocaleString(),
     }
   };
 
