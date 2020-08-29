@@ -11,7 +11,9 @@ post_request_body_to_table = async (event, table_name) => {
 
   const params = {
     TableName: table_name,
-    Item: {}
+    Item: {
+      timestamp: new Date().toLocaleString(),
+    }
   };
 
   const id = UUID.v4();
