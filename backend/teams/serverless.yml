@@ -1,3 +1,5 @@
+org: technica
+app: platform-teams
 service: platform-teams
 
 provider:
@@ -71,6 +73,13 @@ functions:
     events:
       - http: 
           path: get_team_membership_for_user
+          method: get
+          cors: true
+  get_hackers_invited_to_team:
+    handler: handler.get_hackers_invited_to_team
+    events:
+      - http: 
+          path: get_hackers_invited_to_team
           method: get
           cors: true
 plugins:

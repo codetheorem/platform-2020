@@ -2,50 +2,55 @@
   <div>
     <div class="container mx-auto">
       <h2 class="heading my-3 my-md-5">My Project</h2>
-
-      <div v-if="!projectHasAlreadyBeenSubmitted && !readyButtonClicked" class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
-          <div class="card" style="margin-bottom: 2rem;">
-            <div class="card-body">
-                <p>
-                  If you are ready to submit your Technica Hack, please click on the button below! <b>Only one hacker needs to submit per team.</b>
-                </p>
-                <p>
-                  If the button is grayed out, another member of your team has already submitted your project!
-                </p>
+        <div v-if="dataLoaded">
+          <div v-if="!projectHasAlreadyBeenSubmitted && !readyButtonClicked" class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+              <div class="card" style="margin-bottom: 2rem;">
+                <div class="card-body">
+                    <p>
+                      If you are ready to submit your Technica Hack, please click on the button below! <b>Only one hacker needs to submit per team.</b>
+                    </p>
+                    <p>
+                      If the button is grayed out, another member of your team has already submitted your project!
+                    </p>
+                </div>
+              </div>
+              <Button size="lg" text="I'm Ready to Submit!" @click="clickReadyButton"/>
             </div>
-          </div>
-          <Button size="lg" text="I'm Ready to Submit!" @click="clickReadyButton"/>
+        </div>
+
+        <div v-else>
+            <h4>I have...</h4>
+            <div class="content-container row-xl-6">
+              <div class="checklist-body">
+                <div v-for="checklistItem in checklistItems" :key="checklistItem.title" class="checklist-item">
+                  <checklist-item :isChecked="checklistItem.checked" :id="checklistItem.id">
+                      <template v-slot:text>
+                          <label>{{ checklistItem.title }} <a :href="checklistItem.link" target="_blank" class="project-checklist-link">{{ checklistItem.linkText }}</a></label>
+                      </template>
+                  </checklist-item>
+                </div>
+              </div>
+              <div>
+                <form @submit.prevent="sendMagicLink">
+                  <div class="form-group mx-auto">
+                    <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="emailInput" placeholder="Team Name" v-model="teamName">
+                    <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="emailInput" placeholder="Devpost Link" v-model="teamName">
+                    <!-- Prize categories will be implemented in a future ticket -->
+                    <!-- <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="emailInput" placeholder="Prize Categories" v-model="teamName"> -->
+                  </div>
+                </form>
+              </div>
+            </div>
+            <Button size="lg" text="Submit My Project" @click="clickSubmitButton"/>
         </div>
       </div>
-
-    <div v-else>
-        <h4>I have...</h4>
-        <div class="content-container row-xl-6">
-          <div class="checklist-body">
-            <div v-for="checklistItem in checklistItems" :key="checklistItem.title" class="checklist-item">
-              <checklist-item>
-                  <template v-slot:text>
-                      <label>{{ checklistItem.title }} <a :href="checklistItem.link" target="_blank" class="project-checklist-link">{{ checklistItem.linkText }}</a></label>
-                  </template>
-              </checklist-item>
-            </div>
-          </div>
-          <div>
-            <form @submit.prevent="sendMagicLink">
-              <div class="form-group mx-auto">
-                <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="emailInput" placeholder="Team Name" v-model="teamName">
-                <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="emailInput" placeholder="Devpost Link" v-model="teamName">
-                <!-- Prize categories will be implemented in a future ticket -->
-                <!-- <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="emailInput" placeholder="Prize Categories" v-model="teamName"> -->
-              </div>
-            </form>
-          </div>
+      <div v-else>
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
         </div>
-        <Button size="lg" text="Submit My Project" @click="clickSubmitButton"/>
-    </div>
-
+      </div>
     </div>
   </div>
 </template>
@@ -54,6 +59,7 @@
 import Button from '@/components/Button.vue';
 import ChecklistItem from '@/components/ChecklistItem.vue';
 import generalMixin from '../mixins/general';
+import Config from '../config/general';
 
 export default {
   name: 'Project',
@@ -66,6 +72,7 @@ export default {
     return {
       projectHasAlreadyBeenSubmitted: false,
       readyButtonClicked: false,
+      dataLoaded: false,
       checklistItems: [
         {
           title: 'submitted my hack on Devpost:',
@@ -87,7 +94,13 @@ export default {
           link: '',
         },
       ],
+
+      currentTeamId: null,
     };
+  },
+  async created() {
+    await this.getTeam();
+    this.dataLoaded = true;
   },
   methods: {
     clickSubmitButton() {
@@ -95,6 +108,28 @@ export default {
     },
     clickReadyButton() {
       this.readyButtonClicked = true;
+    },
+    async getTeam() {
+      const env = this.getCurrentEnvironment();
+      const teamParams = {
+        user_id: this.getUserId(),
+      };
+      const team = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_membership_for_user', teamParams);
+      if (team[0]) {
+        const params = {
+          team_id: team[0].team_id,
+        };
+        const checklist = await this.performGetRequest(Config[env].SPONSORS_INFO_ENDPOINT, env, 'get_project_checklist_item', params);
+        Object.values(checklist).forEach((k) => {
+          const item = this.checklistItems.find((j) => k.checklist_item_id === j.title);
+          item.id = k.id;
+          item.checked = k.is_checked;
+          if (item.checked) {
+            this.readyButtonClicked = true;
+          }
+        });
+        this.currentTeamId = team[0].team_id;
+      }
     },
   },
 };

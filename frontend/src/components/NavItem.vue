@@ -1,20 +1,20 @@
 <template>
   <span>
-    <li v-if="!dropdown" class="nav-item">
+    <li v-if="!dropdown" :id="'navbar-' + title" class="nav-item">
     <router-link :to="destinationRoute">
         <a class="nav-link" href="#">
           <span class="nav-inner-text">{{ title }}</span>
         </a>
     </router-link>
   </li>
-  <li v-else class="nav-item dropdown">
+  <li v-else :id="'navbar-' + title" class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       {{ title }}
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
       <span v-for="dropdownItem in dropdown" :key="dropdownItem.name">
         <router-link :to="dropdownItem.path">
-          <a class="dropdown-item" href="#" >{{ dropdownItem.name }}</a>
+          <a :id="'navbar-item-' + dropdownItem.name.replace(/ /g,'')" class="dropdown-item" href="#">{{ dropdownItem.name }}</a>
         </router-link>
       </span>
     </div>

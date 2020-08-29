@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="spinner-border" role="status" style="margin-top: 3rem;">
+      <span class="sr-only">Loading...</span>
+    </div>
   </div>
 </template>
 

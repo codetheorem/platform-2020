@@ -1,8 +1,15 @@
 <template>
   <b-container class="sponsors-container">
     <h2>Sponsors</h2>
-    <div v-for="section in sponsorTiers" :key="section" class="sponsor-section">
-        <sponsor-section :tier="section" :sponsorList="sponsorsByTier[section]"/>
+    <div v-if="dataLoaded">
+      <div v-for="section in sponsorTiers" :key="section" class="sponsor-section">
+          <sponsor-section :tier="section" :sponsorList="sponsorsByTier[section]"/>
+      </div>
+    </div>
+    <div v-else>
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
   </b-container>
 </template>
@@ -30,6 +37,7 @@ export default {
       sponsorTiers,
       sponsors: [],
       sponsorsByTier,
+      dataLoaded: false,
     };
   },
   async mounted() {
@@ -39,6 +47,7 @@ export default {
     this.sponsorTiers.forEach((tier) => {
       this.sponsorsByTier[tier] = this.sponsors.filter((s) => s.tier === tier);
     });
+    this.dataLoaded = true;
   },
 
 };

@@ -7,7 +7,7 @@
         </template>
         <template v-slot:body>
           <p class="description-text">Instead of using a password, enter your email so Technica can send you a magic link to sign in.</p>
-          <p v-if="emailNotFound" class="text-error">We could not find your email in our records. For further assistance, please contact our support team.</p>
+          <p v-if="emailNotFound && !emailInvalid" class="text-error">We could not find your email in our records. For further assistance, please contact our support team.</p>
           <p v-if="emailInvalid" class="text-error">Please enter a valid email address.</p>
           <form @submit.prevent="sendMagicLink">
             <div class="form-group mx-auto">
@@ -61,8 +61,7 @@ export default {
   methods: {
     async sendMagicLink() {
       const env = this.getCurrentEnvironment();
-      if (this.userEmail !== '') {
-        this.loginButtonClicked = true;
+      if (this.userEmail !== '' && this.userEmail.includes('@')) {
         const getParams = {
           email: this.userEmail,
         };
@@ -74,6 +73,10 @@ export default {
             setRegistrationStatus: false,
           };
           this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'invite_user', postParams);
+          this.loginButtonClicked = true;
+        } else {
+          this.emailInvalid = false;
+          this.emailNotFound = true;
         }
       } else {
         this.emailInvalid = true;

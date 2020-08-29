@@ -1,51 +1,54 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
-const withSentry = require("serverless-sentry-lib");
+const withSentry = require('serverless-sentry-lib');
+const sgMail = require('@sendgrid/mail');
 const { IncomingWebhook } = require('@slack/webhook');
+
 const TESTING_STAGE = 'testing';
 const ADD_USER_EVENT = 'REGISTER';
 const INVITE_USER_EVENT = 'LOGIN';
-AWS.config.update({region:'us-east-1'});
+
+AWS.config.update({ region: 'us-east-1' });
 
 // delete a single user from the database
-module.exports.delete_user = withSentry(async event => {
+module.exports.delete_user = withSentry(async (event) => {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB.DocumentClient();
 
-  if(!body['id']){
-    return{
+  if (!body.id) {
+    return {
       statusCode: 500,
-      body: "delete_user is missing id"
-    }
+      body: 'delete_user is missing id',
+    };
   }
 
-  const delete_params = {
+  const deleteParams = {
     TableName: process.env.USERS_TABLE,
-    Key: { id: body['id'] },
+    Key: { id: body.id },
   };
 
-  const status_result = await ddb.delete(delete_params).promise();
+  const statusResult = await ddb.delete(deleteParams).promise();
 
   // return 500 on error
   return {
     statusCode: 200,
-    body: JSON.stringify(status_result.Item),
+    body: JSON.stringify(statusResult.Item),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
-    }
+    },
   };
 });
 
 // Retrieves a single user from the database
-module.exports.get_user = withSentry(async event => {
+module.exports.get_user = withSentry(async (event) => {
   const id = String(event.queryStringParameters.id);
 
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const item = await ddb.get({
     TableName: process.env.USERS_TABLE,
-    Key: { id: id }
+    Key: { id },
   }).promise();
 
   return {
@@ -54,59 +57,135 @@ module.exports.get_user = withSentry(async event => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
-    }
+    },
   };
 });
 
-//adds a new user to the database
-module.exports.add_user = withSentry(async user => {
+const inviteUserHelper = async (body) => {
+  const ddb = new AWS.DynamoDB.DocumentClient();
 
+  // Get the user's info to send email and update dbs
+  const userResp = await ddb.get({
+    TableName: process.env.USERS_TABLE,
+    Key: { id: body.id },
+  }).promise();
+
+  const user = userResp.Item;
+
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
+  const SecretsManagerKey = await SecretsManager.getSecretValue(
+    { SecretId: process.env.SENDGRID_SECRET_NAME },
+  ).promise();
+
+  const decodedSendgridKey = JSON.parse(SecretsManagerKey.SecretString).SENDGRID_API_KEY;
+
+  // TODO: actual invite link logic ----------------------------------//
+  const inviteLink = `${process.env.BASE_INVITE_URL}?token=${user.id}`; //
+  // --------------------------------- TODO: actual invite link logic //
+
+  // Send the user an email, using our template
+  sgMail.setApiKey(decodedSendgridKey);
+
+  const msg = {
+    from: { email: 'tech@gotechnica.org' },
+    personalizations: [{
+      to: [{
+        email: user.email,
+      }],
+      dynamic_template_data: {
+        user_name: user.full_name,
+        invite_link: inviteLink,
+      },
+    }],
+    template_id: process.env.INVITE_TEMPLATE_ID,
+  };
+
+  // If not running integration suites, send email
+  if (process.env.STAGE !== TESTING_STAGE) {
+    await sgMail.send(msg);
+  }
+
+  // We can set a flag in the body to not update their registration
+  // status if they're just logging back in
+  if (body.setRegistrationStatus) {
+    // update ddb table:"platform-users" so user's
+    // `registration_status` is "email_invite_sent"
+    await ddb.update({
+      TableName: process.env.USERS_TABLE,
+      Key: { id: user.id.toString() },
+      UpdateExpression: 'SET registration_status = :s',
+      ExpressionAttributeValues: { ':s': 'email_invite_sent' },
+    }).promise();
+  }
+
+  // new item in "platform-invites" table with pertinent information
+  const result = await ddb.put({
+    TableName: process.env.INVITES_TABLE,
+    Item: {
+      id: UUID.v4(),
+      user_id: user.id,
+      email: user.email,
+      invite_link: inviteLink,
+      timestamp: new Date().toString(),
+      accepted: 'false',
+    },
+  }).promise();
+
+  return result.Item;
+};
+
+// adds a new user to the database
+module.exports.add_user = withSentry(async (user) => {
   const body = JSON.parse(user.body);
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const id = UUID.v4();
   body.id = id;
 
-  //checks if any field is missing to create a  user
-  if (!body["email"] || !body["full_name"] || !body["access_level"] || !body["group"]) {
+  // checks if any field is missing to create a  user
+  if (!body.email
+   || !body.full_name
+   || !body.access_level
+   || !body.group) {
     return {
       statusCode: 500,
-      body: "add_user is missing a field"
-    }
+      body: 'add_user is missing a field',
+    };
   }
 
   const params = {
     TableName: process.env.USERS_TABLE,
-    Item: {}
+    Item: {},
   };
 
   // dynamically add post request body params to document
-  Object.keys(body).forEach(k => {
-    params.Item[k] = body[k] 
+  Object.keys(body).forEach((k) => {
+    params.Item[k] = body[k];
   });
 
   // Call DynamoDB to add the item to the table
-  const result = await ddb.put(params).promise();
+  await ddb.put(params).promise();
 
   // Create parameters for activity item
-  const activity_id = UUID.v4();
-    
-  const activity_params = {
+  const activityId = UUID.v4();
+
+  const activityParams = {
     TableName: process.env.ACTIVITY_TABLE,
     Item: {
-      id: activity_id,
+      id: activityId,
       user_id: body.id,
-      event: ADD_USER_EVENT
-    }
+      event: ADD_USER_EVENT,
+      timestamp: new Date().toString(),
+    },
   };
 
   // Call DynamoDB to add activity item to the table
-  const activity_result = await ddb.put(activity_params).promise();
-    
+  await ddb.put(activityParams).promise();
+
   body.setRegistrationStatus = true;
 
   // Send the user an invite email
-  const inviteResult = await invite_user_helper(body);
+  await inviteUserHelper(body);
 
   // Returns status code 200 and JSON string of 'result'
   return {
@@ -114,102 +193,30 @@ module.exports.add_user = withSentry(async user => {
     body: JSON.stringify(params.Item),
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true
-    }
+      'Access-Control-Allow-Credentials': true,
+    },
   };
 });
 
-
-const invite_user_helper = async (body) => {
-    // Lazy load the sendgrid api - we don't want to load it for other endpoints
-    const sgMail = require('@sendgrid/mail');    
-  
-    const ddb = new AWS.DynamoDB.DocumentClient();
-  
-    // Get the user's info to send email and update dbs
-    const userResp = await ddb.get({
-      TableName: process.env.USERS_TABLE,
-      Key: { id: body.id }
-    }).promise();
-  
-    const user = userResp.Item;
-  
-    const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
-    const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.SENDGRID_SECRET_NAME}).promise();
-    const decodedSendgridKey = JSON.parse(SecretsManagerKey.SecretString).SENDGRID_API_KEY;
-  
-    // TODO: actual invite link logic ----------------------------------//
-    invite_link = process.env.BASE_INVITE_URL + "?token=" + user.id;  //
-    // --------------------------------- TODO: actual invite link logic //
-  
-    // Send the user an email, using our template
-    sgMail.setApiKey(decodedSendgridKey);
-  
-    const msg = {
-      from: { email:"tech@gotechnica.org" },
-      personalizations: [{
-        "to":[{
-          "email": user.email
-        }],
-        "dynamic_template_data":{
-          "user_name": user.full_name,
-          "invite_link": invite_link
-        }
-      }],
-      template_id: process.env.INVITE_TEMPLATE_ID
-    };
-    
-    //If not running integration suites, send email
-    if(process.env.STAGE != TESTING_STAGE){
-      await sgMail.send(msg);
-    }
-  
-    // We can set a flag in the body to not update their registration status if they're just logging back in
-    if(body.setRegistrationStatus) {
-      // update ddb table:"platform-users" so user's `registration_status` is "email_invite_sent"
-      const updateResp = await ddb.update({
-        TableName: process.env.USERS_TABLE,
-        Key: { id: user.id.toString() } ,
-        UpdateExpression: "SET registration_status = :s",
-        ExpressionAttributeValues: {":s": "email_invite_sent"}
-      }).promise()
-    }
-  
-    // new item in "platform-invites" table with pertinent information
-    const result = await ddb.put({
-      TableName: process.env.INVITES_TABLE,
-      Item: {
-        id: UUID.v4(),
-        user_id: user.id,
-        email: user.email,
-        invite_link: invite_link,
-        timestamp: new Date().toString(),
-        accepted: "false"
-      }
-    }).promise();
-  
-    return result.Item;
-}
-
-module.exports.find_user_by_email = withSentry(async event => {
+module.exports.find_user_by_email = withSentry(async (event) => {
   const email = String(event.queryStringParameters.email);
 
   // check for email in request
   if (!email) {
     return {
       statusCode: 500,
-      body: "find_user_by_email expects keys \"email\""
-    }
+      body: 'find_user_by_email expects keys "email"',
+    };
   }
 
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const params = {
     TableName: process.env.USERS_TABLE,
-    FilterExpression: "email = :val",
+    FilterExpression: 'email = :val',
     ExpressionAttributeValues: {
-      ":val" : email,
-    }
+      ':val': email,
+    },
   };
 
   // Call DynamoDB to scan through *all* items in the table
@@ -221,100 +228,100 @@ module.exports.find_user_by_email = withSentry(async event => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
-    }
+    },
   };
-})
+});
 
 // Sends an email invite to a user for registering/logging in
-module.exports.invite_user = withSentry(async event => {
+module.exports.invite_user = withSentry(async (event) => {
   const body = JSON.parse(event.body);
 
   const ddb = new AWS.DynamoDB.DocumentClient();
-    
+
   // check for id in request
   if (!body.id) {
     return {
       statusCode: 500,
-      body: "add_event_to_user_list expects keys \"id\""
-    }
+      body: 'add_event_to_user_list expects keys "id"',
+    };
   }
 
   // Create parameters for activity item
-  const activity_id = UUID.v4();
-    
-  const activity_params = {
+  const activityId = UUID.v4();
+
+  const activityParams = {
     TableName: process.env.ACTIVITY_TABLE,
     Item: {
-      id: activity_id,
+      id: activityId,
       user_id: body.id,
-      event: INVITE_USER_EVENT
-    }
+      event: INVITE_USER_EVENT,
+      timestamp: new Date().toString(),
+    },
   };
 
   // Call DynamoDB to add activity item to the table
-  const activity_result = await ddb.put(activity_params).promise();
-    
-  const result = await invite_user_helper(body);
+  await ddb.put(activityParams).promise();
+
+  const result = await inviteUserHelper(body);
   return {
     statusCode: 200,
     body: JSON.stringify(result),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
-    }
+    },
   };
 });
 
 // Updates an existing schedule user in the database
-module.exports.update_user = withSentry(async user => {
-
+module.exports.update_user = withSentry(async (user) => {
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const body = JSON.parse(user.body);
 
-  if (!body["id"]) {
+  if (!body.id) {
     return {
       statusCode: 500,
-      body: "update_user expects key \"id\""
-    }
+      body: 'update_user expects key "id"',
+    };
   }
 
-  id = body['id'];
+  const { id } = body;
 
   // Initialize UpdateExpression for ddb.update()
   let update = 'SET';
 
   // Initialize ExpressionAttributeNames for ddb.update()
-  let exprAttrNames = {};
+  const exprAttrNames = {};
 
   // Initialize ExpressionAttributeValues for ddb,updateItem()
-  let exprAttrValues = {};
+  const exprAttrValues = {};
 
   let counter = 0;
 
   // dynamically update post request body params to document
-  Object.keys(body).forEach(k => {
-    if (k != 'id') {
-      const ref = 'val' + counter;
-      let updateElement = ' #' + k + ' =:' + ref + ','
-      update = update.concat(updateElement)
-      exprAttrNames['#' + k] = k
-      exprAttrValues[':' + ref] = body[k] 
-      counter++
+  Object.keys(body).forEach((k) => {
+    if (k !== 'id') {
+      const ref = `val${counter}`;
+      const updateElement = ` #${k} =:${ref},`;
+      update = update.concat(updateElement);
+      exprAttrNames[`#${k}`] = k;
+      exprAttrValues[`:${ref}`] = body[k];
+      counter += 1;
     }
   });
 
   // Remove trailing comma from UpdateExpression
-  update = update.slice(0, -1)
+  update = update.slice(0, -1);
 
   const params = {
     TableName: process.env.USERS_TABLE,
     Key: {
-      id: id.toString()
+      id: id.toString(),
     },
     UpdateExpression: update,
     ExpressionAttributeNames: exprAttrNames,
-    ExpressionAttributeValues: exprAttrValues
+    ExpressionAttributeValues: exprAttrValues,
   };
 
   // Call DynamoDB to update the item to the table
@@ -326,18 +333,18 @@ module.exports.update_user = withSentry(async user => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
-    }
+    },
   };
 });
 
 // Adds a user to banned users table
-module.exports.ban_user = withSentry(async event =>{
+module.exports.ban_user = withSentry(async (event) => {
   const body = JSON.parse(event.body);
 
-  if(!body.id){
-    return{
+  if (!body.id) {
+    return {
       statusCode: 500,
-      body: "ban_user expects keys \"id\""
+      body: 'ban_user expects keys "id"',
     };
   }
 
@@ -345,12 +352,12 @@ module.exports.ban_user = withSentry(async event =>{
 
   const params = {
     TableName: process.env.BANNED_USERS_TABLE,
-    Item: {}
+    Item: {},
   };
-  
+
   // Dynamically add post request body params to document
-  Object.keys(body).forEach(k => {
-    params.Item[k] = body[k]
+  Object.keys(body).forEach((k) => {
+    params.Item[k] = body[k];
   });
 
   // Call DynamoDB to add the item to the table
@@ -361,15 +368,15 @@ module.exports.ban_user = withSentry(async event =>{
     body: JSON.stringify(result.Item),
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true
-    }
+      'Access-Control-Allow-Credentials': true,
+    },
   };
 });
 
 // Retrieves all users from banned users table
-module.exports.get_banned_users = withSentry(async event => {
+module.exports.get_banned_users = withSentry(async () => {
   const params = {
-    TableName: process.env.BANNED_USERS_TABLE
+    TableName: process.env.BANNED_USERS_TABLE,
   };
 
   const ddb = new AWS.DynamoDB.DocumentClient();
@@ -381,15 +388,35 @@ module.exports.get_banned_users = withSentry(async event => {
     body: JSON.stringify(result.Items),
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true
-    }
+      'Access-Control-Allow-Credentials': true,
+    },
   };
 });
 
-// Sends a confirmation email to the user after they register with a unique referral code
-module.exports.send_registration_email = withSentry(async event => {
-  // Lazy load the sendgrid api - we don't want to load it for other endpoints
-  const sgMail = require('@sendgrid/mail');
+const referralIdGenerator = async (length) => {
+  const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+  const referralId = UUID.v4().substring(0, length);
+
+  const checkerParams = {
+    ExpressionAttributeValues: {
+      ':a': { S: `${process.env.REGISTRATION_INVITE_URL}?r=${referralId}` },
+    },
+    FilterExpression: 'invite_link = :a',
+    TableName: process.env.REGISTRATION_REFERRAL_TABLE,
+  };
+
+  const checkerResult = await ddb.scan(checkerParams).promise();
+
+  if (checkerResult.Count > 0) {
+    return await referralIdGenerator(length);
+  }
+
+  return referralId;
+};
+
+// Sends a confirmation email to the user after
+// they register with a unique referral code
+module.exports.send_registration_email = withSentry(async (event) => {
   let email = '';
   let firstName = '';
   let referral = '';
@@ -397,88 +424,78 @@ module.exports.send_registration_email = withSentry(async event => {
   const body = JSON.parse(event.body);
 
   // if the body includes a referral link, include it
-  if(body.form_response.hidden && body.form_response.hidden.referral) {
+  if (body.form_response.hidden && body.form_response.hidden.referral) {
     referral = body.form_response.hidden.referral;
   }
 
-  body.form_response.answers.forEach(answer => {
-    if(answer.email) {
+  body.form_response.answers.forEach((answer) => {
+    if (answer.email) {
       email = answer.email;
-    } else if(answer.field && answer.field.ref === "first_name") {
+    } else if (answer.field && answer.field.ref === 'first_name') {
       firstName = answer.text;
     }
   });
 
+  const referralId = await referralIdGenerator(5);
 
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-
-  let referralId;
-  let checker_result;
-  let checker_params;
-  //check that the referral ID is unique
-  do {
-    referralId = UUID.v4().substring(0, 5);
-
-    checker_params = {
-      ExpressionAttributeValues: {
-	  ":a": { "S": process.env.REGISTRATION_INVITE_URL + "?r=" + referralId }
-      },
-      FilterExpression: "invite_link = :a",
-      TableName: process.env.REGISTRATION_REFERRAL_TABLE
-     };
-
-    checker_result = await ddb.scan(checker_params).promise();
-  } while (checker_result["Count"] > 0);
-    
+  const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
   const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
-  const SecretsManagerKey = await SecretsManager.getSecretValue({SecretId: process.env.SENDGRID_SECRET_NAME}).promise();
+  const SecretsManagerKey = await SecretsManager.getSecretValue(
+    { SecretId: process.env.SENDGRID_SECRET_NAME },
+  ).promise();
   const decodedSendgridKey = JSON.parse(SecretsManagerKey.SecretString).SENDGRID_API_KEY;
 
-  invite_link = process.env.REGISTRATION_INVITE_URL + "?r=" + referralId;
+  const inviteLink = `${process.env.REGISTRATION_INVITE_URL}?r=${referralId}`;
 
   // Send the user an email, using our template
   sgMail.setApiKey(decodedSendgridKey);
 
   const msg = {
-    from: { email:"tech@gotechnica.org" },
+    from: { email: 'tech@gotechnica.org' },
+    reply_to: {
+      email: "eventops@gotechnica.org"
+    },
     personalizations: [{
-      "to":[{
-        "email": email
+      to: [{
+        email,
       }],
-      "dynamic_template_data":{
-        "user_name": firstName,
-        "invite_link": invite_link
-      }
+      dynamic_template_data: {
+        user_name: firstName,
+        invite_link: inviteLink,
+      },
     }],
-    template_id: process.env.REGISTRATION_TEMPLATE_ID
+    template_id: process.env.REGISTRATION_TEMPLATE_ID,
   };
- 
-  //If not running integration suites, send email
-  if(process.env.STAGE != TESTING_STAGE){
+
+  // If not running integration suites, send email
+  if (process.env.STAGE !== TESTING_STAGE) {
     await sgMail.send(msg);
   }
 
   const refItem = {
-    id: {S: UUID.v4()},
-    firstname: {S: firstName},
-    email: {S: email},
-    invite_link: {S: invite_link},
-    timestamp: {S: new Date().toString()},
-    referral_origin: {S: referral},
-    registration_data: {S: JSON.stringify(body.form_response)}
-  }
-    
-  const result = await ddb.putItem({
+    id: { S: UUID.v4() },
+    firstname: { S: firstName },
+    email: { S: email },
+    invite_link: { S: inviteLink },
+    timestamp: { S: new Date().toString() },
+    referral_origin: { S: referral },
+    registration_data: { S: JSON.stringify(body.form_response) },
+  };
+
+  await ddb.putItem({
     TableName: process.env.REGISTRATION_REFERRAL_TABLE,
     Item: refItem,
   }).promise();
 
-  const SecretsManagerSlackKey = await SecretsManager.getSecretValue({SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME}).promise();
-  const webhookUrl = JSON.parse(SecretsManagerSlackKey.SecretString).PLATFORM_ACTVITY_SLACK_WEBHOOK;
+  const SecretsManagerSlackKey = await SecretsManager.getSecretValue(
+    { SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME },
+  ).promise();
+  const webhookJSON = JSON.parse(SecretsManagerSlackKey.SecretString);
+  const webhookUrl = webhookJSON.PLATFORM_ACTVITY_SLACK_WEBHOOK;
   const webhook = new IncomingWebhook(webhookUrl);
-  if(process.env.STAGE != TESTING_STAGE){
+  if (process.env.STAGE !== TESTING_STAGE) {
     await webhook.send({
-      text: "Successfully sent registration email confirmation to " + email + ".",
+      text: `Successfully sent registration email confirmation to ${email}.`,
     });
   }
 
@@ -488,6 +505,6 @@ module.exports.send_registration_email = withSentry(async event => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
-    }
+    },
   };
 });
