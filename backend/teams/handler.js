@@ -10,9 +10,9 @@ post_request_body_to_table = async (event, table_name) => {
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const params = {
-    TableName: table_name,
+    TableName: tableName,
     Item: {
-      timestamp: new Date().toLocaleString(),
+	timestamp: new Date().toLocaleString(),new Date().toString(),
     }
   };
 
