@@ -1,60 +1,72 @@
 <template>
   <div class="page-container">
-    <b-container id="team-container" class="teams-container">
-      <h2 style="margin-bottom: 1.5rem;">Team Formation</h2>
-      <div v-if="!currentTeam" class="create-team-container">
-        <form @submit.prevent="goToProfile" class="create-team-form">
+    <div v-if="dataLoaded">
+      <b-container id="team-container" class="teams-container">
+        <h2 style="margin-bottom: 1.5rem;">Team Formation</h2>
+        <div v-if="!currentTeam" class="create-team-container">
+          <form @submit.prevent="goToProfile" class="create-team-form">
+            <div class="form-group">
+              <div class="input-wrapper">
+                <input type="text" class="form-control mx-auto" id="nameInput" placeholder="Enter Team Name" v-model="teamName">
+              </div>
+            </div>
+          </form>
+          <Button size="lg" text="Create Team" @click="createTeam()" class="create-team-button"/>
+        </div>
+        <div v-if="teamCreationLoading">
+          <div class="spinner-border" role="status" style="margin-top: 3rem;">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div v-else class="team-section">
+          <SectionTitle :title="sectionTitle" class="invites-divider"/>
+          <b-row v-if="!currentTeam && invites.length === 0" class="pending-invites">
+            <span>You have no pending invites!</span>
+          </b-row>
+          <b-row v-if="!currentTeam && invites.length > 0" class="invite-list">
+            <Banner v-for="invite in invites" :text="'You have an invite for invite ' + invite.id" :key="invite.id"/>
+          </b-row>
+          <b-row v-if="currentTeam" class="team-list-container">
+            <div v-for="teamMember in currentTeam.members" :key="teamMember.id" class="team-list-item">
+              <span class="team-list-segment">
+                {{ teamMember.full_name }}
+              </span>
+              <span class="team-list-segment">
+                {{ teamMember.email }}
+              </span>
+              <span>
+                {{ teamMember.school }}
+              </span>
+            </div>
+            <div v-for="teamMember in invitesToCurrentTeam" :key="teamMember.id" class="team-list-item invited-list-item">
+              <span>
+                {{ teamMember.email }}
+              </span>
+              <span class="invited-list-pending">
+                PENDING
+              </span>
+            </div>
+          </b-row>
+        </div>
+      </b-container>
+      <div v-if="currentTeam" class="create-team-container invite-container">
+        <form @submit.prevent="inviteHacker" class="create-team-form">
           <div class="form-group">
             <div class="input-wrapper">
-              <input type="text" class="form-control mx-auto" id="nameInput" placeholder="Enter Team Name" v-model="teamName">
+              <input type="text" class="form-control mx-auto" id="nameInput" placeholder="Enter Hacker Email" v-model="inviteEmail">
             </div>
           </div>
         </form>
-        <Button size="lg" text="Create Team" @click="createTeam()" class="create-team-button"/>
+        <Button size="lg" text="Invite Hacker" @click="inviteHacker()" class="create-team-button"/>
       </div>
-      <div class="team-section">
-        <SectionTitle :title="sectionTitle" class="invites-divider"/>
-        <b-row v-if="!currentTeam && invites.length === 0" class="pending-invites">
-          <span>You have no pending invites!</span>
-        </b-row>
-        <b-row v-if="!currentTeam && invites.length > 0" class="invite-list">
-          <Banner v-for="invite in invites" :text="'You have an invite for invite ' + invite.id" :key="invite.id"/>
-        </b-row>
-        <b-row v-if="currentTeam" class="team-list-container">
-          <div v-for="teamMember in currentTeam.members" :key="teamMember.id" class="team-list-item">
-            <span class="team-list-segment">
-              {{ teamMember.full_name }}
-            </span>
-            <span class="team-list-segment">
-              {{ teamMember.email }}
-            </span>
-            <span>
-              {{ teamMember.school }}
-            </span>
-          </div>
-          <div v-for="teamMember in invitesToCurrentTeam" :key="teamMember.id" class="team-list-item invited-list-item">
-            <span>
-              {{ teamMember.email }}
-            </span>
-            <span class="invited-list-pending">
-              PENDING
-            </span>
-          </div>
-        </b-row>
+      <div v-if="currentTeam">
+        <Button size="lg" text="Leave Team" @click="leaveTeam()" class="create-team-button" style="background: white !important;" :outlineStyle="true"/>
       </div>
-    </b-container>
-    <div v-if="currentTeam" class="create-team-container invite-container">
-      <form @submit.prevent="inviteHacker" class="create-team-form">
-        <div class="form-group">
-          <div class="input-wrapper">
-            <input type="text" class="form-control mx-auto" id="nameInput" placeholder="Enter Hacker Email" v-model="inviteEmail">
-          </div>
-        </div>
-      </form>
-      <Button size="lg" text="Invite Hacker" @click="inviteHacker()" class="create-team-button"/>
     </div>
-    <div v-if="currentTeam">
-      <Button size="lg" text="Leave Team" @click="leaveTeam()" class="create-team-button" style="background: white !important;" :outlineStyle="true"/>
+    <div v-else>
+      <div class="spinner-border" role="status" style="margin-top: 3rem;">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
   </div>
 </template>
@@ -81,12 +93,15 @@ export default {
       invitesToCurrentTeam: [],
       inviteEmail: '',
       currentTeam: null,
+      dataLoaded: false,
+      teamCreationLoading: false,
       checklistItems: ['submitted my hack on Devpost:', 'signed up for a demo slot with judges', 'signed up for an expo slot to show off my hack:', 'submitted my hack to Technica below:'],
     };
   },
   async mounted() {
     await this.getInvitesForHacker();
     await this.getTeam();
+    this.dataLoaded = true;
   },
   computed: {
     sectionTitle() {
@@ -95,6 +110,7 @@ export default {
   },
   methods: {
     async createTeam() {
+      this.teamCreationLoading = true;
       const env = this.getCurrentEnvironment();
       const createTeamPostParams = {
         team_name: this.teamName,
@@ -110,6 +126,7 @@ export default {
       this.teamName = '';
       // create checklist items for the team
       await this.createChecklist();
+      this.teamCreationLoading = false;
     },
     async createChecklist() {
       const env = this.getCurrentEnvironment();
