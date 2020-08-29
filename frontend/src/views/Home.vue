@@ -1,13 +1,15 @@
 <template>
-  <div class="home-page">
+  <div class="home-page" id="home-page">
     <div class="home-header">
       <h2>Welcome, {{ getUserName() }}</h2>
     </div>
     <div class="home-main">
       <div class="home-links">
         <h5>HELPFUL LINKS</h5>
-        <p>Over here maybe put a general introduction to Technica’s core features. </p>
-        <p>Then add a list of helpful links to the Technica Slack Channel, Hacker Resources, Technica 2020 Schedule, Our Speakers, etc.</p>
+        <p>Welcome to the Technica platform! We're incredibly excited to host you and the entire Technica community for an amazing weekend of learning, inclusiveness, and fun.</p>
+        <a href="https://slack.com" target="_blank" class="home-link"><p>Join the Conversation on Slack</p></a>
+        <a href="https://gotechnica.org/hacker-resources" target="_blank" class="home-link"><p>Useful Resources for Your Hack</p></a>
+        <router-link to="/help"><a href="#" class="home-link"><p>Get In Touch With An Organizer</p></a></router-link>
       </div>
       <div class="home-announcements">
         <h5>ANNOUNCEMENTS</h5>
@@ -83,6 +85,12 @@ h2 {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.home-link {
+  text-decoration: underline;
+  text-decoration-color: #464343;
+  color: #2D2D2D;
 }
 
 </style>

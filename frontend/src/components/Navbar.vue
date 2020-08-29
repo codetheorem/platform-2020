@@ -2,9 +2,11 @@
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light navigation-box">
       <div class="logo-nav">
-        <a class="navbar-brand" href="#">
-          <img alt="Vue logo" src="../assets/technica-logo.svg" class="img-responsive" />
-        </a>
+        <router-link to="/">
+          <a class="navbar-brand" href="#">
+            <img alt="Vue logo" src="../assets/technica-logo.svg" class="img-responsive" />
+          </a>
+        </router-link>
       </div>
       <span v-if="displayRouteList" class="mx-auto">
         <button

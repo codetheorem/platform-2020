@@ -1,3 +1,5 @@
+org: technica
+app: platform-schedule
 service: platform-schedule
 
 provider:

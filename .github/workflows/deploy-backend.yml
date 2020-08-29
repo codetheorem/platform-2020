@@ -8,7 +8,7 @@ on:
   push:
     branches:
       - master
-
+ 
 # Job simply sends a dispatch to the repository, triggering all the other
 # deploy-backend-{service}.yml jobs
 jobs:

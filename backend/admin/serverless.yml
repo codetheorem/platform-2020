@@ -1,3 +1,5 @@
+org: technica
+app: platform-admin
 service: platform-admin
 
 provider:

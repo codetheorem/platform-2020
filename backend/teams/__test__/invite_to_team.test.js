@@ -55,18 +55,4 @@ describe('invite_to_team', () => {
             expect(response).toHaveProperty('statusCode', 500);
         }); 
     });
-
-    it('Successfully rejects request to invite a team without team_id', async() =>{
-        return await wrapper.run(missing_team_id).then(async (response) =>{
-            expect(response).toBeDefined();
-            expect(response).toHaveProperty('statusCode', 500);
-        }); 
-    });
-
-    it('Successfully rejects request to invite a team without user_id', async() =>{
-        return await wrapper.run(missing_user_id).then(async (response) =>{
-            expect(response).toBeDefined();
-            expect(response).toHaveProperty('statusCode', 500);
-        }); 
-    });
 });

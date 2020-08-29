@@ -87,3 +87,11 @@ a:hover {
 	outline: 0 !important;
 	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .25) !important;
 }
+
+.tooltip .tooltip-inner{
+	max-width: 800px !important;
+	padding: 10px;
+	background-color: #d4b3e7;
+	opacity: 1.0 !important;
+}
+  

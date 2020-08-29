@@ -16,7 +16,7 @@ const routes = [
     path: '/sponsors',
     name: 'Sponsors',
     component: () => import('../views/Sponsors.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/sponsorship-fair',
@@ -28,16 +28,32 @@ const routes = [
     path: '/live-stream',
     name: 'Live Stream',
     component: () => import('../views/LiveStream.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
     beforeEnter() {
       window.open(Config.dev.LIVESTREAM_LINK, '_blank');
+    },
+  },
+  {
+    path: '/prizes',
+    name: 'Prizes',
+    displayInNavBar: false,
+    beforeEnter() {
+      window.open(Config.dev.PRIZES_LINK, '_blank');
+    },
+  },
+  {
+    path: '/resources',
+    name: 'Helpful Resources',
+    displayInNavBar: false,
+    beforeEnter() {
+      window.open(Config.dev.HACKER_RESOURCES_LINK, '_blank');
     },
   },
   {
     path: '/schedule',
     name: 'Schedule',
     component: () => import('../views/Schedule.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/login',
@@ -49,19 +65,19 @@ const routes = [
     path: '/project',
     name: 'Project',
     component: () => import('../views/Project.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/team',
     name: 'Team',
     component: () => import('../views/Team.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/team-room',
     name: 'Team Room',
     component: () => import('../views/TeamRoom.vue'),
-    displayInNavBar: true,
+    displayInNavBar: false,
   },
   {
     path: '/register',
@@ -73,7 +89,91 @@ const routes = [
     path: '/help',
     name: 'Help',
     component: () => import('../views/HelpDesk.vue'),
+    displayInNavBar: false,
+  },
+  {
+    path: '/water-cooler',
+    name: 'Water Cooler',
+    component: () => import('../views/WaterCooler.vue'),
+    displayInNavBar: false,
+  },
+  {
+    path: '/photo-booth',
+    name: 'Photo Booth',
+    component: () => import('../views/PhotoBooth.vue'),
+    displayInNavBar: false,
+  },
+  {
+    path: '/events',
+    name: 'Events',
     displayInNavBar: true,
+    dropdown: [
+      {
+        path: '/schedule',
+        name: 'Schedule',
+      },
+      {
+        path: '/live-stream',
+        name: 'Live Stream',
+      },
+      {
+        path: '/sponsors',
+        name: 'Sponsors',
+      },
+    ],
+  },
+  {
+    path: '/hack',
+    name: 'Hack',
+    displayInNavBar: true,
+    dropdown: [
+      {
+        path: '/team',
+        name: 'My Team',
+      },
+      {
+        path: '/team-room',
+        name: 'Team Room',
+      },
+      {
+        path: '/project',
+        name: 'Submit Project',
+      },
+      {
+        path: '/prizes',
+        name: 'Prizes',
+      },
+    ],
+  },
+  {
+    path: '/social',
+    name: 'Social',
+    displayInNavBar: true,
+    dropdown: [
+      {
+        path: '/water-cooler',
+        name: 'Water Cooler',
+      },
+      {
+        path: '/photo-booth',
+        name: 'Photo Booth',
+      },
+    ],
+  },
+  {
+    path: '/resources',
+    name: 'Resources',
+    displayInNavBar: true,
+    dropdown: [
+      {
+        path: '/help',
+        name: 'Help Desk',
+      },
+      {
+        path: '/resources',
+        name: 'Helpful Resources',
+      },
+    ],
   },
   {
     path: '/profile',

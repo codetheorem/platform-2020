@@ -1,11 +1,13 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
-const withSentry = require("serverless-sentry-lib");
+const withSentry = require('serverless-sentry-lib');
 
-AWS.config.update({region:'us-east-1'});
+AWS.config.update({ region: 'us-east-1' });
+
+const NO_EMAIL = "noemail@gmail.com";
 
 // Posts the request body fields to a DynamoDB table
-post_request_body_to_table = async (event, table_name) => {
+const postRequestToTable = async (event, tableName) => {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB.DocumentClient();
 
@@ -18,35 +20,38 @@ post_request_body_to_table = async (event, table_name) => {
 
   const id = UUID.v4();
   body.id = id;
-  
+
   // return 500 on team with no/missing params
-  if(table_name == process.env.TEAMS_TABLE && !body.team_name){
-    return{
+  if (tableName === process.env.TEAMS_TABLE && !body.team_name) {
+    return {
       statusCode: 500,
-      body: "Missing team_name"
+      body: 'Missing team_name',
     };
   }
-  else if((table_name == process.env.INVITES_TABLE || table_name == process.env.MEMBERSHIPS_TABLE) &&
-          (!body.user_id || !body.team_id)){
-    return{
+  if (
+    (tableName === process.env.INVITES_TABLE
+      || tableName === process.env.MEMBERSHIPS_TABLE)
+    && (!body.user_id && !body.team_id)
+  ) {
+    return {
       statusCode: 500,
-      body: "Missing required ids"
+      body: 'Missing required ids',
     };
   }
-  else if(Object.keys(body).length == 1){
-    return{
+  if (Object.keys(body).length === 1) {
+    return {
       statusCode: 500,
-      body: "No params"
+      body: 'No params',
     };
   }
-  
+
   // dynamically add post request body params to document
-  Object.keys(body).forEach(k => {
-    params.Item[k] = body[k]
+  Object.keys(body).forEach((k) => {
+    params.Item[k] = body[k];
   });
 
   // Call DynamoDB to add the item to the table
-  const result = await ddb.put(params).promise()
+  await ddb.put(params).promise();
 
   // return 500 on error
   return {
@@ -55,90 +60,105 @@ post_request_body_to_table = async (event, table_name) => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
-    }
+    },
   };
 };
 
-module.exports.create_team = withSentry(async event => {
-  return post_request_body_to_table(event, process.env.TEAMS_TABLE);
+module.exports.create_team = withSentry(async (event) => postRequestToTable(event, process.env.TEAMS_TABLE));
+
+module.exports.invite_to_team = withSentry(async (event) => {
+  const body = JSON.parse(event.body);
+  const email = body.email || NO_EMAIL;
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const params = {
+    TableName: process.env.USERS_TABLE,
+    FilterExpression: "email = :val",
+    ExpressionAttributeValues: {
+      ":val" : email,
+    }
+  };
+
+  const result = await ddb.scan(params).promise();
+  if(result.Items && result.Items.length > 0) {
+    const newBody = body;
+    newBody.user_id = result.Items[0].id;
+    event.body = JSON.stringify(newBody);
+  }
+
+  return postRequestToTable(event, process.env.INVITES_TABLE)
 });
 
-module.exports.invite_to_team = withSentry(async event => {
-  return post_request_body_to_table(event, process.env.INVITES_TABLE);
-});
-
-module.exports.join_team = withSentry(async event => {
-  return post_request_body_to_table(event, process.env.MEMBERSHIPS_TABLE);
-});
+module.exports.join_team = withSentry(async (event) => postRequestToTable(event, process.env.MEMBERSHIPS_TABLE));
 
 // find a membership item, delete it
-module.exports.leave_team = withSentry(async event => {
+module.exports.leave_team = withSentry(async (event) => {
   const body = JSON.parse(event.body);
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const params = {
     TableName: process.env.MEMBERSHIPS_TABLE,
-    FilterExpression: "user_id = :val",
+    FilterExpression: 'user_id = :val',
     ExpressionAttributeValues: {
-      ":val" : body.user_id,
-    }
+      ':val': body.user_id,
+    },
   };
 
   const result = await ddb.scan(params).promise();
-  
-  //if no matches, return
-  if (result.Count == 0) {
-    return{
+
+  // if no matches, return
+  if (result.Count === 0) {
+    return {
       statusCode: 500,
-      body: "Error, no membership found"
-    }
+      body: 'Error, no membership found',
+    };
   }
 
-  const delete_params = {
+  const deleteParams = {
     TableName: process.env.MEMBERSHIPS_TABLE,
     Key: {
-      'id': result.Items[0].id,
+      id: result.Items[0].id,
     },
   };
-  
-  try{
+
+  try {
     // Call DynamoDB to delete the item from the table
-    const status_result = await ddb.delete(delete_params).promise();
+    const statusResult = await ddb.delete(deleteParams).promise();
     return {
       statusCode: 200,
-      body: JSON.stringify(status_result),
+      body: JSON.stringify(statusResult),
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
-      }
+      },
     };
-  }
-  catch(error){
-    return{
+  } catch (error) {
+    return {
       statusCode: 500,
-      body: "Error, id may not be present"
-    }
+      body: 'Error, id may not be present',
+    };
   }
 });
 
-module.exports.get_team_invites = withSentry(async event => {
-  const user_id = String(event.queryStringParameters.user_id);
+// Retrieves the team invites for a hacker
+module.exports.get_team_invites = withSentry(async (event) => {
+  const userId = String(event.queryStringParameters.user_id);
 
-  if (!user_id) {
+  if (!userId) {
     return {
       statusCode: 500,
-      body: "get_team_invites expects keys \"user_id\""
-    }
+      body: 'get_team_invites expects keys "user_id"',
+    };
   }
 
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const params = {
     TableName: process.env.INVITES_TABLE,
-    FilterExpression: "user_id = :val",
+    FilterExpression: 'user_id = :val',
     ExpressionAttributeValues: {
-      ":val" : user_id,
-    }
+      ':val': userId,
+    },
   };
 
   const result = await ddb.scan(params).promise();
@@ -149,38 +169,40 @@ module.exports.get_team_invites = withSentry(async event => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
-    }
+    },
   };
 });
 
-module.exports.get_users_for_team = withSentry(async event => {
-  const team_id = String(event.queryStringParameters.team_id);
+module.exports.get_users_for_team = withSentry(async (event) => {
+  const teamId = String(event.queryStringParameters.team_id);
 
-  if (!team_id) {
+  if (!teamId) {
     return {
       statusCode: 500,
-      body: "get_users_for_team expects keys \"team_id\""
-    }
+      body: 'get_users_for_team expects keys "team_id"',
+    };
   }
 
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const params = {
     TableName: process.env.MEMBERSHIPS_TABLE,
-    FilterExpression: "team_id = :val",
+    FilterExpression: 'team_id = :val',
     ExpressionAttributeValues: {
-      ":val" : team_id,
-    }
+      ':val': teamId,
+    },
   };
 
   const membershipsResult = await ddb.scan(params).promise();
 
-  const userIds = membershipsResult.Items.map(membership => {return {id: membership.user_id}});
+  const userIds = membershipsResult.Items.map((membership) => ({
+    id: membership.user_id,
+  }));
 
-  let queryParams = {RequestItems: {}};
+  const queryParams = { RequestItems: {} };
   queryParams.RequestItems[process.env.USERS_TABLE] = {
     Keys: userIds,
-    ProjectionExpression: 'id, full_name, email, school'
+    ProjectionExpression: 'id, full_name, email, school',
   };
 
   const usersResult = await ddb.batchGet(queryParams).promise();
@@ -191,27 +213,60 @@ module.exports.get_users_for_team = withSentry(async event => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
-    }
+    },
   };
 });
 
-module.exports.get_team_membership_for_user = withSentry(async event => {
-  const user_id = String(event.queryStringParameters.user_id);
+module.exports.get_team_membership_for_user = withSentry(async (event) => {
+  const userID = String(event.queryStringParameters.user_id);
 
-  if (!user_id) {
+  if (!userID) {
     return {
       statusCode: 500,
-      body: "get_team_invites expects keys \"user_id\""
-    }
+      body: 'get_team_invites expects keys "user_id"',
+    };
   }
 
   const ddb = new AWS.DynamoDB.DocumentClient();
 
   const params = {
     TableName: process.env.MEMBERSHIPS_TABLE,
-    FilterExpression: "user_id = :val",
+    FilterExpression: 'user_id = :val',
     ExpressionAttributeValues: {
-      ":val" : user_id,
+      ':val': userID,
+    },
+  };
+
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Items),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
+
+// Retrieves all the invites for a team
+module.exports.get_hackers_invited_to_team = withSentry(async event => {
+  const team_id = String(event.queryStringParameters.team_id);
+
+  if (!team_id) {
+    return {
+      statusCode: 500,
+      body: "get_hackers_invited_to_team expects keys \"team_id\""
+    }
+  }
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const params = {
+    TableName: process.env.INVITES_TABLE,
+    FilterExpression: "team_id = :val",
+    ExpressionAttributeValues: {
+      ":val" : team_id,
     }
   };
 
