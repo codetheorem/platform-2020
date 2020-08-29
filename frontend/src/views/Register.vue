@@ -49,6 +49,8 @@
               </div>
             </div>
           </form>
+          <p v-if="displayIncompleteInfoMessage" class="text-error">Please fill out all profile fields.</p>
+          <p v-if="emailIsInvalid" class="text-error">Please enter a valid email address.</p>
           <Button size="lg" text="Next" @click="goToProfile()"/>
         </template>
       </content-container>
@@ -64,6 +66,7 @@
             <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text"></textarea>
             <!-- <Button size="lg" text="Upload Profile Picture" @click="goToProfile()"/> -->
           </form>
+          <p v-if="displayIncompleteHackerProfileMessage" class="text-error">Please fill out your hacker profile.</p>
           <Button size="lg" text="Finish" @click="goHome()"/>
         </template>
       </content-container>
@@ -88,6 +91,9 @@ export default {
     return {
       getStartedButtonClicked: false,
       nextButtonClicked: false,
+      displayIncompleteInfoMessage: false,
+      displayIncompleteHackerProfileMessage: false,
+      emailIsInvalid: false,
       name: '',
       email: '',
       school: '',
@@ -100,28 +106,48 @@ export default {
       this.getStartedButtonClicked = true;
     },
     goToProfile() {
-      const env = this.getCurrentEnvironment();
-      const postParams = {
-        id: this.getUserId(),
-        email: this.email,
-        pronoun: this.pronoun,
-        full_name: this.name,
-        school: this.school,
-        phone: this.phone,
-      };
-      this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
-      this.nextButtonClicked = true;
-      this.setUserNameCookie(this.name.split(' ')[0]);
+      if (this.profileInformationCompleted && this.emailAddressIsValid) {
+        const env = this.getCurrentEnvironment();
+        const postParams = {
+          id: this.getUserId(),
+          email: this.email,
+          pronoun: this.pronoun,
+          full_name: this.name,
+          school: this.school,
+          phone: this.phone,
+        };
+        this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
+        this.nextButtonClicked = true;
+        this.setUserNameCookie(this.name.split(' ')[0]);
+      } else if (!this.profileInformationCompleted) {
+        this.displayIncompleteInfoMessage = true;
+        this.emailIsInvalid = false;
+      } else {
+        this.emailIsInvalid = true;
+        this.displayIncompleteInfoMessage = false;
+      }
     },
     goHome() {
-      this.$router.push('/');
-      const env = this.getCurrentEnvironment();
-      const postParams = {
-        id: this.getUserId(),
-        profile_text: this.profile_text,
-        registration_status: 'registered',
-      };
-      this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
+      if (this.profile_text !== '') {
+        this.$router.push('/');
+        const env = this.getCurrentEnvironment();
+        const postParams = {
+          id: this.getUserId(),
+          profile_text: this.profile_text,
+          registration_status: 'registered',
+        };
+        this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
+      } else {
+        this.displayIncompleteHackerProfileMessage = true;
+      }
+    },
+  },
+  computed: {
+    profileInformationCompleted() {
+      return this.email !== '' && this.pronoun !== '' && this.full_name !== '' && this.school !== '' && this.phone !== '';
+    },
+    emailAddressIsValid() {
+      return this.email !== '' && this.email.includes('@') && this.email.includes('.');
     },
   },
 };
