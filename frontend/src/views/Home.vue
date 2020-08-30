@@ -65,7 +65,6 @@ h2 {
 
 .home-links {
   width: 80%;
-  height: 30vh;
   background: #DED2E5;
   border-radius: 8px;
   margin-right: 3rem;
@@ -76,7 +75,6 @@ h2 {
   background: #FFFFFF;
   border-radius: 8px;
   width: 80%;
-  height: 30vh;
   padding: 1rem;
 }
 
@@ -92,5 +90,17 @@ h2 {
   text-decoration-color: #464343;
   color: #2D2D2D;
 }
+
+  @media (max-width: 800px) {
+    .home-main {
+      flex-flow: column;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .home-links {
+      margin-bottom: 1rem;
+    }
+  }
 
 </style>

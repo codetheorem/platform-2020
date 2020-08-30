@@ -1,7 +1,6 @@
 <template>
   <div class="banner-wrapper">
-    <div class="technica-logo-icon">
-    </div>
+    <img src="../assets/technica-logo-icon.png" style="width: 30px; height: 30px;">
     <span class="banner-text">{{ text }}</span>
   </div>
 </template>
@@ -22,13 +21,6 @@ export default {
         align-content: center;
         text-align: center;
         margin: .5rem;
-    }
-    .technica-logo-icon {
-        background: linear-gradient(179.71deg, #23D8D8 -15.87%, #FF639D 99.75%);
-        transform: matrix(-0.01, -1, 1, -0.01, 0, 0);
-        width: 2rem;
-        height: 2rem;
-        border-radius: 2rem;
     }
     .banner-wrapper {
         background: #FFFFFF;
