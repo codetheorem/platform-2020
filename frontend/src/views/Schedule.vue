@@ -13,7 +13,7 @@
             <span style="display: inline-block; width: 5px;">{{ time }}</span>
           </span>
         </div>
-        <a href="https://zoom.us" target="_blank" style="cursor: normal;">
+        <a href="https://zoom.us/j/75125004086" target="_blank" style="cursor: normal;">
           <div class="event-container" v-if="selectedDay === 'Saturday'">
             <div class="event-line">
               <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Midnight Meetup</span>
