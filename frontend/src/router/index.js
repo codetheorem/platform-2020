@@ -104,6 +104,12 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/request-mentor',
+    name: 'Request A Mentor',
+    component: () => import('../views/RequestMentor.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/events',
     name: 'Events',
     displayInNavBar: true,
@@ -138,6 +144,10 @@ const routes = [
       {
         path: '/project',
         name: 'Submit Project',
+      },
+      {
+        path: '/request-mentor',
+        name: 'Request A Mentor',
       },
       {
         path: '/prizes',
