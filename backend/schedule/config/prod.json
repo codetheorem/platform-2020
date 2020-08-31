@@ -7,5 +7,6 @@
     "ZOOM_API_EMAIL_ACCOUNT": "hugoburbelo@gmail.com",
     "ZOOM_LINK_TABLE": "platform-prod-meetings",
     "ZOOM_API_KEY_SECRET_NAME": "ZOOM_TESTING_API_KEY",
-    "PLATFORM_BASE_URL": "http://platform.gotechnica.org"
+    "PLATFORM_BASE_URL": "http://platform.gotechnica.org",
+    "ZOOM_API_KEYS_TABLE": "platform-prod-zoom-api-keys"
 }

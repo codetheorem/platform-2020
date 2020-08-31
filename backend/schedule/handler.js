@@ -61,55 +61,69 @@ const createShortlinkHelper = async (body) => {
 };
 
 const createMeetingHelper = async (eventName) => {
-  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
-  const SecretsManagerKey = await SecretsManager.getSecretValue({ SecretId: process.env.ZOOM_API_KEY_SECRET_NAME }).promise();
-  const decodedZoomAPIKey = JSON.parse(SecretsManagerKey.SecretString).ZOOM_TESTING_API_KEY;
 
-  // Make Zoom API call
-  const zoomApiEmail = process.env.ZOOM_API_EMAIL_ACCOUNT;
-  const zoomApiToken = decodedZoomAPIKey;
-  const zoomLinkTable = process.env.ZOOM_LINK_TABLE;
-
-  const options = {
-    method: 'POST',
-    uri: `https://api.zoom.us/v2/users/${zoomApiEmail}/meetings`,
-    qs: {
-      userId: zoomApiEmail,
-    },
-    auth: {
-      // Provide your token here
-      bearer: zoomApiToken,
-    },
-    headers: {
-      'User-Agent': 'Zoom-Jwt-Request',
-      'content-type': 'application/json',
-    },
-
-    body: {
-      topic: 'Instant meeting',
-      type: 1,
-    },
-    json: true, // Automatically parses the JSON string in the response
+  // get all API keys
+  const scanParams = {
+    TableName: process.env.ZOOM_API_KEYS_TABLE,
   };
+  const ddb = new AWS.DynamoDB.DocumentClient();
+  const scanResult = await ddb.scan(scanParams).promise();
 
+  let index = 0;
+  let apiRequestSuccess = false;
+
+  // cycle through API keys until we either make a successful request or we run out
   let result;
-  if (process.env.STAGE !== 'testing') {
-    result = await rp.post(options);
-    if (result.status > 201) {
-      return {
-        statusCode: 500,
-        body: 'Failed',
-      };
-    }
-  } else {
-    result = {
-      join_url: 'https://zoom.us/12345_TEST',
+  const zoomLinkTable = process.env.ZOOM_LINK_TABLE;
+  while (!apiRequestSuccess) {
+    let zoomApiToken = scanResult.Items[index]['key'];
+    let zoomApiEmail = scanResult.Items[index]['email'];
+
+    // Make Zoom API call
+    const options = {
+      method: 'POST',
+      uri: `https://api.zoom.us/v2/users/${zoomApiEmail}/meetings`,
+      qs: {
+        userId: zoomApiEmail,
+      },
+      auth: {
+        // Provide your token here
+        bearer: zoomApiToken,
+      },
+      headers: {
+        'User-Agent': 'Zoom-Jwt-Request',
+        'content-type': 'application/json',
+      },
+
+      body: {
+        topic: 'Instant meeting',
+        type: 1,
+      },
+      json: true, // Automatically parses the JSON string in the response
     };
+
+    if (process.env.STAGE !== 'testing') {
+      result = await rp.post(options);
+      if (result.status > 201 && index+1 >= scanResult.Items.length) {
+        return {
+          statusCode: 500,
+          body: 'Failed',
+        };
+      } else if (result.status > 201) {
+        index += 1;
+      } else {
+        apiRequestSuccess = true;
+      }
+    } else {
+      result = {
+        join_url: 'https://zoom.us/12345_TEST',
+      };
+      apiRequestSuccess = true;
+    }
   }
 
   const parsedResult = (result);
 
-  const ddb = new AWS.DynamoDB.DocumentClient();
   const id = UUID.v4();
 
   const params = {
@@ -498,7 +512,6 @@ module.exports.get_events_from_user_list = withSentry(async (event) => {
 
 module.exports.create_zoom_meeting = withSentry(async (event) => {
   const body = JSON.parse(event.body);
-
   // Check for validity
   if (!body.event_name) {
     return {

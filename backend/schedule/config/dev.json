@@ -7,5 +7,6 @@
     "ZOOM_API_EMAIL_ACCOUNT": "hugoburbelo@gmail.com",
     "ZOOM_LINK_TABLE": "platform-dev-meetings",
     "ZOOM_API_KEY_SECRET_NAME": "ZOOM_TESTING_API_KEY",
-    "PLATFORM_BASE_URL": "localhost:8080"
+    "PLATFORM_BASE_URL": "localhost:8080",
+    "ZOOM_API_KEYS_TABLE": "platform-dev-zoom-api-keys"
 }
