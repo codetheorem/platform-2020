@@ -21,8 +21,9 @@ const TABLE_LIST = [
   { name: 'meetings', keyName: 'id' },
   { name: 'project-submissions', keyName: 'id' },
   { name: 'referrals', keyName: 'id' },
+  { name: 'mentorship-requests', keyName: 'id'},
   { name: 'activity', keyName: 'id' },
-  { name: 'zoom-api-keys', keyName: 'key' }
+  { name: 'zoom-api-keys', keyName: 'key' } /* NOTE: different keyname for zoom-api-keys */
 ];
 
 const STAGE_LIST = ['prod', 'stage', 'dev', 'test'];
