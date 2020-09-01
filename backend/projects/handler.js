@@ -67,7 +67,7 @@ module.exports.create_mentorship_request = withSentry(async (request) => {
   body.id = id;
 
   // checks if any field is missing to create a request
-  if (!body.title || !body.description || !body.category) {
+  if (!body.title || !body.description || !body.topic) {
     return {
       statusCode: 500,
       body: 'create_mentorship_request is missing a field',
@@ -83,6 +83,8 @@ module.exports.create_mentorship_request = withSentry(async (request) => {
   Object.keys(body).forEach((k) => {
     params.Item[k] = body[k];
   });
+
+  params.Item.timestamp = new Date().toString();
 
   // Call DynamoDB to add the item to the table
   await ddb.put(params).promise();

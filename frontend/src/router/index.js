@@ -86,6 +86,12 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/mentorship-requests',
+    name: 'Mentorship Requests',
+    component: () => import('../views/MentorshipRequests.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/help',
     name: 'Help',
     component: () => import('../views/HelpDesk.vue'),
@@ -101,6 +107,12 @@ const routes = [
     path: '/photo-booth',
     name: 'Photo Booth',
     component: () => import('../views/PhotoBooth.vue'),
+    displayInNavBar: false,
+  },
+  {
+    path: '/request-mentor',
+    name: 'Request A Mentor',
+    component: () => import('../views/RequestMentor.vue'),
     displayInNavBar: false,
   },
   {
@@ -138,6 +150,10 @@ const routes = [
       {
         path: '/project',
         name: 'Submit Project',
+      },
+      {
+        path: '/request-mentor',
+        name: 'Request A Mentor',
       },
       {
         path: '/prizes',

@@ -1,0 +1,150 @@
+<template>
+  <div class="page">
+    <div class="header">
+      <h2>Mentor Management</h2>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 filter-bar">
+          <div class="filter-buttons">
+            <Button size="sm" text="Active" @click="viewActive()" class="filter"/>
+            <Button size="sm" text="Resolved" @click="viewResolved()" class="filter"/>
+          </div>
+        </div>
+        <div class="col-md-8 request-list">
+          <div v-if="dataLoaded" class="request-cards">
+            <div v-for="request in allMentorRequests" :key="request.id" style="width: 100%;">
+              <MentorManagementCard v-bind:requestDescription=request.formattedDescription @viewCard="viewCard"/>
+            </div>
+          </div>
+          <div v-else style="margin-top:1rem;">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <b-modal id="request-view-modal" title="View Request">
+      <p class="my-4">Here's more info about the request:</p>
+      <p class="my-4">{{ activeRequestTitle }}</p>
+    </b-modal>
+  </div>
+</template>
+
+<script>
+import MentorManagementCard from '@/components/Mentors/MentorManagementCard.vue';
+import Button from '@/components/Button.vue';
+import generalMixin from '../mixins/general';
+import Config from '../config/general';
+
+export default {
+  name: 'Home',
+  components: {
+    MentorManagementCard,
+    Button,
+  },
+  mixins: [generalMixin],
+  data() {
+    const allMentorRequests = {};
+
+    return {
+      allMentorRequests,
+      dataLoaded: false,
+      activeRequestTitle: '',
+    };
+  },
+  async mounted() {
+    const env = this.getCurrentEnvironment();
+    this.allMentorRequests = await this.getDataSimple(Config[env].PROJECTS_BASE_ENDPOINT, env, 'get_active_mentorship_requests');
+
+    this.allMentorRequests.forEach((request) => {
+      // eslint-disable-next-line no-param-reassign
+      request.formattedDescription = `Someone wants help with ${request.category}. '${request.description}'`;
+    });
+
+    this.dataLoaded = true;
+  },
+  methods: {
+    viewCard(card) {
+      this.activeRequestTitle = card.title;
+    },
+  },
+};
+</script>
+
+<style scoped>
+.page {
+  background-color: #F6F4F7;
+  width: 100vw;
+  height: 100vh;
+}
+
+h2 {
+  color: var(--bright-purple);
+}
+
+.header {
+  padding-top: 2rem;
+}
+
+.container {
+  padding: 2rem;
+}
+
+.request-list {
+  background-color: #FFF;
+  border: 4px solid var(--pastel-purple);
+  overflow: auto;
+  height: 70vh;
+}
+
+.request-cards {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.filter-bar {
+  background-color: var(--light-purple);
+}
+
+.filter-buttons {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.filter {
+  width:100%;
+  background: #FFF;
+  color: #000;
+
+  border: none;
+  border-radius: 8px;
+  font-family: Noto Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.main {
+  display: flex;
+  padding: 2rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+</style>

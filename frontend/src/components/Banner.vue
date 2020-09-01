@@ -26,9 +26,10 @@ export default {
         background: #FFFFFF;
         border-radius: 8px;
         filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25));
-        width: 70%;
+        width: 80%;
         padding: 5px;
         padding-bottom: 10px;
+        height: fit-content;
     }
     .banner-text {
         margin-left: 1rem;
