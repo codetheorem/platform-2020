@@ -7,7 +7,7 @@ export default {
     SPONSORS_INFO_ENDPOINT: 'https://4yngdno31k.execute-api.us-east-1.amazonaws.com',
     LIVESTREAM_LINK: 'https://www.youtube.com/channel/UC-Wo4UqhGUKQEp4o-51VMIw',
     SPONSORSHIP_LINK: 'https://www.vfairs.com/',
-    TEAMS_BASE_ENDPOINT: 'https://e2hezie6kb.execute-api.us-east-1.amazonaws.com',
+    TEAMS_BASE_ENDPOINT: 'https://bqjydw3dzk.execute-api.us-east-1.amazonaws.com',
     PROJECTS_BASE_ENDPOINT: 'https://4yngdno31k.execute-api.us-east-1.amazonaws.com',
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
