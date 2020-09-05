@@ -105,7 +105,14 @@ functions:
           path: find_user_by_email
           method: get
           cors: true
-
+  update_hacker_profile:
+    handler: handler.update_hacker_profile
+    description: Updates user hacker profile with new information
+    events:
+      - http:
+          path: update_hacker_profile
+          method: post
+          cors: true
           
 plugins:
   - serverless-sentry
