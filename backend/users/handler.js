@@ -508,3 +508,41 @@ module.exports.send_registration_email = withSentry(async (event) => {
     },
   };
 });
+//Update an existing hacker's hacker profile
+module.exports.update_hacker_profile = withSentry(async event =>{
+  const ddb = new AWS.DynamoDB.DocumentClient();
+  const body = JSON.parse(event.body);
+  if (!body["user_id"] || !body["hacker_profile"]) {
+    return {
+      statusCode: 500,
+      body: "Missing user_id or hacker_profile keys"
+    };
+  }
+
+  //id to locate which hacker to update
+  id = body["user_id"];
+  var params = {
+    TableName: process.env.USERS_TABLE,
+    Key:{
+      id: id.toString(),
+    },
+    UpdateExpression: "set hacker_profile = :p",
+    ExpressionAttributeValues:{
+        ":p": body.hacker_profile,
+    },
+    ReturnValues:"UPDATED_NEW"
+  };
+
+
+  //Call DynamoDB to update profile
+  const result = await ddb.update(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };
+});
