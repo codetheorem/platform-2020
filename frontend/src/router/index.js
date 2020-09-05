@@ -168,7 +168,7 @@ const routes = [
     dropdown: [
       {
         path: '/water-cooler',
-        name: 'Water Cooler',
+        name: 'Networking',
       },
       {
         path: '/photo-booth',

@@ -1,14 +1,15 @@
 <template>
   <div class="about">
     <div id="help-body" class="container my-3 my-md-5">
-      <h2 class="heading my-3 my-md-5">Virtual Water Cooler</h2>
+      <h2 class="heading my-3 my-md-5">Networking: Virtual Water Cooler</h2>
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
           <div class="card">
             <div class="card-body">
                 <p>
-                  The watercooler is a random room where you will be paired with other hackers to meet and interact. Click the link below to join and meet other people!
+                  The water cooler is a room where you will be paired with other hackers to meet, network, and interact. Once you join the room,
+                  you will be paired with other hackers by Technica organizers in a breakout room. Click the link below to join and meet other people!
                 </p>
             </div>
           </div>
