@@ -54,15 +54,15 @@ export default {
 }
 
 ul {
-    text-align: left;
+  text-align: left;
 }
 
 .tooltip-text{
-    color: black;
+  color: black;
 }
 
 #tooltip-custom{
-	opacity: 1.0 !important;
+  opacity: 1.0 !important;
 }
 
 </style>
