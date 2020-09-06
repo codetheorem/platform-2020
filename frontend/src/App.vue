@@ -36,7 +36,6 @@ export default {
       // eslint-disable-next-line no-await-in-loop
       await this.sleep(50);
     }
-    this.verifyUserId();
     this.userIsMemberOfTeam = await this.checkIfUserHasTeam();
   },
   data() {
@@ -46,11 +45,6 @@ export default {
   },
   mixins: [generalMixin],
   methods: {
-    verifyUserId() {
-      if ((!this.getUserId()) && ((this.$route.name !== 'Login' && this.$route.name !== 'authenticate'))) {
-        this.$router.push('Login');
-      }
-    },
     sleep(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     },
