@@ -95,7 +95,7 @@ export default {
       currentTeam: null,
       dataLoaded: false,
       teamCreationLoading: false,
-      checklistItems: ['submitted my hack on Devpost:', 'signed up for a demo slot with judges', 'signed up for an expo slot to show off my hack:', 'submitted my hack to Technica below:'],
+      checklistItems: ['submitted my hack on Devpost:', 'signed up for an expo slot to show off my hack:', 'submitted my hack to Technica below:'],
     };
   },
   async mounted() {

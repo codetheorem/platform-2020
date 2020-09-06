@@ -80,11 +80,6 @@ export default {
           linkText: 'gotechnica.org/submit',
         },
         {
-          title: 'signed up for a demo slot with judges',
-          link: 'https://gotechnica.org/judging',
-          linkText: 'gotechnica.org/judging',
-        },
-        {
           title: 'signed up for an expo slot to show off my hack:',
           link: 'https://gotechnica.org/expo',
           linkText: 'gotechnica.org/expo',
@@ -122,10 +117,13 @@ export default {
         const checklist = await this.performGetRequest(Config[env].SPONSORS_INFO_ENDPOINT, env, 'get_project_checklist_item', params);
         Object.values(checklist).forEach((k) => {
           const item = this.checklistItems.find((j) => k.checklist_item_id === j.title);
-          item.id = k.id;
-          item.checked = k.is_checked;
-          if (item.checked) {
-            this.readyButtonClicked = true;
+
+          if (item) {
+            item.id = k.id;
+            item.checked = k.is_checked;
+            if (item.checked) {
+              this.readyButtonClicked = true;
+            }
           }
         });
         this.currentTeamId = team[0].team_id;

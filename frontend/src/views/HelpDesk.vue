@@ -11,9 +11,9 @@
                   If you have platform related questions, you are in the right place!
                 </p>
                 <p>
-                  For frequently asked questions, check <a href="https://google.com">Technica's Slack Workspace</a>!
+                  For frequently asked questions, check <a href="https://slack.com" target="_blank">Technica's Slack Workspace</a>!
                 <p>
-                  For coding/project questions, checkout out our <a href="https://google.com">Request a Mentor feature</a>!
+                  For coding/project questions, check out our <router-link to="/request-mentor"><a href="#">Request a Mentor feature</a></router-link>!
                 </p>
             </div>
           </div>
@@ -26,7 +26,7 @@
           <p class="btn filler pb-0" disabled="true"><b>Need help?</b></p>
         </div>
         <div class="col-md-7 text-md-left">
-          <a href="https://www.google.com" target="_blank">
+          <a :href="helpDeskLink" target="_blank">
             <Button size="lg" text="Talk to an organizer over video"/>
           </a><br>
           <a onclick="Intercom('show')">
@@ -41,12 +41,18 @@
 <script>
 import Button from '@/components/Button.vue';
 import generalMixin from '../mixins/general';
+import Config from '../config/general';
 
 export default {
   name: 'HelpDesk',
   mixins: [generalMixin],
   components: {
     Button,
+  },
+  data() {
+    return {
+      helpDeskLink: Config.shared.SAMPLE_ZOOM_LINK,
+    };
   },
 };
 </script>
