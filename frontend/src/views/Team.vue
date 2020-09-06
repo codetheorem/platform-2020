@@ -3,6 +3,8 @@
     <div v-if="dataLoaded">
       <b-container id="team-container" class="teams-container">
         <h2 style="margin-bottom: 1.5rem;">Team Formation</h2>
+        <p>Looking for teammates to collaborate with on your hack? Head over to our <router-link to="/schedule"><a href="#" class="redirect-link">team formation event</a></router-link>.</p>
+        <p>Once you know who your teammates are, use this page to create your team in the Technica system! You can then do things like submit your project or request a mentor as a team.</p>
         <div v-if="!currentTeam" class="create-team-container">
           <form @submit.prevent="goToProfile" class="create-team-form">
             <div class="form-group">

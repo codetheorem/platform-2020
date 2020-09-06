@@ -94,4 +94,8 @@ a:hover {
 	background-color: #d4b3e7;
 	opacity: 1.0 !important;
 }
-  
+
+a.redirect-link{
+	color: var(--pastel-pink);
+	text-decoration: underline;
+}
