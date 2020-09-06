@@ -17,7 +17,7 @@
         <div class="col-md-1"></div>
       </div>
       <div class="display-center">
-        <a href="https://zoom.us" target="_blank">
+        <a :href="waterCoolerLink" target="_blank">
           <Button size="lg" text="Join a room"/>
         </a><br>
       </div>
@@ -28,12 +28,18 @@
 <script>
 import Button from '@/components/Button.vue';
 import generalMixin from '../mixins/general';
+import Config from '../config/general';
 
 export default {
   name: 'WaterCooler',
   mixins: [generalMixin],
   components: {
     Button,
+  },
+  computed: {
+    waterCoolerLink() {
+      return Config.shared.SAMPLE_ZOOM_LINK;
+    },
   },
 };
 </script>
