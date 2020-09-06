@@ -80,7 +80,7 @@ a:hover {
 }
 
 .form-control {
-	border: 1px solid var(--pastel-pink) !important;
+	border: 1px solid var(--pastel-purple) !important;
 }
   
 .form-control:focus {
