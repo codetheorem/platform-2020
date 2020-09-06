@@ -5,7 +5,7 @@
         <h2 style="margin-bottom: 1.5rem;">Team Formation</h2>
         <p>Looking for teammates to collaborate with on your hack? Head over to our <router-link to="/schedule"><a href="#" class="redirect-link">team formation event</a></router-link>.</p>
         <p>Once you know who your teammates are, use this page to create your team in the Technica system! You can then do things like submit your project or request a mentor as a team.</p>
-        <div v-if="!currentTeam" class="create-team-container">
+        <div v-if="!currentTeam && !teamCreationLoading" class="create-team-container">
           <form @submit.prevent="goToProfile" class="create-team-form">
             <div class="form-group">
               <div class="input-wrapper">
@@ -125,6 +125,7 @@ export default {
       };
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'join_team', joinTeamPostParams);
       await this.getTeam();
+      this.$emit('teamMembershipChanged', true);
       this.teamName = '';
       // create checklist items for the team
       await this.createChecklist();
@@ -185,6 +186,7 @@ export default {
         this.currentTeam.members = teamMembers;
         this.currentTeam.name = 'My Team';
         this.currentTeam.id = team[0].team_id;
+        this.$emit('teamMembershipChanged', true);
         await this.getInvitesForTeam();
       }
     },
@@ -207,6 +209,7 @@ export default {
       };
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'leave_team', params);
       this.currentTeam = null;
+      this.$emit('teamMembershipChanged', false);
     },
   },
 };

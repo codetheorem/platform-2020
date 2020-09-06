@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <navbar :displayRouteList="displayRouteList"/>
-    <router-view/>
+    <navbar :displayRouteList="displayRouteList" :userIsMemberOfTeam="userIsMemberOfTeam"/>
+    <router-view @teamMembershipChanged="teamMembershipChanged"/>
   </div>
 </template>
 
@@ -37,6 +37,12 @@ export default {
       await this.sleep(50);
     }
     this.verifyUserId();
+    this.userIsMemberOfTeam = await this.checkIfUserHasTeam();
+  },
+  data() {
+    return {
+      userIsMemberOfTeam: false,
+    };
   },
   mixins: [generalMixin],
   methods: {
@@ -47,6 +53,9 @@ export default {
     },
     sleep(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
+    },
+    teamMembershipChanged(change) {
+      this.userIsMemberOfTeam = change;
     },
   },
 };

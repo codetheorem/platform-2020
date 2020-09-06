@@ -28,6 +28,7 @@
                 :title="navRoute.name"
                 :destinationRoute="navRoute.path"
                 :dropdown="navRoute.dropdown"
+                :userIsMemberOfTeam="userIsMemberOfTeam"
               />
             </span>
           </ul>
@@ -50,6 +51,7 @@ export default {
       type: Boolean,
       default: true,
     },
+    userIsMemberOfTeam: Boolean,
   },
   data() {
     return {
