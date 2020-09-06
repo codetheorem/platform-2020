@@ -14,7 +14,7 @@ export default {
     PROJECTS_BASE_ENDPOINT: 'https://4yngdno31k.execute-api.us-east-1.amazonaws.com',
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
-    PLATFORM_WALKTHROUGH_LINK: 'http://localhost:8080?product_tour_id=146643',
+    PLATFORM_WALKTHROUGH_ID: '146643',
   },
   testing: {
     SCHEDULE_BASE_ENDPOINT: 'https://dxz39cp5d0.execute-api.us-east-1.amazonaws.com',
@@ -28,7 +28,7 @@ export default {
     PROJECTS_BASE_ENDPOINT: 'https://8cefcll545.execute-api.us-east-1.amazonaws.com',
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
-    PLATFORM_WALKTHROUGH_LINK: 'http://localhost:8080?product_tour_id=146643',
+    PLATFORM_WALKTHROUGH_ID: '146643',
   },
   stage: {
     SPONSORS_INFO_ENDPOINT: 'https://jxeehdxaq6.execute-api.us-east-1.amazonaws.com',
@@ -42,7 +42,7 @@ export default {
     TEAMS_BASE_ENDPOINT: 'https://c6vffjuklb.execute-api.us-east-1.amazonaws.com',
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
-    PLATFORM_WALKTHROUGH_LINK: 'https://platform-staging.gotechnica.org/?product_tour_id=146643',
+    PLATFORM_WALKTHROUGH_ID: '146643',
   },
   prod: {
     SPONSORS_INFO_ENDPOINT: 'https://phqk5kktqi.execute-api.us-east-1.amazonaws.com',
@@ -56,6 +56,6 @@ export default {
     TEAMS_BASE_ENDPOINT: ' https://v0usve1q3f.execute-api.us-east-1.amazonaws.com',
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
-    PLATFORM_WALKTHROUGH_LINK: 'https://platform.gotechnica.org/?product_tour_id=146643',
+    PLATFORM_WALKTHROUGH_ID: '146643',
   },
 };
