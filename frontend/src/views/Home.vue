@@ -7,6 +7,7 @@
       <div class="home-links">
         <h5>HELPFUL LINKS</h5>
         <p>Welcome to the Technica platform! We're incredibly excited to host you and the entire Technica community for an amazing weekend of learning, inclusiveness, and fun.</p>
+        <a id="onboardingWalkthroughButton" :href="onboardingWalkthroughLink" class="home-link"><p>Learn About the Technica Platform</p></a>
         <a href="https://slack.com" target="_blank" class="home-link"><p>Join the Conversation on Slack</p></a>
         <a href="https://gotechnica.org/hacker-resources" target="_blank" class="home-link"><p>Useful Resources for Your Hack</p></a>
         <router-link to="/help"><a href="#" class="home-link"><p>Get In Touch With An Organizer</p></a></router-link>
@@ -28,6 +29,7 @@
 <script>
 import Banner from '@/components/Banner.vue';
 import generalMixin from '../mixins/general';
+import Config from '../config/general';
 
 export default {
   name: 'Home',
@@ -35,6 +37,12 @@ export default {
     Banner,
   },
   mixins: [generalMixin],
+  computed: {
+    onboardingWalkthroughLink() {
+      const env = this.getCurrentEnvironment();
+      return Config[env].PLATFORM_WALKTHROUGH_LINK;
+    },
+  },
 };
 </script>
 
