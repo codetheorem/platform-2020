@@ -100,7 +100,7 @@ const inviteUserHelper = async (body) => {
     template_id: process.env.INVITE_TEMPLATE_ID,
   };
 
-  // If not running integration suites, send email
+  // If not running integration suites, send email to user
   if (process.env.STAGE !== TESTING_STAGE) {
     await sgMail.send(msg);
   }
