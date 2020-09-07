@@ -7,6 +7,8 @@ provider:
   region: us-east-1
   runtime: nodejs10.x
   stage: ${opt:stage, 'dev'}
+  deploymentBucket:
+    name: platform-schedule-${self:provider.stage}-layers-deploymentbucket
   environment:
     SCHEDULE_TABLE: ${file(./config/${self:provider.stage}.json):SCHEDULE_TABLE}
     USER_EVENTS_TABLE: ${file(./config/${self:provider.stage}.json):USER_EVENTS_TABLE}
@@ -133,9 +135,14 @@ functions:
           method: post
           cors: true
 
+package:
+  exclude:
+    node_modules/**
+
 plugins:
   - serverless-sentry
   - serverless-jest-plugin
+  - serverless-layers
 
 custom:
   sentry:
@@ -143,3 +150,5 @@ custom:
   # see https://github.com/nordcloud/serverless-jest-plugin
   jest:
     collectCoverage: true
+  serverless-layers:
+    dependenciesPath: ./package.json

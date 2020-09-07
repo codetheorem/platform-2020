@@ -6,6 +6,8 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
+  deploymentBucket:
+    name: platform-admin-${self:provider.stage}-layers-deploymentbucket
   environment:
     SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
     ADMIN_TABLE: ${file(./config/${self:provider.stage}.json):ADMIN_TABLE}
@@ -36,3 +38,5 @@ custom:
   # see https://github.com/nordcloud/serverless-jest-plugin
   jest:
     collectCoverage: true
+  serverless-layers:
+    dependenciesPath: ./package.json

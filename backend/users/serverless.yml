@@ -7,6 +7,8 @@ provider:
   region: us-east-1
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
+  deploymentBucket:
+    name: platform-users-${self:provider.stage}-layers-deploymentbucket
   environment:
     BANNED_USERS_TABLE: ${file(./config/${self:provider.stage}.json):BANNED_USERS_TABLE}
     SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
@@ -121,7 +123,8 @@ plugins:
 custom:
   sentry:
     dsn: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
-
   # see https://github.com/nordcloud/serverless-jest-plugin
   jest:
     collectCoverage: true
+  serverless-layers:
+    dependenciesPath: ./package.json

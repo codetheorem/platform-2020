@@ -6,6 +6,8 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
+  deploymentBucket:
+    name: platform-teams-${self:provider.stage}-layers-deploymentbucket
   environment:
     SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
     TEAMS_TABLE: ${file(./config/${self:provider.stage}.json):TEAMS_TABLE}
