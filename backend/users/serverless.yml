@@ -119,6 +119,7 @@ functions:
 plugins:
   - serverless-sentry
   - serverless-jest-plugin
+  - serverless-layers
 
 custom:
   sentry:
