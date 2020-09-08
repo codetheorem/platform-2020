@@ -1,7 +1,7 @@
 <template>
   <div class="about">
+    <h2 class="page-header">Help Desk</h2>
     <div id="help-body" class="container my-3 my-md-5">
-      <h2 class="heading my-3 my-md-5">Help Desk</h2>
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
@@ -59,10 +59,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-.heading {
-  color: var(--bright-purple);
-}
 
 .card-body {
   background-color: var(--light-purple);

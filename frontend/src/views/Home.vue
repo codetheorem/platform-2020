@@ -1,8 +1,6 @@
 <template>
-  <div class="home-page" id="home-page">
-    <div class="home-header">
-      <h2>Welcome, {{ getUserName() }}</h2>
-    </div>
+  <div id="home-page">
+    <h2 class="page-header">Welcome, {{ getUserName() }}</h2>
     <div class="home-main">
       <div class="home-links">
         <h5>HELPFUL LINKS</h5>
@@ -48,18 +46,9 @@ export default {
 </script>
 
 <style scoped>
-.home-page {
-  background-color: #F6F4F7;
-  width: 100vw;
-  height: 100vh;
-}
 
 h2 {
   color: var(--bright-purple);
-}
-
-.home-header {
-  padding-top: 2rem;
 }
 
 .home-main {

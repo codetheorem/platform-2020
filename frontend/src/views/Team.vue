@@ -1,8 +1,8 @@
 <template>
-  <div class="page-container">
+  <div>
     <div v-if="dataLoaded">
+      <h2 class="page-header">Team Formation</h2>
       <b-container id="team-container" class="teams-container">
-        <h2 style="margin-bottom: 1.5rem;">Team Formation</h2>
         <p>Looking for teammates to collaborate with on your hack? Head over to our <router-link to="/schedule"><a href="#" class="redirect-link">team formation event</a></router-link>.</p>
         <p>Once you know who your teammates are, use this page to create your team in the Technica system! You can then do things like submit your project or request a mentor as a team.</p>
         <div v-if="!currentTeam && !teamCreationLoading" class="create-team-container">
@@ -218,12 +218,6 @@ export default {
 <style scoped>
 h2 {
   color: var(--bright-purple);
-}
-
-.page-container {
-  background-color: #F6F4F7;
-  width: 100vw;
-  height: 100vh;
 }
 
 .teams-container {

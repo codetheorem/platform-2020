@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2 class="page-header">My Project</h2>
     <div class="container mx-auto">
       <h2 class="heading my-3 my-md-5">My Project</h2>
         <div v-if="dataLoaded">

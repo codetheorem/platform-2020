@@ -1,17 +1,19 @@
 <template>
-  <b-container class="sponsors-container">
-    <h2>Sponsors</h2>
-    <div v-if="dataLoaded">
-      <div v-for="section in sponsorTiers" :key="section" class="sponsor-section">
-          <sponsor-section :tier="section" :sponsorList="sponsorsByTier[section]"/>
+  <div>
+    <h2 class="page-header">Sponsors</h2>
+    <b-container class="sponsors-container">
+      <div v-if="dataLoaded">
+        <div v-for="section in sponsorTiers" :key="section" class="sponsor-section">
+            <sponsor-section :tier="section" :sponsorList="sponsorsByTier[section]"/>
+        </div>
       </div>
-    </div>
-    <div v-else>
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
+      <div v-else>
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
-    </div>
-  </b-container>
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -55,18 +57,12 @@ export default {
 
 <style scoped>
 
-body {background-color: #F6F4F7;}
-
 .sponsors-container {
     padding: 30px;
 }
 .sponsor-section {
     padding: 10px;
 
-}
-
-h2 {
-    color: #B377DB;
 }
 
 </style>

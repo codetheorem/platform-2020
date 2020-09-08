@@ -1,7 +1,7 @@
 <template>
   <div class="about">
+    <h2 class="page-header">Networking: Virtual Water Cooler</h2>
     <div id="help-body" class="container my-3 my-md-5">
-      <h2 class="heading my-3 my-md-5">Networking: Virtual Water Cooler</h2>
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">

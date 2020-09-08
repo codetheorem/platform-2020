@@ -19,6 +19,10 @@
     font-size: 18px;
 }
 
+body {
+	background-color: #F6F4F7;
+}
+
 /* HEADINGS */
 h1, h2, h3, h4, h5 {
     font-family: 'DIN Pro', sans-serif;
@@ -98,4 +102,11 @@ a:hover {
 a.redirect-link{
 	color: var(--pastel-pink);
 	text-decoration: underline;
+}
+
+.page-header {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	color: var(--bright-purple);
+
 }
