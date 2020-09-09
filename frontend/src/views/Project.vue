@@ -2,7 +2,6 @@
   <div>
     <h2 class="page-header">My Project</h2>
     <div class="container mx-auto">
-      <h2 class="heading my-3 my-md-5">My Project</h2>
         <div v-if="dataLoaded">
           <div v-if="projectHasAlreadyBeenSubmitted || !readyButtonClicked" class="row">
             <div class="col-md-1"></div>
@@ -48,9 +47,7 @@
         </div>
       </div>
       <div v-else>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
+        <LoadingSpinner />
       </div>
     </div>
   </div>
@@ -58,6 +55,7 @@
 
 <script>
 import Button from '@/components/Button.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ChecklistItem from '@/components/ChecklistItem.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
@@ -68,6 +66,7 @@ export default {
   components: {
     Button,
     ChecklistItem,
+    LoadingSpinner,
   },
   data() {
     return {

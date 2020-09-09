@@ -8,9 +8,7 @@
         </div>
       </div>
       <div v-else>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
+        <LoadingSpinner />
       </div>
     </b-container>
   </div>
@@ -18,6 +16,7 @@
 
 <script>
 import SponsorSection from '@/components/Sponsors/SponsorSection.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
@@ -25,6 +24,7 @@ export default {
   name: 'Sponsors',
   components: {
     SponsorSection,
+    LoadingSpinner,
   },
   mixins: [generalMixin],
   // create sponsor sections

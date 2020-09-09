@@ -42,9 +42,7 @@
                     <Banner text="Once you submit a mentorship request, it will be displayed here!" />
                 </div>
                 <div v-if="requestsLoading" class="mentor-request-list-body">
-                    <div class="spinner-border" role="status" style="margin-top: 3rem;">
-                        <span class="sr-only">Loading...</span>
-                    </div>
+                    <LoadingSpinner />
                 </div>
             </div>
         </div>
@@ -55,6 +53,7 @@
 <script>
 import Button from '@/components/Button.vue';
 import Banner from '@/components/Banner.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
@@ -63,6 +62,7 @@ export default {
   components: {
     Button,
     Banner,
+    LoadingSpinner,
   },
   mixins: [generalMixin],
   data() {

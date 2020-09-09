@@ -66,9 +66,7 @@
       </div>
     </div>
     <div v-else>
-      <div class="spinner-border" role="status" style="margin-top: 3rem;">
-        <span class="sr-only">Loading...</span>
-      </div>
+      <LoadingSpinner />
     </div>
   </div>
 </template>
@@ -76,6 +74,7 @@
 <script>
 import SectionTitle from '@/components/SectionTitle.vue';
 import Button from '@/components/Button.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import Banner from '@/components/Banner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
@@ -86,6 +85,7 @@ export default {
     SectionTitle,
     Button,
     Banner,
+    LoadingSpinner,
   },
   mixins: [generalMixin],
   data() {

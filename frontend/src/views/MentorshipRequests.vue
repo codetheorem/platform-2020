@@ -16,9 +16,7 @@
             </div>
           </div>
           <div v-else style="margin-top:1rem;">
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
+            <LoadingSpinner />
           </div>
         </div>
       </div>
@@ -33,6 +31,7 @@
 <script>
 import MentorManagementCard from '@/components/Mentors/MentorManagementCard.vue';
 import Button from '@/components/Button.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
@@ -41,6 +40,7 @@ export default {
   components: {
     MentorManagementCard,
     Button,
+    LoadingSpinner,
   },
   mixins: [generalMixin],
   data() {
