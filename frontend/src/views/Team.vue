@@ -16,9 +16,7 @@
           <Button size="lg" text="Create Team" @click="createTeam()" class="create-team-button"/>
         </div>
         <div v-if="teamCreationLoading">
-          <div class="spinner-border" role="status" style="margin-top: 3rem;">
-            <span class="sr-only">Loading...</span>
-          </div>
+          <LoadingSpinner />
         </div>
         <div v-else class="team-section">
           <SectionTitle :title="sectionTitle" class="invites-divider"/>
