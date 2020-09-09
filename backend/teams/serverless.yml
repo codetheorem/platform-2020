@@ -84,6 +84,20 @@ functions:
           path: get_hackers_invited_to_team
           method: get
           cors: true
+  get_team_submission:
+    handler: handler.get_team_submission
+    events:
+      - http: 
+          path: get_team_submission
+          method: get
+          cors: true
+  update_team_submission:
+    handler: handler.update_team_submission
+    events:
+      - http: 
+          path: update_team_submission
+          method: post
+          cors: true
 plugins:
   - serverless-sentry
   - serverless-jest-plugin

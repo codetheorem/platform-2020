@@ -116,6 +116,7 @@ export default {
       const env = this.getCurrentEnvironment();
       const createTeamPostParams = {
         team_name: this.teamName,
+        project_submitted: false,
       };
       const createdTeam = await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'create_team', createTeamPostParams);
       // after creating the new team, join it

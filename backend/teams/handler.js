@@ -251,9 +251,9 @@ module.exports.get_team_membership_for_user = withSentry(async (event) => {
 
 // Retrieves all the invites for a team
 module.exports.get_hackers_invited_to_team = withSentry(async event => {
-  const team_id = String(event.queryStringParameters.team_id);
+  const teamID = String(event.queryStringParameters.team_id);
 
-  if (!team_id) {
+  if (!teamID) {
     return {
       statusCode: 500,
       body: "get_hackers_invited_to_team expects keys \"team_id\""
@@ -266,7 +266,7 @@ module.exports.get_hackers_invited_to_team = withSentry(async event => {
     TableName: process.env.INVITES_TABLE,
     FilterExpression: "team_id = :val",
     ExpressionAttributeValues: {
-      ":val" : team_id,
+      ":val" : teamID,
     }
   };
 
@@ -279,5 +279,100 @@ module.exports.get_hackers_invited_to_team = withSentry(async event => {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     }
+  };
+});
+
+module.exports.get_team_submission = withSentry(async (event) => { 
+  const teamID = event.queryStringParameters.team_id;
+
+  if (!teamID) {
+    return {
+      statusCode: 500,
+      body: 'get_team_submission expects keys "team_id"',
+    };
+  }
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const params = {
+    TableName: process.env.TEAMS_TABLE,
+    FilterExpression: 'id = :val',
+    ExpressionAttributeValues: {
+      ':val': teamID,
+    },
+  };
+
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Items),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
+
+module.exports.update_team_submission = withSentry(async (event) => {
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const body = JSON.parse(event.body);
+
+  if (!body.team_id) {
+    return {
+      statusCode: 500,
+      body: 'update_team_submission expects key "team_id"',
+    };
+  }
+
+  const id = body["team_id"];
+
+  // Initialize UpdateExpression for ddb.update()
+  let update = 'SET';
+
+  // Initialize ExpressionAttributeNames for ddb.update()
+  const exprAttrNames = {};
+
+  // Initialize ExpressionAttributeValues for ddb,updateItem()
+  const exprAttrValues = {};
+  
+  let counter = 0;
+
+  // dynamically update post request body params to document
+  Object.keys(body).forEach((k) => {
+    if (k !== 'team_id') {
+      const ref = `val${counter}`;
+      const updateElement = ` #${k} =:${ref},`;
+      update = update.concat(updateElement);
+      exprAttrNames[`#${k}`] = k;
+      exprAttrValues[`:${ref}`] = body[k];
+      counter += 1;
+    }
+  });
+
+  // Remove trailing comma from UpdateExpression
+  update = update.slice(0, -1);
+
+  const params = {
+    TableName: process.env.TEAMS_TABLE,
+    Key: {
+      id: id.toString(),
+    },
+    UpdateExpression: update,
+    ExpressionAttributeNames: exprAttrNames,
+    ExpressionAttributeValues: exprAttrValues,
+  };
+
+  // Call DynamoDB to update the item to the table
+  const result = await ddb.update(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
   };
 });
