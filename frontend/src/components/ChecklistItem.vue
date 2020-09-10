@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     clicked() {
-      this.$emit('click');
+      this.$emit('click', this.id);
       this.update();
     },
     async update() {

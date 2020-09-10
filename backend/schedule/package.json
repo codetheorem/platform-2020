@@ -33,6 +33,7 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "serverless-jest-plugin": "^0.3.0",
+    "serverless-layers": "^2.2.4",
     "serverless-sentry": "^2.0.2"
   },
   "lint-staged": {

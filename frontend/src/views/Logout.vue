@@ -36,6 +36,7 @@ export default {
   methods: {
     logout() {
       this.removeUserIdCookie();
+      this.removeUserNameCookie();
       this.$router.push('Login');
     },
     goBack() {

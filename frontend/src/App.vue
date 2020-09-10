@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <navbar :displayRouteList="displayRouteList"/>
-    <router-view/>
+    <navbar :displayRouteList="displayRouteList" :userIsMemberOfTeam="userIsMemberOfTeam"/>
+    <router-view @teamMembershipChanged="teamMembershipChanged"/>
   </div>
 </template>
 
@@ -36,17 +36,20 @@ export default {
       // eslint-disable-next-line no-await-in-loop
       await this.sleep(50);
     }
-    this.verifyUserId();
+    this.userIsMemberOfTeam = await this.checkIfUserHasTeam();
+  },
+  data() {
+    return {
+      userIsMemberOfTeam: false,
+    };
   },
   mixins: [generalMixin],
   methods: {
-    verifyUserId() {
-      if ((!this.getUserId()) && ((this.$route.name !== 'Login' && this.$route.name !== 'authenticate'))) {
-        this.$router.push('Login');
-      }
-    },
     sleep(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
+    },
+    teamMembershipChanged(change) {
+      this.userIsMemberOfTeam = change;
     },
   },
 };

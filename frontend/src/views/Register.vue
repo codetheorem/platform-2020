@@ -33,7 +33,7 @@
               </div>
               <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My Pronouns</label>
-                <input type="text" class="form-control mx-auto" id="pronounInput" placeholder="she/her" v-model="pronoun">
+                <input type="text" class="form-control mx-auto" id="pronounInput" placeholder="she/her" v-model="pronouns">
               </div>
               <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My Email</label>
@@ -66,7 +66,6 @@
             <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text"></textarea>
             <!-- <Button size="lg" text="Upload Profile Picture" @click="goToProfile()"/> -->
           </form>
-          <p v-if="displayIncompleteHackerProfileMessage" class="text-error">Please fill out your hacker profile.</p>
           <Button size="lg" text="Finish" @click="goHome()"/>
         </template>
       </content-container>
@@ -92,12 +91,12 @@ export default {
       getStartedButtonClicked: false,
       nextButtonClicked: false,
       displayIncompleteInfoMessage: false,
-      displayIncompleteHackerProfileMessage: false,
       emailIsInvalid: false,
       name: '',
       email: '',
       school: '',
       phone: '',
+      pronouns: '',
       profile_text: '',
     };
   },
@@ -111,7 +110,7 @@ export default {
         const postParams = {
           id: this.getUserId(),
           email: this.email,
-          pronoun: this.pronoun,
+          pronouns: this.pronouns,
           full_name: this.name,
           school: this.school,
           phone: this.phone,
@@ -128,23 +127,19 @@ export default {
       }
     },
     goHome() {
-      if (this.profile_text !== '') {
-        this.$router.push('/');
-        const env = this.getCurrentEnvironment();
-        const postParams = {
-          id: this.getUserId(),
-          profile_text: this.profile_text,
-          registration_status: 'registered',
-        };
-        this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
-      } else {
-        this.displayIncompleteHackerProfileMessage = true;
-      }
+      this.$router.push('/');
+      const env = this.getCurrentEnvironment();
+      const postParams = {
+        id: this.getUserId(),
+        profile_text: this.profile_text,
+        registration_status: 'registered',
+      };
+      this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
     },
   },
   computed: {
     profileInformationCompleted() {
-      return this.email !== '' && this.pronoun !== '' && this.full_name !== '' && this.school !== '' && this.phone !== '';
+      return this.email !== '' && this.pronouns !== '' && this.full_name !== '' && this.school !== '' && this.phone !== '';
     },
     emailAddressIsValid() {
       return this.email !== '' && this.email.includes('@') && this.email.includes('.');
@@ -166,12 +161,6 @@ export default {
     align-items: center;
     justify-content: center;
     height: 90%;
-  }
-
-  @media (min-width: 900px) {
-    .form-control {
-      /* max-width: 415px; */
-    }
   }
 
   .description-text {

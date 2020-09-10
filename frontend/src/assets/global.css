@@ -19,6 +19,10 @@
     font-size: 18px;
 }
 
+body {
+	background-color: #F6F4F7;
+}
+
 /* HEADINGS */
 h1, h2, h3, h4, h5 {
     font-family: 'DIN Pro', sans-serif;
@@ -80,7 +84,7 @@ a:hover {
 }
 
 .form-control {
-	border: 1px solid var(--pastel-pink) !important;
+	border: 1px solid var(--pastel-purple) !important;
 }
   
 .form-control:focus {
@@ -94,4 +98,15 @@ a:hover {
 	background-color: #d4b3e7;
 	opacity: 1.0 !important;
 }
-  
+
+a.redirect-link{
+	color: var(--pastel-pink);
+	text-decoration: underline;
+}
+
+.page-header {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	color: var(--bright-purple);
+
+}

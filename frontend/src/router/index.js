@@ -165,7 +165,7 @@ const routes = [
     dropdown: [
       {
         path: '/water-cooler',
-        name: 'Water Cooler',
+        name: 'Networking',
       },
       {
         path: '/photo-booth',
@@ -208,6 +208,7 @@ const routes = [
   },
   {
     path: '/authenticate',
+    name: 'Authenticate',
     component: () => import('../views/Authenticate.vue'),
     displayInNavBar: false,
   },
@@ -227,6 +228,14 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if ((!Vue.cookie.get('userId')) && ((to.name !== 'Login' && to.name !== 'Authenticate'))) {
+    next({ name: 'Login' });
+  } else {
+    next();
+  }
 });
 
 export default router;

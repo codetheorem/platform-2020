@@ -1,18 +1,20 @@
 <template>
   <div>
-    <div class="spinner-border" role="status" style="margin-top: 3rem;">
-      <span class="sr-only">Loading...</span>
-    </div>
+    <LoadingSpinner />
   </div>
 </template>
 
 <script>
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
+import LoadingSpinner from '../components/LoadingSpinner.vue';
 
 export default {
   name: 'Shortlink',
   mixins: [generalMixin],
+  components: {
+    LoadingSpinner,
+  },
   data() {
     return {
 

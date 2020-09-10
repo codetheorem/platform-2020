@@ -1,7 +1,7 @@
 <template>
-  <div class="page-container">
+  <div>
     <b-container class="teams-container" v-if="currentTeam">
-      <h2 style="margin-bottom: 1.5rem;">Team Room</h2>
+      <h2 class="page-header">Team Room</h2>
       <div class="display-container">
         <div>
             <div v-for="member in currentTeam.members" :key="member.id" class="member-list-item">
@@ -74,12 +74,6 @@ export default {
 <style scoped>
 h2 {
   color: var(--bright-purple);
-}
-
-.page-container {
-  background-color: #F6F4F7;
-  width: 100vw;
-  height: 100vh;
 }
 
 .teams-container {

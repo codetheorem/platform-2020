@@ -1,5 +1,5 @@
 <template>
-  <div class="container content-container col-md-7 col-lg-8 col-xl-3">
+  <div class="container content-container col-md-7 col-lg-8 col-xl-5">
         <div class="content-container-title">
             <slot name="title"></slot>
         </div>

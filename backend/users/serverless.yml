@@ -7,6 +7,8 @@ provider:
   region: us-east-1
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
+  deploymentBucket:
+    name: platform-users-${self:provider.stage}-layers-deploymentbucket
   environment:
     BANNED_USERS_TABLE: ${file(./config/${self:provider.stage}.json):BANNED_USERS_TABLE}
     SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
@@ -105,16 +107,25 @@ functions:
           path: find_user_by_email
           method: get
           cors: true
-
+  update_hacker_profile:
+    handler: handler.update_hacker_profile
+    description: Updates user hacker profile with new information
+    events:
+      - http:
+          path: update_hacker_profile
+          method: post
+          cors: true
           
 plugins:
   - serverless-sentry
   - serverless-jest-plugin
+  - serverless-layers
 
 custom:
   sentry:
     dsn: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
-
   # see https://github.com/nordcloud/serverless-jest-plugin
   jest:
     collectCoverage: true
+  serverless-layers:
+    dependenciesPath: ./package.json

@@ -12,6 +12,7 @@
   "dependencies": {
     "@sentry/node": "^5.19.1",
     "aws-sdk": "^2.701.0",
+    "serverless-layers": "^2.2.4",
     "serverless-sentry-lib": "^2.0.1",
     "uuid": "^8.1.0"
   },

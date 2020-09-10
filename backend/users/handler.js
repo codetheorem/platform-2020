@@ -100,7 +100,7 @@ const inviteUserHelper = async (body) => {
     template_id: process.env.INVITE_TEMPLATE_ID,
   };
 
-  // If not running integration suites, send email
+  // If not running integration suites, send email to user
   if (process.env.STAGE !== TESTING_STAGE) {
     await sgMail.send(msg);
   }
@@ -506,5 +506,43 @@ module.exports.send_registration_email = withSentry(async (event) => {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     },
+  };
+});
+//Update an existing hacker's hacker profile
+module.exports.update_hacker_profile = withSentry(async event =>{
+  const ddb = new AWS.DynamoDB.DocumentClient();
+  const body = JSON.parse(event.body);
+  if (!body["user_id"] || !body["hacker_profile"]) {
+    return {
+      statusCode: 500,
+      body: "Missing user_id or hacker_profile keys"
+    };
+  }
+
+  //id to locate which hacker to update
+  id = body["user_id"];
+  var params = {
+    TableName: process.env.USERS_TABLE,
+    Key:{
+      id: id.toString(),
+    },
+    UpdateExpression: "set hacker_profile = :p",
+    ExpressionAttributeValues:{
+        ":p": body.hacker_profile,
+    },
+    ReturnValues:"UPDATED_NEW"
+  };
+
+
+  //Call DynamoDB to update profile
+  const result = await ddb.update(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
   };
 });

@@ -1,9 +1,9 @@
 <template>
   <div>
+    <h2 class="page-header">My Project</h2>
     <div class="container mx-auto">
-      <h2 class="heading my-3 my-md-5">My Project</h2>
         <div v-if="dataLoaded">
-          <div v-if="!projectHasAlreadyBeenSubmitted && !readyButtonClicked" class="row">
+          <div v-if="projectHasAlreadyBeenSubmitted || !readyButtonClicked" class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
               <div class="card" style="margin-bottom: 2rem;">
@@ -16,7 +16,7 @@
                     </p>
                 </div>
               </div>
-              <Button size="lg" text="I'm Ready to Submit!" @click="clickReadyButton"/>
+              <Button size="lg" :text="this.readyButtonText" @click="clickReadyButton" :disabled="this.readyButtonDisabled"/>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
             <div class="content-container row-xl-6">
               <div class="checklist-body">
                 <div v-for="checklistItem in checklistItems" :key="checklistItem.title" class="checklist-item">
-                  <checklist-item :isChecked="checklistItem.checked" :id="checklistItem.id">
+                  <checklist-item :isChecked="checklistItem.checked" :id="checklistItem.id" @click="toggleCheckboxChecked">
                       <template v-slot:text>
                           <label>{{ checklistItem.title }} <a :href="checklistItem.link" target="_blank" class="project-checklist-link">{{ checklistItem.linkText }}</a></label>
                       </template>
@@ -35,21 +35,19 @@
               <div>
                 <form @submit.prevent="sendMagicLink">
                   <div class="form-group mx-auto">
-                    <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="emailInput" placeholder="Team Name" v-model="teamName">
-                    <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="emailInput" placeholder="Devpost Link" v-model="teamName">
+                    <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="nameInput" placeholder="Team Name" v-model="teamName">
+                    <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="linkInput" placeholder="Devpost Link" v-model="devLink">
                     <!-- Prize categories will be implemented in a future ticket -->
                     <!-- <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="emailInput" placeholder="Prize Categories" v-model="teamName"> -->
                   </div>
                 </form>
               </div>
             </div>
-            <Button size="lg" text="Submit My Project" @click="clickSubmitButton"/>
+            <Button size="lg" text="Submit My Project" :disabled="checklistDisabled" @click="clickSubmitButton"/>
         </div>
       </div>
       <div v-else>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
+        <LoadingSpinner />
       </div>
     </div>
   </div>
@@ -57,6 +55,7 @@
 
 <script>
 import Button from '@/components/Button.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ChecklistItem from '@/components/ChecklistItem.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
@@ -67,22 +66,20 @@ export default {
   components: {
     Button,
     ChecklistItem,
+    LoadingSpinner,
   },
   data() {
     return {
       projectHasAlreadyBeenSubmitted: false,
       readyButtonClicked: false,
       dataLoaded: false,
+      readyButtonText: "I'm Ready to Submit!",
+      readyButtonDisabled: false,
       checklistItems: [
         {
           title: 'submitted my hack on Devpost:',
           link: 'https://gotechnica.org/submit',
           linkText: 'gotechnica.org/submit',
-        },
-        {
-          title: 'signed up for a demo slot with judges',
-          link: 'https://gotechnica.org/judging',
-          linkText: 'gotechnica.org/judging',
         },
         {
           title: 'signed up for an expo slot to show off my hack:',
@@ -94,8 +91,10 @@ export default {
           link: '',
         },
       ],
-
+      teamName: '',
+      devLink: '',
       currentTeamId: null,
+      checklistCounter: 0,
     };
   },
   async created() {
@@ -103,7 +102,13 @@ export default {
     this.dataLoaded = true;
   },
   methods: {
-    clickSubmitButton() {
+    async clickSubmitButton() {
+      const env = this.getCurrentEnvironment();
+      const params = {
+        team_id: this.currentTeamId,
+        project_submitted: true,
+      };
+      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'update_team_submission', params);
       this.$router.push('/');
     },
     clickReadyButton() {
@@ -119,17 +124,43 @@ export default {
         const params = {
           team_id: team[0].team_id,
         };
+        // check submission status of project
+        const status = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_submission', params);
+        this.projectHasAlreadyBeenSubmitted = status[0].project_submitted;
+        if (this.projectHasAlreadyBeenSubmitted) {
+          this.readyButtonText = 'Project has been submitted';
+          this.readyButtonDisabled = true;
+        }
+        // get checklist items for team
         const checklist = await this.performGetRequest(Config[env].SPONSORS_INFO_ENDPOINT, env, 'get_project_checklist_item', params);
         Object.values(checklist).forEach((k) => {
           const item = this.checklistItems.find((j) => k.checklist_item_id === j.title);
-          item.id = k.id;
-          item.checked = k.is_checked;
-          if (item.checked) {
-            this.readyButtonClicked = true;
+
+          if (item) {
+            item.id = k.id;
+            item.checked = k.is_checked;
+            if (item.checked) {
+              this.readyButtonClicked = true;
+              this.checklistCounter += 1;
+            }
           }
         });
         this.currentTeamId = team[0].team_id;
       }
+    },
+    toggleCheckboxChecked(id) {
+      const item = this.checklistItems.find((j) => id === j.id);
+      item.checked = !item.checked;
+      if (item.checked) {
+        this.checklistCounter += 1;
+      } else {
+        this.checklistCounter -= 1;
+      }
+    },
+  },
+  computed: {
+    checklistDisabled() {
+      return (this.devLink === '' || this.teamName === '') || this.checklistCounter !== this.checklistItems.length;
     },
   },
 };

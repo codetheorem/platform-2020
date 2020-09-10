@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import Config from '../config/general';
 
 export default {
   methods: {
@@ -69,6 +70,17 @@ export default {
     },
     removeUserNameCookie() {
       this.$cookie.delete('userName');
+    },
+    async checkIfUserHasTeam() {
+      const env = this.getCurrentEnvironment();
+      const teamParams = {
+        user_id: this.getUserId(),
+      };
+      const team = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_membership_for_user', teamParams);
+      if (team[0]) {
+        return true;
+      }
+      return false;
     },
     getCurrentEnvironment() {
       if (window.location.hostname === 'platform.gotechnica.org') {

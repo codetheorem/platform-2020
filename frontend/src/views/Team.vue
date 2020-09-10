@@ -1,9 +1,11 @@
 <template>
-  <div class="page-container">
+  <div>
     <div v-if="dataLoaded">
+      <h2 class="page-header">Team Formation</h2>
       <b-container id="team-container" class="teams-container">
-        <h2 style="margin-bottom: 1.5rem;">Team Formation</h2>
-        <div v-if="!currentTeam" class="create-team-container">
+        <p>Looking for teammates to collaborate with on your hack? Head over to our <router-link to="/schedule"><a href="#" class="redirect-link">team formation event</a></router-link>.</p>
+        <p>Once you know who your teammates are, use this page to create your team in the Technica system! You can then do things like submit your project or request a mentor as a team.</p>
+        <div v-if="!currentTeam && !teamCreationLoading" class="create-team-container">
           <form @submit.prevent="goToProfile" class="create-team-form">
             <div class="form-group">
               <div class="input-wrapper">
@@ -14,9 +16,7 @@
           <Button size="lg" text="Create Team" @click="createTeam()" class="create-team-button"/>
         </div>
         <div v-if="teamCreationLoading">
-          <div class="spinner-border" role="status" style="margin-top: 3rem;">
-            <span class="sr-only">Loading...</span>
-          </div>
+          <LoadingSpinner />
         </div>
         <div v-else class="team-section">
           <SectionTitle :title="sectionTitle" class="invites-divider"/>
@@ -64,9 +64,7 @@
       </div>
     </div>
     <div v-else>
-      <div class="spinner-border" role="status" style="margin-top: 3rem;">
-        <span class="sr-only">Loading...</span>
-      </div>
+      <LoadingSpinner />
     </div>
   </div>
 </template>
@@ -74,6 +72,7 @@
 <script>
 import SectionTitle from '@/components/SectionTitle.vue';
 import Button from '@/components/Button.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import Banner from '@/components/Banner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
@@ -84,6 +83,7 @@ export default {
     SectionTitle,
     Button,
     Banner,
+    LoadingSpinner,
   },
   mixins: [generalMixin],
   data() {
@@ -95,7 +95,7 @@ export default {
       currentTeam: null,
       dataLoaded: false,
       teamCreationLoading: false,
-      checklistItems: ['submitted my hack on Devpost:', 'signed up for a demo slot with judges', 'signed up for an expo slot to show off my hack:', 'submitted my hack to Technica below:'],
+      checklistItems: ['submitted my hack on Devpost:', 'signed up for an expo slot to show off my hack:', 'submitted my hack to Technica below:'],
     };
   },
   async mounted() {
@@ -114,6 +114,7 @@ export default {
       const env = this.getCurrentEnvironment();
       const createTeamPostParams = {
         team_name: this.teamName,
+        project_submitted: false,
       };
       const createdTeam = await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'create_team', createTeamPostParams);
       // after creating the new team, join it
@@ -123,6 +124,7 @@ export default {
       };
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'join_team', joinTeamPostParams);
       await this.getTeam();
+      this.$emit('teamMembershipChanged', true);
       this.teamName = '';
       // create checklist items for the team
       await this.createChecklist();
@@ -183,6 +185,7 @@ export default {
         this.currentTeam.members = teamMembers;
         this.currentTeam.name = 'My Team';
         this.currentTeam.id = team[0].team_id;
+        this.$emit('teamMembershipChanged', true);
         await this.getInvitesForTeam();
       }
     },
@@ -205,6 +208,7 @@ export default {
       };
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'leave_team', params);
       this.currentTeam = null;
+      this.$emit('teamMembershipChanged', false);
     },
   },
 };
@@ -213,12 +217,6 @@ export default {
 <style scoped>
 h2 {
   color: var(--bright-purple);
-}
-
-.page-container {
-  background-color: #F6F4F7;
-  width: 100vw;
-  height: 100vh;
 }
 
 .teams-container {
