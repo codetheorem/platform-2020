@@ -142,7 +142,7 @@ module.exports.leave_team = withSentry(async (event) => {
 
 // Retrieves the team invites for a hacker
 module.exports.get_team_invites = withSentry(async (event) => {
-  const userId = String(event.queryStringParameters.user_id);
+  const userId = event.queryStringParameters.user_id;
 
   if (!userId) {
     return {
@@ -174,8 +174,9 @@ module.exports.get_team_invites = withSentry(async (event) => {
 });
 
 module.exports.get_users_for_team = withSentry(async (event) => {
-  const teamId = String(event.queryStringParameters.team_id);
-
+  const teamId = event.queryStringParameters.team_id;
+  console.log("in handler")
+  console.log(teamId)
   if (!teamId) {
     return {
       statusCode: 500,
@@ -192,12 +193,14 @@ module.exports.get_users_for_team = withSentry(async (event) => {
       ':val': teamId,
     },
   };
+  console.log(params)
 
   const membershipsResult = await ddb.scan(params).promise();
 
   const userIds = membershipsResult.Items.map((membership) => ({
     id: membership.user_id,
   }));
+  console.log(userIds)
 
   const queryParams = { RequestItems: {} };
   queryParams.RequestItems[process.env.USERS_TABLE] = {
@@ -218,7 +221,7 @@ module.exports.get_users_for_team = withSentry(async (event) => {
 });
 
 module.exports.get_team_membership_for_user = withSentry(async (event) => {
-  const userID = String(event.queryStringParameters.user_id);
+  const userID = event.queryStringParameters.user_id;
 
   if (!userID) {
     return {
