@@ -22,6 +22,9 @@
         </a><br>
       </div>
     </div>
+    <div class="watercooler-wrapper">
+      <img src="@/assets/watercooler.png" alt="Two technica hackers getting to know each other" class="watercooler-image">
+    </div>
   </div>
 </template>
 
@@ -66,4 +69,35 @@ a {
 .display-center {
   margin-top: 1rem;
 }
+
+.watercooler-wrapper {
+  display:flex;
+  justify-content: center;
+}
+
+.watercooler-image {
+  max-width: 75vw;
+  max-height: 55vh;
+  position: fixed;
+  bottom: 0;
+}
+
+@media (max-width: 1500px) {
+  .watercooler-image {
+    max-width: 50vw;
+  }
+}
+
+@media (max-width: 800px) {
+  .watercooler-image {
+    max-width: 40vw;
+  }
+}
+
+@media (max-height: 850px) {
+  .watercooler-image {
+    max-height: 35vh;
+  }
+}
+
 </style>
