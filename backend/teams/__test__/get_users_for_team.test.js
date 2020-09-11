@@ -41,6 +41,7 @@ describe('get_team_invites', () => {
     console.log(team.body)
     const added = await adder.run(valid_invited_team);
     console.log(added.body)
+    console.log("finished invite to team")
     
     return await getter.run(get_request).then(async (response) =>{
         expect(response).toBeDefined();

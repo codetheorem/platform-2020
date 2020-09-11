@@ -176,8 +176,7 @@ module.exports.get_team_invites = withSentry(async (event) => {
 
 module.exports.get_users_for_team = withSentry(async (event) => {
   const teamId = event.queryStringParameters.team_id;
-  console.log('in handler');
-  console.log(teamId);
+
   if (!teamId) {
     return {
       statusCode: 500,
@@ -194,18 +193,23 @@ module.exports.get_users_for_team = withSentry(async (event) => {
       ':val': teamId,
     },
   };
-  console.log(params);
 
   const membershipsResult = await ddb.scan(params).promise();
 
   const userIds = membershipsResult.Items.map((membership) => ({
     id: membership.user_id,
   }));
-  console.log(userIds);
+
+  const uniqueIds = [];
+  userIds.forEach((userId) => {
+    if (!uniqueIds.map((item) => item.id).includes(userId.id)) {
+      uniqueIds.push(userId);
+    }
+  });
 
   const queryParams = { RequestItems: {} };
   queryParams.RequestItems[process.env.USERS_TABLE] = {
-    Keys: userIds,
+    Keys: uniqueIds,
     ProjectionExpression: 'id, full_name, email, school',
   };
 
