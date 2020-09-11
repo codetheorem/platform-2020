@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light navigation-box">
+  <div class="sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navigation-box"">
       <div class="logo-nav">
         <router-link to="/">
           <a class="navbar-brand" href="#">
@@ -61,6 +61,7 @@ export default {
     };
   },
 };
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
