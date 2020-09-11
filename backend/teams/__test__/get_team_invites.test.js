@@ -5,13 +5,20 @@ const jestPlugin = require('serverless-jest-plugin');
 const mod = require('../handler');
 
 const { lambdaWrapper } = jestPlugin;
+const create = lambdaWrapper.wrap(mod, {handler: 'create_team'});
 const adder = lambdaWrapper.wrap(mod, { handler: 'invite_to_team' });
 const getter = lambdaWrapper.wrap(mod, { handler: 'get_team_invites' });
 const AWS = require('aws-sdk');
 
+const valid_team = {
+    body: JSON.stringify({
+        team_name: "ABCD",
+    })
+};
+
 const valid_invited_team = {
     body: JSON.stringify({
-        "team_id": "12jj32k42-sdfjk32",
+        "team_id": "ABCD",
         "user_id": "2j3kjfd9sfjdsk-23"
     })
 };
@@ -30,12 +37,13 @@ describe('get_team_invites', () => {
   });
   
   it('Accepts request to get a team', async() =>{
+    const team = await create.run(valid_team);
     const added = await adder.run(valid_invited_team);
     const addedId = JSON.parse(added.body).id;
     const addedTime = JSON.parse(added.body).timestamp
     
     return await getter.run(get_request).then(async (response) =>{
-        console.log(response)
+        //console.log(response)
         expect(response).toBeDefined();
         expect(response).toHaveProperty('statusCode', 200);
         
@@ -49,7 +57,7 @@ describe('get_team_invites', () => {
         const ddb = new AWS.DynamoDB.DocumentClient();
         const result = await ddb.get(request).promise();
         const user = '2j3kjfd9sfjdsk-23';
-        const team = '12jj32k42-sdfjk32';
+        const team = 'ABCD';
         expect(result.Item.id).toMatch(addedId);
         expect(result.Item.user_id).toMatch(user);
         expect(result.Item.team_id).toMatch(team);
@@ -57,16 +65,15 @@ describe('get_team_invites', () => {
     }); 
   });
   
-  // Doesn't work
-  // it('Fails request to get a team', async() =>{
-  //   const added = await adder.run(valid_invited_team);
-  //   const addedId = JSON.parse(added.body).id;
-  //   const addedTime = JSON.parse(added.body).timestamp
+  it('Fails request to get a team', async() =>{
+    const added = await adder.run(valid_invited_team);
+    const addedId = JSON.parse(added.body).id;
+    const addedTime = JSON.parse(added.body).timestamp
     
-  //   return await getter.run(invalid_get_request).then(async (response) =>{
-  //       console.log(response)
-  //       expect(response).toBeDefined();
-  //       expect(response).toHaveProperty('statusCode', 500);
-  //   }); 
-  // });
+    return await getter.run(invalid_get_request).then(async (response) =>{
+        //console.log(response)
+        expect(response).toBeDefined();
+        expect(response).toHaveProperty('statusCode', 500);
+    }); 
+  });
 });
