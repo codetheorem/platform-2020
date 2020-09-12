@@ -101,6 +101,14 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/slack',
+    name: 'Slack',
+    displayInNavBar: false,
+    beforeEnter() {
+      window.open(Config.dev.SLACK_WORKSPACE_LINK, '_blank');
+    },
+  },
+  {
     path: '/photo-booth',
     name: 'Photo Booth',
     component: () => import('../views/PhotoBooth.vue'),
@@ -163,6 +171,10 @@ const routes = [
     name: 'Social',
     displayInNavBar: true,
     dropdown: [
+      {
+        path: '/slack',
+        name: 'Slack',
+      },
       {
         path: '/water-cooler',
         name: 'Networking',

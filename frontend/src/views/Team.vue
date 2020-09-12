@@ -28,36 +28,48 @@
           </b-row>
           <b-row v-if="currentTeam" class="team-list-container">
             <div v-for="teamMember in currentTeam.members" :key="teamMember.id" class="team-list-item">
-              <span class="team-list-segment">
-                {{ teamMember.full_name }}
-              </span>
-              <span class="team-list-segment">
-                {{ teamMember.email }}
-              </span>
-              <span>
-                {{ teamMember.school }}
-              </span>
+              <div class="col-4 team-list-segment">
+                <span class="mx-auto">
+                  {{ teamMember.full_name }}
+                </span>
+              </div>
+              <div class="col-4 team-list-segment">
+                <span class="mx-auto">
+                  {{ teamMember.email }}
+                </span>
+              </div>
+              <div class="col-4">
+                <span class="mx-auto">
+                  {{ teamMember.school }}
+                </span>
+              </div>
             </div>
             <div v-for="teamMember in invitesToCurrentTeam" :key="teamMember.id" class="team-list-item invited-list-item">
-              <span>
-                {{ teamMember.email }}
-              </span>
-              <span class="invited-list-pending">
-                PENDING
-              </span>
+              <div class="col-6">
+                <span>
+                  {{ teamMember.email }}
+                </span>
+              </div>
+              <div class="col-6">
+                <span class="invited-list-pending">
+                  PENDING
+                </span>
+              </div>
             </div>
           </b-row>
         </div>
       </b-container>
       <div v-if="currentTeam" class="create-team-container invite-container">
         <form @submit.prevent="inviteHacker" class="create-team-form">
-          <div class="form-group">
-            <div class="input-wrapper">
-              <input type="text" class="form-control mx-auto" id="nameInput" placeholder="Enter Hacker Email" v-model="inviteEmail">
+          <div class="row">
+            <div class="col-8">
+              <input type="email" class="form-control mx-auto" ref="emailInput" placeholder="Enter Hacker Email" v-model="inviteEmail">
+            </div>
+            <div class="col-4">
+              <Button size="lg" text="Invite Hacker" type="submit" @click="inviteHacker()"/>
             </div>
           </div>
         </form>
-        <Button size="lg" text="Invite Hacker" @click="inviteHacker()" class="create-team-button"/>
       </div>
       <div v-if="currentTeam">
         <Button size="lg" text="Leave Team" @click="leaveTeam()" class="create-team-button" style="background: white !important;" :outlineStyle="true"/>
@@ -110,25 +122,27 @@ export default {
   },
   methods: {
     async createTeam() {
-      this.teamCreationLoading = true;
-      const env = this.getCurrentEnvironment();
-      const createTeamPostParams = {
-        team_name: this.teamName,
-        project_submitted: false,
-      };
-      const createdTeam = await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'create_team', createTeamPostParams);
-      // after creating the new team, join it
-      const joinTeamPostParams = {
-        team_id: createdTeam.id,
-        user_id: this.getUserId(),
-      };
-      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'join_team', joinTeamPostParams);
-      await this.getTeam();
-      this.$emit('teamMembershipChanged', true);
-      this.teamName = '';
-      // create checklist items for the team
-      await this.createChecklist();
-      this.teamCreationLoading = false;
+      if (this.teamName !== '') {
+        this.teamCreationLoading = true;
+        const env = this.getCurrentEnvironment();
+        const createTeamPostParams = {
+          team_name: this.teamName,
+          project_submitted: false,
+        };
+        const createdTeam = await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'create_team', createTeamPostParams);
+        // after creating the new team, join it
+        const joinTeamPostParams = {
+          team_id: createdTeam.id,
+          user_id: this.getUserId(),
+        };
+        await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'join_team', joinTeamPostParams);
+        await this.getTeam();
+        this.$emit('teamMembershipChanged', true);
+        this.teamName = '';
+        // create checklist items for the team
+        await this.createChecklist();
+        this.teamCreationLoading = false;
+      }
     },
     async createChecklist() {
       const env = this.getCurrentEnvironment();
@@ -191,15 +205,26 @@ export default {
     },
     async inviteHacker() {
       const env = this.getCurrentEnvironment();
-      console.log(this.currentTeam.id);
-      const createTeamPostParams = {
-        team_id: this.currentTeam.id,
-        email: this.inviteEmail,
-        team_name: this.currentTeam.name,
-      };
-      this.invitesToCurrentTeam.push({ email: this.inviteEmail, id: (new Date()).toString() });
-      this.inviteEmail = '';
-      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'invite_to_team', createTeamPostParams);
+      if (this.inviteEmail !== '' && this.$refs.emailInput.checkValidity() && !this.inviteExists()) {
+        const createTeamPostParams = {
+          team_id: this.currentTeam.id,
+          email: this.inviteEmail,
+          team_name: this.currentTeam.name,
+        };
+        this.invitesToCurrentTeam.push({ email: this.inviteEmail, id: (new Date()).toString() });
+        this.inviteEmail = '';
+        await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'invite_to_team', createTeamPostParams);
+      }
+    },
+    inviteExists() {
+      const emailsInvitedOrEnrolled = [];
+      this.invitesToCurrentTeam.forEach((invite) => {
+        emailsInvitedOrEnrolled.push(invite.email);
+      });
+      Object.keys(this.currentTeam.members).forEach((k) => {
+        emailsInvitedOrEnrolled.push(this.currentTeam.members[k].email);
+      });
+      return emailsInvitedOrEnrolled.includes(this.inviteEmail);
     },
     async leaveTeam() {
       const env = this.getCurrentEnvironment();
@@ -228,7 +253,7 @@ h2 {
 }
 
 .create-team-container {
-  width: 22.5vw;
+  width: 25vw;
   display: inline-block;
 }
 
@@ -242,16 +267,6 @@ h2 {
   .create-team-container {
     width: 70.5vw;
   }
-}
-
-.create-team-form {
-  display: inline-block;
-  width: 60%;
-}
-
-.create-team-button {
-  margin-bottom: 0;
-  margin-left: 1.5rem;
 }
 
 .pending-invites {
@@ -272,7 +287,7 @@ h2 {
   border-radius: 8px;
   width: 100%;
   margin-top: 3rem;
-  height: 30vh;
+  min-height: 30vh;
   padding: 20px;
   flex-flow: column;
 }
@@ -290,7 +305,6 @@ h2 {
 
 .team-list-segment {
   border-right: 1px solid #B6A1C4;
-  padding-right: 5rem;
 }
 
 .invite-container {

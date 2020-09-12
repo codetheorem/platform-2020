@@ -14,6 +14,7 @@ export default {
     PROJECTS_BASE_ENDPOINT: 'https://4yngdno31k.execute-api.us-east-1.amazonaws.com',
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
+    SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
   },
   testing: {
@@ -28,6 +29,7 @@ export default {
     PROJECTS_BASE_ENDPOINT: 'https://8cefcll545.execute-api.us-east-1.amazonaws.com',
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
+    SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
   },
   stage: {
@@ -42,6 +44,7 @@ export default {
     TEAMS_BASE_ENDPOINT: 'https://c6vffjuklb.execute-api.us-east-1.amazonaws.com',
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
+    SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
   },
   prod: {
@@ -56,6 +59,7 @@ export default {
     TEAMS_BASE_ENDPOINT: ' https://v0usve1q3f.execute-api.us-east-1.amazonaws.com',
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
+    SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
   },
 };
