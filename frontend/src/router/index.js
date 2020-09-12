@@ -29,9 +29,6 @@ const routes = [
     name: 'Live Stream',
     component: () => import('../views/LiveStream.vue'),
     displayInNavBar: false,
-    beforeEnter() {
-      window.open(Config.dev.LIVESTREAM_LINK, '_blank');
-    },
   },
   {
     path: '/prizes',
