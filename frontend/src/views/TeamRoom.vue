@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       currentTeam: null,
-      photos_path: "../assets/profile_pics/",
+      photos_path: '../assets/profile_pics/',
       photos: ['Profile Sun', 'Profile Mountain', 'Profile Cloud 2', 'Profile Wave', 'Profile Cloud 1'],
     };
   },
@@ -70,10 +70,10 @@ export default {
       win.focus();
     },
     // this tricky function resolves image paths dynamically
-    getImgUrl(img_name) {
-    var images = require.context('../assets/profile_pics', false, /\.png$/)
-    return images('./' + img_name + ".png")
-  }
+    getImgUrl(imgName) {
+      const images = require.context('../assets/profile_pics', false, /\.png$/);
+      return images(`./${imgName}.png`);
+    },
   },
 };
 </script>
