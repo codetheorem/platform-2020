@@ -8,17 +8,10 @@
 </template>
 
 <script>
-import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
 export default {
   name: 'LiveStream',
-  mixins: [generalMixin],
-  methods: {
-    goBack() {
-      this.$router.push({ name: 'Home' });
-    },
-  },
   computed: {
     liveStreamLink() {
       return Config.shared.LIVESTREAM_LINK;
