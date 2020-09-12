@@ -100,6 +100,9 @@ export default {
       profile_text: '',
     };
   },
+  async mounted() {
+    await this.getUser();
+  },
   methods: {
     getStarted() {
       this.getStartedButtonClicked = true;
@@ -136,6 +139,33 @@ export default {
       };
       this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
     },
+    async getUser(){
+      const env = this.getCurrentEnvironment();
+      const userParams = {
+        id: this.getUserId(),
+      };
+      const user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', userParams);
+      if(user){
+        if(user.full_name){
+          this.name = user.full_name;
+        }
+        if(user.pronouns){
+          this.pronouns = user.pronouns;
+        }
+        if(user.email){
+          this.email = user.email;
+        }
+        if(user.phone){
+          this.phone = user.phone;
+        }
+        if(user.school){
+          this.school = user.school;
+        }
+        if(user.profile_text){
+          this.profile_text = user.profile_text;
+        }
+      }
+    }
   },
   computed: {
     profileInformationCompleted() {
