@@ -1,7 +1,9 @@
 <template>
   <div>
     <b-container class="passport-container">
-      <h2 class="page-header">My Passport</h2>
+      <h2 class="page-header">My Virtual Passport</h2>
+      <p>Your Virtual Passport helps you keep track of the different things you've done during the event.</p>
+      <p>Stickers remain grey until you complete them, and then they'll turn purple. Collect all the stickers in order to win a special prize!</p>
       <div class="display-container" v-if="activityLoaded">
         <div class="passport-wrapper">
             <div class="left-panel-inner">
