@@ -3,12 +3,6 @@
     <b-container class="passport-container">
       <h2 class="page-header">My Passport</h2>
       <div class="display-container" v-if="activityLoaded">
-        <!-- <div>
-            <img v-bind:src="getImgUrl(photos[0])" class="member-list-photo"/>
-            <div class="member-list-info">
-                <div><b>{{ getUserName() }}</b></div>
-            </div>
-        </div> -->
         <div class="passport-wrapper">
             <div class="left-panel-inner">
                 <div class="attendance-title">
@@ -16,11 +10,14 @@
                     <b class="passport-title-bold">{{ getUserName() }}</b>
                 </div>
                 <div class="events-title-wrapper">
-                    <p><span class="header-text-purple">#</span> <span class="attendance-text">Events Attended</span></p>
+                    <p>
+                        <span class="header-text-purple">#</span>
+                        <span class="attendance-text">Events Attended</span>
+                    </p>
                 </div>
                 <div class="dot-wrapper">
                     <div v-for="dot in activityDots" :key="dot" class="dot-inner">
-                        <div class="dot"></div>
+                        <div class="dot" :class="{'activity-completed': dot}"></div>
                     </div>
                 </div>
             </div>
@@ -30,7 +27,7 @@
                 </div>
                 <div class="sticker-wrapper">
                     <div v-for="sticker in activityStickers" :key="sticker.text" class="dot-inner sticker-inner">
-                        <div class="sticker">
+                        <div class="sticker" :class="{'activity-completed': sticker.active}">
                             <p style="color: #FFFFFF; font-family: NotoSans; font-weight: bold;font-size: 16px; margin-bottom: 0;">{{ sticker.text }}</p>
                         </div>
                     </div>
@@ -66,7 +63,7 @@ export default {
       photos_path: '../assets/profile_pics/',
       photos: ['Profile Sun', 'Profile Mountain', 'Profile Cloud 2', 'Profile Wave', 'Profile Cloud 1'],
       shortlinkActivity: [],
-      activityDots: [true, true, true, true, false, false, false, false, false],
+      activityDots: [true, false, false, false, false, false, false, false, false],
       activityStickers: [{ text: 'Attended 1 event', active: true }, { text: 'Attended 2 events', active: false }, { text: 'Demoed My Hack', active: false }, { text: 'Attended 2 Diversity Events', active: false }, { text: 'Viewed the Live Stream', active: false }, { text: 'Attended 10 events', active: false }],
     };
   },
@@ -243,5 +240,9 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.activity-completed {
+    background: #B377DB;
 }
 </style>
