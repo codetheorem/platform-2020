@@ -533,3 +533,34 @@ module.exports.create_zoom_meeting = withSentry(async (event) => {
     },
   };
 });
+
+module.exports.get_user_shortlink_clicks = withSentry(async (event) => {
+  if (!event.queryStringParameters || !event.queryStringParameters.user_id) {
+    return {
+      statusCode: 500,
+      body: 'get_user_shortlink_clicks expects key "user_id"',
+    };
+  }
+
+  const userId = event.queryStringParameters.user_id;
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const params = {
+    TableName: process.env.SHORTLINK_CLICKS_TABLE,
+    FilterExpression: 'user_id = :val',
+    ExpressionAttributeValues: {
+      ':val': userId,
+    },
+  };
+
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
