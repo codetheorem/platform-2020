@@ -1,5 +1,5 @@
 <template>
-    <div class="stamp-wrapper">
+    <div class="stamp-wrapper" @click="viewEasterEgg()">
         <img src="../assets/stamp.png" class="stamp-img">
     </div>
 </template>
@@ -8,6 +8,11 @@
 
 export default {
   name: 'EasterEggStamp',
+  methods: {
+    viewEasterEgg() {
+          this.$emit("viewEasterEgg");
+    }
+  }
 };
 </script>
 

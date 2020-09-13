@@ -6,7 +6,7 @@ const TOTAL_EASTER_EGGS = 6;
 
 AWS.config.update({ region: 'us-east-1' });
 
-module.exports.get_user_shortlink_clicks = withSentry(async (event) => {
+module.exports.get_easter_eggs = withSentry(async (event) => {
   if (!event.queryStringParameters || !event.queryStringParameters.user_id) {
     return {
       statusCode: 500,

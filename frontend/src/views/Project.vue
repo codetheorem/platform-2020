@@ -7,7 +7,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
               <div class="card" style="margin-bottom: 2rem;">
-                <EasterEggStamp />
+                <EasterEggStamp v-if="displayEasterEgg" @viewEasterEgg="viewEasterEgg()"/>
                 <div class="card-body">
                     <p>
                       If you are ready to submit your Technica Hack, please click on the button below! <b>Only one hacker needs to submit per team.</b>
@@ -62,6 +62,8 @@ import EasterEggStamp from '@/components/EasterEggStamp.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
+const EASTER_EGG_ID = 1;
+
 export default {
   name: 'Project',
   mixins: [generalMixin],
@@ -98,10 +100,13 @@ export default {
       devLink: '',
       currentTeamId: null,
       checklistCounter: 0,
+      displayEasterEgg: false,
+      currentEasterEggDBId: null,
     };
   },
   async created() {
     await this.getTeam();
+    await this.getEasterEggData();
     this.dataLoaded = true;
   },
   methods: {
@@ -116,6 +121,24 @@ export default {
     },
     clickReadyButton() {
       this.readyButtonClicked = true;
+    },
+    async getEasterEggData() {
+      const env = this.getCurrentEnvironment();
+      const easterEggParams = {
+        user_id: this.getUserId(),
+      };
+      const easterEggData = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_easter_eggs', easterEggParams);
+      if (easterEggData && easterEggData[0]) {
+        const formattedEEData = [];
+        Object.keys(easterEggData).forEach((d) => {
+          formattedEEData.push(easterEggData[d]);
+        });
+        const easterEgg = formattedEEData.find((e) => e.easter_egg_id === EASTER_EGG_ID);
+        if (easterEgg.discovered === false) {
+          this.displayEasterEgg = true;
+          this.currentEasterEggDBId = easterEgg.id;
+        }
+      }
     },
     async getTeam() {
       const env = this.getCurrentEnvironment();
@@ -159,6 +182,15 @@ export default {
       } else {
         this.checklistCounter -= 1;
       }
+    },
+    viewEasterEgg() {
+      this.displayEasterEgg = false;
+      const env = this.getCurrentEnvironment();
+      const params = {
+        user_id: this.getUserId(),
+        id: this.currentEasterEggDBId,
+      };
+      this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'discover_easter_egg', params);
     },
   },
   computed: {
