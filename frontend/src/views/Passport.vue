@@ -206,6 +206,7 @@ h2 {
     margin-right: 10%;
     margin-left: 10%;
     margin-top: 7.5%;
+    margin-top: 5%;
 }
 
 .dot {
