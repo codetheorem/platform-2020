@@ -7,7 +7,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
               <div class="card" style="margin-bottom: 2rem;">
-                <EasterEggStamp v-if="displayEasterEgg" @viewEasterEgg="viewEasterEgg()"/>
+                <EasterEggStamp v-if="displayEasterEgg" @viewEasterEgg="viewEasterEgg()" :totalEasterEggsFound="totalEasterEggsFound" :totalEasterEggs="totalEasterEggs"/>
                 <div class="card-body">
                     <p>
                       If you are ready to submit your Technica Hack, please click on the button below! <b>Only one hacker needs to submit per team.</b>
@@ -63,6 +63,7 @@ import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
 const EASTER_EGG_ID = 1;
+const TOTAL_EASTER_EGGS = 6;
 
 export default {
   name: 'Project',
@@ -102,6 +103,8 @@ export default {
       checklistCounter: 0,
       displayEasterEgg: false,
       currentEasterEggDBId: null,
+      easterEggData: [],
+      totalEasterEggsFound: 0,
     };
   },
   async created() {
@@ -138,6 +141,14 @@ export default {
           this.displayEasterEgg = true;
           this.currentEasterEggDBId = easterEgg.id;
         }
+        this.easterEggData = formattedEEData;
+        let totalEEFound = 0;
+        this.easterEggData.forEach((d) => {
+          if (d.discovered) {
+            totalEEFound += 1;
+          }
+        });
+        this.totalEasterEggsFound = totalEEFound;
       }
     },
     async getTeam() {
@@ -184,6 +195,7 @@ export default {
       }
     },
     viewEasterEgg() {
+      this.totalEasterEggsFound += 1;
       this.displayEasterEgg = false;
       const env = this.getCurrentEnvironment();
       const params = {
@@ -196,6 +208,9 @@ export default {
   computed: {
     checklistDisabled() {
       return (this.devLink === '' || this.teamName === '') || this.checklistCounter !== this.checklistItems.length;
+    },
+    totalEasterEggs() {
+      return TOTAL_EASTER_EGGS;
     },
   },
 };
