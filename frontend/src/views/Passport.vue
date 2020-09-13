@@ -160,7 +160,7 @@ h2 {
     justify-content: center;
     width: 100%;
     height: 30%;
-    padding-top: 2rem;
+    padding-top: 1rem;
 }
 
 .header-text-purple {
