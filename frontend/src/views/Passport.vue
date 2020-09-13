@@ -11,9 +11,9 @@
         </div> -->
         <div class="passport-wrapper">
             <div class="left-panel-inner">
-                <div  class="attendance-title">
+                <div class="attendance-title">
                     <img v-bind:src="getImgUrl(photos[0])" class="member-list-photo"/>
-                    <b style="margin-left: 1rem;font-size: 36px; line-height: 46px;">{{ getUserName() }}</b>
+                    <b class="passport-title-bold">{{ getUserName() }}</b>
                 </div>
                 <div class="events-title-wrapper">
                     <p><span class="header-text-purple">#</span> <span class="attendance-text">Events Attended</span></p>
@@ -25,6 +25,16 @@
                 </div>
             </div>
             <div style="width: 50%; height: 100%;">
+                <div style="margin-top: 1rem;">
+                    <b class="passport-title-bold">Stickers</b>
+                </div>
+                <div class="sticker-wrapper">
+                    <div v-for="sticker in activityStickers" :key="sticker.text" class="dot-inner sticker-inner">
+                        <div class="sticker">
+                            <p style="color: #FFFFFF; font-family: NotoSans; font-weight: bold;font-size: 16px; margin-bottom: 0;">{{ sticker.text }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
       </div>
@@ -47,7 +57,7 @@ export default {
   name: 'Passport',
   components: {
     Button,
-    LoadingSpinner
+    LoadingSpinner,
   },
   mixins: [generalMixin],
   data() {
@@ -57,6 +67,7 @@ export default {
       photos: ['Profile Sun', 'Profile Mountain', 'Profile Cloud 2', 'Profile Wave', 'Profile Cloud 1'],
       shortlinkActivity: [],
       activityDots: [true, true, true, true, false, false, false, false, false],
+      activityStickers: [{ text: 'Attended 1 event', active: true }, { text: 'Attended 2 events', active: false }, { text: 'Demoed My Hack', active: false }, { text: 'Attended 2 Diversity Events', active: false }, { text: 'Viewed the Live Stream', active: false }, { text: 'Attended 10 events', active: false }],
     };
   },
   async mounted() {
@@ -111,6 +122,13 @@ h2 {
 .left-panel-inner {
     width: 50%;
     height: 100%;
+    border-right: 1px solid #C4C4C4;
+}
+
+.passport-title-bold {
+    margin-left: 1rem;
+    font-size: 36px;
+    line-height: 46px;
 }
 
 .member-list-item {
@@ -171,6 +189,7 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
+    border-top: 1px solid #C4C4C4;
 }
 
 .dot-wrapper {
@@ -179,6 +198,7 @@ h2 {
   justify-content: space-around;
   width: 100%;
   height: 50%;
+  border-top: 1px solid #C4C4C4;
 }
 
 .dot-inner {
@@ -194,5 +214,34 @@ h2 {
     width: 2.5rem;
     background-color: #999;
     border-radius: 50%;
+}
+
+.sticker-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  height: 80%;
+}
+
+.sticker-inner {
+    flex: 0 0 30%;
+    height: 30%;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sticker {
+    height: 6rem;
+    width: 6rem;
+    background-color: #999;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
