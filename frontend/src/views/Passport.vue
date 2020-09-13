@@ -9,13 +9,13 @@
                 <div><b>{{ getUserName() }}</b></div>
             </div>
         </div> -->
-        <div style="width: 100%; height: 60vh; border: 1px solid blue; display: flex; flex-direction: row;">
-            <div style="border: 1px solid green; width: 50%; height: 100%;">
-                <div  class="attendance-title" style="border: 1px solid green; width: 100%; height: 30%; padding-top: 2rem;">
+        <div class="passport-wrapper">
+            <div class="left-panel-inner">
+                <div  class="attendance-title">
                     <img v-bind:src="getImgUrl(photos[0])" class="member-list-photo"/>
                     <b style="margin-left: 1rem;font-size: 36px; line-height: 46px;">{{ getUserName() }}</b>
                 </div>
-                <div style="border: 1px solid green; width: 100%; height: 20%; display: flex; justify-content: center; align-items: center;">
+                <div class="events-title-wrapper">
                     <p><span class="header-text-purple">#</span> <span class="attendance-text">Events Attended</span></p>
                 </div>
                 <div class="dot-wrapper">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div style="border: 1px solid red; width: 50%; height: 100%;">
+            <div style="width: 50%; height: 100%;">
             </div>
         </div>
       </div>
@@ -97,6 +97,22 @@ h2 {
     width: 100%;
 }
 
+.passport-wrapper {
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    flex-direction: row;
+    background: #F9F9F9;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 35px 35px 35px 35px;
+}
+
+.left-panel-inner {
+    width: 50%;
+    height: 100%;
+}
+
 .member-list-item {
     width: 100%;
     border: 2px solid #A88AA8;
@@ -125,6 +141,9 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 30%;
+    padding-top: 2rem;
 }
 
 .header-text-purple {
@@ -146,11 +165,19 @@ h2 {
     color: rgba(0, 0, 0, 0.35);
 }
 
+.events-title-wrapper {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .dot-wrapper {
-    display: flex;                     
-  flex-wrap: wrap;                
+  display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
-  width: 100%; 
+  width: 100%;
   height: 50%;
 }
 
