@@ -121,6 +121,12 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/passport',
+    name: 'Passport System',
+    component: () => import('../views/Passport.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/events',
     name: 'Events',
     displayInNavBar: true,
@@ -206,6 +212,10 @@ const routes = [
     component: () => import('../views/Profile.vue'),
     displayInNavBar: true,
     dropdown: [
+      {
+        path: '/passport',
+        name: 'My Passport',
+      },
       {
         path: '/logout',
         name: 'Sign Out',
