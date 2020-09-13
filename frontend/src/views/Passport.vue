@@ -2,8 +2,8 @@
   <div>
     <b-container class="passport-container">
       <h2 class="page-header">My Virtual Passport</h2>
-      <p>Your Virtual Passport helps you keep track of the different things you've done during the event.</p>
-      <p>Stickers remain grey until you complete them, and then they'll turn purple. Collect all the stickers in order to win a special prize!</p>
+      <p>Your Virtual Passport helps you keep track of the different things you've done during the event. The dots on the left are a tally of the number of events you've attended.</p>
+      <p>The stickers on the right remain grey until you complete them, and then they'll turn purple. Collect all the stickers in order to win a special prize!</p>
       <div class="display-container" v-if="activityLoaded">
         <div class="passport-wrapper">
             <div class="left-panel-inner">
@@ -66,7 +66,7 @@ export default {
       photos: ['Profile Sun', 'Profile Mountain', 'Profile Cloud 2', 'Profile Wave', 'Profile Cloud 1'],
       shortlinkActivity: [],
       activityDots: [true, false, false, false, false, false, false, false, false],
-      activityStickers: [{ text: 'Attended 1 event', active: true }, { text: 'Attended 2 events', active: false }, { text: 'Demoed My Hack', active: false }, { text: 'Attended 2 Diversity Events', active: false }, { text: 'Viewed the Live Stream', active: false }, { text: 'Attended 10 events', active: false }],
+      activityStickers: [{ text: 'Attended 1 event', active: true }, { text: 'Attended 2 events', active: false }, { text: 'Demoed My Hack', active: false }, { text: 'Attended 2 Diversity Events', active: false }, { text: 'Viewed the Live Stream', active: false }, { text: 'Attended 9 events', active: false }],
     };
   },
   async mounted() {
