@@ -138,6 +138,12 @@ export default {
         registration_status: 'registered',
       };
       this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
+
+      // add easter egg data
+      const easterEggPostParams = {
+        user_id: this.getUserId(),
+      };
+      this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'add_easter_eggs_for_user', easterEggPostParams);
     },
     async getUser() {
       const env = this.getCurrentEnvironment();
