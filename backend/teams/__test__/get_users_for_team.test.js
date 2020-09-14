@@ -38,39 +38,39 @@ describe('get_team_invites', () => {
   
   it('Accepts request to get users for a team', async() =>{
     const team = await create.run(valid_team);
-    console.log(team.body)
     const added = await adder.run(valid_invited_team);
-    console.log(added.body)
-    console.log("finished invite to team")
+    const addedId = JSON.parse(added.body).id;
+    const teamId = "ABCD";
+    const userId = '2j3kjfd9sfjdsk-23';
     
     return await getter.run(get_request).then(async (response) =>{
+        
         expect(response).toBeDefined();
         expect(response).toHaveProperty('statusCode', 200);
 
-        // const request = {
-        //   TableName: process.env.INVITES_TABLE,
-        //   Key: {
-        //     id: addedId,
-        //   },
-        // };
+        const request = {
+          TableName: process.env.MEMBERSHIPS_TABLE,
+          Key: {
+            id: addedId,
+          },
+        };
         
-        // const ddb = new AWS.DynamoDB.DocumentClient();
-        // const result = await ddb.get(request).promise();
-        // const user = '2j3kjfd9sfjdsk-23';
-        // const team = '12jj32k42-sdfjk32';
-        // expect(result.Item.id).toMatch(addedId);
-        // expect(result.Item.user_id).toMatch(user);
-        // expect(result.Item.team_id).toMatch(team);
-        // expect(result.Item.timestamp).toMatch(addedTime);
+        const ddb = new AWS.DynamoDB.DocumentClient();
+        const result = await ddb.get(request).promise();
+        //console.log(result)
+
+        expect(result.Item.id).toMatch(addedId);
+        expect(result.Item.user_id).toMatch(userId);
+        expect(result.Item.team_id).toMatch(teamId);
     }); 
   });
   
-  // it('Fails request to get users for a team', async() =>{
+  it('Fails request to get users for a team', async() =>{
     
-  //   return await getter.run(invalid_get_request).then(async (response) =>{
-  //       console.log(response)
-  //       expect(response).toBeDefined();
-  //       expect(response).toHaveProperty('statusCode', 500);
-  //   }); 
-  // });
+    return await getter.run(invalid_get_request).then(async (response) =>{
+        //console.log(response)
+        expect(response).toBeDefined();
+        expect(response).toHaveProperty('statusCode', 500);
+    }); 
+  });
 });
