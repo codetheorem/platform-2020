@@ -7,6 +7,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
               <div class="card" style="margin-bottom: 2rem;">
+                <EasterEggStamp :displayStamp="displayEasterEgg" @viewEasterEgg="viewEasterEgg()" :totalEasterEggsFound="totalEasterEggsFound" :totalEasterEggs="totalEasterEggs" :postcards="easterEggData"/>
                 <div class="card-body">
                     <p>
                       If you are ready to submit your Technica Hack, please click on the button below! <b>Only one hacker needs to submit per team.</b>
@@ -57,8 +58,12 @@
 import Button from '@/components/Button.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ChecklistItem from '@/components/ChecklistItem.vue';
+import EasterEggStamp from '@/components/EasterEggStamp.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
+
+const EASTER_EGG_ID = 1;
+const TOTAL_EASTER_EGGS = 6;
 
 export default {
   name: 'Project',
@@ -67,6 +72,7 @@ export default {
     Button,
     ChecklistItem,
     LoadingSpinner,
+    EasterEggStamp,
   },
   data() {
     return {
@@ -95,10 +101,15 @@ export default {
       devLink: '',
       currentTeamId: null,
       checklistCounter: 0,
+      displayEasterEgg: false,
+      currentEasterEggDBId: null,
+      easterEggData: [],
+      totalEasterEggsFound: 0,
     };
   },
   async created() {
     await this.getTeam();
+    await this.getEasterEggData();
     this.dataLoaded = true;
   },
   methods: {
@@ -113,6 +124,32 @@ export default {
     },
     clickReadyButton() {
       this.readyButtonClicked = true;
+    },
+    async getEasterEggData() {
+      const env = this.getCurrentEnvironment();
+      const easterEggParams = {
+        user_id: this.getUserId(),
+      };
+      const easterEggData = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_easter_eggs', easterEggParams);
+      if (easterEggData && easterEggData[0]) {
+        const formattedEEData = [];
+        Object.keys(easterEggData).forEach((d) => {
+          formattedEEData.push(easterEggData[d]);
+        });
+        const easterEgg = formattedEEData.find((e) => e.easter_egg_id === EASTER_EGG_ID);
+        if (easterEgg.discovered === false) {
+          this.displayEasterEgg = true;
+          this.currentEasterEggDBId = easterEgg.id;
+        }
+        this.easterEggData = formattedEEData;
+        let totalEEFound = 0;
+        this.easterEggData.forEach((d) => {
+          if (d.discovered) {
+            totalEEFound += 1;
+          }
+        });
+        this.totalEasterEggsFound = totalEEFound;
+      }
     },
     async getTeam() {
       const env = this.getCurrentEnvironment();
@@ -157,10 +194,24 @@ export default {
         this.checklistCounter -= 1;
       }
     },
+    viewEasterEgg() {
+      this.easterEggData.find((e) => e.easter_egg_id === EASTER_EGG_ID).discovered = true;
+      this.totalEasterEggsFound += 1;
+      this.displayEasterEgg = false;
+      const env = this.getCurrentEnvironment();
+      const params = {
+        user_id: this.getUserId(),
+        id: this.currentEasterEggDBId,
+      };
+      this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'discover_easter_egg', params);
+    },
   },
   computed: {
     checklistDisabled() {
       return (this.devLink === '' || this.teamName === '') || this.checklistCounter !== this.checklistItems.length;
+    },
+    totalEasterEggs() {
+      return TOTAL_EASTER_EGGS;
     },
   },
 };
