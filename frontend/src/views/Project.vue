@@ -137,7 +137,7 @@ export default {
           formattedEEData.push(easterEggData[d]);
         });
         const easterEgg = formattedEEData.find((e) => e.easter_egg_id === EASTER_EGG_ID);
-        if (easterEgg && easterEgg.discovered) {
+        if (easterEgg) {
           if (easterEgg.discovered === false) {
             this.displayEasterEgg = true;
             this.currentEasterEggDBId = easterEgg.id;
