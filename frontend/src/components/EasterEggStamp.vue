@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="stamp-wrapper" @click="viewEasterEgg()" v-b-modal.easterEggModal>
-            <img src="../assets/stamp.png" class="stamp-img">
+            <img v-if="displayStamp" src="../assets/stamp.png" class="stamp-img">
         </div>
         <b-modal id="easterEggModal" :title="modalTitle" size="xl">
             <div class="ee-modal-container">
@@ -25,11 +25,6 @@ import Button from '@/components/Button.vue';
 
 export default {
   name: 'EasterEggStamp',
-  methods: {
-    viewEasterEgg() {
-        this.$emit("viewEasterEgg");
-    },
-  },
   components: {
     Button,
   },
@@ -37,6 +32,7 @@ export default {
     totalEasterEggsFound: Number,
     totalEasterEggs: Number,
     postcards: Array,
+    displayStamp: Boolean,
   },
   computed: {
       modalTitle() {
@@ -50,7 +46,10 @@ export default {
     },
     goBack() {
         this.$bvModal.hide('easterEggModal');
-    }
+    },
+    viewEasterEgg() {
+        this.$emit("viewEasterEgg");
+    },
   }
 };
 </script>
