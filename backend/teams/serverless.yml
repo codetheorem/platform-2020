@@ -6,6 +6,8 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
+  deploymentBucket:
+    name: platform-teams-${self:provider.stage}-layers-deploymentbucket
   environment:
     SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
     TEAMS_TABLE: ${file(./config/${self:provider.stage}.json):TEAMS_TABLE}
@@ -82,9 +84,24 @@ functions:
           path: get_hackers_invited_to_team
           method: get
           cors: true
+  get_team_submission:
+    handler: handler.get_team_submission
+    events:
+      - http: 
+          path: get_team_submission
+          method: get
+          cors: true
+  update_team_submission:
+    handler: handler.update_team_submission
+    events:
+      - http: 
+          path: update_team_submission
+          method: post
+          cors: true
 plugins:
   - serverless-sentry
   - serverless-jest-plugin
+  - serverless-layers
 
 custom:
   sentry:
@@ -92,3 +109,5 @@ custom:
   # see https://github.com/nordcloud/serverless-jest-plugin
   jest:
     collectCoverage: true
+  serverless-layers:
+    dependenciesPath: ./package.json

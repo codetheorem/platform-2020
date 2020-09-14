@@ -1,7 +1,7 @@
 <template>
-  <div class="page-container">
-    <b-container id="mentor-container" class="mentor-container">
-      <h2 style="margin-bottom: 1.5rem;">Request a Mentor</h2>
+  <div>
+    <b-container id="mentor-container">
+      <h2 class="page-header">Request a Mentor</h2>
     </b-container>
     <div class="mentor-body" style="display: flex;">
         <div class="mentor-left">
@@ -42,9 +42,7 @@
                     <Banner text="Once you submit a mentorship request, it will be displayed here!" />
                 </div>
                 <div v-if="requestsLoading" class="mentor-request-list-body">
-                    <div class="spinner-border" role="status" style="margin-top: 3rem;">
-                        <span class="sr-only">Loading...</span>
-                    </div>
+                    <LoadingSpinner />
                 </div>
             </div>
         </div>
@@ -55,6 +53,7 @@
 <script>
 import Button from '@/components/Button.vue';
 import Banner from '@/components/Banner.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
@@ -63,6 +62,7 @@ export default {
   components: {
     Button,
     Banner,
+    LoadingSpinner,
   },
   mixins: [generalMixin],
   data() {
@@ -115,17 +115,11 @@ export default {
 </script>
 
 <style scoped>
+
 h2 {
   color: var(--bright-purple);
 }
-.page-container {
-  background-color: #F6F4F7;
-  width: 100vw;
-  height: 100vh;
-}
-.mentor-container {
-  padding-top: 1rem;
-}
+
 .mentor-body {
   display: flex;
   padding-left: 10rem;
@@ -151,7 +145,7 @@ h2 {
     flex-flow: column;
 }
 .mentor-form {
-    height: 60%;
+    height: 100%;
     width: 100%;
 }
 .mentor-description {

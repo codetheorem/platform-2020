@@ -29,9 +29,6 @@ const routes = [
     name: 'Live Stream',
     component: () => import('../views/LiveStream.vue'),
     displayInNavBar: false,
-    beforeEnter() {
-      window.open(Config.dev.LIVESTREAM_LINK, '_blank');
-    },
   },
   {
     path: '/prizes',
@@ -104,6 +101,14 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/slack',
+    name: 'Slack',
+    displayInNavBar: false,
+    beforeEnter() {
+      window.open(Config.dev.SLACK_WORKSPACE_LINK, '_blank');
+    },
+  },
+  {
     path: '/photo-booth',
     name: 'Photo Booth',
     component: () => import('../views/PhotoBooth.vue'),
@@ -113,6 +118,12 @@ const routes = [
     path: '/request-mentor',
     name: 'Request A Mentor',
     component: () => import('../views/RequestMentor.vue'),
+    displayInNavBar: false,
+  },
+  {
+    path: '/passport',
+    name: 'Passport System',
+    component: () => import('../views/Passport.vue'),
     displayInNavBar: false,
   },
   {
@@ -167,8 +178,12 @@ const routes = [
     displayInNavBar: true,
     dropdown: [
       {
+        path: '/slack',
+        name: 'Slack',
+      },
+      {
         path: '/water-cooler',
-        name: 'Water Cooler',
+        name: 'Networking',
       },
       {
         path: '/photo-booth',
@@ -198,6 +213,10 @@ const routes = [
     displayInNavBar: true,
     dropdown: [
       {
+        path: '/passport',
+        name: 'My Passport',
+      },
+      {
         path: '/logout',
         name: 'Sign Out',
       },
@@ -211,6 +230,7 @@ const routes = [
   },
   {
     path: '/authenticate',
+    name: 'Authenticate',
     component: () => import('../views/Authenticate.vue'),
     displayInNavBar: false,
   },
@@ -230,6 +250,14 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if ((!Vue.cookie.get('userId')) && ((to.name !== 'Login' && to.name !== 'Authenticate'))) {
+    next({ name: 'Login' });
+  } else {
+    next();
+  }
 });
 
 export default router;

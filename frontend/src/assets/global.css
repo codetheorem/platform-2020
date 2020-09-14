@@ -6,10 +6,10 @@
 	--pastel-purple: #A88AA8;
 	--pastel-pink: #EA668E;
 	--bright-purple: #B377DB;
+	--lighter-purple: #b5a1c4;
 	--bright-pink: #FF5091;
 	--light-purple: #DED2E5;
 	--light-pink: #F8D2E0;
-
 	--black: #2D2D2D;
 	--grey: #464343;
 	--light-grey: #8B8787;
@@ -17,6 +17,14 @@
 
 	font-family: 'Noto Sans', sans-serif;
     font-size: 18px;
+}
+
+body {
+	background-color: #F6F4F7;
+}
+
+div {
+	z-index: 50;
 }
 
 /* HEADINGS */
@@ -80,7 +88,7 @@ a:hover {
 }
 
 .form-control {
-	border: 1px solid var(--pastel-pink) !important;
+	border: 1px solid var(--pastel-purple) !important;
 }
   
 .form-control:focus {
@@ -94,4 +102,15 @@ a:hover {
 	background-color: #d4b3e7;
 	opacity: 1.0 !important;
 }
-  
+
+a.redirect-link{
+	color: var(--pastel-pink);
+	text-decoration: underline;
+}
+
+.page-header {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	color: var(--bright-purple);
+
+}

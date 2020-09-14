@@ -1,4 +1,5 @@
 {
     "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
-    "ADMIN_TABLE": "platform-dev-admin"
+    "ADMIN_TABLE": "platform-dev-admin",
+    "EASTER_EGGS_TABLE": "platform-dev-easter-eggs"
 }

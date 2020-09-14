@@ -1,8 +1,6 @@
 <template>
-  <div class="page">
-    <div class="header">
-      <h2>Mentor Management</h2>
-    </div>
+  <div>
+    <h2 class="page-header">Mentor Management</h2>
     <div class="container">
       <div class="row">
         <div class="col-md-4 filter-bar">
@@ -18,9 +16,7 @@
             </div>
           </div>
           <div v-else style="margin-top:1rem;">
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
+            <LoadingSpinner />
           </div>
         </div>
       </div>
@@ -35,6 +31,7 @@
 <script>
 import MentorManagementCard from '@/components/Mentors/MentorManagementCard.vue';
 import Button from '@/components/Button.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
@@ -43,6 +40,7 @@ export default {
   components: {
     MentorManagementCard,
     Button,
+    LoadingSpinner,
   },
   mixins: [generalMixin],
   data() {
@@ -74,18 +72,9 @@ export default {
 </script>
 
 <style scoped>
-.page {
-  background-color: #F6F4F7;
-  width: 100vw;
-  height: 100vh;
-}
 
 h2 {
   color: var(--bright-purple);
-}
-
-.header {
-  padding-top: 2rem;
 }
 
 .container {

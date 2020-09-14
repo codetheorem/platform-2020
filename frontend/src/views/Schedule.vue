@@ -1,8 +1,6 @@
 <template>
   <div class="schedule-page">
-    <div>
-      <h2 style="padding-top: 1rem; margin-bottom: 1.5rem;">Events</h2>
-    </div>
+    <h2 class="page-header">Events</h2>
     <div class="schedule-list">
       <div class="schedule-list-title">
         <span v-for="day in days" :key="day" class="schedule-list-title-item" :class="{'schedule-list-title-item-selected': day === selectedDay}" @click="selectTitleItem(day)">{{ day.toUpperCase() }}</span>
@@ -109,9 +107,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .schedule-page {
-  background-color: #F6F4F7;
-  width: 100vw;
-  height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: column;

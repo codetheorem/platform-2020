@@ -12,7 +12,7 @@
       {{ title }}
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <span v-for="dropdownItem in dropdown" :key="dropdownItem.name">
+      <span v-for="dropdownItem in visibleItemsInDropdown" :key="dropdownItem.name">
         <router-link :to="dropdownItem.path">
           <a :id="'navbar-item-' + dropdownItem.name.replace(/ /g,'')" class="dropdown-item" href="#">{{ dropdownItem.name }}</a>
         </router-link>
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+const routesThatRequireTeamMembership = ['/project', '/team-room'];
+
 export default {
   name: 'NavItem',
   props: {
@@ -31,6 +33,15 @@ export default {
     dropdown: {
       type: Array,
       default: null,
+    },
+    userIsMemberOfTeam: Boolean,
+  },
+  computed: {
+    visibleItemsInDropdown() {
+      if (this.userIsMemberOfTeam) {
+        return this.dropdown;
+      }
+      return this.dropdown.filter((dropdownItem) => !routesThatRequireTeamMembership.includes(dropdownItem.path));
     },
   },
 };
