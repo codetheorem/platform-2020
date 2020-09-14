@@ -43,6 +43,28 @@ module.exports.add_easter_eggs_for_user = withSentry(async (event) => {
 
   const ddb = new AWS.DynamoDB.DocumentClient();
 
+  const scanParams = {
+    TableName: process.env.EASTER_EGGS_TABLE,
+    FilterExpression: 'user_id = :val',
+    ExpressionAttributeValues: {
+      ':val': body.user_id,
+    },
+  };
+
+  const result = await ddb.scan(scanParams).promise();
+
+  // If user already has easter eggs, do not proceed with creation
+  if (result.Items.length > 0) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ result }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
+    };
+  }
+
   let count = 1;
   while (count <= TOTAL_EASTER_EGGS) {
     const id = UUID.v4();
