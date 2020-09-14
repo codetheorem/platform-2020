@@ -46,6 +46,7 @@ export default {
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
     SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
+    ADMIN_BASE_ENDPOINT: 'https://riskeip135.execute-api.us-east-1.amazonaws.com',
   },
   prod: {
     SPONSORS_INFO_ENDPOINT: 'https://phqk5kktqi.execute-api.us-east-1.amazonaws.com',
@@ -60,5 +61,6 @@ export default {
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
     SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
+    ADMIN_BASE_ENDPOINT: 'https://68186188hl.execute-api.us-east-1.amazonaws.com',
   },
 };

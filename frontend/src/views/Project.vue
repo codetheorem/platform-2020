@@ -137,18 +137,20 @@ export default {
           formattedEEData.push(easterEggData[d]);
         });
         const easterEgg = formattedEEData.find((e) => e.easter_egg_id === EASTER_EGG_ID);
-        if (easterEgg.discovered === false) {
-          this.displayEasterEgg = true;
-          this.currentEasterEggDBId = easterEgg.id;
-        }
-        this.easterEggData = formattedEEData;
-        let totalEEFound = 0;
-        this.easterEggData.forEach((d) => {
-          if (d.discovered) {
-            totalEEFound += 1;
+        if (easterEgg && easterEgg.discovered) {
+          if (easterEgg.discovered === false) {
+            this.displayEasterEgg = true;
+            this.currentEasterEggDBId = easterEgg.id;
           }
-        });
-        this.totalEasterEggsFound = totalEEFound;
+          this.easterEggData = formattedEEData;
+          let totalEEFound = 0;
+          this.easterEggData.forEach((d) => {
+            if (d.discovered) {
+              totalEEFound += 1;
+            }
+          });
+          this.totalEasterEggsFound = totalEEFound;
+        }
       }
     },
     async getTeam() {
