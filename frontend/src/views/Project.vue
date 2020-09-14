@@ -7,7 +7,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
               <div class="card" style="margin-bottom: 2rem;">
-                <EasterEggStamp v-if="displayEasterEgg" @viewEasterEgg="viewEasterEgg()" :totalEasterEggsFound="totalEasterEggsFound" :totalEasterEggs="totalEasterEggs"/>
+                <EasterEggStamp v-if="displayEasterEgg" @viewEasterEgg="viewEasterEgg()" :totalEasterEggsFound="totalEasterEggsFound" :totalEasterEggs="totalEasterEggs" :postcards="easterEggData"/>
                 <div class="card-body">
                     <p>
                       If you are ready to submit your Technica Hack, please click on the button below! <b>Only one hacker needs to submit per team.</b>
