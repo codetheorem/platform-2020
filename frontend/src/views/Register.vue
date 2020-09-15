@@ -9,6 +9,7 @@
           <p class="description-text">Welcome to Technica! To set up your account, you'll have to go through a few steps:</p>
           <ol class="step-list">
             <li>Update Information</li>
+            <li>Verify You're a Student</li>
             <li>Create a Hacker Profile (Optional)</li>
             <li>Set Up Your Slack Account</li>
             <!-- These items will be added as supplemental features -->
@@ -56,12 +57,32 @@
         </template>
       </content-container>
 
+      <content-container v-if="displayEnrollmentVerificationScreen">
+        <template v-slot:title>
+          <h3>Register</h3>
+        </template>
+        <template v-slot:body>
+          <h5>2) Verify You're a Student</h5>
+          <p class="description-text">Please upload any kind of document or identification that proves you're a current student. This can be a photo of your school ID, a transcript or class schedule, or any other document that shows you're currently in school.</p>
+          <p class="description-text">If you have any questions, just let us know by clicking the chat box in the lower right corner.</p>
+          <div class="enrollment-verification-form-wrapper">
+            <b-form-file
+              v-model="enrollmentVerificationFileUpload"
+              :state="Boolean(enrollmentVerificationFileUpload)"
+              placeholder="Choose a file"
+              drop-placeholder="Drop file here..."
+            ></b-form-file>
+          </div>
+          <Button size="lg" text="Next" @click="proceedToHackerProfileDescriptionScreen()"/>
+        </template>
+      </content-container>
+
       <content-container v-if="displayHackerProfileDescriptionScreen">
         <template v-slot:title>
           <h3>Register</h3>
         </template>
         <template v-slot:body>
-          <h5>2) Your Hacker Profile</h5>
+          <h5>3) Your Hacker Profile</h5>
           <p class="description-text">Your hacker profile is an optional way for you to share more information about yourselves with the event sponsors. Describe yourself in 1-2 sentences:</p>
           <form>
             <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text"></textarea>
@@ -76,7 +97,7 @@
           <h3>Register</h3>
         </template>
         <template v-slot:body>
-          <h5>3) Set Up Your Slack Account </h5>
+          <h5>4) Set Up Your Slack Account </h5>
           <p class="description-text">We'll be using Slack to share announcements, chat with other hackers, and more! Click the link below to register for our slack workspace, and come back once you're finished.</p>
           <Button v-if="!slackLinkButtonClicked" size="lg" text="Join Slack" @click="joinSlack()" :outlineStyle="true"/>
           <Button v-else size="lg" text="I've Joined Slack" @click="goHome()"/>
@@ -103,6 +124,7 @@ export default {
     return {
       displayWelcomeScreen: true,
       displayProfileInfoScreen: false,
+      displayEnrollmentVerificationScreen: false,
       displayHackerProfileDescriptionScreen: false,
       displaySlackSetupScreen: false,
       displayIncompleteInfoMessage: false,
@@ -114,6 +136,7 @@ export default {
       pronouns: '',
       profile_text: '',
       slackLinkButtonClicked: false,
+      enrollmentVerificationFileUpload: null,
     };
   },
   async mounted() {
@@ -128,6 +151,10 @@ export default {
       this.displayHackerProfileDescriptionScreen = false;
       this.displaySlackSetupScreen = true;
     },
+    proceedToHackerProfileDescriptionScreen() {
+      this.displayEnrollmentVerificationScreen = false;
+      this.displayHackerProfileDescriptionScreen = true;
+    },
     goToProfile() {
       if (this.profileInformationCompleted && this.emailAddressIsValid) {
         const env = this.getCurrentEnvironment();
@@ -140,8 +167,8 @@ export default {
           phone: this.phone,
         };
         this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
+        this.displayEnrollmentVerificationScreen = true;
         this.displayProfileInfoScreen = false;
-        this.displayHackerProfileDescriptionScreen = true;
         this.setUserNameCookie(this.name.split(' ')[0]);
       } else if (!this.profileInformationCompleted) {
         this.displayIncompleteInfoMessage = true;
@@ -257,5 +284,18 @@ export default {
 
   .hacker-profile-text {
     margin-bottom: 1rem;
+  }
+
+  .enrollment-verification-form-wrapper {
+    padding-left: 20%;
+    padding-right: 20%;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 1500px) {
+    .enrollment-verification-form-wrapper {
+      padding-left: 10%;
+      padding-right: 10%;
+    }
   }
 </style>
