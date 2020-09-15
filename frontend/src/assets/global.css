@@ -114,3 +114,8 @@ a.redirect-link{
 	color: var(--bright-purple);
 
 }
+
+
+.custom-file-label {
+    border-color: #EA668E !important;
+}
