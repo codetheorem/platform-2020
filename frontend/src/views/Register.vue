@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="register-container">
-      <content-container v-if="!getStartedButtonClicked">
+      <content-container v-if="displayWelcomeScreen">
         <template v-slot:title>
           <h3>Welcome!</h3>
         </template>
@@ -10,6 +10,7 @@
           <ol class="step-list">
             <li>Update Information</li>
             <li>Create a Hacker Profile (Optional)</li>
+            <li>Set Up Your Slack Account</li>
             <!-- These items will be added as supplemental features -->
             <!-- <li>Favorite Events (Optional)</li>
             <li>Sign Forms</li> -->
@@ -19,7 +20,7 @@
         </template>
       </content-container>
 
-      <content-container v-if="getStartedButtonClicked && !nextButtonClicked">
+      <content-container v-if="displayProfileInfoScreen">
         <template v-slot:title>
           <h3>Register</h3>
         </template>
@@ -55,7 +56,7 @@
         </template>
       </content-container>
 
-      <content-container v-if="nextButtonClicked">
+      <content-container v-if="displayHackerProfileDescriptionScreen">
         <template v-slot:title>
           <h3>Register</h3>
         </template>
@@ -66,7 +67,19 @@
             <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text"></textarea>
             <!-- <Button size="lg" text="Upload Profile Picture" @click="goToProfile()"/> -->
           </form>
-          <Button size="lg" text="Finish" @click="goHome()"/>
+          <Button size="lg" text="Next" @click="proceedToSlackStep()"/>
+        </template>
+      </content-container>
+
+      <content-container v-if="displaySlackSetupScreen">
+        <template v-slot:title>
+          <h3>Register</h3>
+        </template>
+        <template v-slot:body>
+          <h5>3) Set Up Your Slack Account </h5>
+          <p class="description-text">We'll be using Slack to share announcements, chat with other hackers, and more! Click the link below to register for our slack workspace, and come back once you're finished.</p>
+          <Button v-if="!slackLinkButtonClicked" size="lg" text="Join Slack" @click="joinSlack()" :outlineStyle="true"/>
+          <Button v-else size="lg" text="I've Joined Slack" @click="goHome()"/>
         </template>
       </content-container>
     </div>
@@ -88,8 +101,10 @@ export default {
   mixins: [generalMixin],
   data() {
     return {
-      getStartedButtonClicked: false,
-      nextButtonClicked: false,
+      displayWelcomeScreen: true,
+      displayProfileInfoScreen: false,
+      displayHackerProfileDescriptionScreen: false,
+      displaySlackSetupScreen: false,
       displayIncompleteInfoMessage: false,
       emailIsInvalid: false,
       name: '',
@@ -98,6 +113,7 @@ export default {
       phone: '',
       pronouns: '',
       profile_text: '',
+      slackLinkButtonClicked: false,
     };
   },
   async mounted() {
@@ -105,7 +121,12 @@ export default {
   },
   methods: {
     getStarted() {
-      this.getStartedButtonClicked = true;
+      this.displayWelcomeScreen = false;
+      this.displayProfileInfoScreen = true;
+    },
+    proceedToSlackStep() {
+      this.displayHackerProfileDescriptionScreen = false;
+      this.displaySlackSetupScreen = true;
     },
     goToProfile() {
       if (this.profileInformationCompleted && this.emailAddressIsValid) {
@@ -119,7 +140,8 @@ export default {
           phone: this.phone,
         };
         this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
-        this.nextButtonClicked = true;
+        this.displayProfileInfoScreen = false;
+        this.displayHackerProfileDescriptionScreen = true;
         this.setUserNameCookie(this.name.split(' ')[0]);
       } else if (!this.profileInformationCompleted) {
         this.displayIncompleteInfoMessage = true;
@@ -144,6 +166,10 @@ export default {
         user_id: this.getUserId(),
       };
       this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'add_easter_eggs_for_user', easterEggPostParams);
+    },
+    joinSlack() {
+      window.open(Config.shared.SLACK_INVITE_LINK, '_blank');
+      this.slackLinkButtonClicked = true;
     },
     async getUser() {
       const env = this.getCurrentEnvironment();
