@@ -10,6 +10,7 @@
           <ol class="step-list">
             <li>Update Information</li>
             <li>Verify You're a Student</li>
+            <li>Sign the Event Waiver</li>
             <li>Create a Hacker Profile (Optional)</li>
             <li>Set Up Your Slack Account</li>
             <!-- These items will be added as supplemental features -->
@@ -73,7 +74,19 @@
               drop-placeholder="Drop file here..."
             ></b-form-file>
           </div>
-          <Button size="lg" text="Next" @click="proceedToHackerProfileDescriptionScreen()"/>
+          <Button size="lg" text="Next" @click="proceedToWaiverScreen()"/>
+        </template>
+      </content-container>
+
+      <content-container v-if="displayWaiverScreen">
+        <template v-slot:title>
+          <h3>Register</h3>
+        </template>
+        <template v-slot:body>
+          <h5>3) Sign the Event Waiver</h5>
+          <p class="description-text">The safety and happiness of our attendees is our #1 priority, and it's vital that everyone adheres to our online code of conduct and waiver during the event. Please make sure you've signed the online waiver before proceeding.</p>
+          <Button v-if="!docusignLinkButtonClicked" size="lg" text="Sign the Waiver" @click="signWaiver()" :outlineStyle="true"/>
+          <Button v-else size="lg" text="I've Signed the Waiver" @click="proceedToHackerProfileDescriptionScreen()"/>
         </template>
       </content-container>
 
@@ -82,11 +95,10 @@
           <h3>Register</h3>
         </template>
         <template v-slot:body>
-          <h5>3) Your Hacker Profile</h5>
+          <h5>4) Your Hacker Profile</h5>
           <p class="description-text">Your hacker profile is an optional way for you to share more information about yourselves with the event sponsors. Describe yourself in 1-2 sentences:</p>
           <form>
             <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text"></textarea>
-            <!-- <Button size="lg" text="Upload Profile Picture" @click="goToProfile()"/> -->
           </form>
           <Button size="lg" text="Next" @click="proceedToSlackStep()"/>
         </template>
@@ -97,7 +109,7 @@
           <h3>Register</h3>
         </template>
         <template v-slot:body>
-          <h5>4) Set Up Your Slack Account </h5>
+          <h5>5) Set Up Your Slack Account </h5>
           <p class="description-text">We'll be using Slack to share announcements, chat with other hackers, and more! Click the link below to register for our slack workspace, and come back once you're finished.</p>
           <Button v-if="!slackLinkButtonClicked" size="lg" text="Join Slack" @click="joinSlack()" :outlineStyle="true"/>
           <Button v-else size="lg" text="I've Joined Slack" @click="goHome()"/>
@@ -127,6 +139,7 @@ export default {
       displayEnrollmentVerificationScreen: false,
       displayHackerProfileDescriptionScreen: false,
       displaySlackSetupScreen: false,
+      displayWaiverScreen: false,
       displayIncompleteInfoMessage: false,
       emailIsInvalid: false,
       name: '',
@@ -136,6 +149,7 @@ export default {
       pronouns: '',
       profile_text: '',
       slackLinkButtonClicked: false,
+      docusignLinkButtonClicked: false,
       enrollmentVerificationFileUpload: null,
     };
   },
@@ -152,8 +166,12 @@ export default {
       this.displaySlackSetupScreen = true;
     },
     proceedToHackerProfileDescriptionScreen() {
-      this.displayEnrollmentVerificationScreen = false;
+      this.displayWaiverScreen = false;
       this.displayHackerProfileDescriptionScreen = true;
+    },
+    proceedToWaiverScreen() {
+      this.displayEnrollmentVerificationScreen = false;
+      this.displayWaiverScreen = true;
     },
     goToProfile() {
       if (this.profileInformationCompleted && this.emailAddressIsValid) {
@@ -197,6 +215,10 @@ export default {
     joinSlack() {
       window.open(Config.shared.SLACK_INVITE_LINK, '_blank');
       this.slackLinkButtonClicked = true;
+    },
+    signWaiver() {
+      window.open(Config.shared.DOCUSIGN_WAIVER_LINK, '_blank');
+      this.docusignLinkButtonClicked = true;
     },
     async getUser() {
       const env = this.getCurrentEnvironment();

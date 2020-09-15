@@ -3,6 +3,7 @@ export default {
     SAMPLE_ZOOM_LINK: 'https://us04web.zoom.us/j/9191971697?pwd=U1lPSUlJeElXQldCTkJwSnJOYjB4dz09',
     LIVESTREAM_LINK: 'https://www.youtube.com/embed/5jPwFWIvBzk',
     SLACK_INVITE_LINK: 'https://join.slack.com/t/technica2020/shared_invite/zt-higqqg9d-njO1xc8o__xAKhLyId_kvw',
+    DOCUSIGN_WAIVER_LINK: 'https://docusign.com',
   },
   dev: {
     SCHEDULE_BASE_ENDPOINT: 'https://dxz39cp5d0.execute-api.us-east-1.amazonaws.com',
