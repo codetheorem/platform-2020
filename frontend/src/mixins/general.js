@@ -91,5 +91,13 @@ export default {
       }
       return 'dev';
     },
+    async activityTracking(actionName) {
+      const env = this.getCurrentEnvironment();
+      const params = {
+        user_id: this.getUserId(),
+        action: actionName,
+      };
+      await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', params);
+    },
   },
 };

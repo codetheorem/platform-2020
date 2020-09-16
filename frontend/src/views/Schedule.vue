@@ -89,7 +89,7 @@ export default {
   },
   async mounted() {
     console.log(process.env.NODE_ENV);
-    await this.activityTracking();
+    await this.activityTracking('SCHEDULE');
     const env = this.getCurrentEnvironment();
     this.events = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
     console.log(this.schedule);
@@ -100,14 +100,6 @@ export default {
     },
     selectTitleItem(day) {
       this.selectedDay = day;
-    },
-    async activityTracking() {
-      const env = this.getCurrentEnvironment();
-      const params = {
-        user_id: this.getUserId(),
-        action: "SCHEDULE",
-      };
-      await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', params);
     },
   },
 };

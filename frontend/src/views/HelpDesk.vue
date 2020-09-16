@@ -55,17 +55,7 @@ export default {
     };
   },
   async mounted() {
-    await this.activityTracking();
-  },
-  methods: {
-    async activityTracking() {
-      const env = this.getCurrentEnvironment();
-      const params = {
-        user_id: this.getUserId(),
-	action: "HELPDESK",
-      };
-      await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', params);
-    },
+    await this.activityTracking('HELPDESK');
   },
 };
 </script>
