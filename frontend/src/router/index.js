@@ -39,6 +39,12 @@ const routes = [
     },
   },
   {
+    path: '/profile',
+    name: 'My Profile',
+    component: () => import('../views/HackerProfile.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/resources',
     name: 'Helpful Resources',
     displayInNavBar: false,
@@ -207,11 +213,15 @@ const routes = [
     ],
   },
   {
-    path: '/profile',
+    path: '/profile-dropdown',
     name: 'Profile',
     component: () => import('../views/Profile.vue'),
     displayInNavBar: true,
     dropdown: [
+      {
+        path: '/profile',
+        name: 'My Profile',
+      },
       {
         path: '/passport',
         name: 'My Passport',
