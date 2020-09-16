@@ -131,9 +131,9 @@ export default {
           project_submitted: false,
         };
         const createdTeam = await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'create_team', createTeamPostParams);
-	const activityPostParams = {
+        const activityPostParams = {
           user_id: this.getUserId(),
-	  action: "TEAM_CREATION",
+          action: 'TEAM_CREATION',
       	};
         await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', activityPostParams);
         // after creating the new team, join it
@@ -245,7 +245,7 @@ export default {
       const env = this.getCurrentEnvironment();
       const params = {
         user_id: this.getUserId(),
-	action: "TEAMS",
+        action: 'TEAMS',
       };
       await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', params);
     },
