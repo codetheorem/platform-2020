@@ -75,6 +75,7 @@ export default {
     };
   },
   async mounted() {
+    await this.activityTracking('REQUEST_MENTOR');
     await this.getMentorRequests();
   },
   methods: {

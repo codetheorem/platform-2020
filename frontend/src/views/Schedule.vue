@@ -89,6 +89,7 @@ export default {
   },
   async mounted() {
     console.log(process.env.NODE_ENV);
+    await this.activityTracking('SCHEDULE');
     const env = this.getCurrentEnvironment();
     this.events = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
     console.log(this.schedule);

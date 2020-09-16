@@ -111,6 +111,7 @@ export default {
     };
   },
   async mounted() {
+    await this.activityTracking('TEAMS');
     await this.getInvitesForHacker();
     await this.getTeam();
     this.dataLoaded = true;
@@ -130,6 +131,7 @@ export default {
           project_submitted: false,
         };
         const createdTeam = await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'create_team', createTeamPostParams);
+        await this.activityTracking('TEAM_CREATION');
         // after creating the new team, join it
         const joinTeamPostParams = {
           team_id: createdTeam.id,
