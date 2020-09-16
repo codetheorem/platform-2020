@@ -57,7 +57,6 @@ describe('get_team_invites', () => {
         
         const ddb = new AWS.DynamoDB.DocumentClient();
         const result = await ddb.get(request).promise();
-        //console.log(result)
 
         expect(result.Item.id).toMatch(addedId);
         expect(result.Item.user_id).toMatch(userId);
@@ -68,7 +67,6 @@ describe('get_team_invites', () => {
   it('Fails request to get users for a team', async() =>{
     
     return await getter.run(invalid_get_request).then(async (response) =>{
-        //console.log(response)
         expect(response).toBeDefined();
         expect(response).toHaveProperty('statusCode', 500);
     }); 
