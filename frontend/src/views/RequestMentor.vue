@@ -75,6 +75,7 @@ export default {
     };
   },
   async mounted() {
+    await this.activityTracking();
     await this.getMentorRequests();
   },
   methods: {
@@ -109,6 +110,14 @@ export default {
       this.requestTitle = '';
       this.requestTopic = '';
       this.requestDescription = '';
+    },
+    async activityTracking() {
+      const env = this.getCurrentEnvironment();
+      const params = {
+        user_id: this.getUserId(),
+        action: "REQUEST_MENTOR",
+      };
+      await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', params);
     },
   },
 };

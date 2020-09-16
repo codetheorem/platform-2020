@@ -111,6 +111,7 @@ export default {
     };
   },
   async mounted() {
+    await this.activityTracking();
     await this.getInvitesForHacker();
     await this.getTeam();
     this.dataLoaded = true;
@@ -130,6 +131,11 @@ export default {
           project_submitted: false,
         };
         const createdTeam = await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'create_team', createTeamPostParams);
+	const activityPostParams = {
+          user_id: this.getUserId(),
+	  action: "TEAM_CREATION",
+      	};
+        await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', activityPostParams);
         // after creating the new team, join it
         const joinTeamPostParams = {
           team_id: createdTeam.id,
@@ -234,6 +240,14 @@ export default {
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'leave_team', params);
       this.currentTeam = null;
       this.$emit('teamMembershipChanged', false);
+    },
+    async activityTracking() {
+      const env = this.getCurrentEnvironment();
+      const params = {
+        user_id: this.getUserId(),
+	action: "TEAMS",
+      };
+      await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', params);
     },
   },
 };

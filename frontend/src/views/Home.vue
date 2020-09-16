@@ -35,11 +35,22 @@ export default {
     Banner,
   },
   mixins: [generalMixin],
+  async mounted() {
+    await this.activityTracking();
+  },
   methods: {
     initiateOnboardingWalkthrough() {
       const env = this.getCurrentEnvironment();
       // eslint-disable-next-line no-undef
       Intercom('startTour', Config[env].PLATFORM_WALKTHROUGH_ID);
+    },
+    async activityTracking() {
+      const env = this.getCurrentEnvironment();
+      const params = {
+        user_id: this.getUserId(),
+        action: "HOME",
+      };
+      await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', params);
     },
   },
 };

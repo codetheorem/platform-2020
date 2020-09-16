@@ -54,6 +54,19 @@ export default {
       helpDeskLink: Config.shared.SAMPLE_ZOOM_LINK,
     };
   },
+  async mounted() {
+    await this.activityTracking();
+  },
+  methods: {
+    async activityTracking() {
+      const env = this.getCurrentEnvironment();
+      const params = {
+        user_id: this.getUserId(),
+	action: "HELPDESK",
+      };
+      await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', params);
+    },
+  },
 };
 </script>
 
