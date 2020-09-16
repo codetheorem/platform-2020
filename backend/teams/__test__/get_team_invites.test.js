@@ -43,7 +43,6 @@ describe('get_team_invites', () => {
     const addedTime = JSON.parse(added.body).timestamp
     
     return await getter.run(get_request).then(async (response) =>{
-        //console.log(response)
         expect(response).toBeDefined();
         expect(response).toHaveProperty('statusCode', 200);
         
@@ -71,7 +70,6 @@ describe('get_team_invites', () => {
     const addedTime = JSON.parse(added.body).timestamp
     
     return await getter.run(invalid_get_request).then(async (response) =>{
-        //console.log(response)
         expect(response).toBeDefined();
         expect(response).toHaveProperty('statusCode', 500);
     }); 
