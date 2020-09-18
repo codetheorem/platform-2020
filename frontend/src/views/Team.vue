@@ -49,7 +49,8 @@
           </b-row>
         </div>
       </b-container>
-      <div v-if="currentTeam" class="create-team-container invite-container">
+      
+      <div v-if="currentTeam && Object.keys(currentTeam['members']).length < 4" class="create-team-container invite-container">
         <form @submit.prevent="inviteHacker" class="create-team-form">
           <div class="form-group">
             <div class="input-wrapper">
@@ -58,6 +59,11 @@
           </div>
         </form>
         <Button size="lg" text="Invite Hacker" @click="inviteHacker()" class="create-team-button"/>
+      </div>
+      <div v-if="currentTeam && Object.keys(currentTeam['members']).length >= 4">
+        <span>
+          You have reached the maximum team size and cannot add additional members.
+        </span>
       </div>
       <div v-if="currentTeam">
         <Button size="lg" text="Leave Team" @click="leaveTeam()" class="create-team-button" style="background: white !important;" :outlineStyle="true"/>
@@ -150,7 +156,7 @@ export default {
       Object.keys(invites).forEach((k) => {
         formattedInvites[k] = invites[k];
       });
-      console.log(formattedInvites);
+      // console.log(formattedInvites);
       if (formattedInvites.length > 0) {
         this.invites = formattedInvites;
       }
@@ -165,7 +171,7 @@ export default {
       Object.keys(invites).forEach((k) => {
         formattedInvites[k] = invites[k];
       });
-      console.log(formattedInvites);
+      // console.log(formattedInvites);
       if (formattedInvites.length > 0) {
         this.invitesToCurrentTeam = formattedInvites;
       }
