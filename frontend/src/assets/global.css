@@ -6,10 +6,10 @@
 	--pastel-purple: #A88AA8;
 	--pastel-pink: #EA668E;
 	--bright-purple: #B377DB;
+	--lighter-purple: #b5a1c4;
 	--bright-pink: #FF5091;
 	--light-purple: #DED2E5;
 	--light-pink: #F8D2E0;
-
 	--black: #2D2D2D;
 	--grey: #464343;
 	--light-grey: #8B8787;
@@ -21,6 +21,10 @@
 
 body {
 	background-color: #F6F4F7;
+}
+
+div {
+	z-index: 50;
 }
 
 /* HEADINGS */
@@ -109,4 +113,9 @@ a.redirect-link{
 	margin-bottom: 2rem;
 	color: var(--bright-purple);
 
+}
+
+
+.custom-file-label {
+    border-color: #EA668E !important;
 }

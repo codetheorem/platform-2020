@@ -54,6 +54,9 @@ export default {
       helpDeskLink: Config.shared.SAMPLE_ZOOM_LINK,
     };
   },
+  async mounted() {
+    await this.activityTracking('HELPDESK');
+  },
 };
 </script>
 

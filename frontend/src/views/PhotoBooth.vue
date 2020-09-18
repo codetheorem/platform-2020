@@ -19,7 +19,7 @@
         <a href="https://www.virtualbooth.me" target="_blank" style="margin-right: 1rem;">
           <Button size="lg" text="Take a Photo"/>
         </a>
-        <a href="https://getmontage.co" target="_blank">
+        <a :href="videoMontageLink" target="_blank">
           <Button size="lg" text="Record a Video"/>
         </a>
       </div>
@@ -30,12 +30,18 @@
 <script>
 import Button from '@/components/Button.vue';
 import generalMixin from '../mixins/general';
+import Config from '../config/general';
 
 export default {
   name: 'PhotoBooth',
   mixins: [generalMixin],
   components: {
     Button,
+  },
+  computed: {
+    videoMontageLink() {
+      return Config.shared.VIDEO_MONTAGE_LINK;
+    },
   },
 };
 </script>

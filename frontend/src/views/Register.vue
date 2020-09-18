@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <div class="register-container">
-      <content-container v-if="!getStartedButtonClicked">
+      <content-container v-if="displayWelcomeScreen">
         <template v-slot:title>
           <h3>Welcome!</h3>
         </template>
@@ -9,7 +9,10 @@
           <p class="description-text">Welcome to Technica! To set up your account, you'll have to go through a few steps:</p>
           <ol class="step-list">
             <li>Update Information</li>
+            <li>Verify You're a Student</li>
+            <li>Sign the Event Waiver</li>
             <li>Create a Hacker Profile (Optional)</li>
+            <li>Set Up Your Slack Account</li>
             <!-- These items will be added as supplemental features -->
             <!-- <li>Favorite Events (Optional)</li>
             <li>Sign Forms</li> -->
@@ -19,7 +22,7 @@
         </template>
       </content-container>
 
-      <content-container v-if="getStartedButtonClicked && !nextButtonClicked">
+      <content-container v-if="displayProfileInfoScreen">
         <template v-slot:title>
           <h3>Register</h3>
         </template>
@@ -55,18 +58,61 @@
         </template>
       </content-container>
 
-      <content-container v-if="nextButtonClicked">
+      <content-container v-if="displayEnrollmentVerificationScreen">
         <template v-slot:title>
           <h3>Register</h3>
         </template>
         <template v-slot:body>
-          <h5>2) Your Hacker Profile</h5>
+          <h5>2) Verify You're a Student</h5>
+          <p class="description-text">Please upload any kind of document or identification that proves you're a current student. This can be a photo of your school ID, a transcript or class schedule, or any other document that shows you're currently in school.</p>
+          <p class="description-text">If you have any questions, just let us know by clicking the chat box in the lower right corner.</p>
+          <div class="enrollment-verification-form-wrapper">
+            <b-form-file
+              v-model="enrollmentVerificationFileUpload"
+              :state="Boolean(enrollmentVerificationFileUpload)"
+              placeholder="Choose a file"
+              drop-placeholder="Drop file here..."
+            ></b-form-file>
+          </div>
+          <Button size="lg" text="Next" @click="proceedToWaiverScreen()"/>
+        </template>
+      </content-container>
+
+      <content-container v-if="displayWaiverScreen">
+        <template v-slot:title>
+          <h3>Register</h3>
+        </template>
+        <template v-slot:body>
+          <h5>3) Sign the Event Waiver</h5>
+          <p class="description-text">The safety and happiness of our attendees is our #1 priority, and it's vital that everyone adheres to our online code of conduct and waiver during the event. Please make sure you've signed the online waiver before proceeding.</p>
+          <Button v-if="!docusignLinkButtonClicked" size="lg" text="Sign the Waiver" @click="signWaiver()" :outlineStyle="true"/>
+          <Button v-else size="lg" text="I've Signed the Waiver" @click="proceedToHackerProfileDescriptionScreen()"/>
+        </template>
+      </content-container>
+
+      <content-container v-if="displayHackerProfileDescriptionScreen">
+        <template v-slot:title>
+          <h3>Register</h3>
+        </template>
+        <template v-slot:body>
+          <h5>4) Your Hacker Profile</h5>
           <p class="description-text">Your hacker profile is an optional way for you to share more information about yourselves with the event sponsors. Describe yourself in 1-2 sentences:</p>
           <form>
             <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text"></textarea>
-            <!-- <Button size="lg" text="Upload Profile Picture" @click="goToProfile()"/> -->
           </form>
-          <Button size="lg" text="Finish" @click="goHome()"/>
+          <Button size="lg" text="Next" @click="proceedToSlackStep()"/>
+        </template>
+      </content-container>
+
+      <content-container v-if="displaySlackSetupScreen">
+        <template v-slot:title>
+          <h3>Register</h3>
+        </template>
+        <template v-slot:body>
+          <h5>5) Set Up Your Slack Account </h5>
+          <p class="description-text">We'll be using Slack to share announcements, chat with other hackers, and more! Click the link below to register for our slack workspace, and come back once you're finished.</p>
+          <Button v-if="!slackLinkButtonClicked" size="lg" text="Join Slack" @click="joinSlack()" :outlineStyle="true"/>
+          <Button v-else size="lg" text="I've Joined Slack" @click="goHome()"/>
         </template>
       </content-container>
     </div>
@@ -88,8 +134,12 @@ export default {
   mixins: [generalMixin],
   data() {
     return {
-      getStartedButtonClicked: false,
-      nextButtonClicked: false,
+      displayWelcomeScreen: true,
+      displayProfileInfoScreen: false,
+      displayEnrollmentVerificationScreen: false,
+      displayHackerProfileDescriptionScreen: false,
+      displaySlackSetupScreen: false,
+      displayWaiverScreen: false,
       displayIncompleteInfoMessage: false,
       emailIsInvalid: false,
       name: '',
@@ -98,11 +148,30 @@ export default {
       phone: '',
       pronouns: '',
       profile_text: '',
+      slackLinkButtonClicked: false,
+      docusignLinkButtonClicked: false,
+      enrollmentVerificationFileUpload: null,
     };
+  },
+  async mounted() {
+    await this.getUser();
   },
   methods: {
     getStarted() {
-      this.getStartedButtonClicked = true;
+      this.displayWelcomeScreen = false;
+      this.displayProfileInfoScreen = true;
+    },
+    proceedToSlackStep() {
+      this.displayHackerProfileDescriptionScreen = false;
+      this.displaySlackSetupScreen = true;
+    },
+    proceedToHackerProfileDescriptionScreen() {
+      this.displayWaiverScreen = false;
+      this.displayHackerProfileDescriptionScreen = true;
+    },
+    proceedToWaiverScreen() {
+      this.displayEnrollmentVerificationScreen = false;
+      this.displayWaiverScreen = true;
     },
     goToProfile() {
       if (this.profileInformationCompleted && this.emailAddressIsValid) {
@@ -116,7 +185,8 @@ export default {
           phone: this.phone,
         };
         this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
-        this.nextButtonClicked = true;
+        this.displayEnrollmentVerificationScreen = true;
+        this.displayProfileInfoScreen = false;
         this.setUserNameCookie(this.name.split(' ')[0]);
       } else if (!this.profileInformationCompleted) {
         this.displayIncompleteInfoMessage = true;
@@ -135,6 +205,47 @@ export default {
         registration_status: 'registered',
       };
       this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
+
+      // add easter egg data
+      const easterEggPostParams = {
+        user_id: this.getUserId(),
+      };
+      this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'add_easter_eggs_for_user', easterEggPostParams);
+    },
+    joinSlack() {
+      window.open(Config.shared.SLACK_INVITE_LINK, '_blank');
+      this.slackLinkButtonClicked = true;
+    },
+    signWaiver() {
+      window.open(Config.shared.DOCUSIGN_WAIVER_LINK, '_blank');
+      this.docusignLinkButtonClicked = true;
+    },
+    async getUser() {
+      const env = this.getCurrentEnvironment();
+      const userParams = {
+        id: this.getUserId(),
+      };
+      const user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', userParams);
+      if (user) {
+        if (user.full_name) {
+          this.name = user.full_name;
+        }
+        if (user.pronouns) {
+          this.pronouns = user.pronouns;
+        }
+        if (user.email) {
+          this.email = user.email;
+        }
+        if (user.phone) {
+          this.phone = user.phone;
+        }
+        if (user.school) {
+          this.school = user.school;
+        }
+        if (user.profile_text) {
+          this.profile_text = user.profile_text;
+        }
+      }
     },
   },
   computed: {
@@ -195,5 +306,18 @@ export default {
 
   .hacker-profile-text {
     margin-bottom: 1rem;
+  }
+
+  .enrollment-verification-form-wrapper {
+    padding-left: 20%;
+    padding-right: 20%;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 1500px) {
+    .enrollment-verification-form-wrapper {
+      padding-left: 10%;
+      padding-right: 10%;
+    }
   }
 </style>

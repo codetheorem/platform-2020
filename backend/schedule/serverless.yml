@@ -134,6 +134,14 @@ functions:
           path: create_zoom_meeting
           method: post
           cors: true
+  get_user_shortlink_clicks:
+    handler: handler.get_user_shortlink_clicks
+    description: Retrieves all shortlink clicks for a particular user
+    events:
+      - http:
+          path: get_user_shortlink_clicks
+          method: get
+          cors: true
 
 package:
   exclude:

@@ -11,6 +11,7 @@ provider:
   environment:
     SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
     ADMIN_TABLE: ${file(./config/${self:provider.stage}.json):ADMIN_TABLE}
+    EASTER_EGGS_TABLE:  ${file(./config/${self:provider.stage}.json):EASTER_EGGS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -24,8 +25,30 @@ provider:
 
 
 functions:
-  hello:
-    handler: handler.hello # remove this when you're implementing the first function of this service!
+  get_easter_eggs:
+    handler: handler.get_easter_eggs
+    description: Retrieves all easter egg data for a particular user
+    events:
+      - http:
+          path: get_easter_eggs
+          method: get
+          cors: true
+  add_easter_eggs_for_user:
+    handler: handler.add_easter_eggs_for_user
+    description: Adds easter eggs to DB for user
+    events:
+      - http:
+          path: add_easter_eggs_for_user
+          method: post
+          cors: true
+  discover_easter_egg:
+    handler: handler.discover_easter_egg
+    description: Updates the discover value for a particular easter egg
+    events:
+      - http:
+          path: discover_easter_egg
+          method: post
+          cors: true
 
 
 plugins:

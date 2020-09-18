@@ -29,9 +29,6 @@ const routes = [
     name: 'Live Stream',
     component: () => import('../views/LiveStream.vue'),
     displayInNavBar: false,
-    beforeEnter() {
-      window.open(Config.dev.LIVESTREAM_LINK, '_blank');
-    },
   },
   {
     path: '/prizes',
@@ -40,6 +37,12 @@ const routes = [
     beforeEnter() {
       window.open(Config.dev.PRIZES_LINK, '_blank');
     },
+  },
+  {
+    path: '/profile',
+    name: 'My Profile',
+    component: () => import('../views/HackerProfile.vue'),
+    displayInNavBar: false,
   },
   {
     path: '/resources',
@@ -104,6 +107,14 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/slack',
+    name: 'Slack',
+    displayInNavBar: false,
+    beforeEnter() {
+      window.open(Config.dev.SLACK_WORKSPACE_LINK, '_blank');
+    },
+  },
+  {
     path: '/photo-booth',
     name: 'Photo Booth',
     component: () => import('../views/PhotoBooth.vue'),
@@ -113,6 +124,12 @@ const routes = [
     path: '/request-mentor',
     name: 'Request A Mentor',
     component: () => import('../views/RequestMentor.vue'),
+    displayInNavBar: false,
+  },
+  {
+    path: '/passport',
+    name: 'Passport System',
+    component: () => import('../views/Passport.vue'),
     displayInNavBar: false,
   },
   {
@@ -167,6 +184,10 @@ const routes = [
     displayInNavBar: true,
     dropdown: [
       {
+        path: '/slack',
+        name: 'Slack',
+      },
+      {
         path: '/water-cooler',
         name: 'Networking',
       },
@@ -192,11 +213,19 @@ const routes = [
     ],
   },
   {
-    path: '/profile',
+    path: '/profile-dropdown',
     name: 'Profile',
     component: () => import('../views/Profile.vue'),
     displayInNavBar: true,
     dropdown: [
+      {
+        path: '/profile',
+        name: 'My Profile',
+      },
+      {
+        path: '/passport',
+        name: 'My Passport',
+      },
       {
         path: '/logout',
         name: 'Sign Out',

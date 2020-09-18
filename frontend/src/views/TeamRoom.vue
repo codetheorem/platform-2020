@@ -4,8 +4,8 @@
       <h2 class="page-header">Team Room</h2>
       <div class="display-container">
         <div>
-            <div v-for="member in currentTeam.members" :key="member.id" class="member-list-item">
-                <div class="member-list-photo" />
+            <div v-for="(member, index) in currentTeam.members" :key="member.id" class="member-list-item">
+                <img v-bind:src="getImgUrl(photos[index])" class="member-list-photo"/>
                 <div class="member-list-info">
                     <div><b>{{ member.full_name }}</b></div>
                     <div>{{ member.email }}</div>
@@ -37,6 +37,8 @@ export default {
   data() {
     return {
       currentTeam: null,
+      photos_path: '../assets/profile_pics/',
+      photos: ['Profile Sun', 'Profile Mountain', 'Profile Cloud 2', 'Profile Wave', 'Profile Cloud 1'],
     };
   },
   async mounted() {
@@ -66,6 +68,11 @@ export default {
     joinZoom() {
       const win = window.open('https://zoom.com', '_blank');
       win.focus();
+    },
+    // this tricky function resolves image paths dynamically
+    getImgUrl(imgName) {
+      const images = require.context('../assets/profile_pics', false, /\.png$/);
+      return images(`./${imgName}.png`);
     },
   },
 };
