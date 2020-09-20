@@ -16,7 +16,7 @@
         <div class="col-md-1"></div>
       </div>
       <div class="display-center">
-        <a href="https://www.virtualbooth.me" target="_blank" style="margin-right: 1rem;">
+        <a :href="photoBoothLink" target="_blank" style="margin-right: 1rem;">
           <Button size="lg" text="Take a Photo"/>
         </a>
         <a :href="videoMontageLink" target="_blank">
@@ -41,6 +41,9 @@ export default {
   computed: {
     videoMontageLink() {
       return Config.shared.VIDEO_MONTAGE_LINK;
+    },
+    photoBoothLink() {
+      return Config.shared.PHOTO_BOOTH_LINK;
     },
   },
 };
