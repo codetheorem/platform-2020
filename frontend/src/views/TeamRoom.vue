@@ -2,7 +2,7 @@
   <div>
     <b-container class="teams-container" v-if="currentTeam">
       <h2 class="page-header">Team Room</h2>
-      <div class="display-container">
+      <div v-if="dataLoaded" class="display-container">
         <div>
             <div v-for="(member, index) in currentTeam.members" :key="member.id" class="member-list-item">
                 <img v-bind:src="getImgUrl(photos[index])" class="member-list-photo"/>
@@ -19,12 +19,14 @@
             <Button size="lg" text="Join Video Call" @click="joinZoom()" class="create-team-button" style="background: #EA668E !important; border: #EA668E !important;"/>
         </div>
       </div>
+      <LoadingSpinner v-else />
     </b-container>
   </div>
 </template>
 
 <script>
 import Button from '@/components/Button.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
@@ -32,6 +34,7 @@ export default {
   name: 'TeamRoom',
   components: {
     Button,
+    LoadingSpinner,
   },
   mixins: [generalMixin],
   data() {
@@ -39,10 +42,12 @@ export default {
       currentTeam: null,
       photos_path: '../assets/profile_pics/',
       photos: ['Profile Sun', 'Profile Mountain', 'Profile Cloud 2', 'Profile Wave', 'Profile Cloud 1'],
+      dataLoaded: false,
     };
   },
   async mounted() {
     await this.getTeam();
+    this.dataLoaded = true;
   },
   methods: {
     async getTeam() {
@@ -56,9 +61,15 @@ export default {
           team_id: team[0].team_id,
         };
         const teamMembers = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_users_for_team', params);
+        const teamInfoParams = {
+          id: team[0].team_id,
+        };
+        const teamInfo = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team', teamInfoParams);
         this.currentTeam = {};
         this.currentTeam.members = teamMembers;
         this.currentTeam.name = 'My Team';
+        // eslint-disable-next-line prefer-destructuring
+        this.currentTeam.teamInfo = teamInfo;
       }
     },
     joinSlack() {
@@ -66,7 +77,7 @@ export default {
       win.focus();
     },
     joinZoom() {
-      const win = window.open('https://zoom.com', '_blank');
+      const win = window.open(this.currentTeam.teamInfo.zoom_link, '_blank');
       win.focus();
     },
     // this tricky function resolves image paths dynamically

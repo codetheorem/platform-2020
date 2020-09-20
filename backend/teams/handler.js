@@ -384,3 +384,57 @@ module.exports.update_team_submission = withSentry(async (event) => {
     },
   };
 });
+
+module.exports.add_zoom_link_for_team = withSentry(async (event) => {
+  const ddb = new AWS.DynamoDB.DocumentClient();
+  const body = JSON.parse(event.body);
+  if (!body.id || !body.link) {
+    return {
+      statusCode: 500,
+      body: 'Missing id or link keys',
+    };
+  }
+
+  const params = {
+    TableName: process.env.TEAMS_TABLE,
+    Key: {
+      id: body.id,
+    },
+    UpdateExpression: 'set zoom_link = :p',
+    ExpressionAttributeValues: {
+      ':p': body.link,
+    },
+    ReturnValues: 'UPDATED_NEW',
+  };
+
+  const result = await ddb.update(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
+
+module.exports.get_team = withSentry(async (event) => {
+  const id = event.queryStringParameters.id;
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const item = await ddb.get({
+    TableName: process.env.TEAMS_TABLE,
+    Key: { id },
+  }).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(item.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});

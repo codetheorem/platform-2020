@@ -98,6 +98,20 @@ functions:
           path: update_team_submission
           method: post
           cors: true
+  add_zoom_link_for_team:
+    handler: handler.add_zoom_link_for_team
+    events:
+      - http:
+          path: add_zoom_link_for_team
+          method: post
+          cors: true
+  get_team:
+    handler: handler.get_team
+    events:
+      - http: 
+          path: get_team
+          method: get
+          cors: true
 plugins:
   - serverless-sentry
   - serverless-jest-plugin

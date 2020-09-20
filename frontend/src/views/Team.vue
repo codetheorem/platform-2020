@@ -143,6 +143,8 @@ export default {
         this.teamName = '';
         // create checklist items for the team
         await this.createChecklist();
+        const teamZoomLink = await this.createZoomLink();
+        await this.addZoomLinkForTeam(teamZoomLink);
         this.teamCreationLoading = false;
       }
     },
@@ -236,6 +238,22 @@ export default {
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'leave_team', params);
       this.currentTeam = null;
       this.$emit('teamMembershipChanged', false);
+    },
+    async createZoomLink() {
+      const env = this.getCurrentEnvironment();
+      const params = {
+        event_name: 'Technica Team Room',
+      };
+      const meeting = await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'create_zoom_meeting', params);
+      return meeting.zoom_link;
+    },
+    async addZoomLinkForTeam(link) {
+      const env = this.getCurrentEnvironment();
+      const params = {
+        id: this.currentTeam.id,
+        link,
+      };
+      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'add_zoom_link_for_team', params);
     },
   },
 };
