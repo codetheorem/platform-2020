@@ -487,22 +487,11 @@ module.exports.get_events_from_user_list = withSentry(async (event) => {
     },
   };
 
-  // Call DynamoDB to scan through *all* items in the table
   const result = await ddb.scan(params).promise();
-
-  // Instead of just returning the ddb response, let's clean things up
-  const response = {
-    userId,
-    event_ids: [],
-  };
-
-  result.Items.forEach((k) => {
-    response.event_ids.push(k.event_id);
-  });
 
   return {
     statusCode: 200,
-    body: JSON.stringify(response),
+    body: JSON.stringify(result),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
