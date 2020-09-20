@@ -5,6 +5,8 @@ export default {
     SLACK_INVITE_LINK: 'https://join.slack.com/t/technica2020/shared_invite/zt-higqqg9d-njO1xc8o__xAKhLyId_kvw',
     DOCUSIGN_WAIVER_LINK: 'https://docusign.com',
     VIDEO_MONTAGE_LINK: 'https://getmontage.co/s/0JQ0',
+    START_DATE: '2020-10-25',
+    END_DATE: '2020-10-26',
   },
   dev: {
     SCHEDULE_BASE_ENDPOINT: 'https://dxz39cp5d0.execute-api.us-east-1.amazonaws.com',
