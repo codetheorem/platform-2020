@@ -289,6 +289,11 @@ export default {
 
   .form-control {
     margin-bottom: .5rem;
+    color: rgb(0, 0, 0);
+  }
+
+  .form-control::placeholder {
+    color: rgba(0, 0, 0, .6);
   }
 
   .input-label {
