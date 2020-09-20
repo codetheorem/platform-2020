@@ -16,7 +16,11 @@
               <div v-for="timeWindow in timeWindows" :key="timeWindow" class="timewindow">
                 <div v-if="formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn)" class="schedule-content-item" :class="formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn).branding.class">
                   <div class="schedule-content-item-star">
-                    <img :src="getImgUrl(formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn))" />
+                    <img
+                      :src="getImgUrl(formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn))"
+                      @click="toggleAddingEventToList(selectedDay, timeWindow, scheduleColumn)"
+                      style="width: 19px; height: 18px;"
+                    />
                   </div>
                   <div class="schedule-content-item-title">
                     {{ formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn).event_name }}
@@ -46,6 +50,7 @@ export default {
     return {
       rawEvents: [],
       formattedEvents: {},
+      eventsInUserList: [],
       selectedDay: null,
       days: [],
       timeWindows: [],
@@ -56,6 +61,7 @@ export default {
   async mounted() {
     this.prepareTimeWindows();
     this.populateDays();
+    await this.getEventsFromUserList();
     const env = this.getCurrentEnvironment();
     this.rawEvents = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
     console.log(this.rawEvents);
@@ -92,6 +98,11 @@ export default {
     processRawEvents() {
       for (let i = 0; i < this.rawEvents.length; i += 1) {
         this.rawEvents[i].branding = eventBrandingTypes[i % 3];
+        this.rawEvents[i].addedToUserList = false;
+        if (this.eventsInUserList.map((event) => event.event_id).includes(this.rawEvents[i].id)) {
+          this.rawEvents[i].addedToUserList = true;
+          this.rawEvents[i].addedEventId = this.eventsInUserList.find((event) => event.event_id === this.rawEvents[i].id).id;
+        }
       }
       this.days.forEach((day) => {
         this.formattedEvents[day] = {};
@@ -127,7 +138,38 @@ export default {
     },
     getImgUrl(event) {
       const images = require.context('../assets', false, /\.png$/);
-      return images(`./${event.branding.emptyStarImgName}.png`);
+      const imageType = (event.addedToUserList ? 'filledStarImgName' : 'emptyStarImgName');
+      return images(`./${event.branding[imageType]}.png`);
+    },
+    async toggleAddingEventToList(selectedDay, timeWindow, scheduleColumn) {
+      const targetEvent = this.formattedEvents[selectedDay][timeWindow].find((formattedEvent) => formattedEvent.column === scheduleColumn);
+      targetEvent.addedToUserList = !targetEvent.addedToUserList;
+      this.$forceUpdate();
+
+      const env = this.getCurrentEnvironment();
+
+      if (!this.eventsInUserList.map((event) => event.event_id).includes(targetEvent.id)) {
+        const addEventToUserListParams = {
+          user_id: this.getUserId(),
+          event_id: targetEvent.id,
+        };
+        const addedId = await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'add_event_to_user_list', addEventToUserListParams);
+        targetEvent.addedEventId = addedId.id;
+        this.eventsInUserList.push({ event_id: targetEvent.id, id: addedId.id });
+      } else {
+        const removeEventParams = {
+          id: targetEvent.addedEventId,
+        };
+        await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'delete_event_from_user_list', removeEventParams);
+      }
+    },
+    async getEventsFromUserList() {
+      const env = this.getCurrentEnvironment();
+      const userParams = {
+        user_id: this.getUserId(),
+      };
+      const rawEvents = await this.performGetRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'get_events_from_user_list', userParams);
+      this.eventsInUserList = rawEvents.Items;
     },
   },
 };
