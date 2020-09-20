@@ -248,4 +248,15 @@ h2 {
 .activity-completed {
     background: #B377DB;
 }
+
+@media (max-width: 1300px) {
+  .member-list-photo {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .sticker-inner {
+    margin-top: 2.5%;
+  }
+}
 </style>
