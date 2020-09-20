@@ -14,11 +14,11 @@
         <div class="schedule-content">
           <div v-for="scheduleColumn in scheduleColumns" :key="scheduleColumn" class="schedule-column">
               <div v-for="timeWindow in timeWindows" :key="timeWindow" class="timewindow">
-                <div v-if="formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn)" class="schedule-content-item" :class="formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn).branding.class">
+                <div v-if="formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn)" @click="openScheduleModal(selectedDay, timeWindow, scheduleColumn)" class="schedule-content-item" :class="formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn).branding.class">
                   <div class="schedule-content-item-star">
                     <img
                       :src="getImgUrl(formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn))"
-                      @click="toggleAddingEventToList(selectedDay, timeWindow, scheduleColumn)"
+                      @click.stop="toggleAddingEventToList(formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn))"
                       style="width: 19px; height: 18px;"
                     />
                   </div>
@@ -31,21 +31,34 @@
         </div>
       </div>
     </div>
+    <LoadingSpinner v-else />
+    <b-modal id="scheduleEventModal" :title="selectedEvent.event_name" size="md" centered>
+      <p><b>{{ getTimeDescriptionForEvent(selectedEvent) }}</b></p>
+      <p>{{ selectedEvent.description }}</p>
+      <template v-slot:modal-footer>
+          <Button v-if="!selectedEvent.addedToUserList" text="Attend" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
+          <Button v-if="selectedEvent.addedToUserList" text="Remove from List" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
+          <Button text="Back to Page" @click="goBack" size="sm"/>
+      </template>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
-
-const startDate = new Date(Config.shared.START_DATE);
-const endDate = new Date(Config.shared.END_DATE);
+import Button from '../components/Button.vue';
+import LoadingSpinner from '../components/LoadingSpinner.vue';
 
 const eventBrandingTypes = [{ class: 'content-item-type-a', emptyStarImgName: 'star_purple_empty', filledStarImgName: 'star_purple_filled' }, { class: 'content-item-type-b', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }, { class: 'content-item-type-c', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }];
 
 export default {
   name: 'Schedule',
   mixins: [generalMixin],
+  components: {
+    Button,
+    LoadingSpinner,
+  },
   data() {
     return {
       rawEvents: [],
@@ -56,6 +69,9 @@ export default {
       timeWindows: [],
       scheduleColumns: 3,
       dataLoaded: false,
+      selectedEvent: {},
+      startDate: new Date(Config.shared.START_DATE),
+      endDate: new Date(Config.shared.END_DATE),
     };
   },
   async mounted() {
@@ -76,9 +92,31 @@ export default {
     selectTitleItem(day) {
       this.selectedDay = day;
     },
+    goBack() {
+      this.$bvModal.hide('scheduleEventModal');
+    },
+    getTimeDescriptionForEvent(event) {
+      if (event.start_time) {
+        const start = new Date(event.start_time);
+        const end = new Date(event.end_time);
+        return `${this.formatAMPM(start)} - ${this.formatAMPM(end)} ${this.getDayOfTheWeek(start)}`;
+      }
+      return '';
+    },
+    openScheduleModal(selectedDay, timeWindow, scheduleColumn) {
+      this.selectedEvent = this.formattedEvents[selectedDay][timeWindow].find((event) => event.column === scheduleColumn);
+      this.selectedEvent.selectedDay = selectedDay;
+      this.selectedEvent.timeWindow = timeWindow;
+      this.selectedEvent.scheduleColumn = scheduleColumn;
+      this.$bvModal.show('scheduleEventModal');
+    },
+    addSelectedEventToList() {
+      this.$bvModal.hide('scheduleEventModal');
+      this.toggleAddingEventToList(this.formattedEvents[this.selectedEvent.selectedDay][this.selectedEvent.timeWindow].find((event) => event.column === this.selectedEvent.scheduleColumn));
+    },
     populateDays() {
-      let currentDate = new Date(startDate.setDate(startDate.getDate() - 1));
-      while ((currentDate - endDate) !== 0) {
+      let currentDate = new Date(this.startDate.setDate(this.startDate.getDate() - 1));
+      while ((currentDate - this.endDate) !== 0) {
         this.days.push(currentDate);
         currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
       }
@@ -141,8 +179,8 @@ export default {
       const imageType = (event.addedToUserList ? 'filledStarImgName' : 'emptyStarImgName');
       return images(`./${event.branding[imageType]}.png`);
     },
-    async toggleAddingEventToList(selectedDay, timeWindow, scheduleColumn) {
-      const targetEvent = this.formattedEvents[selectedDay][timeWindow].find((formattedEvent) => formattedEvent.column === scheduleColumn);
+    async toggleAddingEventToList(targetEvent) {
+      // eslint-disable-next-line no-param-reassign
       targetEvent.addedToUserList = !targetEvent.addedToUserList;
       this.$forceUpdate();
 
@@ -154,6 +192,7 @@ export default {
           event_id: targetEvent.id,
         };
         const addedId = await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'add_event_to_user_list', addEventToUserListParams);
+        // eslint-disable-next-line no-param-reassign
         targetEvent.addedEventId = addedId.id;
         this.eventsInUserList.push({ event_id: targetEvent.id, id: addedId.id });
       } else {
@@ -214,7 +253,6 @@ export default {
   width: 70vw;
   display: flex;
   justify-content: flex-start;
-  border: 1px solid green;
 }
 
 .schedule-time {
@@ -236,10 +274,6 @@ export default {
 }
 
 @media (max-width: 2000px) {
-  .timewindow {
-    height: 5vh;
-  }
-
   .schedule-body {
     width: 90vw;
   }
@@ -264,6 +298,21 @@ export default {
   justify-content: center;
   align-items: center;
   width: fit-content;
+  cursor: pointer;
+}
+
+@media (max-width: 1500px) {
+  .schedule-column {
+    max-width: 30%;
+  }
+  
+  .timewindow {
+    height: 7.5vh;
+  }
+
+  .schedule-content-item {
+    font-size: 12px !important;
+  }
 }
 
 .content-item-type-a {
@@ -294,5 +343,11 @@ export default {
   padding-left: 1rem;
   margin-right: 2rem;
   max-width: 80%;
+}
+
+.modal-content {
+  background: #DED2E6 !important;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 4px !important;
 }
 </style>
