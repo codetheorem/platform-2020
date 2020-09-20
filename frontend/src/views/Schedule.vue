@@ -9,6 +9,12 @@
         <div class="schedule-time">
           <div v-for="timeWindow in timeWindows" :key="timeWindow" class="timewindow">
             {{ timeWindow }}
+            <div v-if="timeWindow === getScheduleTimeLineWindow && 6 === selectedDay.getDay()" class="schedule-time-line">
+              <div class="schedule-time-line-header">
+              </div>
+              <div class="schedule-time-line-inner">
+              </div>
+            </div>
           </div>
         </div>
         <div class="schedule-content">
@@ -211,6 +217,16 @@ export default {
       this.eventsInUserList = rawEvents.Items;
     },
   },
+  computed: {
+    getScheduleTimeLineWindow() {
+      const d = new Date();
+      const hours = d.getHours();
+      if (hours > 12) {
+        return `${hours - 12}PM`;
+      }
+      return `${hours}AM`;
+    },
+  },
 };
 </script>
 
@@ -349,5 +365,28 @@ export default {
   background: #DED2E6 !important;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
   border-radius: 4px !important;
+}
+
+.schedule-time-line {
+  width: 60vw;
+  position: absolute;
+  height: 2px;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.schedule-time-line-inner {
+  width: 100%;
+  border: 1px solid red;
+}
+
+.schedule-time-line-header {
+  border-radius: 50%;
+  padding: 8px;
+  background-color: red;
+  border: 1px solid red;
 }
 </style>
