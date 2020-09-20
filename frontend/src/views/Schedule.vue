@@ -14,12 +14,12 @@
         <div class="schedule-content">
           <div v-for="scheduleColumn in scheduleColumns" :key="scheduleColumn" class="schedule-column">
               <div v-for="timeWindow in timeWindows" :key="timeWindow" class="timewindow">
-                <div v-if="formattedEvents[selectedDay][timeWindow].length >= scheduleColumn" class="schedule-content-item" :class="formattedEvents[selectedDay][timeWindow][scheduleColumn - 1].branding.class">
+                <div v-if="formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn)" class="schedule-content-item" :class="formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn).branding.class">
                   <div class="schedule-content-item-star">
-                    <img :src="getImgUrl(formattedEvents[selectedDay][timeWindow][scheduleColumn - 1])" />
+                    <img :src="getImgUrl(formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn))" />
                   </div>
                   <div class="schedule-content-item-title">
-                    {{ formattedEvents[selectedDay][timeWindow][scheduleColumn - 1].event_name }}
+                    {{ formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn).event_name }}
                   </div>
                 </div>
               </div>
@@ -72,12 +72,10 @@ export default {
     },
     populateDays() {
       let currentDate = new Date(startDate.setDate(startDate.getDate() - 1));
-      console.log(currentDate)
       while ((currentDate - endDate) !== 0) {
         this.days.push(currentDate);
         currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
       }
-      console.log(this.days)
       // eslint-disable-next-line prefer-destructuring
       this.selectedDay = this.days[0];
     },
@@ -110,10 +108,22 @@ export default {
       return parseInt(timeWindow.replace(/[^0-9]/g, ''), 10) + 12;
     },
     getEventsForTimeWindow(timeWindow, day) {
-      return this.rawEvents.filter((rawEvent) => {
+      const eventsForWindow = this.rawEvents.filter((rawEvent) => {
         const rawEventStart = (new Date(rawEvent.start_time));
         return rawEventStart.getHours() === this.convertTimeWindowTo24HourFormat(timeWindow) && rawEventStart.getDate() === day.getDate();
       });
+
+      const previousColumns = [];
+      eventsForWindow.forEach((event) => {
+        let randomColumn = Math.floor(Math.random() * this.scheduleColumns) + 1;
+        while (previousColumns.includes(randomColumn)) {
+          randomColumn = Math.floor(Math.random() * this.scheduleColumns) + 1;
+        }
+        // eslint-disable-next-line no-param-reassign
+        event.column = randomColumn;
+      });
+
+      return eventsForWindow;
     },
     getImgUrl(event) {
       const images = require.context('../assets', false, /\.png$/);
@@ -179,9 +189,18 @@ export default {
 }
 
 .timewindow {
-  /* border: 1px solid blue; */
   height: 5vh;
   width: 100%;
+}
+
+@media (max-width: 2000px) {
+  .timewindow {
+    height: 5vh;
+  }
+
+  .schedule-body {
+    width: 90vw;
+  }
 }
 
 .schedule-column {
@@ -232,5 +251,6 @@ export default {
   text-align: start;
   padding-left: 1rem;
   margin-right: 2rem;
+  max-width: 80%;
 }
 </style>
