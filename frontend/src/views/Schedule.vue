@@ -227,7 +227,7 @@ export default {
   box-sizing: border-box;
   border-radius: 4px 0px 0px 4px;
   padding: 10px;
-  font-family: DINPro;
+  font-family: DIN Pro;
   font-style: normal;
   font-weight: 300;
   font-size: 24px;
