@@ -42,9 +42,9 @@
       <p><b>{{ getTimeDescriptionForEvent(selectedEvent) }}</b></p>
       <p>{{ selectedEvent.description }}</p>
       <template v-slot:modal-footer>
-          <Button v-if="!selectedEvent.addedToUserList" text="Attend" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
+          <Button v-if="!selectedEvent.addedToUserList" text="Add to List" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
           <Button v-if="selectedEvent.addedToUserList" text="Remove from List" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
-          <Button text="Back to Page" @click="goBack" size="sm"/>
+          <Button text="Attend" @click="attendEvent()" size="sm"/>
       </template>
     </b-modal>
   </div>
@@ -98,8 +98,8 @@ export default {
     selectTitleItem(day) {
       this.selectedDay = day;
     },
-    goBack() {
-      this.$bvModal.hide('scheduleEventModal');
+    attendEvent() {
+      window.open(this.selectedEvent.link, '_blank');
     },
     getTimeDescriptionForEvent(event) {
       if (event.start_time) {
