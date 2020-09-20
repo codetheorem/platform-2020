@@ -305,7 +305,7 @@ export default {
   .schedule-column {
     max-width: 30%;
   }
-  
+
   .timewindow {
     height: 7.5vh;
   }
