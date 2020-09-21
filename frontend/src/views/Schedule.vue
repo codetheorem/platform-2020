@@ -2,7 +2,15 @@
   <div class="schedule-page">
     <h2 class="page-header">Events</h2>
     <div v-if="dataLoaded" class="schedule-list">
-      <ScheduleCarousel title="MY SAVED EVENTS" style="margin-top: -5rem;" :useSavedEvents="true"/>
+      <ScheduleCarousel
+        title="MY SAVED EVENTS"
+        style="margin-top: -5rem;"
+        :useSavedEvents="true"
+        :selectedEvent="selectedEvent"
+        :dataLoaded="dataLoaded"
+        :rawEvents="rawEvents.filter((event) => event.addedToUserList)"
+        @openScheduleModal="openScheduleModalDirect"
+      />
       <div class="schedule-list-title">
         <span v-for="day in days" :key="getDayOfTheWeek(day)" class="schedule-list-title-item" :class="{'schedule-list-title-item-selected': day === selectedDay}" @click="selectTitleItem(day)">{{ getDayOfTheWeek(day).toUpperCase() }}</span>
       </div>
@@ -39,6 +47,15 @@
       </div>
     </div>
     <LoadingSpinner v-else />
+    <b-modal id="scheduleEventModal" :title="selectedEvent.event_name" size="md" centered>
+      <p><b>{{ getTimeDescriptionForEvent(selectedEvent) }}</b></p>
+      <p>{{ selectedEvent.description }}</p>
+      <template v-slot:modal-footer>
+          <Button v-if="!selectedEvent.addedToUserList" text="Add to List" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
+          <Button v-if="selectedEvent.addedToUserList" text="Remove from List" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
+          <Button text="Attend" @click="attendEvent()" size="sm"/>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -73,6 +90,17 @@ export default {
       startDate: new Date(Config.shared.START_DATE),
       endDate: new Date(Config.shared.END_DATE),
     };
+  },
+  async mounted() {
+    this.prepareTimeWindows();
+    this.populateDays();
+    await this.getEventsFromUserList();
+    const env = this.getCurrentEnvironment();
+    this.rawEvents = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
+    console.log(this.rawEvents);
+    this.processRawEvents();
+    this.dataLoaded = true;
+    await this.activityTracking('SCHEDULE');
   },
 };
 </script>
