@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="home-footer">
-      <ScheduleCarousel />
+      <ScheduleCarousel title="SCHEDULE HIGHLIGHTS"/>
     </div>
   </div>
 </template>

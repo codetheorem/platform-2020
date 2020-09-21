@@ -144,7 +144,7 @@ a.redirect-link{
     background: #EA668E !important;
     border-radius: 4px !important;
 	border-color:rgb(234, 102, 142) !important;
-	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .5) !important;
+	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .25) !important;
 }
 
 button:focus {

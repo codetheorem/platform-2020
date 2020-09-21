@@ -3,6 +3,17 @@ import Config from '../config/general';
 const eventBrandingTypes = [{ class: 'content-item-type-a', emptyStarImgName: 'star_purple_empty', filledStarImgName: 'star_purple_filled' }, { class: 'content-item-type-b', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }, { class: 'content-item-type-c', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }];
 
 export default {
+  async mounted() {
+    this.prepareTimeWindows();
+    this.populateDays();
+    await this.getEventsFromUserList();
+    const env = this.getCurrentEnvironment();
+    this.rawEvents = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
+    console.log(this.rawEvents);
+    this.processRawEvents();
+    this.dataLoaded = true;
+    await this.activityTracking('SCHEDULE');
+  },
   methods: {
     selectTitleItem(day) {
       this.selectedDay = day;
@@ -26,10 +37,14 @@ export default {
       this.selectedEvent.scheduleColumn = scheduleColumn;
       this.$bvModal.show('scheduleEventModal');
     },
+    openScheduleModalDirect(event) {
+      this.selectedEvent = event;
+      this.$bvModal.show('scheduleEventModal');
+    },
     addSelectedEventToList() {
       this.$bvModal.hide('scheduleEventModal');
       // eslint-disable-next-line max-len
-      this.toggleAddingEventToList(this.formattedEvents[this.selectedEvent.selectedDay][this.selectedEvent.timeWindow].find((event) => event.column === this.selectedEvent.scheduleColumn));
+      this.toggleAddingEventToList(this.selectedEvent);
     },
     populateDays() {
       let currentDate = new Date(this.startDate.setDate(this.startDate.getDate() - 1));
