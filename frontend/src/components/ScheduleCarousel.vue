@@ -7,15 +7,16 @@
                     <div class="schedule-carousel-title">
                         {{ title }}
                     </div>
-                    <carousel :perPage="3" :navigationEnabled="true" paginationColor="#C4C4C4" paginationActiveColor="#8B8787" :mouseDrag="false">
+                    <carousel :perPage="3" :navigationEnabled="true" paginationColor="#C4C4C4" paginationActiveColor="#8B8787" :mouseDrag="false" :centerMode="true" :loop="true">
                         <slide class="p-2" v-for="(event, index) in rawEvents" :key="event.id">
                             <b-card :title="event.event_name" :img-src="`https://technica-brand-assets.s3.amazonaws.com/ScheduleCard${(index % 3) + 1}.png`" img-alt="Image" img-top tag="article">
-                            <b-card-text>
-                                {{ getTimeDescriptionForEvent(event) }}
-                            </b-card-text>
-                            <b-button href="#" variant="secondary" @click="openSchedModal(event)">More info</b-button>
+                                <b-card-text>
+                                    {{ getTimeDescriptionForEvent(event) }}
+                                </b-card-text>
+                                <b-button href="#" variant="secondary" @click="openSchedModal(event)">More info</b-button>
                             </b-card>
                         </slide>
+                        <p v-if="rawEvents.length === 0" style="margin-top: 1rem;">Add an event to your list by clicking the star icon next to an event card! Once you add an event to your list, you can see your event list here.</p>
                     </carousel>
                 </b-col>
             </b-row>
@@ -89,5 +90,9 @@ export default {
 
 .card-title {
     font-size: 20px;
+}
+
+.VueCarousel-dot-container {
+    margin-top: 0px !important;
 }
 </style>

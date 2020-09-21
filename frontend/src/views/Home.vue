@@ -19,15 +19,32 @@
       </div>
     </div>
     <div class="home-footer">
-      <ScheduleCarousel title="SCHEDULE HIGHLIGHTS"/>
+      <ScheduleCarousel
+        title="SCHEDULE HIGHLIGHTS"
+        :selectedEvent="selectedEvent"
+        :dataLoaded="dataLoaded"
+        :rawEvents="rawEvents.slice(0, 9)"
+        @openScheduleModal="openScheduleModalDirect"
+      />
     </div>
+    <b-modal id="scheduleEventModal" :title="selectedEvent.event_name" size="md" centered>
+      <p><b>{{ getTimeDescriptionForEvent(selectedEvent) }}</b></p>
+      <p>{{ selectedEvent.description }}</p>
+      <template v-slot:modal-footer>
+          <Button v-if="!selectedEvent.addedToUserList" text="Add to List" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
+          <Button v-if="selectedEvent.addedToUserList" text="Remove from List" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
+          <Button text="Attend" @click="attendEvent()" size="sm"/>
+      </template>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import Banner from '@/components/Banner.vue';
+import Button from '../components/Button.vue';
 import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 import generalMixin from '../mixins/general';
+import scheduleMixin from '../mixins/schedule';
 import Config from '../config/general';
 
 export default {
@@ -35,17 +52,40 @@ export default {
   components: {
     Banner,
     ScheduleCarousel,
+    Button,
   },
-  mixins: [generalMixin],
-  async mounted() {
-    await this.activityTracking('HOME');
-  },
+  mixins: [generalMixin, scheduleMixin],
   methods: {
     initiateOnboardingWalkthrough() {
       const env = this.getCurrentEnvironment();
       // eslint-disable-next-line no-undef
       Intercom('startTour', Config[env].PLATFORM_WALKTHROUGH_ID);
     },
+  },
+  data() {
+    return {
+      rawEvents: [],
+      formattedEvents: {},
+      eventsInUserList: [],
+      selectedDay: null,
+      days: [],
+      timeWindows: [],
+      scheduleColumns: 3,
+      dataLoaded: false,
+      selectedEvent: {},
+      startDate: new Date(Config.shared.START_DATE),
+      endDate: new Date(Config.shared.END_DATE),
+    };
+  },
+  async mounted() {
+    this.prepareTimeWindows();
+    this.populateDays();
+    await this.getEventsFromUserList();
+    const env = this.getCurrentEnvironment();
+    this.rawEvents = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
+    this.processRawEvents();
+    this.dataLoaded = true;
+    await this.activityTracking('HOME');
   },
 };
 </script>
