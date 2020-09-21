@@ -52,6 +52,10 @@ export default {
   },
   props: {
     title: String,
+    useSavedEvents: {
+      type: Boolean,
+      default: false,
+    },
   },
   mixins: [generalMixin, scheduleMixin],
   data() {

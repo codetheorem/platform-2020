@@ -2,7 +2,7 @@
   <div class="schedule-page">
     <h2 class="page-header">Events</h2>
     <div v-if="dataLoaded" class="schedule-list">
-      <ScheduleCarousel title="SCHEDULE HIGHLIGHTS" style="margin-top: -5rem;"/>
+      <ScheduleCarousel title="MY SAVED EVENTS" style="margin-top: -5rem;" :useSavedEvents="true"/>
       <div class="schedule-list-title">
         <span v-for="day in days" :key="getDayOfTheWeek(day)" class="schedule-list-title-item" :class="{'schedule-list-title-item-selected': day === selectedDay}" @click="selectTitleItem(day)">{{ getDayOfTheWeek(day).toUpperCase() }}</span>
       </div>
