@@ -16,7 +16,7 @@
                                 <b-button href="#" variant="secondary" @click="openSchedModal(event)">More info</b-button>
                             </b-card>
                         </slide>
-                        <p v-if="rawEvents.length === 0" style="margin-top: 1rem;">Add an event to your list by clicking the star icon next to an event card! Once you add an event to your list, you can see your event list here.</p>
+                        <p v-if="rawEvents.length === 0 && useSavedEvents" style="margin-top: 1rem;">Add an event to your list by clicking the star icon next to an event card! Once you add events to your list, you can see your event list here.</p>
                     </carousel>
                 </b-col>
             </b-row>
