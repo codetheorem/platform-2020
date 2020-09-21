@@ -48,9 +48,17 @@ export default {
 
 .btn-wrapper:hover {
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+  background-color: #a88aa8 !important;
+  border-color: #a88aa8 !important;
 }
 
 .btn-wrapper:active {
+  background-color: #b377db !important;
+  border: 2px solid #b377db !important;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-wrapper:focus {
   background-color: #b377db !important;
   border: 2px solid #b377db !important;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15) !important;
@@ -65,6 +73,7 @@ export default {
 .outline-style:hover {
   color: #b377db;
   border: 2px solid #b377db;
+  background-color: transparent !important;
 }
 
 .outline-style:active {
