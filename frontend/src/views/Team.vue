@@ -60,7 +60,7 @@
         </div>
       </b-container>
       
-      <div v-if="currentTeam && Object.keys(currentTeam['members']).length < 4" class="create-team-container invite-container">
+      <div v-if="currentTeam && Object.keys(currentTeam['members']).length < 4 && invitesToCurrentTeam.length < 3" class="create-team-container invite-container">
         <form @submit.prevent="inviteHacker" class="create-team-form">
           <div class="row">
             <div class="col-8">
@@ -72,9 +72,11 @@
           </div>
         </form>
       </div>
-      <div v-if="currentTeam && Object.keys(currentTeam['members']).length >= 4">
+      <div v-if="currentTeam && Object.keys(currentTeam['members']).length >= 4 || invitesToCurrentTeam.length >= 3">
         <span>
           You have reached the maximum team size and cannot add additional members.
+          <br>
+          <br>
         </span>
       </div>
       <div v-if="currentTeam">
