@@ -2,6 +2,15 @@
   <div class="schedule-page">
     <h2 class="page-header">Events</h2>
     <div v-if="dataLoaded" class="schedule-list">
+      <ScheduleCarousel
+        title="MY SAVED EVENTS"
+        style="margin-top: -5rem;"
+        :useSavedEvents="true"
+        :selectedEvent="selectedEvent"
+        :dataLoaded="dataLoaded"
+        :rawEvents="rawEvents.filter((event) => event.addedToUserList)"
+        @openScheduleModal="openScheduleModalDirect"
+      />
       <div class="schedule-list-title">
         <span v-for="day in days" :key="getDayOfTheWeek(day)" class="schedule-list-title-item" :class="{'schedule-list-title-item-selected': day === selectedDay}" @click="selectTitleItem(day)">{{ getDayOfTheWeek(day).toUpperCase() }}</span>
       </div>
@@ -52,18 +61,20 @@
 
 <script>
 import generalMixin from '../mixins/general';
+import scheduleMixin from '../mixins/schedule';
+
 import Config from '../config/general';
 import Button from '../components/Button.vue';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
-
-const eventBrandingTypes = [{ class: 'content-item-type-a', emptyStarImgName: 'star_purple_empty', filledStarImgName: 'star_purple_filled' }, { class: 'content-item-type-b', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }, { class: 'content-item-type-c', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }];
+import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 
 export default {
   name: 'Schedule',
-  mixins: [generalMixin],
+  mixins: [generalMixin, scheduleMixin],
   components: {
     Button,
     LoadingSpinner,
+    ScheduleCarousel,
   },
   data() {
     return {
@@ -90,142 +101,6 @@ export default {
     this.processRawEvents();
     this.dataLoaded = true;
     await this.activityTracking('SCHEDULE');
-  },
-  methods: {
-    getFormattedTime(rawDateTime) {
-      return (new Date(rawDateTime)).toTimeString();
-    },
-    selectTitleItem(day) {
-      this.selectedDay = day;
-    },
-    attendEvent() {
-      window.open(this.selectedEvent.link, '_blank');
-    },
-    getTimeDescriptionForEvent(event) {
-      if (event.start_time) {
-        const start = new Date(event.start_time);
-        const end = new Date(event.end_time);
-        return `${this.formatAMPM(start)} - ${this.formatAMPM(end)} ${this.getDayOfTheWeek(start)}`;
-      }
-      return '';
-    },
-    openScheduleModal(selectedDay, timeWindow, scheduleColumn) {
-      this.selectedEvent = this.formattedEvents[selectedDay][timeWindow].find((event) => event.column === scheduleColumn);
-      this.selectedEvent.selectedDay = selectedDay;
-      this.selectedEvent.timeWindow = timeWindow;
-      this.selectedEvent.scheduleColumn = scheduleColumn;
-      this.$bvModal.show('scheduleEventModal');
-    },
-    addSelectedEventToList() {
-      this.$bvModal.hide('scheduleEventModal');
-      this.toggleAddingEventToList(this.formattedEvents[this.selectedEvent.selectedDay][this.selectedEvent.timeWindow].find((event) => event.column === this.selectedEvent.scheduleColumn));
-    },
-    populateDays() {
-      let currentDate = new Date(this.startDate.setDate(this.startDate.getDate() - 1));
-      while ((currentDate - this.endDate) !== 0) {
-        this.days.push(currentDate);
-        currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
-      }
-      // eslint-disable-next-line prefer-destructuring
-      this.selectedDay = this.days[0];
-    },
-    prepareTimeWindows() {
-      this.timeWindows.push('12AM');
-      for (let i = 1; i < 12; i += 1) {
-        this.timeWindows.push(`${i}AM`);
-      }
-      this.timeWindows.push('12PM');
-      for (let i = 1; i < 12; i += 1) {
-        this.timeWindows.push(`${i}PM`);
-      }
-    },
-    processRawEvents() {
-      for (let i = 0; i < this.rawEvents.length; i += 1) {
-        this.rawEvents[i].branding = eventBrandingTypes[i % 3];
-        this.rawEvents[i].addedToUserList = false;
-        if (this.eventsInUserList.map((event) => event.event_id).includes(this.rawEvents[i].id)) {
-          this.rawEvents[i].addedToUserList = true;
-          this.rawEvents[i].addedEventId = this.eventsInUserList.find((event) => event.event_id === this.rawEvents[i].id).id;
-        }
-      }
-      this.days.forEach((day) => {
-        this.formattedEvents[day] = {};
-        this.timeWindows.forEach((timeWindow) => {
-          this.formattedEvents[day][timeWindow] = this.getEventsForTimeWindow(timeWindow, day);
-        });
-      });
-      console.log(this.formattedEvents);
-    },
-    convertTimeWindowTo24HourFormat(timeWindow) {
-      if (timeWindow.includes('AM')) {
-        return parseInt(timeWindow.replace(/[^0-9]/g, ''), 10);
-      }
-      return parseInt(timeWindow.replace(/[^0-9]/g, ''), 10) + 12;
-    },
-    getEventsForTimeWindow(timeWindow, day) {
-      const eventsForWindow = this.rawEvents.filter((rawEvent) => {
-        const rawEventStart = (new Date(rawEvent.start_time));
-        return rawEventStart.getHours() === this.convertTimeWindowTo24HourFormat(timeWindow) && rawEventStart.getDate() === day.getDate();
-      });
-
-      const previousColumns = [];
-      eventsForWindow.forEach((event) => {
-        let randomColumn = Math.floor(Math.random() * this.scheduleColumns) + 1;
-        while (previousColumns.includes(randomColumn)) {
-          randomColumn = Math.floor(Math.random() * this.scheduleColumns) + 1;
-        }
-        // eslint-disable-next-line no-param-reassign
-        event.column = randomColumn;
-      });
-
-      return eventsForWindow;
-    },
-    getImgUrl(event) {
-      const images = require.context('../assets', false, /\.png$/);
-      const imageType = (event.addedToUserList ? 'filledStarImgName' : 'emptyStarImgName');
-      return images(`./${event.branding[imageType]}.png`);
-    },
-    async toggleAddingEventToList(targetEvent) {
-      // eslint-disable-next-line no-param-reassign
-      targetEvent.addedToUserList = !targetEvent.addedToUserList;
-      this.$forceUpdate();
-
-      const env = this.getCurrentEnvironment();
-
-      if (!this.eventsInUserList.map((event) => event.event_id).includes(targetEvent.id)) {
-        const addEventToUserListParams = {
-          user_id: this.getUserId(),
-          event_id: targetEvent.id,
-        };
-        const addedId = await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'add_event_to_user_list', addEventToUserListParams);
-        // eslint-disable-next-line no-param-reassign
-        targetEvent.addedEventId = addedId.id;
-        this.eventsInUserList.push({ event_id: targetEvent.id, id: addedId.id });
-      } else {
-        const removeEventParams = {
-          id: targetEvent.addedEventId,
-        };
-        await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'delete_event_from_user_list', removeEventParams);
-      }
-    },
-    async getEventsFromUserList() {
-      const env = this.getCurrentEnvironment();
-      const userParams = {
-        user_id: this.getUserId(),
-      };
-      const rawEvents = await this.performGetRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'get_events_from_user_list', userParams);
-      this.eventsInUserList = rawEvents.Items;
-    },
-  },
-  computed: {
-    getScheduleTimeLineWindow() {
-      const d = new Date();
-      const hours = d.getHours();
-      if (hours > 12) {
-        return `${hours - 12}PM`;
-      }
-      return `${hours}AM`;
-    },
   },
 };
 </script>
