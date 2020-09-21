@@ -1,8 +1,9 @@
 <template>
-    <div :class="{'item-clicked': checked}">
-        <input v-model="checked" type="checkbox" aria-label="Checkbox for following text input" class="list-checkbox" @change="clicked($event)">
-        <slot name="text" ></slot>
-    </div>
+    <label class="container">
+      <input v-model="checked" type="checkbox" aria-label="Checkbox for following text input" class="list-checkbox" @change="clicked($event)">
+      <span class="checkmark"></span>
+      <slot name="text" ></slot>
+    </label>
 </template>
 
 <script>
@@ -49,51 +50,61 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .list-checkbox {
-    margin-right: 1rem;
-    vertical-align: middle;
-  }
 
-  input[type='checkbox'] {
-    float: left;
-    position: relative;
-    cursor: pointer;
-    height: 17px;
-    width: 17px;
-    font-size: 20px !important;
-    top: 5px;
-  }
+  /* Customize the label (the container) */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 50px;
+  cursor: pointer;
+  font-size: 20px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
-  input[type='checkbox']:after {
-    content: "";
-    vertical-align: middle;
-    text-align: center;
-    position: absolute;
-    cursor: pointer;
-    height: 17px;
-    width: 17px;
-    left: 0;
-    top: 0;
-    font-size: 15px;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 15px;
-    background: #ffffff;
-    border: 1px solid #8B8787;
-  }
+}
 
-  input[type='checkbox']:checked:after {
-    background: #FF5091;
-    border: 1px solid #FF5091 !important;
-    content: '\2714';
-    color: #fff;
-  }
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
 
-  .item-clicked > label{
-    color: #979797 !important;
-  }
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #ccc;
+}
 
-  .item-clicked > label > a {
-    color: rgba(234, 102, 142, .75) !important;
-  }
+/* When the checkbox is checked, add a background */
+.container input:checked ~ .checkmark {
+  background-color: #FF5091;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  position: absolute;
+  display: none;
+  content: '\2714';
+  color: #fff;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 5px;
+  top: -3px;
+}
 </style>

@@ -65,7 +65,9 @@ export default {
         const getParams = {
           email: this.userEmail,
         };
+        console.log(getParams);
         const user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'find_user_by_email', getParams);
+        console.log(user);
 
         if (user[0]) {
           const postParams = {
@@ -105,7 +107,8 @@ export default {
 
 <style scoped>
   .page-container {
-    background: conic-gradient(from 212.03deg at 50% 33.82%,rgb(255,107,152, .6) -123.4deg, rgb(182,161,196, .6) 11.75deg, rgb(35,216,216, .6) 79.77deg, rgb(255,107,152, .6) 236.6deg, rgb(182,161,196, .6) 371.75deg);
+    /* background: conic-gradient(from 212.03deg at 50% 33.82%,rgb(255,107,152, .6) -123.4deg, rgb(182,161,196, .6) 11.75deg, rgb(35,216,216, .6) 79.77deg, rgb(255,107,152, .6) 236.6deg, rgb(182,161,196, .6) 371.75deg); */
+    background: linear-gradient(0.4turn,rgb(255,107,152, .6),rgb(182,161,196, .6), rgb(35,216,216, .6));
     backdrop-filter: blur(40px);
     width: 100vw;
     height: 100vh;
