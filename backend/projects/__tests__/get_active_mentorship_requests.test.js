@@ -15,7 +15,7 @@ const request = {
     user_id: 'andrew',
     title: 'I need help with Java!',
     description: "Java is a terrible language and I don't understand it, please help!",
-    category: 'backend',
+    topic: 'backend',
   }),
 };
 
@@ -35,6 +35,7 @@ describe('get_active_mentorship_requests', () => {
   it('uploads a mentorship request, then checks if its correct', async () => await adder.run(request).then(async (response) => {
     const res = JSON.parse(response.body);
     delete res.id;
+    delete res.timestamp;
     expect(response).toBeDefined();
     expect(response).toHaveProperty('statusCode', 200);
     expect(JSON.parse(request.body)).toMatchObject(res);

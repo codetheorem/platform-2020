@@ -11,25 +11,25 @@ const request = {
   body: JSON.stringify({
     title: 'I need help with Java!',
     description: "Java is a terrible language and I don't understand it, please help!",
-    category: 'backend',
+    topic: 'backend',
   }),
 };
 
 const no_title = {
   body: JSON.stringify({
     description: "Java is a terrible language and I don't understand it, please help!",
-    category: 'backend',
+    topic: 'backend',
   }),
 };
 
 const no_description = {
   body: JSON.stringify({
     title: 'I need help with Java!',
-    category: 'backend',
+    topic: 'backend',
   }),
 };
 
-const no_category = {
+const no_topic = {
   body: JSON.stringify({
     title: 'I need help with Java!',
     description: "Java is a terrible language and I don't understand it, please help!",
@@ -42,10 +42,13 @@ describe('create_mentorship_request', () => {
   });
 
   it('uploads a mentorship request, then checks if its correct', async () => await adder.run(request).then(async (response) => {
-    const res = JSON.parse(response.body);
-    delete res.id;
+    // console.log(response, response.body);
+    
     expect(response).toBeDefined();
     expect(response).toHaveProperty('statusCode', 200);
+    const res = JSON.parse(response.body);
+    delete res.id;
+    delete res.timestamp;
     expect(JSON.parse(request.body)).toMatchObject(res);
   }));
 
@@ -59,7 +62,7 @@ describe('create_mentorship_request', () => {
     expect(response).toHaveProperty('statusCode', 500);
   }));
 
-  it('Correctly rejects a response without a category', () => adder.run(no_category).then(async (response) => {
+  it('Correctly rejects a response without a topic', () => adder.run(no_topic).then(async (response) => {
     expect(response).toBeDefined();
     expect(response).toHaveProperty('statusCode', 500);
   }));

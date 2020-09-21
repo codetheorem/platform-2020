@@ -14,7 +14,7 @@ const create_mentorship = {
   body: JSON.stringify({
     title: 'melon lord',
     description: 'powerrr',
-    category: 'backend',
+    topic: 'backend',
   }),
 };
 

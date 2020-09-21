@@ -14,7 +14,7 @@ const add_request = {
   body: JSON.stringify({
     title: 'Ayuda me',
     description: 'Que es programacion',
-    category: 'frontend',
+    topic: 'frontend',
     user_id: 'its meee',
   }),
 };
