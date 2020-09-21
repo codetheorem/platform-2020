@@ -9,7 +9,7 @@
                     </div>
                     <carousel :perPage="3" :navigationEnabled="true" paginationColor="#C4C4C4" paginationActiveColor="#8B8787" :mouseDrag="false">
                         <slide class="p-2" v-for="slide in 10" :key="slide">
-                            <b-card title="Participant Check-in" img-src="https://technica-brand-assets.s3.amazonaws.com/ScheduleCard1.png" img-alt="Image" img-top tag="article">
+                            <b-card title="Participant Check-in" :img-src="`https://technica-brand-assets.s3.amazonaws.com/ScheduleCard${(slide % 3) + 1}.png`" img-alt="Image" img-top tag="article">
                             <b-card-text>
                                 10:30 pm - 11:30 pm
                             </b-card-text>
@@ -28,15 +28,15 @@
 </template>
 
 <script>
-import VueCarousel from 'vue-carousel';
+import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   name: 'ScheduleCarousel',
   props: {
   },
   components: {
-    carousel: VueCarousel.Carousel,
-    slide: VueCarousel.Slide,
+    'carousel': Carousel,
+    'slide': Slide,
   },
   data() {
     return {
