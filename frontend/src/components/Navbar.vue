@@ -1,6 +1,5 @@
 <template>
-  <div class="sticky-top">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light navigation-box"">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navigation-box sticky-top">
       <div class="logo-nav">
         <router-link to="/">
           <a class="navbar-brand" href="#">
@@ -35,7 +34,6 @@
         </div>
       </span>
     </nav>
-  </div>
 </template>
 
 <script>

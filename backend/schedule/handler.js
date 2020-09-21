@@ -487,22 +487,11 @@ module.exports.get_events_from_user_list = withSentry(async (event) => {
     },
   };
 
-  // Call DynamoDB to scan through *all* items in the table
   const result = await ddb.scan(params).promise();
-
-  // Instead of just returning the ddb response, let's clean things up
-  const response = {
-    userId,
-    event_ids: [],
-  };
-
-  result.Items.forEach((k) => {
-    response.event_ids.push(k.event_id);
-  });
 
   return {
     statusCode: 200,
-    body: JSON.stringify(response),
+    body: JSON.stringify(result),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
@@ -527,6 +516,37 @@ module.exports.create_zoom_meeting = withSentry(async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify({ zoom_link: zoomUrl }),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
+
+module.exports.get_user_shortlink_clicks = withSentry(async (event) => {
+  if (!event.queryStringParameters || !event.queryStringParameters.user_id) {
+    return {
+      statusCode: 500,
+      body: 'get_user_shortlink_clicks expects key "user_id"',
+    };
+  }
+
+  const userId = event.queryStringParameters.user_id;
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const params = {
+    TableName: process.env.SHORTLINK_CLICKS_TABLE,
+    FilterExpression: 'user_id = :val',
+    ExpressionAttributeValues: {
+      ':val': userId,
+    },
+  };
+
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,

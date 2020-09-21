@@ -1,97 +1,95 @@
 <template>
   <div class="schedule-page">
     <h2 class="page-header">Events</h2>
-    <div class="schedule-list">
+    <div v-if="dataLoaded" class="schedule-list">
       <div class="schedule-list-title">
-        <span v-for="day in days" :key="day" class="schedule-list-title-item" :class="{'schedule-list-title-item-selected': day === selectedDay}" @click="selectTitleItem(day)">{{ day.toUpperCase() }}</span>
+        <span v-for="day in days" :key="getDayOfTheWeek(day)" class="schedule-list-title-item" :class="{'schedule-list-title-item-selected': day === selectedDay}" @click="selectTitleItem(day)">{{ getDayOfTheWeek(day).toUpperCase() }}</span>
       </div>
       <div id="schedule-body" class="schedule-body">
-        <div class="time-container">
-          <span v-for="time in times" :key="time" class="time-item">
-            <span style="display: inline-block; width: 5px;">{{ time }}</span>
-          </span>
+        <div class="schedule-time">
+          <div v-for="timeWindow in timeWindows" :key="timeWindow" class="timewindow">
+            {{ timeWindow }}
+            <div v-if="timeWindow === getScheduleTimeLineWindow && 6 === selectedDay.getDay()" class="schedule-time-line">
+              <div class="schedule-time-line-header">
+              </div>
+              <div class="schedule-time-line-inner">
+              </div>
+            </div>
+          </div>
         </div>
-        <a href="https://zoom.us/j/75125004086" target="_blank" style="cursor: normal;">
-          <div class="event-container" v-if="selectedDay === 'Saturday'">
-            <div class="event-line">
-              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Midnight Meetup</span>
-              <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-              <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Breakfast</span>
-              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Atlassian</span>
-            </div>
-            <div class="event-line">
-              <span class="event-item event-120" style="margin-left: 40px; margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
-              <span class="event-item event-90" style="margin-left: 230px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Team Snack!</span>
-              <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Lunch</span>
-              <span class="event-item event-120" style="margin-left: 200px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-            </div>
-            <div class="event-line">
-              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-              <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
-              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
-              <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Uber Techni-Chat</span>
-              <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
-            </div>
-            <div class="event-line">
-              <span class="event-item event-90" style="margin-left: 600px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Google</span>
-              <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>LGBTQ Meetup</span>
-            </div>
+        <div class="schedule-content">
+          <div v-for="scheduleColumn in scheduleColumns" :key="scheduleColumn" class="schedule-column">
+              <div v-for="timeWindow in timeWindows" :key="timeWindow" class="timewindow">
+                <div v-if="formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn)" @click="openScheduleModal(selectedDay, timeWindow, scheduleColumn)" class="schedule-content-item" :class="formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn).branding.class">
+                  <div class="schedule-content-item-star">
+                    <img
+                      :src="getImgUrl(formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn))"
+                      @click.stop="toggleAddingEventToList(formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn))"
+                      style="width: 19px; height: 18px;"
+                    />
+                  </div>
+                  <div class="schedule-content-item-title">
+                    {{ formattedEvents[selectedDay][timeWindow].find(event => event.column === scheduleColumn).event_name }}
+                  </div>
+                </div>
+              </div>
           </div>
-          <div class="event-container" v-else>
-            <div class="event-line">
-              <span class="event-item event-120" style="margin-left: 40px; margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
-              <span class="event-item event-90" style="margin-left: 230px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Team Snack!</span>
-              <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Lunch</span>
-              <span class="event-item event-120" style="margin-left: 200px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-            </div>
-            <div class="event-line">
-              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-              <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Cup Stacking</span>
-              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Cup Stacking</span>
-              <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Uber Techni-Chat</span>
-            </div>
-            <div class="event-line">
-              <span class="event-item event-90" style="margin-left: 600px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Google</span>
-              <span class="event-item event-60" style="margin-left: 230px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>LGBTQ Meetup</span>
-              <span class="event-item event-120" style="margin-left: 400px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Techni-Chat with Lyft</span>
-            </div>
-            <div class="event-line">
-              <span class="event-item event-90"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Midnight Meetup</span>
-              <span class="event-item event-120" style="margin-left: 40px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Animal Jam Party</span>
-              <span class="event-item event-60" style="margin-left: 430px;"><img src="@/assets/Star_purple_outline.png" style="padding-right: 10px;"/>Breakfast</span>
-              <span class="event-item event-90" style="margin-left: 100px;"><img src="@/assets/Star.png" style="padding-right: 10px;"/>Workshop with Atlassian</span>
-            </div>
-          </div>
-        </a>
+        </div>
       </div>
     </div>
+    <LoadingSpinner v-else />
+    <b-modal id="scheduleEventModal" :title="selectedEvent.event_name" size="md" centered>
+      <p><b>{{ getTimeDescriptionForEvent(selectedEvent) }}</b></p>
+      <p>{{ selectedEvent.description }}</p>
+      <template v-slot:modal-footer>
+          <Button v-if="!selectedEvent.addedToUserList" text="Add to List" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
+          <Button v-if="selectedEvent.addedToUserList" text="Remove from List" @click="addSelectedEventToList()" :outlineStyle="true" size="sm"/>
+          <Button text="Attend" @click="attendEvent()" size="sm"/>
+      </template>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
+import Button from '../components/Button.vue';
+import LoadingSpinner from '../components/LoadingSpinner.vue';
+
+const eventBrandingTypes = [{ class: 'content-item-type-a', emptyStarImgName: 'star_purple_empty', filledStarImgName: 'star_purple_filled' }, { class: 'content-item-type-b', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }, { class: 'content-item-type-c', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }];
 
 export default {
   name: 'Schedule',
   mixins: [generalMixin],
+  components: {
+    Button,
+    LoadingSpinner,
+  },
   data() {
     return {
-      events: [],
-      selectedDay: 'Saturday',
-      days: ['Saturday', 'Sunday'],
-      times: ['12 AM', '1 AM', '2 AM', '3 AM', '4 AM', '5 AM', '6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM', '9 PM', '10 PM', '11 PM'],
+      rawEvents: [],
+      formattedEvents: {},
+      eventsInUserList: [],
+      selectedDay: null,
+      days: [],
+      timeWindows: [],
+      scheduleColumns: 3,
+      dataLoaded: false,
+      selectedEvent: {},
+      startDate: new Date(Config.shared.START_DATE),
+      endDate: new Date(Config.shared.END_DATE),
     };
   },
   async mounted() {
-    console.log(process.env.NODE_ENV);
+    this.prepareTimeWindows();
+    this.populateDays();
+    await this.getEventsFromUserList();
     const env = this.getCurrentEnvironment();
-    this.events = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
-    console.log(this.schedule);
+    this.rawEvents = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
+    console.log(this.rawEvents);
+    this.processRawEvents();
+    this.dataLoaded = true;
+    await this.activityTracking('SCHEDULE');
   },
   methods: {
     getFormattedTime(rawDateTime) {
@@ -99,6 +97,134 @@ export default {
     },
     selectTitleItem(day) {
       this.selectedDay = day;
+    },
+    attendEvent() {
+      window.open(this.selectedEvent.link, '_blank');
+    },
+    getTimeDescriptionForEvent(event) {
+      if (event.start_time) {
+        const start = new Date(event.start_time);
+        const end = new Date(event.end_time);
+        return `${this.formatAMPM(start)} - ${this.formatAMPM(end)} ${this.getDayOfTheWeek(start)}`;
+      }
+      return '';
+    },
+    openScheduleModal(selectedDay, timeWindow, scheduleColumn) {
+      this.selectedEvent = this.formattedEvents[selectedDay][timeWindow].find((event) => event.column === scheduleColumn);
+      this.selectedEvent.selectedDay = selectedDay;
+      this.selectedEvent.timeWindow = timeWindow;
+      this.selectedEvent.scheduleColumn = scheduleColumn;
+      this.$bvModal.show('scheduleEventModal');
+    },
+    addSelectedEventToList() {
+      this.$bvModal.hide('scheduleEventModal');
+      this.toggleAddingEventToList(this.formattedEvents[this.selectedEvent.selectedDay][this.selectedEvent.timeWindow].find((event) => event.column === this.selectedEvent.scheduleColumn));
+    },
+    populateDays() {
+      let currentDate = new Date(this.startDate.setDate(this.startDate.getDate() - 1));
+      while ((currentDate - this.endDate) !== 0) {
+        this.days.push(currentDate);
+        currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
+      }
+      // eslint-disable-next-line prefer-destructuring
+      this.selectedDay = this.days[0];
+    },
+    prepareTimeWindows() {
+      this.timeWindows.push('12AM');
+      for (let i = 1; i < 12; i += 1) {
+        this.timeWindows.push(`${i}AM`);
+      }
+      this.timeWindows.push('12PM');
+      for (let i = 1; i < 12; i += 1) {
+        this.timeWindows.push(`${i}PM`);
+      }
+    },
+    processRawEvents() {
+      for (let i = 0; i < this.rawEvents.length; i += 1) {
+        this.rawEvents[i].branding = eventBrandingTypes[i % 3];
+        this.rawEvents[i].addedToUserList = false;
+        if (this.eventsInUserList.map((event) => event.event_id).includes(this.rawEvents[i].id)) {
+          this.rawEvents[i].addedToUserList = true;
+          this.rawEvents[i].addedEventId = this.eventsInUserList.find((event) => event.event_id === this.rawEvents[i].id).id;
+        }
+      }
+      this.days.forEach((day) => {
+        this.formattedEvents[day] = {};
+        this.timeWindows.forEach((timeWindow) => {
+          this.formattedEvents[day][timeWindow] = this.getEventsForTimeWindow(timeWindow, day);
+        });
+      });
+      console.log(this.formattedEvents);
+    },
+    convertTimeWindowTo24HourFormat(timeWindow) {
+      if (timeWindow.includes('AM')) {
+        return parseInt(timeWindow.replace(/[^0-9]/g, ''), 10);
+      }
+      return parseInt(timeWindow.replace(/[^0-9]/g, ''), 10) + 12;
+    },
+    getEventsForTimeWindow(timeWindow, day) {
+      const eventsForWindow = this.rawEvents.filter((rawEvent) => {
+        const rawEventStart = (new Date(rawEvent.start_time));
+        return rawEventStart.getHours() === this.convertTimeWindowTo24HourFormat(timeWindow) && rawEventStart.getDate() === day.getDate();
+      });
+
+      const previousColumns = [];
+      eventsForWindow.forEach((event) => {
+        let randomColumn = Math.floor(Math.random() * this.scheduleColumns) + 1;
+        while (previousColumns.includes(randomColumn)) {
+          randomColumn = Math.floor(Math.random() * this.scheduleColumns) + 1;
+        }
+        // eslint-disable-next-line no-param-reassign
+        event.column = randomColumn;
+      });
+
+      return eventsForWindow;
+    },
+    getImgUrl(event) {
+      const images = require.context('../assets', false, /\.png$/);
+      const imageType = (event.addedToUserList ? 'filledStarImgName' : 'emptyStarImgName');
+      return images(`./${event.branding[imageType]}.png`);
+    },
+    async toggleAddingEventToList(targetEvent) {
+      // eslint-disable-next-line no-param-reassign
+      targetEvent.addedToUserList = !targetEvent.addedToUserList;
+      this.$forceUpdate();
+
+      const env = this.getCurrentEnvironment();
+
+      if (!this.eventsInUserList.map((event) => event.event_id).includes(targetEvent.id)) {
+        const addEventToUserListParams = {
+          user_id: this.getUserId(),
+          event_id: targetEvent.id,
+        };
+        const addedId = await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'add_event_to_user_list', addEventToUserListParams);
+        // eslint-disable-next-line no-param-reassign
+        targetEvent.addedEventId = addedId.id;
+        this.eventsInUserList.push({ event_id: targetEvent.id, id: addedId.id });
+      } else {
+        const removeEventParams = {
+          id: targetEvent.addedEventId,
+        };
+        await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'delete_event_from_user_list', removeEventParams);
+      }
+    },
+    async getEventsFromUserList() {
+      const env = this.getCurrentEnvironment();
+      const userParams = {
+        user_id: this.getUserId(),
+      };
+      const rawEvents = await this.performGetRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'get_events_from_user_list', userParams);
+      this.eventsInUserList = rawEvents.Items;
+    },
+  },
+  computed: {
+    getScheduleTimeLineWindow() {
+      const d = new Date();
+      const hours = d.getHours();
+      if (hours > 12) {
+        return `${hours - 12}PM`;
+      }
+      return `${hours}AM`;
     },
   },
 };
@@ -112,20 +238,12 @@ export default {
   flex-direction: column;
 }
 
-h2 {
-  color: var(--bright-purple);
-}
-
-.schedule-list {
-
-}
-
 .schedule-list-title-item {
   background: #FFFFFF;
   box-sizing: border-box;
   border-radius: 4px 0px 0px 4px;
   padding: 10px;
-  font-family: DINPro;
+  font-family: DIN Pro;
   font-style: normal;
   font-weight: 300;
   font-size: 24px;
@@ -147,81 +265,128 @@ h2 {
   margin-top: 2rem;
   background: #FFFFFF;
   border-radius: 8px;
-  height: 50vh;
-  width: 80vw;
-  white-space: nowrap;
-  overflow-x: auto;
-  padding: 1rem;
-}
-
-.time-container {
-}
-
-.time-item {
-  /* border: 1px solid blue; */
-  padding-right: 5rem;
   height: fit-content;
-  font-family: Noto Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 22px;
-  color: #A88AA8;
-  padding-left: 1rem;
+  width: 70vw;
+  display: flex;
+  justify-content: flex-start;
 }
 
-.event-container {
-  padding-left: 1rem;
-  cursor: default;
+.schedule-time {
+  display: flex;
+  flex-flow: column;
+  width: 10%;
 }
 
-.event-item {
-  background: #A88AA8;
+.schedule-content {
+  display: flex;
+  width: 90%;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.timewindow {
+  height: 5vh;
+  width: 100%;
+}
+
+@media (max-width: 2000px) {
+  .schedule-body {
+    width: 90vw;
+  }
+}
+
+.schedule-column {
+  flex-grow: 1;
+  flex-wrap: wrap;
+  margin-right: 1rem;
+}
+
+.schedule-content-item {
+  height: 90%;
   border-radius: 8px;
-  min-width: fit-content;
-  width: 150px;
-  padding: 10px;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
   font-family: Noto Sans;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: #FFFFFF;
-  margin-right: 10px;
-}
-
-.event-hour {
-
-}
-
-.event-90 {
-  width: 190px;
-}
-
-.event-120 {
-  width: 240px;
-  background: #B377DB;
-}
-
-.event-60 {
-  width: 120px;
-  background: #DED2E5;
-  color: #B377DB;
-}
-
-.event-line {
-  width: 100%;
-  height: fit-content;
   display: flex;
-  flex-flow: row;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  cursor: pointer;
 }
 
-.event-item:hover {
-  box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.15) !important;
-  cursor: pointer;
+@media (max-width: 1500px) {
+  .schedule-column {
+    max-width: 30%;
+  }
+
+  .timewindow {
+    height: 7.5vh;
+  }
+
+  .schedule-content-item {
+    font-size: 12px !important;
+  }
+}
+
+.content-item-type-a {
+  color: #B377DB;
+  background: #DED2E5;
+}
+
+.content-item-type-b {
+  background: #A88AA8;
+  border-radius: 8px;
+  color: #FFFFFF;
+}
+
+.content-item-type-c {
+  background: #B377DB;
+  border-radius: 8px;
+  color: #FFFFFF;
+}
+
+.schedule-content-item-star {
+  width: fit-content;
+  margin-left: .5rem;
+}
+
+.schedule-content-item-title {
+  flex-grow: 1;
+  text-align: start;
+  padding-left: 1rem;
+  margin-right: 2rem;
+  max-width: 80%;
+}
+
+.modal-content {
+  background: #DED2E6 !important;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 4px !important;
+}
+
+.schedule-time-line {
+  width: 60vw;
+  position: absolute;
+  height: 2px;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.schedule-time-line-inner {
+  width: 100%;
+  border: 1px solid red;
+}
+
+.schedule-time-line-header {
+  border-radius: 50%;
+  padding: 8px;
+  background-color: red;
+  border: 1px solid red;
 }
 </style>

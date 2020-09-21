@@ -35,6 +35,9 @@ export default {
     Banner,
   },
   mixins: [generalMixin],
+  async mounted() {
+    await this.activityTracking('HOME');
+  },
   methods: {
     initiateOnboardingWalkthrough() {
       const env = this.getCurrentEnvironment();
