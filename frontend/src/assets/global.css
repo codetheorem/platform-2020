@@ -119,3 +119,30 @@ a.redirect-link{
 .custom-file-label {
     border-color: #EA668E !important;
 }
+
+.btn-primary {
+    background: #EA668E;
+    border-radius: 4px;
+    border-color:#EA668E;
+}
+
+.btn-primary:focus {
+    background: #EA668E !important;
+    border-radius: 4px !important;
+	border-color:rgb(234, 102, 142) !important;
+	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .25) !important;
+}
+
+.btn-primary:active {
+    background: #EA668E !important;
+    border-radius: 4px !important;
+	border-color:rgb(234, 102, 142) !important;
+	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .25) !important;
+}
+
+.btn-primary:hover {
+    background: #EA668E !important;
+    border-radius: 4px !important;
+	border-color:rgb(234, 102, 142) !important;
+	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .5) !important;
+}

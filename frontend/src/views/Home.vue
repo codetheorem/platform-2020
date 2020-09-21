@@ -19,13 +19,14 @@
       </div>
     </div>
     <div class="home-footer">
-
+      <ScheduleCarousel />
     </div>
   </div>
 </template>
 
 <script>
 import Banner from '@/components/Banner.vue';
+import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
@@ -33,6 +34,7 @@ export default {
   name: 'Home',
   components: {
     Banner,
+    ScheduleCarousel,
   },
   mixins: [generalMixin],
   async mounted() {
