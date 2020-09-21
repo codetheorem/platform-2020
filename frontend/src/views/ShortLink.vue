@@ -1,20 +1,19 @@
 <template>
   <div class="about">
-
+    <LoadingSpinner />
   </div>
 </template>
 
 <script>
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 export default {
   name: 'Shortlink',
   mixins: [generalMixin],
-  data() {
-    return {
-
-    };
+  components: {
+    LoadingSpinner,
   },
   async mounted() {
     const env = this.getCurrentEnvironment();
