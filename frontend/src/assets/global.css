@@ -146,3 +146,7 @@ a.redirect-link{
 	border-color:rgb(234, 102, 142) !important;
 	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .5) !important;
 }
+
+button:focus {
+	outline:0 !important;;
+}

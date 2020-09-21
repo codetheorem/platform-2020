@@ -32,11 +32,9 @@ import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   name: 'ScheduleCarousel',
-  props: {
-  },
   components: {
-    'carousel': Carousel,
-    'slide': Slide,
+    carousel: Carousel,
+    slide: Slide,
   },
   data() {
     return {
@@ -46,11 +44,11 @@ export default {
   },
   methods: {
     onSlideStart() {
-        this.sliding = true;
+      this.sliding = true;
     },
     onSlideEnd() {
-        this.sliding = false;
-    }
+      this.sliding = false;
+    },
   },
 };
 </script>
