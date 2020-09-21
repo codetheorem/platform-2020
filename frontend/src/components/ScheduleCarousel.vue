@@ -16,7 +16,7 @@
                             <b-card-text>
                                 Sunday
                             </b-card-text>
-                            <b-button href="#" variant="primary">More info</b-button>
+                            <b-button href="#" variant="secondary">More info</b-button>
                             </b-card>
                         </slide>
                     </carousel>
