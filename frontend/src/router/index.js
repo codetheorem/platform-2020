@@ -133,6 +133,12 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/faq',
+    name: 'FAQ',
+    component: () => import('../views/FAQ.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/events',
     name: 'Events',
     displayInNavBar: true,
@@ -209,6 +215,10 @@ const routes = [
       {
         path: '/resources',
         name: 'Helpful Resources',
+      },
+      {
+        path: '/faq',
+        name: 'FAQ',
       },
     ],
   },
