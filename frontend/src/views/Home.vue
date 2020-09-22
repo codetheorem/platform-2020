@@ -161,22 +161,12 @@ h2 {
 }
 
 .cloud-image {
-  /* max-width: 75vw;
-  max-height: 55vh; */
-  min-width: 100vw;
-  position: fixed;
-  bottom: 0;
-}
-
-/* @media (max-width: 1500px) {
-  .cloud-image {
-    max-width: 50vw;
-  }
+  max-height: 55vh;
 }
 
 @media (max-width: 800px) {
   .cloud-image {
-    max-width: 40vw;
+    max-height: 40vw;
   }
 }
 
@@ -184,6 +174,6 @@ h2 {
   .cloud-image {
     max-height: 35vh;
   }
-} */
+}
 
 </style>
