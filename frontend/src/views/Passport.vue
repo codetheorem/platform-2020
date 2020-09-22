@@ -47,7 +47,6 @@
 </template>
 
 <script>
-import Button from '@/components/Button.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
@@ -55,7 +54,6 @@ import Config from '../config/general';
 export default {
   name: 'Passport',
   components: {
-    Button,
     LoadingSpinner,
   },
   mixins: [generalMixin],
