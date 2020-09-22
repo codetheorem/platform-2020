@@ -89,9 +89,11 @@ export default {
       selectedEvent: {},
       startDate: new Date(Config.shared.START_DATE),
       endDate: new Date(Config.shared.END_DATE),
+      targetEventId: null,
     };
   },
   async mounted() {
+    this.targetEventId = this.$route.query.event;
     this.prepareTimeWindows();
     this.populateDays();
     await this.getEventsFromUserList();
@@ -100,6 +102,9 @@ export default {
     console.log(this.rawEvents);
     this.processRawEvents();
     this.dataLoaded = true;
+    if (this.targetEventId && this.rawEvents.find(((event) => event.id === this.targetEventId))) {
+      this.openScheduleModalDirect(this.rawEvents.find(((event) => event.id === this.targetEventId)));
+    }
     await this.activityTracking('SCHEDULE');
   },
 };
