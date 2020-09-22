@@ -23,6 +23,15 @@ export default {
     SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
     ADMIN_BASE_ENDPOINT: 'https://pdrb4smpwd.execute-api.us-east-1.amazonaws.com',
+    eventIds: {
+      minecraft1: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      minecraft2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      minecraft3: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      Skribbl1: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      Skribbl2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      Trivia1: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      Trivia2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+    },
   },
   testing: {
     SCHEDULE_BASE_ENDPOINT: 'https://dxz39cp5d0.execute-api.us-east-1.amazonaws.com',
@@ -38,6 +47,15 @@ export default {
     SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
     ADMIN_BASE_ENDPOINT: 'https://pdrb4smpwd.execute-api.us-east-1.amazonaws.com',
+    eventIds: {
+      minecraft1: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      minecraft2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      minecraft3: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      Skribbl1: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      Skribbl2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      Trivia1: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      Trivia2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+    },
   },
   stage: {
     SPONSORS_INFO_ENDPOINT: 'https://jxeehdxaq6.execute-api.us-east-1.amazonaws.com',
@@ -53,6 +71,15 @@ export default {
     SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
     ADMIN_BASE_ENDPOINT: 'https://riskeip135.execute-api.us-east-1.amazonaws.com',
+    eventIds: {
+      minecraft1: '05af804a-8f7b-4ac9-985d-db02b1e8a667',
+      minecraft2: '05af804a-8f7b-4ac9-985d-db02b1e8a667',
+      minecraft3: '05af804a-8f7b-4ac9-985d-db02b1e8a667',
+      Skribbl1: '8e73cbfd-2320-43db-ae36-55c3bc68edbc',
+      Skribbl2: '8e73cbfd-2320-43db-ae36-55c3bc68edbc',
+      Trivia1: '3e4f0ff2-7a71-437b-a634-a0c335d59bcd',
+      Trivia2: '3e4f0ff2-7a71-437b-a634-a0c335d59bcd',
+    },
   },
   prod: {
     SPONSORS_INFO_ENDPOINT: 'https://phqk5kktqi.execute-api.us-east-1.amazonaws.com',
@@ -68,5 +95,14 @@ export default {
     SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
     ADMIN_BASE_ENDPOINT: 'https://68186188hl.execute-api.us-east-1.amazonaws.com',
+  },
+  eventIds: {
+    minecraft1: '3e4aacf7-0db4-46a5-81cd-208a4e48107c',
+    minecraft2: 'cc81c212-8d67-4ea2-b994-43bd89198484',
+    minecraft3: '82292f70-47bc-417f-9424-f8138f370230',
+    Skribbl1: 'a26d29b4-eaf6-4a3d-9266-89d67146582a',
+    Skribbl2: '7d4bdf2d-5ac4-4823-817d-a441b532a3b0',
+    Trivia1: '510a2ff8-0aee-4e7d-a956-0200f6c74672',
+    Trivia2: 'c9abbbe0-7e09-43ca-841c-a35b70215768',
   },
 };
