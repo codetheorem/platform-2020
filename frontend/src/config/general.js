@@ -95,14 +95,14 @@ export default {
     SLACK_WORKSPACE_LINK: 'https://slack.com',
     PLATFORM_WALKTHROUGH_ID: '146643',
     ADMIN_BASE_ENDPOINT: 'https://68186188hl.execute-api.us-east-1.amazonaws.com',
-  },
-  eventIds: {
-    minecraft1: '3e4aacf7-0db4-46a5-81cd-208a4e48107c',
-    minecraft2: 'cc81c212-8d67-4ea2-b994-43bd89198484',
-    minecraft3: '82292f70-47bc-417f-9424-f8138f370230',
-    Skribbl1: 'a26d29b4-eaf6-4a3d-9266-89d67146582a',
-    Skribbl2: '7d4bdf2d-5ac4-4823-817d-a441b532a3b0',
-    Trivia1: '510a2ff8-0aee-4e7d-a956-0200f6c74672',
-    Trivia2: 'c9abbbe0-7e09-43ca-841c-a35b70215768',
+    eventIds: {
+      minecraft1: 'cc81c212-8d67-4ea2-b994-43bd89198484',
+      minecraft2: '3e4aacf7-0db4-46a5-81cd-208a4e48107c',
+      minecraft3: '82292f70-47bc-417f-9424-f8138f370230',
+      Skribbl1: 'a26d29b4-eaf6-4a3d-9266-89d67146582a',
+      Skribbl2: '7d4bdf2d-5ac4-4823-817d-a441b532a3b0',
+      Trivia1: '510a2ff8-0aee-4e7d-a956-0200f6c74672',
+      Trivia2: 'c9abbbe0-7e09-43ca-841c-a35b70215768',
+    },
   },
 };
