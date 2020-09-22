@@ -3,6 +3,9 @@
         <div class="content-container-title">
             <slot name="title"></slot>
         </div>
+        <div class="content-container-progress">
+            <slot name="progress"></slot>
+        </div>
         <div class="content-container-body">
             <slot name="body"></slot>
         </div>
@@ -10,8 +13,13 @@
 </template>
 
 <script>
+import ProgressCircles from '@/components/ProgressCircles.vue'
+
 export default {
   name: 'ContentContainer',
+  components: {
+    ProgressCircles,
+  },
 };
 </script>
 
@@ -32,6 +40,13 @@ export default {
   }
 
   .content-container-title {
-    margin-top: 3rem;
+    margin-top: 1.5rem;
+    /* margin-bottom: 1.5rem; */
   }
+
+  .content-container-progress {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
 </style>
