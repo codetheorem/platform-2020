@@ -36,7 +36,7 @@
               </div>
               <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My Pronouns</label>
-                <input type="text" class="form-control mx-auto" id="pronounInput" placeholder="she/her" v-model="pronouns">
+                <input type="text" class="form-control mx-auto" id="pronounInput" placeholder="e.g. she/her" v-model="pronouns">
               </div>
               <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My Email</label>
@@ -48,7 +48,7 @@
               </div>
               <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My School</label>
-                <input type="text" class="form-control mx-auto" id="schoolInput" placeholder="University of Maryland, College Park" v-model="school">
+                <input type="text" class="form-control mx-auto" id="schoolInput" placeholder="e.g. University of Maryland, College Park" v-model="school">
               </div>
             </div>
           </form>
