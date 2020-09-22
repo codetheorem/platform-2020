@@ -93,14 +93,13 @@ export default {
   beforeCreate() {
     document.body.className = 'home';
   },
+  beforeDestroy() {
+    document.body.className = '';
+  },
 };
 </script>
 
 <style scoped>
-
-body {
-  background: linear-gradient(to bottom, rgba(194,234,241,.35) 0%, rgba(204,195,223,.35) 33%, rgba(216,148,204,.35) 66%, rgba(234,160,178,.35) 100%) !important;
-}
 
 h2 {
   color: var(--bright-purple);
