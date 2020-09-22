@@ -51,6 +51,12 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/games',
+    name: 'Games',
+    component: () => import('../views/Games.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/schedule',
     name: 'Schedule',
     component: () => import('../views/Schedule.vue'),
@@ -190,6 +196,10 @@ const routes = [
       {
         path: '/slack',
         name: 'Slack',
+      },
+      {
+        path: '/games',
+        name: 'Games',
       },
       {
         path: '/water-cooler',
