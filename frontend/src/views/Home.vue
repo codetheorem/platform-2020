@@ -36,6 +36,9 @@
           <Button text="Attend" @click="attendEvent()" size="sm"/>
       </template>
     </b-modal>
+    <div class="cloud-wrapper">
+      <img src="@/assets/home_page_bg.svg" alt="Two technica hackers getting to know each other" class="cloud-image">
+    </div>
   </div>
 </template>
 
@@ -87,10 +90,17 @@ export default {
     this.dataLoaded = true;
     await this.activityTracking('HOME');
   },
+  beforeCreate() {
+    document.body.className = 'home';
+  },
 };
 </script>
 
 <style scoped>
+
+body {
+  background: linear-gradient(to bottom, rgba(194,234,241,.35) 0%, rgba(204,195,223,.35) 33%, rgba(216,148,204,.35) 66%, rgba(234,160,178,.35) 100%) !important;
+}
 
 h2 {
   color: var(--bright-purple);
@@ -145,5 +155,36 @@ h2 {
       margin-bottom: 1rem;
     }
   }
+
+.cloud-wrapper {
+  display:flex;
+  justify-content: center;
+}
+
+.cloud-image {
+  /* max-width: 75vw;
+  max-height: 55vh; */
+  min-width: 100vw;
+  position: fixed;
+  bottom: 0;
+}
+
+/* @media (max-width: 1500px) {
+  .cloud-image {
+    max-width: 50vw;
+  }
+}
+
+@media (max-width: 800px) {
+  .cloud-image {
+    max-width: 40vw;
+  }
+}
+
+@media (max-height: 850px) {
+  .cloud-image {
+    max-height: 35vh;
+  }
+} */
 
 </style>
