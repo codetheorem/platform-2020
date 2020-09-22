@@ -46,11 +46,9 @@ const routes = [
   },
   {
     path: '/resources',
-    name: 'Helpful Resources',
+    name: 'Hacker Resources',
+    component: () => import('../views/HackerResources.vue'),
     displayInNavBar: false,
-    beforeEnter() {
-      window.open(Config.dev.HACKER_RESOURCES_LINK, '_blank');
-    },
   },
   {
     path: '/schedule',
@@ -133,6 +131,12 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/faq',
+    name: 'FAQ',
+    component: () => import('../views/FAQ.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/events',
     name: 'Events',
     displayInNavBar: true,
@@ -208,7 +212,11 @@ const routes = [
       },
       {
         path: '/resources',
-        name: 'Helpful Resources',
+        name: 'Hacker Resources',
+      },
+      {
+        path: '/faq',
+        name: 'FAQ',
       },
     ],
   },

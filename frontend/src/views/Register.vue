@@ -13,9 +13,6 @@
             <li>Sign the Event Waiver</li>
             <li>Create a Hacker Profile (Optional)</li>
             <li>Set Up Your Slack Account</li>
-            <!-- These items will be added as supplemental features -->
-            <!-- <li>Favorite Events (Optional)</li>
-            <li>Sign Forms</li> -->
           </ol>
           <p class="description-text">Ready to get hacking? Click "Get Started" to begin!</p>
           <Button size="lg" text="Get Started" @click="getStarted()"/>
