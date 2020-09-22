@@ -44,8 +44,8 @@
 
 <script>
 import Banner from '@/components/Banner.vue';
-import Button from '../components/Button.vue';
 import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
+import Button from '../components/Button.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
 import Config from '../config/general';
