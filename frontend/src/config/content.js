@@ -1,4 +1,34 @@
 export default {
+  HackerResources: {
+    leftPanelItems: [
+      {
+        title: 'Youtube Channels',
+        description: '<a target="_blank" href="https://thecodingtrain.com/"><b>The Coding Train</b></a><br>A YouTube channel dedicated to beginner-friendly creative coding tutorials and challenges.<br /><a target="_blank" href="https://www.youtube.com/channel/UC-bFgwL_kFKLZA60AiB-CCQ?app=desktop"><b>The Come Up</b></a><br>A Youtube channel made by a software engineer who has tips on how to join the tech industry',
+      },
+      {
+        title: 'Made for Beginners',
+        description: '<a target="_blank" href="https://corallanguage.org/"><b>Coral</b></a><br>An ultra-simple code & flowchart language for learning how to code<br /><a target="_blank" href="https://projects.raspberrypi.org/en/pathways/scratch-machine-learning"><b>Scratch Machine Learning</b></a><br>Introductory machine learning projects',
+      },
+      {
+        title: 'Newsletters',
+        description: '<a target="_blank" href="https://cassidoo.co/newsletter/"><b>Weekly Tech Newsletter</b></a><br>Made by Cassidoo.co with what’s new in web development, an interview question of the week, and jokes<br /><a target="_blank" href="https://techtwox.com/join-our-newsletter/"><b>The Tech Two X Newsletter</b></a><br>Positive, real stories from inspiring women in tech',
+      },
+    ],
+    rightPanelItems: [
+      {
+        title: 'Courses',
+        description: '<a target="_blank" href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/"><b>MIT Open Courseware</b></a><br>Free MIT lectures for CS topics.',
+      },
+      {
+        title: 'Practice',
+        description: '<a target="_blank" href="https://leetcode.com/"><b>Leetcode</b></a><br>Hands-on practice with interview coding questions',
+      },
+      {
+        title: 'Online Collaboration Tools',
+        description: '<a target="_blank" href="https://edu.google.com/products/jamboard/"><b>Jamboard</b></a><br>Interactive whiteboard used for brainstorming',
+      },
+    ],
+  },
   FAQ: {
     leftPanelItems: [
       {

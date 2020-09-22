@@ -1,6 +1,6 @@
 <template>
   <div>
-      <ContentPage title="Frequently Asked Questions" :rightPanelItems="rightPanelItems" :leftPanelItems="leftPanelItems"/>
+      <ContentPage title="Hacker Resources" :rightPanelItems="rightPanelItems" :leftPanelItems="leftPanelItems"/>
   </div>
 </template>
 
@@ -15,10 +15,10 @@ export default {
   },
   computed: {
     rightPanelItems() {
-      return Content.FAQ.rightPanelItems;
+      return Content.HackerResources.rightPanelItems;
     },
     leftPanelItems() {
-      return Content.FAQ.leftPanelItems;
+      return Content.HackerResources.leftPanelItems;
     },
   },
 };
