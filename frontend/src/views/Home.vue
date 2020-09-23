@@ -36,7 +36,7 @@
           <Button text="Attend" @click="attendEvent()" size="sm"/>
       </template>
     </b-modal>
-    <div class="cloud-wrapper">
+    <div class="cloud-wrapper animate__animated animate__fadeInUp delay3">
       <img src="@/assets/home_page_bg.svg" alt="Two technica hackers getting to know each other" class="cloud-image">
     </div>
   </div>
@@ -183,6 +183,10 @@ h2 {
 
 .delay2 {
   animation-delay: 400ms;
+}
+
+.delay3 {
+  animation-delay: 600ms;
 }
 
 .home-footer {
