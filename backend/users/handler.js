@@ -508,6 +508,7 @@ module.exports.send_registration_email = withSentry(async (event) => {
     },
   };
 });
+
 //Update an existing hacker's hacker profile
 module.exports.update_hacker_profile = withSentry(async event =>{
   const ddb = new AWS.DynamoDB.DocumentClient();
@@ -533,10 +534,9 @@ module.exports.update_hacker_profile = withSentry(async event =>{
     ReturnValues:"UPDATED_NEW"
   };
 
-
   //Call DynamoDB to update profile
   const result = await ddb.update(params).promise();
-
+  
   return {
     statusCode: 200,
     body: JSON.stringify(result.Item),
