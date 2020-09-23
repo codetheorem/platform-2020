@@ -163,6 +163,7 @@ h2 {
 
 .cloud-image {
   max-height: 55vh;
+  height: 30vh;
 }
 
 @media (max-width: 800px) {
