@@ -68,7 +68,7 @@ export default {
     },
     openSchedModal(event) {
       this.$emit('openScheduleModal', event);
-    }
+    },
   },
 };
 </script>

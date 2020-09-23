@@ -60,13 +60,13 @@
 </template>
 
 <script>
+import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
 
 import Config from '../config/general';
 import Button from '../components/Button.vue';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
-import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 
 export default {
   name: 'Schedule',

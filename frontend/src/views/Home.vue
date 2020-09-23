@@ -36,13 +36,16 @@
           <Button text="Attend" @click="attendEvent()" size="sm"/>
       </template>
     </b-modal>
+    <div class="cloud-wrapper animate__animated animate__fadeInUp delay3">
+      <img src="@/assets/home_page_bg.svg" alt="Two technica hackers getting to know each other" class="cloud-image">
+    </div>
   </div>
 </template>
 
 <script>
 import Banner from '@/components/Banner.vue';
-import Button from '../components/Button.vue';
 import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
+import Button from '../components/Button.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
 import Config from '../config/general';
@@ -86,6 +89,12 @@ export default {
     this.processRawEvents();
     this.dataLoaded = true;
     await this.activityTracking('HOME');
+  },
+  beforeCreate() {
+    document.body.className = 'home';
+  },
+  beforeDestroy() {
+    document.body.className = '';
   },
 };
 </script>
@@ -147,12 +156,37 @@ h2 {
     }
   }
 
+.cloud-wrapper {
+  display:flex;
+  justify-content: center;
+}
+
+.cloud-image {
+  max-height: 55vh;
+  height: 30vh;
+}
+
+@media (max-width: 800px) {
+  .cloud-image {
+    max-height: 40vw;
+  }
+}
+
+@media (max-height: 850px) {
+  .cloud-image {
+    max-height: 35vh;
+  }
+}
 .delay1 {
   animation-delay: 200ms;
 }
 
 .delay2 {
   animation-delay: 400ms;
+}
+
+.delay3 {
+  animation-delay: 600ms;
 }
 
 .home-footer {
