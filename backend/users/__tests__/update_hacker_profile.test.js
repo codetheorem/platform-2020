@@ -37,7 +37,7 @@ const final = {
 const no_hacker_profile = {
     body: JSON.stringify({
         "user_id": "1234",
-        "hacker_inf0o": {year: "sophmore", email: ":D01@gmail.com"}
+        "missing_hacker_profile": {year: "sophmore", email: ":D01@gmail.com"}
     })
 };
 
@@ -75,7 +75,7 @@ describe('update_hacker_profile', () => {
         });
     });
 
-    it('Correctly rejects a response without an id', () => {
+    it('Correctly rejects a response without proper ids', () => {
         return updater.run(no_hacker_profile).then(async (response) => {
             expect(response).toBeDefined();
             expect(response).toHaveProperty('statusCode', 500);
