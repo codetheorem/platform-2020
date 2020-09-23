@@ -1,4 +1,20 @@
 export default {
+  prizes: {
+    eventPrizes: [
+      {
+        title: 'Expand Your Horizons Hack',
+        description: 'Sample description for Expand Your Horizons Hack',
+      },
+      {
+        title: 'Expand Your Horizons Hack',
+        description: 'Sample description for Expand Your Horizons Hack',
+      },
+      {
+        title: 'Expand Your Horizons Hack',
+        description: 'Sample description for Expand Your Horizons Hack',
+      },
+    ],
+  },
   HackerResources: {
     leftPanelItems: [
       {

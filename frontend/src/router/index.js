@@ -33,10 +33,8 @@ const routes = [
   {
     path: '/prizes',
     name: 'Prizes',
+    component: () => import('../views/Prizes.vue'),
     displayInNavBar: false,
-    beforeEnter() {
-      window.open(Config.dev.PRIZES_LINK, '_blank');
-    },
   },
   {
     path: '/profile',
