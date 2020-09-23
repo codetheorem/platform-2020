@@ -24,24 +24,23 @@ const insert_profile = {
     })
 };
 
-const update = {
+const final = {
+    id: "temp",
+    email: ":D@gmail.com",
+    full_name: "Anna Feng",
+    access_level: "Hack",
+    group: "hacker",
+    user_id: "1234",
+    hacker_profile: {year: "sophomore", email: ":D01@gmail.com"}
+};
+
+const no_hacker_profile = {
     body: JSON.stringify({
-        user_id: "1234",
-        hacker_profile: {year: "sophomore", email: ":D01@gmail.com"}
+        "user_id": "1234",
+        "hacker_inf0o": {year: "sophmore", email: ":D01@gmail.com"}
     })
 };
 
-const final = {
-    user_id: "1234",
-    hacker_profile: {name: "Anna Feng", school: "UMDCP", year: "sophomore", linkedin: "sdfjks", email: ":D01@gmail.com"}
-};
-
-// const no_hacker_profile = {
-//     body: JSON.stringify({
-//         "user_id": "1234",
-//         "hacker_inf0o": {year: "sophmore", email: ":D01@gmail.com"}
-//     })
-// };
 
 describe('update_hacker_profile', () => {
     beforeAll((done) => {
@@ -53,20 +52,22 @@ describe('update_hacker_profile', () => {
         return await adder.run(insert_profile).then(async (response) => {
             expect(response).toBeDefined();
             expect(response).toHaveProperty('statusCode', 200);
-            console.log(response.body)
-           const id = JSON.parse(response.body).id;
-           // update["id"] = id;
-           // final["id"] = id ;
-            let user_id = update["user_id"];
-            
-           // console.log("ID " + id)
+            const id = JSON.parse(response.body).id;
+            final.id = id;
+            let update = {
+                body: JSON.stringify({
+                    user_id: id,
+                    hacker_profile: {year: "sophomore", email: ":D01@gmail.com"}
+                })
+            }
             return await updater.run(update).then(async (res) => {
                 expect(res).toBeDefined();
                 expect(res).toHaveProperty('statusCode', 200);
                 const getRequest = {
                     TableName: process.env.USERS_TABLE,
-                    Key: { id: user_id } ,
+                    Key: {id} ,
                 };
+               
                 const ddb = new AWS.DynamoDB.DocumentClient();
                 const result = await ddb.get(getRequest).promise();
                 expect(result.Item).toMatchObject(final);
@@ -74,11 +75,10 @@ describe('update_hacker_profile', () => {
         });
     });
 
-    // it('Correctly rejects a response without an id', () => {
-
-    //     return updater.run(no_hacker_profile).then(async (response) => {
-    //         expect(response).toBeDefined();
-    //         expect(response).toHaveProperty('statusCode', 500);
-    //     });
-    // });
+    it('Correctly rejects a response without an id', () => {
+        return updater.run(no_hacker_profile).then(async (response) => {
+            expect(response).toBeDefined();
+            expect(response).toHaveProperty('statusCode', 500);
+        });
+    });
 });
