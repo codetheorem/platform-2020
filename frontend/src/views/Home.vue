@@ -1,7 +1,7 @@
 <template>
   <div id="home-page">
-    <h2 class="page-header">Welcome, {{ getUserName() }}</h2>
-    <div class="home-main">
+    <h2 class="page-header animate__animated animate__fadeInUp">Welcome, {{ getUserName() }}</h2>
+    <div class="home-main animate__animated animate__fadeInUp delay1">
       <div class="home-links">
         <h5>HELPFUL LINKS</h5>
         <p>Welcome to the Technica platform! We're incredibly excited to host you and the entire Technica community for an amazing weekend of learning, inclusiveness, and fun.</p>
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="home-footer">
+    <div class="home-footer animate__animated animate__fadeInUp delay2">
       <ScheduleCarousel
         title="SCHEDULE HIGHLIGHTS"
         :selectedEvent="selectedEvent"
@@ -104,6 +104,7 @@ h2 {
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-top: -1rem;
 }
 
 .home-links {
@@ -145,5 +146,17 @@ h2 {
       margin-bottom: 1rem;
     }
   }
+
+.delay1 {
+  animation-delay: 200ms;
+}
+
+.delay2 {
+  animation-delay: 400ms;
+}
+
+.home-footer {
+  margin-top: -4rem;
+}
 
 </style>
