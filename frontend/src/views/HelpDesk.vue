@@ -11,9 +11,9 @@
                   If you have platform related questions, you are in the right place!
                 </p>
                 <p>
-                  For frequently asked questions, check the <a href="https://slack.com" target="_blank">Technica's Slack Workspace</a>!
+                  For frequently asked questions, check the <a href="https://slack.com" target="_blank" class="help-links">Technica's Slack Workspace</a>!
                 <p>
-                  For coding/project questions, check out our <router-link to="/request-mentor"><a href="#">Request a Mentor feature</a></router-link>!
+                  For coding/project questions, check out our <router-link to="/request-mentor"><a href="#" class="help-links">Request a Mentor feature</a></router-link>!
                 </p>
             </div>
           </div>
@@ -73,6 +73,12 @@ export default {
 
 a {
   text-decoration: underline;
+}
+
+.help-links {
+  text-decoration: underline;
+  text-decoration-color: #464343;
+  color: #2D2D2D;
 }
 
 </style>
