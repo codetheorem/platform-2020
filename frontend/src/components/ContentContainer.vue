@@ -13,13 +13,8 @@
 </template>
 
 <script>
-import ProgressCircles from '@/components/ProgressCircles.vue'
-
 export default {
   name: 'ContentContainer',
-  components: {
-    ProgressCircles,
-  },
 };
 </script>
 

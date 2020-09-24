@@ -1,8 +1,8 @@
 <template>
   <div class="progress-wrapper">
     <span v-for="n in full" class="dot done" :key="n"></span>
-    <span v-for="n in half" class="dot doing" :key="n"></span>
-    <span v-for="n in empty" class="dot to-do" :key="n"></span>
+    <span v-for="n in half" class="dot doing" :key="n+full"></span>
+    <span v-for="n in empty" class="dot to-do" :key="n+full+half"></span>
   </div>
 </template>
 

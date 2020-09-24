@@ -59,7 +59,7 @@
           </b-row>
         </div>
       </b-container>
-      
+
       <div v-if="currentTeam && Object.keys(currentTeam['members']).length < 4 && invitesToCurrentTeam.length < 3" class="create-team-container invite-container">
         <form @submit.prevent="inviteHacker" class="create-team-form">
           <div class="row">

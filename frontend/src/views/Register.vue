@@ -125,10 +125,9 @@
 <script>
 import Button from '@/components/Button.vue';
 import ContentContainer from '@/components/ContentContainer.vue';
-import ProgressCircles from '@/components/ProgressCircles.vue'
+import ProgressCircles from '@/components/ProgressCircles.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
-
 
 export default {
   name: 'Register',
