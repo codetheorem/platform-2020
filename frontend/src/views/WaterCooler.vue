@@ -9,7 +9,8 @@
             <div class="card-body">
                 <p>
                   The water cooler is a room where you will be paired with other hackers to meet, network, and interact. Once you join the room,
-                  you will be paired with other hackers by Technica organizers in a breakout room. Click the link below to join and meet other people!
+                  you will be paired with other hackers by Technica organizers in a breakout room for 10 minutes at a time.
+                  Click the link below to join and meet other people!
                 </p>
             </div>
           </div>
