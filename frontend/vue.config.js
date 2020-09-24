@@ -1,6 +1,8 @@
 module.exports = {
   lintOnSave: false,
-
+  devServer: {
+    disableHostCheck: true
+  },
   pluginOptions: {
     s3Deploy: {
       registry: undefined,
