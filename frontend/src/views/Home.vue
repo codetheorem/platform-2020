@@ -111,7 +111,7 @@ h2 {
   padding-left: 10rem;
   padding-right: 10rem;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
   margin-top: -1rem;
 }
