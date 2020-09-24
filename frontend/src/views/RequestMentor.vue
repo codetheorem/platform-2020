@@ -12,9 +12,17 @@
                             <div class="input-wrapper">
                                 <input type="text" class="form-control mx-auto title-large" id="titleInput" placeholder="Title" v-model="requestTitle">
                             </div>
-                            <div class="input-wrapper">
-                                <input type="text" class="form-control mx-auto" id="topicInput" placeholder="Topic (Java, iOS, Arduino, etc.)" v-model="requestTopic">
+
+                            <div class="dropdown">
+                              <a class="nav-link mx-auto dropdown-toggle dropdown-border" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{topicDropdown}}
+                              </a>
+
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#" v-for="option in options" :key="option.value" :value="option.value" @click="topicDropdown = option.value">{{option.value}}</a>
+                              </div>
                             </div>
+
                             <div class="input-wrapper">
                                 <textarea id="exampleFormControlTextarea1" rows="7" class="form-control mx-auto" v-model="requestDescription" placeholder="Describe your issue here (optional)."></textarea>
                             </div>
@@ -68,10 +76,27 @@ export default {
   data() {
     return {
       requestTitle: '',
-      requestTopic: '',
       requestDescription: '',
       requestsLoading: false,
       requests: [],
+      topicDropdown: 'Topic',
+      options: [
+        {
+          "value": "IOS"
+        },
+        {
+          "value": "Android"
+        },
+        {
+          "value": "Backend"
+        },
+        {
+          "value": "Frontend"
+        },
+        {
+          "value": "Hardware"
+        }
+      ]
     };
   },
   async mounted() {
@@ -84,7 +109,7 @@ export default {
       const requestMentorPostParams = {
         user_id: this.getUserId(),
         title: this.requestTitle,
-        topic: this.requestTopic,
+        topic: this.topicDropdown,
         description: this.requestDescription,
       };
       this.clearFields();
@@ -205,5 +230,63 @@ h2 {
     align-items: center;
     flex-flow: column;
     overflow-y: scroll;
+}
+.dropdown-menu, .dropdown-item{
+    color:#5a6167 !important;
+    font-size: 18px;
+    font-weight: 600;
+}
+.dropdown-toggle{
+    padding-left: 13.5px !important;
+    padding-right: 13.5px !important;
+    padding-top: 6.75px !important;
+    padding-bottom: 6.75px !important;
+    background-color: white;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #5a6167;
+}
+.dropdown{
+    padding-left: 17.5px;
+    padding-right: 17.5px;
+}
+.dropdown-menu{
+    width: 80%;
+}
+.dropdown-item{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    margin-left: 5px;
+}
+.dropdown-item:hover{
+    color: #B377DB !important;
+    background: rgba(182, 161, 196, 0.25);
+    border-radius: 4px;
+    width: 93%;
+}
+@media (max-width: 1950px) {
+  .dropdown-item:hover{
+    color: #B377DB !important;
+    background: rgba(182, 161, 196, 0.25);
+    border-radius: 4px;
+    width: 90%;
+  }
+}
+@media (max-width: 1800px) {
+  .dropdown-item:hover{
+    color: #B377DB !important;
+    background: rgba(182, 161, 196, 0.25);
+    border-radius: 4px;
+    width: 85%;
+  }
+}
+.dropdown-border {
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #A88AA8 !important;
+    width: 80%;
+    border-radius: 4px;
 }
 </style>
