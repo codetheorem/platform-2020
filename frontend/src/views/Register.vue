@@ -61,7 +61,7 @@
         </template>
         <template v-slot:body>
           <h5>2) Verify You're a Student</h5>
-          <p class="description-text">Please upload any kind of document or identification that proves you're a current student. This can be a photo of your school ID, a transcript or class schedule, or any other document that shows you're currently in school.</p>
+          <p class="description-text">Please upload any kind of document or identification that proves you're a current student. This can be a photo of your school ID, a transcript or class schedule, or any other document that shows you're currently in school. Any file type is accepted (e.g. .png, .pdf, etc.)</p>
           <p class="description-text">If you have any questions, just let us know by clicking the chat box in the lower right corner.</p>
           <div class="enrollment-verification-form-wrapper">
             <b-form-file
