@@ -77,8 +77,8 @@ a {
 }
 
 .watercooler-image {
-  max-width: 75vw;
-  max-height: 55vh;
+  max-width: 55vw;
+  max-height: 40vh;
   position: fixed;
   bottom: 0;
   z-index: 10;
