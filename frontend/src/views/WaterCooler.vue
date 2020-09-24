@@ -81,6 +81,7 @@ a {
   max-height: 55vh;
   position: fixed;
   bottom: 0;
+  z-index: 10;
 }
 
 @media (max-width: 1500px) {
