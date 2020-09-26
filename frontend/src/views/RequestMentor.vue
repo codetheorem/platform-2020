@@ -82,21 +82,21 @@ export default {
       topicDropdown: 'Topic',
       options: [
         {
-          "value": "IOS"
+          value: 'IOS',
         },
         {
-          "value": "Android"
+          value: 'Android',
         },
         {
-          "value": "Backend"
+          value: 'Backend',
         },
         {
-          "value": "Frontend"
+          value: 'Frontend',
         },
         {
-          "value": "Hardware"
-        }
-      ]
+          value: 'Hardware',
+        },
+      ],
     };
   },
   async mounted() {
