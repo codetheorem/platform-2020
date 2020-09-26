@@ -21,9 +21,54 @@
           </div>
         </div>
         <div class="sponsor-images">
+          <b-carousel
+            id="carousel-1"
+            v-model="slide"
+            :interval="4000"
+            controls
+            indicators
+            background="#ababab"
+            img-width="100%"
+            img-height="100%"
+            style="text-shadow: 1px 1px 2px #333;"
+            @sliding-start="onSlideStart"
+            @sliding-end="onSlideEnd"
+          >
+            <!-- Slides with image only -->
+            <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"  img-width="100%"
+            img-height="100%"></b-carousel-slide>
+            <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"  img-width="820"
+            img-height="384"></b-carousel-slide>
+            <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"  img-width="820"
+            img-height="384"></b-carousel-slide>
+          </b-carousel>
         </div>
       </div>
       <div class="sponsor-body-right">
+        <div class="sponsor-info-card">
+          <div class="sponsor-info-title">
+            Speak with Sponsors via Zoom
+          </div>
+          <Button size="sm" text="Join Meeting" />
+        </div>
+        <div class="sponsor-info-card">
+          <div class="sponsor-info-title">
+            Schedule an Appointment
+          </div>
+          <div class="sponsor-info-list">
+            <Button size="sm" text="One on One" />
+            <Button size="sm" text="Small Group" />
+          </div>
+        </div>
+        <div class="sponsor-info-card">
+          <div class="sponsor-info-title">
+            Contact
+          </div>
+          <div class="sponsor-info-list">
+            <Button size="sm" text="General Inquiries" />
+            <Button size="sm" text="Recruiter Email" />
+          </div>
+        </div>
       </div>
     </div>
     <div class="sponsor-footer">
@@ -43,8 +88,18 @@ export default {
   mixins: [generalMixin],
   data() {
     return {
-      sponsorDescription: 'Major League Hacking (MLH) is the official student hackathon league. Each year, we power over 200 weekend-long invention competitions that inspire innovation, cultivate communities and teach computer science skills to more than 65,000 students around the world. <br /><br />MLH has been a community first, mission driven organization from the beginning. We measure our success by the number of hackers we empower, and we want to keep it that way. <br /><br />Have a question about MLH? Head over to our FAQ to find some answers to common questions.'
+      sponsorDescription: 'Major League Hacking (MLH) is the official student hackathon league. Each year, we power over 200 weekend-long invention competitions that inspire innovation, cultivate communities and teach computer science skills to more than 65,000 students around the world. <br /><br />MLH has been a community first, mission driven organization from the beginning. We measure our success by the number of hackers we empower, and we want to keep it that way. <br /><br />Have a question about MLH? Head over to our FAQ to find some answers to common questions.',
+      slide: 0,
+      sliding: null,
     };
+  },
+  methods: {
+    onSlideStart() {
+      this.sliding = true;
+    },
+    onSlideEnd() {
+      this.sliding = false;
+    },
   },
 };
 </script>
@@ -58,7 +113,8 @@ export default {
 }
 
 .sponsor-header {
-  border: 1px solid red;
+  /* border: 1px solid red; */
+  margin-top: 1rem;
   height: 10vh;
   width: 80vw;
   display: flex;
@@ -67,13 +123,13 @@ export default {
 }
 
 .sponsor-body {
-  border: 1px solid green;
-  height: 60vh;
+  /* border: 1px solid green; */
+  height: 80vh;
   width: 80vw;
 }
 
 .sponsor-footer {
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   height: 20vh;
   width: 80vw;
 }
@@ -104,15 +160,20 @@ export default {
 .sponsor-body-left {
   display: flex;
   width: 70%;
-  height: 100%;
-  border: 1px solid purple;
+  min-height: 100%;
+  height: fit-content;
+  /* border: 1px solid purple; */
+  flex-direction: column;
 }
 
 .sponsor-body-right {
   display: flex;
   width: 30%;
   height: 100%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
 }
 
 .sponsor-description {
@@ -123,8 +184,46 @@ export default {
   height: fit-content;
   min-height: 40%;
   width: 100%;
-  border: 1px solid green;
+  /* border: 1px solid green; */
   padding-left: 5rem;
   padding-right: 5rem;
+}
+
+.sponsor-images {
+  height: 100%;
+  width: 100%;
+}
+
+.carousel-control-prev, .carousel-control-next, .carousel-indicators {
+  z-index: 100 !important;
+}
+
+.sponsor-info-card {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sponsor-info-title {
+  font-family: Noto Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+  color: #000000;
+  opacity: 0.8;
+  border-bottom: 4px solid #B377DB;
+  width: fit-content;
+  margin-bottom: .5rem;
+  margin-top: 3rem;
+}
+
+.sponsor-info-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 </style>
