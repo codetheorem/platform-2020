@@ -51,7 +51,7 @@
       <div class="sponsor-body-right">
         <div class="sponsor-info-card">
           <div class="sponsor-info-title">
-            Speak with Sponsors via Zoom
+            Speak with Sponsor via Zoom
           </div>
           <Button size="sm" text="Join Meeting" />
         </div>
@@ -155,6 +155,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-content: center;
+  margin-bottom: 2rem;
 }
 
 .sponsor-body {
@@ -167,7 +168,7 @@ export default {
   /* border: 1px solid blue; */
   height: 30vh;
   width: 80vw;
-  margin-top: -1rem;
+  margin-top: 0rem;
 }
 
 .back-button-container {
