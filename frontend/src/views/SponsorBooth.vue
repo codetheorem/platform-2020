@@ -2,7 +2,9 @@
   <div class="page-container">
     <div class="sponsor-header">
       <div class="back-button-container">
-        <Button size="lg" text="Back to Sponsor List" :outlineStyle="true" :backArrow="true" />
+        <router-link to="/sponsors">
+          <Button size="lg" text="Back to Sponsor List" :outlineStyle="true" :backArrow="true" />
+        </router-link>
       </div>
       <div class="sponsor-logo">
         <img src="https://technica-brand-assets.s3.amazonaws.com/mlh_logo.png" />
@@ -24,23 +26,23 @@
           <b-carousel
             id="carousel-1"
             v-model="slide"
-            :interval="4000"
+            :interval="6000"
             controls
+            img-width="615"
+            img-height="158"
             indicators
             background="#ababab"
-            img-width="100%"
-            img-height="100%"
             style="text-shadow: 1px 1px 2px #333;"
             @sliding-start="onSlideStart"
             @sliding-end="onSlideEnd"
           >
             <!-- Slides with image only -->
-            <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"  img-width="100%"
-            img-height="100%"></b-carousel-slide>
-            <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"  img-width="820"
-            img-height="384"></b-carousel-slide>
-            <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"  img-width="820"
-            img-height="384"></b-carousel-slide>
+            <b-carousel-slide img-src="https://technica-brand-assets.s3.amazonaws.com/mlh_stock_photo_3.jpg"  img-width="615px"
+            img-height="188px"></b-carousel-slide>
+            <b-carousel-slide img-src="https://technica-brand-assets.s3.amazonaws.com/mlh_stock_photo_4.jpg"  img-width="615"
+            img-height="188px"></b-carousel-slide>
+            <b-carousel-slide img-src="https://technica-brand-assets.s3.amazonaws.com/mlh_stock_photo_5.jpg"  img-width="615px"
+            img-height="188px"></b-carousel-slide>
           </b-carousel>
         </div>
       </div>
@@ -110,6 +112,9 @@ export default {
     Button,
   },
   mixins: [generalMixin],
+  mounted() {
+    window.scrollTo(0, 0);
+  },
   data() {
     return {
       sponsorDescription: 'Major League Hacking (MLH) is the official student hackathon league. Each year, we power over 200 weekend-long invention competitions that inspire innovation, cultivate communities and teach computer science skills to more than 65,000 students around the world. <br /><br />MLH has been a community first, mission driven organization from the beginning. We measure our success by the number of hackers we empower, and we want to keep it that way. <br /><br />Have a question about MLH? Head over to our FAQ to find some answers to common questions.',
@@ -189,6 +194,8 @@ export default {
   height: fit-content;
   /* border: 1px solid purple; */
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .sponsor-body-right {
@@ -217,7 +224,11 @@ export default {
 
 .sponsor-images {
   height: 100%;
-  width: 100%;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .sponsor-info-card {
