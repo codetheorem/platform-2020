@@ -72,6 +72,15 @@
       </div>
     </div>
     <div class="sponsor-footer">
+      <div class="sponsor-footer-inner">
+        <div class="sponsor-footer-row-a">
+          <Button size="sm" text="Code of Conduct" :downloadButton="true"/>
+          <Button size="sm" text="Organizer Guide" :downloadButton="true"/>
+          <Button size="sm" text="Brand Guidelines" :downloadButton="true"/>
+        </div>
+        <div class="sponsor-footer-row-b">
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -220,10 +229,24 @@ export default {
   margin-top: 3rem;
 }
 
+.sponsor-footer-inner {
+  width: 70%;
+  height: 100%;
+}
+
 .sponsor-info-list {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.sponsor-footer-row-a {
+  width: 100%;
+  height: 50%;
+  border: 1px solid green;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 </style>
