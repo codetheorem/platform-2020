@@ -16,7 +16,6 @@ export default {
         margin-top: 3rem;
     }
     .loading-spinner-img {
-        height: 198px;
-        width: 184.5px;
+        height: 216px;
     }
 </style>
