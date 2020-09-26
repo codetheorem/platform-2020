@@ -1,6 +1,14 @@
 <template>
   <div class="page-container">
     <div class="sponsor-header">
+      <div class="back-button-container">
+        <Button size="lg" text="Back to Sponsor List" :outlineStyle="true" :backArrow="true" />
+      </div>
+      <div class="sponsor-logo">
+        <img src="https://technica-brand-assets.s3.amazonaws.com/mlh_logo.png" />
+      </div>
+      <!-- header-placeholder exists so we can have the logo and back button left and center aligned properly -->
+      <div class="header-placeholder"></div>
     </div>
     <div class="sponsor-body">
     </div>
@@ -34,6 +42,9 @@ export default {
   border: 1px solid red;
   height: 10vh;
   width: 80vw;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
 }
 
 .sponsor-body {
@@ -46,5 +57,23 @@ export default {
   border: 1px solid blue;
   height: 20vh;
   width: 80vw;
+}
+
+.back-button-container {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sponsor-logo {
+  border: 1px solid red;
+}
+
+.header-placeholder {
+  width: 10%;
+  height: 100%;
+  border: 1px solid red;
+  opacity: 0;
 }
 </style>
