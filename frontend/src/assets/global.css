@@ -155,5 +155,9 @@ a.redirect-link{
 }
 
 button:focus {
-	outline:0 !important;;
+	outline:0 !important;
+}
+
+.carousel-control-prev, .carousel-control-next, .carousel-indicators {
+	z-index: 100 !important;
 }

@@ -79,6 +79,21 @@
           <Button size="sm" text="Brand Guidelines" :downloadButton="true"/>
         </div>
         <div class="sponsor-footer-row-b">
+          <h4 style="margin-bottom: 1rem;">Job Postings</h4>
+          <div class="posting-list">
+            <div class="sponsor-posting-card">
+              <span class="posting-title">MLH University Ambassador</span>
+              <Button size="sm" text="Apply"/>
+            </div>
+            <div class="sponsor-posting-card">
+              <span class="posting-title">MLH Spring Coach</span>
+              <Button size="sm" text="Apply"/>
+            </div>
+            <div class="sponsor-posting-card">
+              <span class="posting-title">MLH University Ambassador</span>
+              <Button size="sm" text="Apply"/>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -139,8 +154,9 @@ export default {
 
 .sponsor-footer {
   /* border: 1px solid blue; */
-  height: 20vh;
+  height: 30vh;
   width: 80vw;
+  margin-top: -1rem;
 }
 
 .back-button-container {
@@ -196,6 +212,7 @@ export default {
   /* border: 1px solid green; */
   padding-left: 5rem;
   padding-right: 5rem;
+  margin-bottom: 2rem;
 }
 
 .sponsor-images {
@@ -203,15 +220,12 @@ export default {
   width: 100%;
 }
 
-.carousel-control-prev, .carousel-control-next, .carousel-indicators {
-  z-index: 100 !important;
-}
-
 .sponsor-info-card {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 5rem;
 }
 
 .sponsor-info-title {
@@ -243,10 +257,51 @@ export default {
 
 .sponsor-footer-row-a {
   width: 100%;
-  height: 50%;
-  border: 1px solid green;
+  height: 25%;
+  /* border: 1px solid green; */
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+.sponsor-footer-row-b {
+  width: 100%;
+  height: 75%;
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  /* margin-bottom: 5rem; */
+}
+
+.sponsor-posting-card {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #FFFFFF;
+  border: 1px solid var(--pastel-purple);
+  box-sizing: border-box;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.posting-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+}
+
+.posting-title {
+  font-family: Noto Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  color: #EA668E;
+  margin-bottom: .5rem;
 }
 </style>
