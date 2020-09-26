@@ -26,7 +26,7 @@
           <b-carousel
             id="carousel-1"
             v-model="slide"
-            :interval="6000"
+            :interval="4000"
             controls
             img-width="615"
             img-height="158"
@@ -42,6 +42,8 @@
             <b-carousel-slide img-src="https://technica-brand-assets.s3.amazonaws.com/mlh_stock_photo_4.jpg"  img-width="615"
             img-height="188px"></b-carousel-slide>
             <b-carousel-slide img-src="https://technica-brand-assets.s3.amazonaws.com/mlh_stock_photo_5.jpg"  img-width="615px"
+            img-height="188px"></b-carousel-slide>
+            <b-carousel-slide img-src="https://technica-brand-assets.s3.amazonaws.com/mlh_stock_photo_6.jpg"  img-width="615px"
             img-height="188px"></b-carousel-slide>
           </b-carousel>
         </div>
@@ -64,22 +66,26 @@
         </div>
         <div class="sponsor-info-card">
           <div class="sponsor-info-title">
-            Contact
+            Contact Us
           </div>
           <div class="sponsor-info-list">
             <Button size="sm" text="General Inquiries" />
             <Button size="sm" text="Recruiter Email" />
           </div>
         </div>
+        <div class="sponsor-info-card">
+          <div class="sponsor-info-title">
+            Downloadable Content
+          </div>
+          <div class="sponsor-info-list">
+            <Button size="sm" text="Code of Conduct" :downloadButton="true"/>
+            <Button size="sm" text="Organizer Guide" :downloadButton="true"/>
+          </div>
+        </div>
       </div>
     </div>
     <div class="sponsor-footer">
       <div class="sponsor-footer-inner">
-        <div class="sponsor-footer-row-a">
-          <Button size="sm" text="Code of Conduct" :downloadButton="true"/>
-          <Button size="sm" text="Organizer Guide" :downloadButton="true"/>
-          <Button size="sm" text="Brand Guidelines" :downloadButton="true"/>
-        </div>
         <div class="sponsor-footer-row-b">
           <h4 style="margin-bottom: 1rem;">Job Postings</h4>
           <div class="posting-list">
@@ -236,7 +242,7 @@ export default {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 5rem;
+  margin-bottom: 1rem;
 }
 
 .sponsor-info-title {
@@ -255,8 +261,9 @@ export default {
 }
 
 .sponsor-footer-inner {
-  width: 70%;
+  width: 90%;
   height: 100%;
+  margin-left: 4rem;
 }
 
 .sponsor-info-list {
@@ -273,6 +280,7 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-top: 1rem;
 }
 
 .sponsor-footer-row-b {
