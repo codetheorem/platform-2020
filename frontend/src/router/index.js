@@ -25,6 +25,12 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/sponsor',
+    name: 'Sponsorship Fair',
+    component: () => import('../views/SponsorBooth.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/live-stream',
     name: 'Live Stream',
     component: () => import('../views/LiveStream.vue'),
