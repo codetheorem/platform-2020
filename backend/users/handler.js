@@ -581,9 +581,15 @@ module.exports.track_user_activity = withSentry(async (action) => {
   const webhookUrl = webhookJSON.PLATFORM_ACTVITY_SLACK_WEBHOOK;
   const webhook = new IncomingWebhook(webhookUrl);
   if (process.env.STAGE !== TESTING_STAGE) {
-    await webhook.send({
-      text: `TEMP: User ${body.user_id} has performed ${body.action} on ${process.env.STAGE}`,
-    });
+    if (body.action == 'TEAM_CREATION') {
+      await webhook.send({
+        text: `${body.user_name} performed ${body.action} on ${process.env.STAGE}`,
+      });
+    } else {
+      await webhook.send({
+        text: `${body.user_name} visited page ${body.action} on ${process.env.STAGE}`,
+      });
+    }
   }
     
   return {
