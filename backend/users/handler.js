@@ -573,6 +573,19 @@ module.exports.track_user_activity = withSentry(async (action) => {
 
   await ddb.put(params).promise();
 
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });    
+  const SecretsManagerSlackKey = await SecretsManager.getSecretValue(
+    { SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME },
+  ).promise();
+  const webhookJSON = JSON.parse(SecretsManagerSlackKey.SecretString);
+  const webhookUrl = webhookJSON.PLATFORM_ACTVITY_SLACK_WEBHOOK;
+  const webhook = new IncomingWebhook(webhookUrl);
+  if (process.env.STAGE !== TESTING_STAGE) {
+    await webhook.send({
+      text: `TEMP: User ${body.user_id} has performed ${body.action} on ${process.env.STAGE}`,
+    });
+  }
+    
   return {
     statusCode: 200,
     body: JSON.stringify(params.Item),
