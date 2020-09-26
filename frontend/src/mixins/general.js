@@ -96,6 +96,7 @@ export default {
       const params = {
         user_id: this.getUserId(),
         action: actionName,
+        user_name: this.getUserName(),
       };
       await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', params);
     },
