@@ -96,6 +96,9 @@ export default {
         {
           value: 'Hardware',
         },
+        {
+          value: 'Other',
+        },
       ],
     };
   },
