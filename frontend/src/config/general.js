@@ -31,6 +31,7 @@ export default {
       Skribbl2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
       Trivia1: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
       Trivia2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      teamFormation: 'c2f5e555-8347-49b1-b586-3e040b1b4896',
     },
   },
   testing: {
@@ -55,6 +56,7 @@ export default {
       Skribbl2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
       Trivia1: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
       Trivia2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
+      teamFormation: 'c2f5e555-8347-49b1-b586-3e040b1b4896',
     },
   },
   stage: {
@@ -79,6 +81,7 @@ export default {
       Skribbl2: '8e73cbfd-2320-43db-ae36-55c3bc68edbc',
       Trivia1: '3e4f0ff2-7a71-437b-a634-a0c335d59bcd',
       Trivia2: '3e4f0ff2-7a71-437b-a634-a0c335d59bcd',
+      teamFormation: '5df85b29-c330-4118-88ad-93bbe8a14249',
     },
   },
   prod: {
@@ -103,6 +106,7 @@ export default {
       Skribbl2: '7d4bdf2d-5ac4-4823-817d-a441b532a3b0',
       Trivia1: '510a2ff8-0aee-4e7d-a956-0200f6c74672',
       Trivia2: 'c9abbbe0-7e09-43ca-841c-a35b70215768',
+      teamFormation: '0edff9e3-9a85-4750-aa72-89ada243039e',
     },
   },
 };

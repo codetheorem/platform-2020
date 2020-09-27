@@ -3,7 +3,7 @@
     <div v-if="dataLoaded">
       <h2 class="page-header">Team Formation</h2>
       <b-container id="team-container" class="teams-container">
-        <p>Looking for teammates to collaborate with on your hack? Head over to our <router-link to="/schedule"><a href="#" class="redirect-link">team formation event</a></router-link>.</p>
+        <p>Looking for teammates to collaborate with on your hack? Head over to our <router-link :to="'/schedule?event=' + teamFormationEventId"><a href="#" class="redirect-link">team formation event</a></router-link>.</p>
         <p>Once you know who your teammates are, use this page to create your team in the Technica system! You can then do things like submit your project or request a mentor as a team.</p>
         <div v-if="!currentTeam && !teamCreationLoading" class="create-team-container">
           <form @submit.prevent="goToProfile" class="create-team-form">
@@ -127,6 +127,10 @@ export default {
   computed: {
     sectionTitle() {
       return !this.currentTeam ? 'Invites' : this.currentTeam.name;
+    },
+    teamFormationEventId() {
+      const env = this.getCurrentEnvironment();
+      return Config[env].eventIds.teamFormation;
     },
   },
   methods: {
