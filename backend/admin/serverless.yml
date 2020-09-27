@@ -12,6 +12,7 @@ provider:
     SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
     ADMIN_TABLE: ${file(./config/${self:provider.stage}.json):ADMIN_TABLE}
     EASTER_EGGS_TABLE:  ${file(./config/${self:provider.stage}.json):EASTER_EGGS_TABLE}
+    SPONSOR_BOOTHS_TABLE:  ${file(./config/${self:provider.stage}.json):SPONSOR_BOOTHS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -49,8 +50,38 @@ functions:
           path: discover_easter_egg
           method: post
           cors: true
-
-
+  add_sponsor_booth:
+    handler: handler.add_sponsor_booth
+    description: Adds a sponsor booth to the DB
+    events:
+      - http:
+          path: add_sponsor_booth
+          method: post
+          cors: true
+  update_sponsor_booth:
+    handler: handler.update_sponsor_booth
+    description: Updates a sponsor booth in the DB
+    events:
+      - http:
+          path: update_sponsor_booth
+          method: post
+          cors: true
+  get_sponsor_booths:
+    handler: handler.get_sponsor_booths
+    description: Retrieves all sponsor booths
+    events:
+      - http:
+          path: get_sponsor_booths
+          method: get
+          cors: true
+  get_sponsor_booth:
+    handler: handler.get_sponsor_booth
+    description: Retrieves a specific sponsor booth
+    events:
+      - http:
+          path: get_sponsor_booth
+          method: get
+          cors: true
 plugins:
   - serverless-sentry
   - serverless-jest-plugin

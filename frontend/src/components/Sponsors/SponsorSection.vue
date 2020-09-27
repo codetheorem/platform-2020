@@ -3,8 +3,8 @@
     <SectionTitle :title="tier" />
     <b-row v-for="row in sponsorGrid" :key="row.id" class="row">
         <b-col v-for="sponsor in row" :key="sponsor.id" class="col-sm">
-            <router-link to="/sponsor">
-            <SponsorCard v-bind:sponsor="sponsor"/>
+            <router-link :to="'/sponsor?id=' + sponsor.booth_id">
+              <SponsorCard v-bind:sponsor="sponsor"/>
             </router-link>
         </b-col>
     </b-row>

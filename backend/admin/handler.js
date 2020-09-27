@@ -125,3 +125,137 @@ module.exports.discover_easter_egg = withSentry(async (event) => {
     },
   };
 });
+
+module.exports.add_sponsor_booth = withSentry(async (event) => {
+  const body = JSON.parse(event.body);
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const id = UUID.v4();
+
+  const params = {
+    TableName: process.env.SPONSOR_BOOTHS_TABLE,
+    Item: {},
+  };
+
+  body.id = id;
+
+  Object.keys(body).forEach((k) => {
+    params.Item[k] = body[k];
+  });
+
+  await ddb.put(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(params.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
+
+module.exports.update_sponsor_booth = withSentry(async event => {
+  const body = JSON.parse(event.body);
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  if (!body["id"]) {
+    return {
+      statusCode: 500,
+      body: "update_sponsor_booth expects key \"id\""
+    }
+  }
+
+  id = body['id'];
+  // Initialize UpdateExpression for ddb.update()
+  let update = 'SET';
+  // Initialize ExpressionAttributeNames for ddb.update()
+  let exprAttrNames = {};
+  // Initialize ExpressionAttributeValues for ddb,updateItem()
+  let exprAttrValues = {};
+  let counter = 0;
+
+  // dynamically update post request body params to document
+  Object.keys(body).forEach(k => {
+    if (k != 'id') {
+      const ref = 'val' + counter;
+      let updateElement = ' #' + k + ' =:' + ref + ',';
+      update = update.concat(updateElement);
+      exprAttrNames['#' + k] = k;
+      exprAttrValues[':' + ref] = body[k];
+      counter++;
+    }
+  });
+
+  // Remove trailing comma from UpdateExpression added on line 405
+  update = update.slice(0, -1);
+
+  const params = {
+    TableName: process.env.SPONSOR_BOOTHS_TABLE,
+    Key: {
+      id: id.toString()
+    },	    
+    UpdateExpression: update,
+    ExpressionAttributeNames: exprAttrNames,
+    ExpressionAttributeValues: exprAttrValues
+  };
+
+  // Call DynamoDB to update the item to the table
+  const result = await ddb.update(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };	 
+});
+
+module.exports.get_sponsor_booths = withSentry(async () => {
+  const params = {
+    TableName: process.env.SPONSOR_BOOTHS_TABLE,
+  };
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Items),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
+
+module.exports.get_sponsor_booth = withSentry(async (event) => {
+  const id = event.queryStringParameters.id;
+  const params = {
+    TableName: process.env.SPONSOR_BOOTHS_TABLE,
+    KeyConditionExpression: "#id = :id",
+    ExpressionAttributeNames:{
+      "#id": "id"
+    },
+    ExpressionAttributeValues: {
+      ":id": id
+    }
+  };
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const result = await ddb.query(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
