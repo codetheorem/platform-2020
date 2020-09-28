@@ -65,9 +65,7 @@ export default {
         const getParams = {
           email: this.userEmail,
         };
-        console.log(getParams);
         const user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'find_user_by_email', getParams);
-        console.log(user);
 
         if (user[0]) {
           const postParams = {
