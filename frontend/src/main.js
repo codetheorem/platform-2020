@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { BootstrapVue } from 'bootstrap-vue';
+import AnimateCSS from 'animate.css';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -15,6 +16,7 @@ const VueCookie = require('vue-cookie');
 // Tell Vue to use the plugin
 Vue.use(VueCookie);
 Vue.use(BootstrapVue);
+Vue.use(AnimateCSS);
 
 new Vue({
   router,

@@ -24,6 +24,7 @@ const TABLE_LIST = [
   { name: 'activity', keyName: 'id' },
   { name: 'zoom-api-keys', keyName: 'key' },
   { name: 'easter-eggs', keyName: 'id' },
+  { name: 'sponsor-booths', keyName: 'id' },
 ];
 
 const STAGE_LIST = ['prod', 'stage', 'dev', 'test'];

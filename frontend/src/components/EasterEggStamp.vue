@@ -35,22 +35,22 @@ export default {
     displayStamp: Boolean,
   },
   computed: {
-      modalTitle() {
-          return `You’ve found ${this.totalEasterEggsFound} out of the ${this.totalEasterEggs} postcards!`;
-      },
+    modalTitle() {
+      return `You’ve found ${this.totalEasterEggsFound} out of the ${this.totalEasterEggs} postcards!`;
+    },
   },
   methods: {
     getPostcardImg(postcard) {
-        const imgContext = require.context('../assets/postcards', false, /\.png$/);
-        return imgContext(`./postcard${postcard.easter_egg_id}.png`);
+      const imgContext = require.context('../assets/postcards', false, /\.png$/);
+      return imgContext(`./postcard${postcard.easter_egg_id}.png`);
     },
     goBack() {
-        this.$bvModal.hide('easterEggModal');
+      this.$bvModal.hide('easterEggModal');
     },
     viewEasterEgg() {
-        this.$emit("viewEasterEgg");
+      this.$emit('viewEasterEgg');
     },
-  }
+  },
 };
 </script>
 

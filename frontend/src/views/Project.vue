@@ -266,4 +266,14 @@ a {
   margin-bottom: 1rem;
 }
 
+.btn-primary:disabled {
+  background-color: #8B8787;
+  border-color: #8B8787;
+}
+
+.btn-primary:disabled:hover {
+  background-color: #8B8787 !important;
+  border-color: #8B8787 !important;
+}
+
 </style>

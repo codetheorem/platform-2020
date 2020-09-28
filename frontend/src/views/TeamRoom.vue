@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container class="teams-container" v-if="currentTeam">
+    <b-container class="teams-container">
       <h2 class="page-header">Team Room</h2>
       <div v-if="dataLoaded" class="display-container">
         <div>

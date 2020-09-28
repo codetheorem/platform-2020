@@ -508,6 +508,7 @@ module.exports.send_registration_email = withSentry(async (event) => {
     },
   };
 });
+
 //Update an existing hacker's hacker profile
 module.exports.update_hacker_profile = withSentry(async event =>{
   const ddb = new AWS.DynamoDB.DocumentClient();
@@ -533,10 +534,9 @@ module.exports.update_hacker_profile = withSentry(async event =>{
     ReturnValues:"UPDATED_NEW"
   };
 
-
   //Call DynamoDB to update profile
   const result = await ddb.update(params).promise();
-
+  
   return {
     statusCode: 200,
     body: JSON.stringify(result.Item),
@@ -573,6 +573,25 @@ module.exports.track_user_activity = withSentry(async (action) => {
 
   await ddb.put(params).promise();
 
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });    
+  const SecretsManagerSlackKey = await SecretsManager.getSecretValue(
+    { SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME },
+  ).promise();
+  const webhookJSON = JSON.parse(SecretsManagerSlackKey.SecretString);
+  const webhookUrl = webhookJSON.PLATFORM_ACTVITY_SLACK_WEBHOOK;
+  const webhook = new IncomingWebhook(webhookUrl);
+  if (process.env.STAGE !== TESTING_STAGE) {
+    if (body.action == 'TEAM_CREATION') {
+      await webhook.send({
+        text: `${body.user_name} performed ${body.action} on ${process.env.STAGE}`,
+      });
+    } else {
+      await webhook.send({
+        text: `${body.user_name} visited page ${body.action} on ${process.env.STAGE}`,
+      });
+    }
+  }
+    
   return {
     statusCode: 200,
     body: JSON.stringify(params.Item),

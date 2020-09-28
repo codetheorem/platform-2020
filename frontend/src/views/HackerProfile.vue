@@ -93,7 +93,7 @@ h2 {
 
 .member-list-photo {
     background: #C4C4C4;
-    border-radius: 2px;
+    border-radius: 8px;
     width: 13rem;
     height: 13rem;
     margin: 3px;
@@ -104,6 +104,7 @@ h2 {
     margin-bottom: 2rem;
     margin-right: 1rem;
     margin-left: .75rem;
+    border-radius: 4px;
 }
 
 .profile-header {
@@ -136,6 +137,10 @@ h2 {
 }
 
 .profile-footer-box {
+    background: #FFF;
+    padding-top: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
     border: 2px solid #B6A1C4;
     box-sizing: border-box;
     border-radius: 8px;

@@ -5,9 +5,9 @@
 </template>
 
 <script>
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 export default {
   name: 'Shortlink',

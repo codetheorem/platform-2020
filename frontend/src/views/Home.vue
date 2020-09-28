@@ -1,24 +1,31 @@
 <template>
   <div id="home-page">
-    <h2 class="page-header">Welcome, {{ getUserName() }}</h2>
-    <div class="home-main">
-      <div class="home-links">
-        <h5>HELPFUL LINKS</h5>
-        <p>Welcome to the Technica platform! We're incredibly excited to host you and the entire Technica community for an amazing weekend of learning, inclusiveness, and fun.</p>
-        <a id="onboardingWalkthroughButton" href="#" class="home-link" @click="initiateOnboardingWalkthrough"><p>Learn About the Technica Platform</p></a>
-        <a href="https://slack.com" target="_blank" class="home-link"><p>Join the Conversation on Slack</p></a>
-        <a href="https://gotechnica.org/hacker-resources" target="_blank" class="home-link"><p>Useful Resources for Your Hack</p></a>
-        <router-link to="/help"><a href="#" class="home-link"><p>Get In Touch With An Organizer</p></a></router-link>
+    <h2 class="page-header animate__animated animate__fadeInUp">Welcome, {{ getUserName() }}</h2>
+    <div class="home-header animate__animated animate__fadeInUp delay1">
+      <div v-if="getUserGroup() === 'sponsor'" class="sponsor-buttons">
+        <Button text="Chat with an Organizer" @click="openIntercom()" class="sponsor-button"/>
+        <router-link :to="'/sponsor-analytics?id=' + getSponsorBoothId()"><Button text="My Sponsor Booth" class="sponsor-button"/></router-link>
+        <Button text="View Project Submissions" class="sponsor-button"/>
       </div>
-      <div class="home-announcements">
-        <h5>ANNOUNCEMENTS</h5>
-        <div class="announcements-list">
-          <Banner text="This is a sample announcement. Welcome to Technica!"/>
-          <Banner text="This is a sample announcement. Welcome to Technica!"/>
+      <div class="home-main">
+        <div class="home-links">
+          <h5>HELPFUL LINKS</h5>
+          <p>Welcome to the Technica platform! We're incredibly excited to host you and the entire Technica community for an amazing weekend of learning, inclusiveness, and fun.</p>
+          <a id="onboardingWalkthroughButton" href="#" class="home-link" @click="initiateOnboardingWalkthrough"><p>Learn About the Technica Platform</p></a>
+          <a href="https://slack.com" target="_blank" class="home-link"><p>Join the Conversation on Slack</p></a>
+          <a href="https://gotechnica.org/hacker-resources" target="_blank" class="home-link"><p>Useful Resources for Your Hack</p></a>
+          <router-link to="/help"><a href="#" class="home-link"><p>Get In Touch With An Organizer</p></a></router-link>
+        </div>
+        <div class="home-announcements">
+          <h5>ANNOUNCEMENTS</h5>
+          <div class="announcements-list">
+            <Banner text="This is a sample announcement. Welcome to Technica!"/>
+            <Banner text="This is a sample announcement. Welcome to Technica!"/>
+          </div>
         </div>
       </div>
     </div>
-    <div class="home-footer">
+    <div class="home-footer animate__animated animate__fadeInUp delay2">
       <ScheduleCarousel
         title="SCHEDULE HIGHLIGHTS"
         :selectedEvent="selectedEvent"
@@ -36,13 +43,16 @@
           <Button text="Attend" @click="attendEvent()" size="sm"/>
       </template>
     </b-modal>
+    <div class="cloud-wrapper animate__animated animate__fadeInUp delay3">
+      <img src="@/assets/home_page_bg.svg" alt="Two technica hackers getting to know each other" class="cloud-image">
+    </div>
   </div>
 </template>
 
 <script>
 import Banner from '@/components/Banner.vue';
-import Button from '../components/Button.vue';
 import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
+import Button from '../components/Button.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
 import Config from '../config/general';
@@ -60,6 +70,10 @@ export default {
       const env = this.getCurrentEnvironment();
       // eslint-disable-next-line no-undef
       Intercom('startTour', Config[env].PLATFORM_WALKTHROUGH_ID);
+    },
+    openIntercom() {
+      // eslint-disable-next-line no-undef
+      Intercom('show');
     },
   },
   data() {
@@ -87,6 +101,12 @@ export default {
     this.dataLoaded = true;
     await this.activityTracking('HOME');
   },
+  beforeCreate() {
+    document.body.className = 'home';
+  },
+  beforeDestroy() {
+    document.body.className = '';
+  },
 };
 </script>
 
@@ -102,8 +122,9 @@ h2 {
   padding-left: 10rem;
   padding-right: 10rem;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
+  margin-top: -1rem;
 }
 
 .home-links {
@@ -145,5 +166,46 @@ h2 {
       margin-bottom: 1rem;
     }
   }
+
+.cloud-wrapper {
+  display:flex;
+  justify-content: center;
+}
+
+.cloud-image {
+  max-height: 55vh;
+  height: 30vh;
+}
+
+@media (max-width: 800px) {
+  .cloud-image {
+    max-height: 40vw;
+  }
+}
+
+@media (max-height: 850px) {
+  .cloud-image {
+    max-height: 35vh;
+  }
+}
+.delay1 {
+  animation-delay: 200ms;
+}
+
+.delay2 {
+  animation-delay: 400ms;
+}
+
+.delay3 {
+  animation-delay: 600ms;
+}
+
+.home-footer {
+  margin-top: -4rem;
+}
+
+.sponsor-button {
+  margin-right: 1rem;
+}
 
 </style>

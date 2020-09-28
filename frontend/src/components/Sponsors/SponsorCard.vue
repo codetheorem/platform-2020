@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <img v-bind:src="sponsor.logo_image_url" v-bind:alt="sponsor.name" v-bind:id="sponsor.name" class="img">
-        <b-tooltip v-bind:target="sponsor.name" triggers="hover" id="tooltip-custom">
+        <!-- <b-tooltip v-bind:target="sponsor.name" triggers="hover" id="tooltip-custom">
               <b-row class="tooltip-text">
                 <b-col>
                     <h4>Sponsor Information: </h4>
@@ -22,7 +22,7 @@
                     </ul>
                 </b-col>
             </b-row>
-        </b-tooltip>
+        </b-tooltip> -->
     </div>
 </template>
 

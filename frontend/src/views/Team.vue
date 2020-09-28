@@ -3,7 +3,7 @@
     <div v-if="dataLoaded">
       <h2 class="page-header">Team Formation</h2>
       <b-container id="team-container" class="teams-container">
-        <p>Looking for teammates to collaborate with on your hack? Head over to our <router-link to="/schedule"><a href="#" class="redirect-link">team formation event</a></router-link>.</p>
+        <p>Looking for teammates to collaborate with on your hack? Head over to our <router-link :to="'/schedule?event=' + teamFormationEventId"><a href="#" class="redirect-link">team formation event</a></router-link>.</p>
         <p>Once you know who your teammates are, use this page to create your team in the Technica system! You can then do things like submit your project or request a mentor as a team.</p>
         <div v-if="!currentTeam && !teamCreationLoading" class="create-team-container">
           <form @submit.prevent="goToProfile" class="create-team-form">
@@ -59,7 +59,8 @@
           </b-row>
         </div>
       </b-container>
-      <div v-if="currentTeam" class="create-team-container invite-container">
+
+      <div v-if="currentTeam && Object.keys(currentTeam['members']).length < 4 && invitesToCurrentTeam.length < 3" class="create-team-container invite-container">
         <form @submit.prevent="inviteHacker" class="create-team-form">
           <div class="row">
             <div class="col-8">
@@ -70,6 +71,13 @@
             </div>
           </div>
         </form>
+      </div>
+      <div v-if="currentTeam && Object.keys(currentTeam['members']).length >= 4 || invitesToCurrentTeam.length >= 3">
+        <span>
+          You have reached the maximum team size and cannot add additional members.
+          <br>
+          <br>
+        </span>
       </div>
       <div v-if="currentTeam">
         <Button size="lg" text="Leave Team" @click="leaveTeam()" class="create-team-button" style="background: white !important;" :outlineStyle="true"/>
@@ -120,6 +128,10 @@ export default {
     sectionTitle() {
       return !this.currentTeam ? 'Invites' : this.currentTeam.name;
     },
+    teamFormationEventId() {
+      const env = this.getCurrentEnvironment();
+      return Config[env].eventIds.teamFormation;
+    },
   },
   methods: {
     async createTeam() {
@@ -168,7 +180,7 @@ export default {
       Object.keys(invites).forEach((k) => {
         formattedInvites[k] = invites[k];
       });
-      console.log(formattedInvites);
+      // console.log(formattedInvites);
       if (formattedInvites.length > 0) {
         this.invites = formattedInvites;
       }
@@ -183,7 +195,7 @@ export default {
       Object.keys(invites).forEach((k) => {
         formattedInvites[k] = invites[k];
       });
-      console.log(formattedInvites);
+      // console.log(formattedInvites);
       if (formattedInvites.length > 0) {
         this.invitesToCurrentTeam = formattedInvites;
       }

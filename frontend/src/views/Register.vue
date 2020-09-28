@@ -5,6 +5,7 @@
         <template v-slot:title>
           <h3>Welcome!</h3>
         </template>
+        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="0" v-bind:empty="5" /></template>
         <template v-slot:body>
           <p class="description-text">Welcome to Technica! To set up your account, you'll have to go through a few steps:</p>
           <ol class="step-list">
@@ -13,9 +14,6 @@
             <li>Sign the Event Waiver</li>
             <li>Create a Hacker Profile (Optional)</li>
             <li>Set Up Your Slack Account</li>
-            <!-- These items will be added as supplemental features -->
-            <!-- <li>Favorite Events (Optional)</li>
-            <li>Sign Forms</li> -->
           </ol>
           <p class="description-text">Ready to get hacking? Click "Get Started" to begin!</p>
           <Button size="lg" text="Get Started" @click="getStarted()"/>
@@ -26,6 +24,7 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
+        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="1" v-bind:empty="4" /></template>
         <template v-slot:body>
           <h5>1) A Little About You</h5>
           <form @submit.prevent="goToProfile">
@@ -36,7 +35,7 @@
               </div>
               <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My Pronouns</label>
-                <input type="text" class="form-control mx-auto" id="pronounInput" placeholder="she/her" v-model="pronouns">
+                <input type="text" class="form-control mx-auto" id="pronounInput" placeholder="e.g. she/her" v-model="pronouns">
               </div>
               <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My Email</label>
@@ -48,7 +47,7 @@
               </div>
               <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My School</label>
-                <input type="text" class="form-control mx-auto" id="schoolInput" placeholder="University of Maryland, College Park" v-model="school">
+                <input type="text" class="form-control mx-auto" id="schoolInput" placeholder="e.g. University of Maryland, College Park" v-model="school">
               </div>
             </div>
           </form>
@@ -62,10 +61,11 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
+        <template v-slot:progress><ProgressCircles v-bind:full="1" v-bind:half="1" v-bind:empty="3" /></template>
         <template v-slot:body>
           <h5>2) Verify You're a Student</h5>
-          <p class="description-text">Please upload any kind of document or identification that proves you're a current student. This can be a photo of your school ID, a transcript or class schedule, or any other document that shows you're currently in school.</p>
-          <p class="description-text">If you have any questions, just let us know by clicking the chat box in the lower right corner.</p>
+          <p class="description-text">Please upload any kind of document or identification that proves you're a current student. This can be a photo of your school ID, a transcript or class schedule, or any other document that shows you're currently in school. Any file type is accepted (.png, .pdf, etc.)</p>
+          <p class="description-text">If you have any questions or you're not a student, please contact us by clicking the chat box in the lower right corner.</p>
           <div class="enrollment-verification-form-wrapper">
             <b-form-file
               v-model="enrollmentVerificationFileUpload"
@@ -82,6 +82,7 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
+        <template v-slot:progress><ProgressCircles v-bind:full="2" v-bind:half="1" v-bind:empty="2" /></template>
         <template v-slot:body>
           <h5>3) Sign the Event Waiver</h5>
           <p class="description-text">The safety and happiness of our attendees is our #1 priority, and it's vital that everyone adheres to our online code of conduct and waiver during the event. Please make sure you've signed the online waiver before proceeding.</p>
@@ -94,6 +95,7 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
+        <template v-slot:progress><ProgressCircles v-bind:full="3" v-bind:half="1" v-bind:empty="1" /></template>
         <template v-slot:body>
           <h5>4) Your Hacker Profile</h5>
           <p class="description-text">Your hacker profile is an optional way for you to share more information about yourselves with the event sponsors. Describe yourself in 1-2 sentences:</p>
@@ -108,6 +110,7 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
+        <template v-slot:progress><ProgressCircles v-bind:full="4" v-bind:half="1" v-bind:empty="0" /></template>
         <template v-slot:body>
           <h5>5) Set Up Your Slack Account </h5>
           <p class="description-text">We'll be using Slack to share announcements, chat with other hackers, and more! Click the link below to register for our slack workspace, and come back once you're finished.</p>
@@ -122,6 +125,7 @@
 <script>
 import Button from '@/components/Button.vue';
 import ContentContainer from '@/components/ContentContainer.vue';
+import ProgressCircles from '@/components/ProgressCircles.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
@@ -130,6 +134,7 @@ export default {
   components: {
     Button,
     ContentContainer,
+    ProgressCircles,
   },
   mixins: [generalMixin],
   data() {
@@ -151,6 +156,8 @@ export default {
       slackLinkButtonClicked: false,
       docusignLinkButtonClicked: false,
       enrollmentVerificationFileUpload: null,
+      currRegistrationStep: 0,
+      totalRegistrationStep: 6,
     };
   },
   async mounted() {

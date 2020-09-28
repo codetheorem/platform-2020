@@ -60,13 +60,13 @@
 </template>
 
 <script>
+import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
 
 import Config from '../config/general';
 import Button from '../components/Button.vue';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
-import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 
 export default {
   name: 'Schedule',
@@ -89,9 +89,11 @@ export default {
       selectedEvent: {},
       startDate: new Date(Config.shared.START_DATE),
       endDate: new Date(Config.shared.END_DATE),
+      targetEventId: null,
     };
   },
   async mounted() {
+    this.targetEventId = this.$route.query.event;
     this.prepareTimeWindows();
     this.populateDays();
     await this.getEventsFromUserList();
@@ -100,6 +102,9 @@ export default {
     console.log(this.rawEvents);
     this.processRawEvents();
     this.dataLoaded = true;
+    if (this.targetEventId && this.rawEvents.find(((event) => event.id === this.targetEventId))) {
+      this.openScheduleModalDirect(this.rawEvents.find(((event) => event.id === this.targetEventId)));
+    }
     await this.activityTracking('SCHEDULE');
   },
 };

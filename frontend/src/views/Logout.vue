@@ -37,6 +37,8 @@ export default {
     logout() {
       this.removeUserIdCookie();
       this.removeUserNameCookie();
+      this.removeUserGroupCookie();
+      this.removeSponsorBoothIdCookie();
       this.$router.push('Login');
     },
     goBack() {

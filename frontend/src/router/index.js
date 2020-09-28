@@ -25,6 +25,18 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/sponsor',
+    name: 'Sponsorship Fair',
+    component: () => import('../views/SponsorBooth.vue'),
+    displayInNavBar: false,
+  },
+  {
+    path: '/sponsor-analytics',
+    name: 'Sponsor Booth Analytics',
+    component: () => import('../views/SponsorAnalytics.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/live-stream',
     name: 'Live Stream',
     component: () => import('../views/LiveStream.vue'),
@@ -46,11 +58,15 @@ const routes = [
   },
   {
     path: '/resources',
-    name: 'Helpful Resources',
+    name: 'Hacker Resources',
+    component: () => import('../views/HackerResources.vue'),
     displayInNavBar: false,
-    beforeEnter() {
-      window.open(Config.dev.HACKER_RESOURCES_LINK, '_blank');
-    },
+  },
+  {
+    path: '/games',
+    name: 'Games',
+    component: () => import('../views/Games.vue'),
+    displayInNavBar: false,
   },
   {
     path: '/schedule',
@@ -133,6 +149,12 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/faq',
+    name: 'FAQ',
+    component: () => import('../views/FAQ.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/events',
     name: 'Events',
     displayInNavBar: true,
@@ -188,6 +210,10 @@ const routes = [
         name: 'Slack',
       },
       {
+        path: '/games',
+        name: 'Games',
+      },
+      {
         path: '/water-cooler',
         name: 'Networking',
       },
@@ -208,7 +234,11 @@ const routes = [
       },
       {
         path: '/resources',
-        name: 'Helpful Resources',
+        name: 'Hacker Resources',
+      },
+      {
+        path: '/faq',
+        name: 'FAQ',
       },
     ],
   },
