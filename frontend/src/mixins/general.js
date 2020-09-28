@@ -71,6 +71,24 @@ export default {
     removeUserNameCookie() {
       this.$cookie.delete('userName');
     },
+    getUserGroup() {
+      return this.$cookie.get('group') || 'hacker';
+    },
+    setUserGroupCookie(group) {
+      this.$cookie.set('group', group, 100);
+    },
+    removeUserGroupCookie() {
+      this.$cookie.delete('group');
+    },
+    getSponsorBoothId() {
+      return this.$cookie.get('sponsorBoothId');
+    },
+    setSponsorBoothIdCookie(id) {
+      this.$cookie.set('sponsorBoothId', id, 100);
+    },
+    removeSponsorBoothIdCookie() {
+      this.$cookie.delete('sponsorBoothId');
+    },
     async checkIfUserHasTeam() {
       const env = this.getCurrentEnvironment();
       const teamParams = {

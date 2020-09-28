@@ -31,6 +31,12 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/sponsor-analytics',
+    name: 'Sponsor Booth Analytics',
+    component: () => import('../views/SponsorAnalytics.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/live-stream',
     name: 'Live Stream',
     component: () => import('../views/LiveStream.vue'),

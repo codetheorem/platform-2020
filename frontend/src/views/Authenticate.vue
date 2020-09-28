@@ -34,6 +34,8 @@ export default {
       } else {
         this.$router.push('/');
         this.setUserNameCookie(user.full_name.split(' ')[0]);
+        this.setUserGroupCookie(user.group);
+        this.setSponsorBoothIdCookie(user.sponsor_booth);
       }
     } else {
       this.$router.push('Login');
