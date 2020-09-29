@@ -420,7 +420,7 @@ module.exports.add_zoom_link_for_team = withSentry(async (event) => {
 });
 
 module.exports.get_team = withSentry(async (event) => {
-  const id = event.queryStringParameters.id;
+  const { id } = event.queryStringParameters;
 
   const ddb = new AWS.DynamoDB.DocumentClient();
 
