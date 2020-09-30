@@ -249,6 +249,10 @@ export default {
       };
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'leave_team', params);
       this.currentTeam = null;
+      this.teamName = '';
+      this.invites = [];
+      this.invitesToCurrentTeam = [];
+      this.inviteEmail = '';
       this.$emit('teamMembershipChanged', false);
     },
     async createZoomLink() {
