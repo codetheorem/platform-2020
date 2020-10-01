@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <img src="@/assets/livestream.png" style="width: 100%; height: 100%;">
+    <!-- <img src="@/assets/livestream.png" style="width: 100%; height: 100%;"> -->
     <div id="iframe-wrapper">
       <iframe id="live-stream-wrapper" :src="liveStreamLink" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
