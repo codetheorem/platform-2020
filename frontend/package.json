@@ -6,9 +6,11 @@
     "serve": "npm i && vue-cli-service serve",
     "build": "vue-cli-service build --mode staging",
     "build-prod": "vue-cli-service build --mode production",
+    "build-prod2": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploy": "npm run build && sls deploy --stage staging",
     "deploy-prod": "npm run build-prod && sls deploy --stage prod",
+    "deploy-prod2": "npm run build-prod2 && sls deploy --stage prod2",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },
