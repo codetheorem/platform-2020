@@ -178,7 +178,7 @@ h2 {
     height: 30%;
     width: 80%;
     margin-top: 10%;
-    background: #DED2E5;
+    background: #F7D0CB;
     border-radius: 8px;
     padding: 1rem;
 }
@@ -262,14 +262,14 @@ h2 {
 }
 .dropdown-item:hover{
     color: #D66D50 !important;
-    background: rgba(182, 161, 196, 0.25);
+    background: rgba(214, 109, 80, .25);
     border-radius: 4px;
     width: 93%;
 }
 @media (max-width: 1950px) {
   .dropdown-item:hover{
     color: #D66D50 !important;
-    background: rgba(182, 161, 196, 0.25);
+    background: rgba(214, 109, 80, .25);
     border-radius: 4px;
     width: 90%;
   }
@@ -277,7 +277,7 @@ h2 {
 @media (max-width: 1800px) {
   .dropdown-item:hover{
     color: #D66D50 !important;
-    background: rgba(182, 161, 196, 0.25);
+    background: rgba(214, 109, 80, .25);
     border-radius: 4px;
     width: 85%;
   }

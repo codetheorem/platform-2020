@@ -100,7 +100,7 @@ a:hover {
   
 .form-control:focus {
 	outline: 0 !important;
-	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .25) !important;
+	box-shadow: 0 0 0 0.2rem rgba(214, 109, 80, .25) !important;
 }
 
 .tooltip .tooltip-inner{

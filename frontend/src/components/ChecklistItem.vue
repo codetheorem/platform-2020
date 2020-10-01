@@ -84,7 +84,7 @@ export default {
 
 /* When the checkbox is checked, add a background */
 .container input:checked ~ .checkmark {
-  background-color: #FF5091;
+  background-color: #CA484F;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */

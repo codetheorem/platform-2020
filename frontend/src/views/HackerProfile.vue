@@ -26,7 +26,7 @@
             </div>
             <div class="profile-footer-box">
                 <h5 class="profile-footer-box-title">Our Hack:</h5>
-                <p class="profile-footer-box-content">For our Technica project, we designed a cool website. Please check it out!!</p>
+                <p class="profile-footer-box-content">For our Hack the Mountains project, we designed a cool website. Please check it out!!</p>
             </div>
         </div>
     </div>

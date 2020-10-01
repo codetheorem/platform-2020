@@ -295,7 +295,7 @@ h2 {
 }
 
 .pending-invites {
-  background: #DED2E6;
+  background: #F7D0CB;
   border-radius: 5px;
   flex: auto;
   justify-content: center;
@@ -323,13 +323,13 @@ h2 {
   width: 100%;
   height: fit-content;
   padding: 10px;
-  border: 1px solid #B6A1C4;
+  border: 1px solid #F7D0CB;
   border-radius: 4px;
   margin-bottom: 1rem;
 }
 
 .team-list-segment {
-  border-right: 1px solid #B6A1C4;
+  border-right: 1px solid #F7D0CB;
 }
 
 .invite-container {
@@ -343,8 +343,8 @@ h2 {
 }
 
 .invited-list-item {
-  background: #E5E5E5;
-  border: 1px solid #B6A1C4;
+  background: #F7D0CB;
+  border: 1px solid #F7D0CB;
 }
 
 .invited-list-pending {
