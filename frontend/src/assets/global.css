@@ -26,7 +26,7 @@ body {
 
 /* body style is unique for home page */
 body.home {
-	background: linear-gradient(to bottom, rgba(194,234,241,.35) 0%, rgba(204,195,223,.35) 33%, rgba(216,148,204,.35) 66%, rgba(234,160,178,.35) 100%) !important;
+	background: linear-gradient(to bottom, rgba(233, 174, 145, .25) 0%, rgba(202, 72, 79, .25) 33%, rgba(247, 208, 203, .25) 66%, rgba(214, 109, 80, .25) 100%);
 	min-height: 100vh;
 }
 
@@ -160,4 +160,8 @@ button:focus {
 
 .carousel-control-prev, .carousel-control-next, .carousel-indicators {
 	z-index: 100 !important;
+}
+
+.intercom-lightweight-app-launcher{
+	background: #E9AE91 !important;
 }

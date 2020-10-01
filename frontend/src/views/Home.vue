@@ -10,8 +10,8 @@
       <div class="home-main">
         <div class="home-links">
           <h5>HELPFUL LINKS</h5>
-          <p>Welcome to the Technica platform! We're incredibly excited to host you and the entire Technica community for an amazing weekend of learning, inclusiveness, and fun.</p>
-          <a id="onboardingWalkthroughButton" href="#" class="home-link" @click="initiateOnboardingWalkthrough"><p>Learn About the Technica Platform</p></a>
+          <p>Welcome to the Hack the Mountains platform! We're incredibly excited to host you for an amazing weekend of learning, building, and fun.</p>
+          <a id="onboardingWalkthroughButton" href="#" class="home-link" @click="initiateOnboardingWalkthrough"><p>Learn About the Hack the Mountains Platform</p></a>
           <a href="https://slack.com" target="_blank" class="home-link"><p>Join the Conversation on Slack</p></a>
           <a href="https://gotechnica.org/hacker-resources" target="_blank" class="home-link"><p>Useful Resources for Your Hack</p></a>
           <router-link to="/help"><a href="#" class="home-link"><p>Get In Touch With An Organizer</p></a></router-link>
@@ -19,8 +19,8 @@
         <div class="home-announcements">
           <h5>ANNOUNCEMENTS</h5>
           <div class="announcements-list">
-            <Banner text="This is a sample announcement. Welcome to Technica!"/>
-            <Banner text="This is a sample announcement. Welcome to Technica!"/>
+            <Banner text="This is a sample announcement. Welcome to Hack the Mountains!" />
+            <Banner text="This is a sample announcement. Welcome to Hack the Mountains!"/>
           </div>
         </div>
       </div>
@@ -43,9 +43,6 @@
           <Button text="Attend" @click="attendEvent()" size="sm"/>
       </template>
     </b-modal>
-    <div class="cloud-wrapper animate__animated animate__fadeInUp delay3">
-      <img src="@/assets/home_page_bg.svg" alt="Two technica hackers getting to know each other" class="cloud-image">
-    </div>
   </div>
 </template>
 
@@ -126,7 +123,7 @@ h2 {
 
 .home-links {
   width: 80%;
-  background: #DED2E5;
+  background: #E9AE91;
   border-radius: 8px;
   margin-right: 3rem;
   padding: 1rem;

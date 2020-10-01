@@ -1,6 +1,6 @@
 <template>
     <div class="loading-spinner-wrapper">
-        <img src="../assets/loading.gif" class="loading-spinner-img" >
+        <b-spinner label="Loading..."></b-spinner>
     </div>
 </template>
 
@@ -17,5 +17,9 @@ export default {
     }
     .loading-spinner-img {
         height: 216px;
+    }
+    .spinner-border {
+        border-color:#D66D50 !important;
+        border-right-color: transparent !important;
     }
 </style>

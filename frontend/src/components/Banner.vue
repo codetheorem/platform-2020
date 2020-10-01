@@ -1,6 +1,5 @@
 <template>
   <div class="banner-wrapper">
-    <img src="../assets/technica-logo-icon.png" style="width: 30px; height: 30px;">
     <span class="banner-text">{{ text }}</span>
   </div>
 </template>
@@ -25,7 +24,7 @@ export default {
     .banner-wrapper {
         background: #FFFFFF;
         border-radius: 8px;
-        filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25));
+        filter: drop-shadow(0px 2px 2px #f7c2bb);
         width: 80%;
         padding: 5px;
         padding-bottom: 10px;
