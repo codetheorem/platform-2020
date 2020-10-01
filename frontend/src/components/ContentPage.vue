@@ -116,7 +116,7 @@ export default {
 }
 
 .accordion:hover, .accordion-active {
-  border-color: #A88AA8;
+  border-color: #CA484F;
 }
 
 .accordion-active .faq-toggle-icon:before {

@@ -44,7 +44,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .btn-wrapper {
-  background-color: #a88aa8;
+  background-color: #CA484F;
   border: none;
   border-radius: 8px;
   font-family: Noto Sans;
@@ -53,44 +53,44 @@ export default {
   font-size: 16px;
   line-height: 22px;
   margin-bottom: 15px;
-  border: 2px solid #a88aa8;
+  border: 2px solid #CA484F;
 }
 
 .btn-wrapper:hover {
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
-  background-color: #a88aa8 !important;
-  border-color: #a88aa8 !important;
+  background-color: #CA484F !important;
+  border-color: #CA484F !important;
 }
 
 .btn-wrapper:active {
-  background-color: #b377db !important;
-  border: 2px solid #b377db !important;
+  background-color: #D66D50 !important;
+  border: 2px solid #D66D50 !important;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15) !important;
 }
 
 .btn-wrapper:focus {
-  background-color: #b377db !important;
-  border: 2px solid #b377db !important;
+  background-color: #D66D50 !important;
+  border: 2px solid #D66D50 !important;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15) !important;
 }
 
 .outline-style {
   background-color: transparent !important;
-  color: #a88aa8;
-  border: 2px solid #a88aa8;
+  color: #CA484F;
+  border: 2px solid #CA484F;
 }
 
 .outline-style:hover {
-  color: #b377db;
-  border: 2px solid #b377db;
+  color: #D66D50;
+  border: 2px solid #D66D50;
   background-color: transparent !important;
 }
 
 .outline-style:active {
   background-color: #f4ebfa !important;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15) !important;
-  color: #b377db !important;
-  border: 2px solid #b377db !important;
+  color: #D66D50 !important;
+  border: 2px solid #D66D50 !important;
 }
 
 .btn-wrapper:focus {

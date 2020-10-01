@@ -124,7 +124,7 @@ export default {
   }
 
   .description-text {
-    color: #A88AA8;
+    color: #CA484F;
   }
 
   .login-footer {

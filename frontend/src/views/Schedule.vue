@@ -134,9 +134,9 @@ export default {
 }
 
 .schedule-list-title-item-selected {
-  border: 4px solid #B377DB;
+  border: 4px solid #D66D50;
   box-shadow: 0px 4px 4px rgba(179, 119, 219, 0.25);
-  color: #B377DB;
+  color: #D66D50;
 }
 
 .schedule-body {
@@ -210,18 +210,18 @@ export default {
 }
 
 .content-item-type-a {
-  color: #B377DB;
-  background: #DED2E5;
+  color: #D66D50;
+  background: #F7D0CB;
 }
 
 .content-item-type-b {
-  background: #A88AA8;
+  background: #CA484F;
   border-radius: 8px;
   color: #FFFFFF;
 }
 
 .content-item-type-c {
-  background: #B377DB;
+  background: #D66D50;
   border-radius: 8px;
   color: #FFFFFF;
 }

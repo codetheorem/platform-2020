@@ -73,7 +73,7 @@ export default {
       padding: 5px;
     }
     .nav-inner-text:hover, .nav-link.dropdown-toggle:hover, .dropdown-item:hover{
-      color: #B377DB !important;
+      color: #D66D50 !important;
       background: rgba(182, 161, 196, 0.25);
       border-radius: 4px;
     }

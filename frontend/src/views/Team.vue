@@ -348,7 +348,7 @@ h2 {
 }
 
 .invited-list-pending {
-  color: #A88AA8 !important;
+  color: #CA484F !important;
   font-weight: bold;
 }
 </style>

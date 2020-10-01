@@ -3,13 +3,13 @@
 
 /* COLORS */
 :root {
-	--pastel-purple: #A88AA8;
-	--pastel-pink: #EA668E;
-	--bright-purple: #B377DB;
-	--lighter-purple: #b5a1c4;
-	--bright-pink: #FF5091;
-	--light-purple: #DED2E5;
-	--light-pink: #F8D2E0;
+	--pastel-purple: #CA484F;
+	--pastel-pink: #D66D50;
+	--bright-purple: #D66D50;
+	--lighter-purple: #F7D0CB;
+	--bright-pink: #D66D50;
+	--light-purple: #F7D0CB;
+	--light-pink: #F7D0CB;
 	--black: #2D2D2D;
 	--grey: #464343;
 	--light-grey: #8B8787;
@@ -124,31 +124,31 @@ a.redirect-link{
 
 
 .custom-file-label {
-    border-color: #EA668E !important;
+    border-color: #D66D50 !important;
 }
 
 .btn-secondary {
-    background: #EA668E;
+    background: #D66D50;
     border-radius: 4px;
-    border-color:#EA668E;
+    border-color:#D66D50;
 }
 
 .btn-secondary:focus {
-    background: #EA668E !important;
+    background: #D66D50 !important;
     border-radius: 4px !important;
 	border-color:rgb(234, 102, 142) !important;
 	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .25) !important;
 }
 
 .btn-secondary:active {
-    background: #EA668E !important;
+    background: #D66D50 !important;
     border-radius: 4px !important;
 	border-color:rgb(234, 102, 142) !important;
 	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .25) !important;
 }
 
 .btn-secondary:hover {
-    background: #EA668E !important;
+    background: #D66D50 !important;
     border-radius: 4px !important;
 	border-color:rgb(234, 102, 142) !important;
 	box-shadow: 0 0 0 0.2rem rgba(234, 102, 142, .25) !important;

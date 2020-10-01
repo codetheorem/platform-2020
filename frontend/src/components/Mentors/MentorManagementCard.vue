@@ -71,12 +71,12 @@ export default {
   .banner-action {
     margin-left: 1rem;
     margin-right: 1rem;
-    color: #A88AA8 !important;
+    color: #CA484F !important;
     font-weight: bold;
   }
 
   .banner-action:hover {
-    color: #B377DB !important;
+    color: #D66D50 !important;
     cursor: pointer;
   }
 

@@ -195,7 +195,7 @@ h2 {
     color: #000000 !important;
 }
 .form-control {
-    border: 1px solid #A88AA8 !important;
+    border: 1px solid #CA484F !important;
     width: 80%;
 }
 .mentor-form-buttons {
@@ -206,7 +206,7 @@ h2 {
     height: 100%;
     width: 80%;
     background: #FFFFFF;
-    border: 4px solid #B377DB;
+    border: 4px solid #D66D50;
     box-sizing: border-box;
     border-radius: 0px 0px 4px 4px;
 }
@@ -219,12 +219,12 @@ h2 {
     font-size: 2rem !important;
     padding: .5rem;
     line-height: 31px;
-    color: #B377DB;
+    color: #D66D50;
 }
 .mentor-request-list-body {
     height: 90%;
     width: 100%;
-    border-top: 4px solid #B377DB;
+    border-top: 4px solid #D66D50;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -261,14 +261,14 @@ h2 {
     margin-left: 5px;
 }
 .dropdown-item:hover{
-    color: #B377DB !important;
+    color: #D66D50 !important;
     background: rgba(182, 161, 196, 0.25);
     border-radius: 4px;
     width: 93%;
 }
 @media (max-width: 1950px) {
   .dropdown-item:hover{
-    color: #B377DB !important;
+    color: #D66D50 !important;
     background: rgba(182, 161, 196, 0.25);
     border-radius: 4px;
     width: 90%;
@@ -276,7 +276,7 @@ h2 {
 }
 @media (max-width: 1800px) {
   .dropdown-item:hover{
-    color: #B377DB !important;
+    color: #D66D50 !important;
     background: rgba(182, 161, 196, 0.25);
     border-radius: 4px;
     width: 85%;
@@ -285,7 +285,7 @@ h2 {
 .dropdown-border {
     padding-left: 10px;
     padding-right: 10px;
-    border: 1px solid #A88AA8 !important;
+    border: 1px solid #CA484F !important;
     width: 80%;
     border-radius: 4px;
 }

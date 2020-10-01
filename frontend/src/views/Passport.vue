@@ -127,7 +127,7 @@ h2 {
 
 .member-list-item {
     width: 100%;
-    border: 2px solid #A88AA8;
+    border: 2px solid #CA484F;
     box-sizing: border-box;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
@@ -163,7 +163,7 @@ h2 {
     font-style: normal;
     font-weight: 600;
     font-size: 96px;
-    color: #B377DB;
+    color: #D66D50;
     margin-right: 1rem;
 }
 
@@ -241,7 +241,7 @@ h2 {
 }
 
 .activity-completed {
-    background: #B377DB;
+    background: #D66D50;
 }
 
 @media (max-width: 1300px) {
