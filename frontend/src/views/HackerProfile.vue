@@ -139,7 +139,7 @@ h2 {
     padding-top: 1rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    border: 2px solid #B6A1C4;
+    border: 2px solid #D66D50;
     box-sizing: border-box;
     border-radius: 8px;
     flex: 0 0 30%;
@@ -147,7 +147,7 @@ h2 {
 }
 
 .profile-footer-box-title {
-    color: #B6A1C4;
+    color: #D66D50;
     font-family: DIN Pro;
     font-style: normal;
     font-weight: bold;
