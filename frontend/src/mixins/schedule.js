@@ -96,9 +96,10 @@ export default {
       return eventsForWindow;
     },
     getImgUrl(event) {
-      const images = require.context('../assets', false, /\.png$/);
+      const images = require.context('../assets', false);
       const imageType = (event.addedToUserList ? 'filledStarImgName' : 'emptyStarImgName');
-      return images(`./${event.branding[imageType]}.png`);
+      const ext = (event.branding[imageType].includes('purple')) ? '.svg' : '.png';
+      return images(`./${event.branding[imageType]}${ext}`);
     },
     async toggleAddingEventToList(targetEvent) {
       // eslint-disable-next-line no-param-reassign

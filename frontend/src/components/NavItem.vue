@@ -50,7 +50,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .nav-inner-text, .nav-link.dropdown-toggle, .dropdown-menu, .dropdown-item{
-      color: #B6A1C4 !important;
+      color: #D66D50 !important;
       font-size: 18px;
       font-weight: 600;
     }
@@ -74,7 +74,7 @@ export default {
     }
     .nav-inner-text:hover, .nav-link.dropdown-toggle:hover, .dropdown-item:hover{
       color: #D66D50 !important;
-      background: rgba(182, 161, 196, 0.25);
+      background: rgba(214, 109, 80, .2);
       border-radius: 4px;
     }
     @media (min-width: 992px) {
