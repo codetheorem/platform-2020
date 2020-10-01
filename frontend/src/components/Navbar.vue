@@ -3,7 +3,7 @@
       <div class="logo-nav">
         <router-link to="/">
           <a class="navbar-brand" href="#">
-            <img alt="Vue logo" src="../assets/technica-logo.svg" class="img-responsive" />
+            <img alt="Vue logo" :src="getEnvVariable('NAV_IMG')" class="img-responsive" style="height: 7vh;" :style="getEnvVariable('NAV_IMG_STYLE')"/>
           </a>
         </router-link>
       </div>
@@ -38,9 +38,11 @@
 
 <script>
 import NavItem from '@/components/NavItem.vue';
+import GeneralMixin from '../mixins/general';
 
 export default {
   name: 'Navbar',
+  mixins: [GeneralMixin],
   components: {
     NavItem,
   },
@@ -58,6 +60,9 @@ export default {
       ),
     };
   },
+  mounted() {
+    console.log(this.getEnvVariable('HOME_PAGE_IMAGE'))
+  }
 };
 
 </script>

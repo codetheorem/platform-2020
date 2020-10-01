@@ -1,4 +1,12 @@
 export default {
+  prod2: {
+    NAV_IMG: 'https://technica-brand-assets.s3.amazonaws.com/logo_small.png',
+    NAV_IMG_STYLE: '',
+  },
+  technica: {
+    NAV_IMG: 'https://technica-brand-assets.s3.amazonaws.com/technica-logo.svg',
+    NAV_IMG_STYLE: 'height: 4vh;',
+  },
   shared: {
     SAMPLE_ZOOM_LINK: 'https://us04web.zoom.us/j/9191971697?pwd=U1lPSUlJeElXQldCTkJwSnJOYjB4dz09',
     LIVESTREAM_LINK: 'https://www.youtube.com/embed/5jPwFWIvBzk',

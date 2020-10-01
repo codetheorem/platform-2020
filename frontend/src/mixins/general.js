@@ -113,6 +113,12 @@ export default {
       return 'dev';
     },
     getEnvVariable(variableName) {
+      if (Config.prod2[variableName]) {
+        return Config.prod2[variableName];
+      }
+      if (Config.technica[variableName]) {
+        // return Config.technica[variableName];
+      }
       if (Config.shared[variableName]) {
         return Config.shared[variableName];
       }
