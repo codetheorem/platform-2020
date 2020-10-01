@@ -5,13 +5,11 @@
         <template v-slot:title>
           <h3>Welcome!</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="0" v-bind:empty="5" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="0" v-bind:empty="3" /></template>
         <template v-slot:body>
-          <p class="description-text">Welcome to Technica! To set up your account, you'll have to go through a few steps:</p>
+          <p class="description-text">Welcome to Hack the Mountains! To set up your account, you'll have to go through a few steps:</p>
           <ol class="step-list">
             <li>Update Information</li>
-            <li>Verify You're a Student</li>
-            <li>Sign the Event Waiver</li>
             <li>Create a Hacker Profile (Optional)</li>
             <li>Set Up Your Slack Account</li>
           </ol>
@@ -24,7 +22,7 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="1" v-bind:empty="4" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="1" v-bind:empty="2" /></template>
         <template v-slot:body>
           <h5>1) A Little About You</h5>
           <form @submit.prevent="goToProfile">
@@ -95,7 +93,7 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="3" v-bind:half="1" v-bind:empty="1" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="1" v-bind:half="1" v-bind:empty="1" /></template>
         <template v-slot:body>
           <h5>4) Your Hacker Profile</h5>
           <p class="description-text">Your hacker profile is an optional way for you to share more information about yourselves with the event sponsors. Describe yourself in 1-2 sentences:</p>
@@ -110,7 +108,7 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="4" v-bind:half="1" v-bind:empty="0" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="2" v-bind:half="1" v-bind:empty="0" /></template>
         <template v-slot:body>
           <h5>5) Set Up Your Slack Account </h5>
           <p class="description-text">We'll be using Slack to share announcements, chat with other hackers, and more! Click the link below to register for our slack workspace, and come back once you're finished.</p>
@@ -190,7 +188,7 @@ export default {
           phone: this.phone,
         };
         this.performPostRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'update_user', postParams);
-        this.displayEnrollmentVerificationScreen = true;
+        this.displayHackerProfileDescriptionScreen = true;
         this.displayProfileInfoScreen = false;
         this.setUserNameCookie(this.name.split(' ')[0]);
       } else if (!this.profileInformationCompleted) {
