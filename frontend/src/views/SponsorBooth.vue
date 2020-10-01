@@ -106,7 +106,6 @@
 import Button from '../components/Button.vue';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'SponsorBooth',
@@ -122,18 +121,16 @@ export default {
     if (!this.sponsorId) {
       this.$router.push('/sponsors');
     }
-    const env = this.getCurrentEnvironment();
     const params = {
       id: this.sponsorId,
     };
-    const sponsorData = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_sponsor_booth', params);
+    const sponsorData = await this.performGetRequest(this.getEnvVariable('ADMIN_BASE_ENDPOINT'), 'get_sponsor_booth', params);
     if (sponsorData.Items && sponsorData.Items.length > 0) {
       // eslint-disable-next-line prefer-destructuring
       this.sponsor = sponsorData.Items[0];
     } else {
       this.$router.push('/sponsors');
     }
-    console.log(this.sponsor)
     this.dataLoaded = true;
   },
   data() {

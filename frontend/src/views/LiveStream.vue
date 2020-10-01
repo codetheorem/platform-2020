@@ -8,13 +8,14 @@
 </template>
 
 <script>
-import Config from '../config/general';
+import generalMixin from '../mixins/general';
 
 export default {
   name: 'LiveStream',
+  mixins: [generalMixin],
   computed: {
     liveStreamLink() {
-      return Config.shared.LIVESTREAM_LINK;
+      return this.getEnvVariable('LIVESTREAM_LINK');
     },
   },
 };

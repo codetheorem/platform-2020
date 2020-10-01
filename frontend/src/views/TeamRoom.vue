@@ -28,7 +28,6 @@
 import Button from '@/components/Button.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'TeamRoom',
@@ -51,20 +50,19 @@ export default {
   },
   methods: {
     async getTeam() {
-      const env = this.getCurrentEnvironment();
       const teamParams = {
         user_id: this.getUserId(),
       };
-      const team = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_membership_for_user', teamParams);
+      const team = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_team_membership_for_user', teamParams);
       if (team[0]) {
         const params = {
           team_id: team[0].team_id,
         };
-        const teamMembers = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_users_for_team', params);
+        const teamMembers = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_users_for_team', params);
         const teamInfoParams = {
           id: team[0].team_id,
         };
-        const teamInfo = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team', teamInfoParams);
+        const teamInfo = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_team', teamInfoParams);
         this.currentTeam = {};
         this.currentTeam.members = teamMembers;
         this.currentTeam.name = 'My Team';

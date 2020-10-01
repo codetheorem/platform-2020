@@ -5,7 +5,8 @@ export default {
   methods: {
     // use this where the get data endpoint uses the AWS Document Client
     // (AKA data is already formatted JSON)
-    async getDataSimple(baseUrl, stage, endpoint) {
+    async getDataSimple(baseUrl, endpoint) {
+      const stage = this.getCurrentEnvironment();
       try {
         const result = await Axios.get(`${baseUrl}/${stage}/${endpoint}`);
         console.log(result);
@@ -15,7 +16,8 @@ export default {
         return null;
       }
     },
-    async getData(baseUrl, stage, endpoint) {
+    async getData(baseUrl, endpoint) {
+      const stage = this.getCurrentEnvironment();
       try {
         const result = await Axios.get(`${baseUrl}/${stage}/${endpoint}`);
         console.log(result);
@@ -35,7 +37,8 @@ export default {
       });
       return formattedItem;
     },
-    async performGetRequest(baseUrl, stage, endpoint, params) {
+    async performGetRequest(baseUrl, endpoint, params) {
+      const stage = this.getCurrentEnvironment();
       try {
         const result = await Axios.get(`${baseUrl}/${stage}/${endpoint}`, { params });
         return this.formatDynamoItem(result.data);
@@ -44,7 +47,8 @@ export default {
         return null;
       }
     },
-    async performPostRequest(baseUrl, stage, endpoint, params) {
+    async performPostRequest(baseUrl, endpoint, params) {
+      const stage = this.getCurrentEnvironment();
       try {
         const result = await Axios.post(`${baseUrl}/${stage}/${endpoint}`, params);
         return result.data;
@@ -90,11 +94,10 @@ export default {
       this.$cookie.delete('sponsorBoothId');
     },
     async checkIfUserHasTeam() {
-      const env = this.getCurrentEnvironment();
       const teamParams = {
         user_id: this.getUserId(),
       };
-      const team = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_membership_for_user', teamParams);
+      const team = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_team_membership_for_user', teamParams);
       if (team[0]) {
         return true;
       }
@@ -109,14 +112,19 @@ export default {
       }
       return 'dev';
     },
+    getEnvVariable(variableName) {
+      if (Config.shared[variableName]) {
+        return Config.shared[variableName];
+      }
+      return Config[this.getCurrentEnvironment()][variableName];
+    },
     async activityTracking(actionName) {
-      const env = this.getCurrentEnvironment();
       const params = {
         user_id: this.getUserId(),
         action: actionName,
         user_name: this.getUserName(),
       };
-      await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'track_user_activity', params);
+      await this.performPostRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'track_user_activity', params);
     },
     getDayOfTheWeek(date) {
       const weekday = new Array(7);

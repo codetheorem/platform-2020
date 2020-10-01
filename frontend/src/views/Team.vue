@@ -95,7 +95,6 @@ import Button from '@/components/Button.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import Banner from '@/components/Banner.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'Team',
@@ -129,27 +128,25 @@ export default {
       return !this.currentTeam ? 'Invites' : this.currentTeam.name;
     },
     teamFormationEventId() {
-      const env = this.getCurrentEnvironment();
-      return Config[env].eventIds.teamFormation;
+      return this.getEnvVariable('eventIds').teamFormation;
     },
   },
   methods: {
     async createTeam() {
       if (this.teamName !== '') {
         this.teamCreationLoading = true;
-        const env = this.getCurrentEnvironment();
         const createTeamPostParams = {
           team_name: this.teamName,
           project_submitted: false,
         };
-        const createdTeam = await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'create_team', createTeamPostParams);
+        const createdTeam = await this.performPostRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'create_team', createTeamPostParams);
         await this.activityTracking('TEAM_CREATION');
         // after creating the new team, join it
         const joinTeamPostParams = {
           team_id: createdTeam.id,
           user_id: this.getUserId(),
         };
-        await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'join_team', joinTeamPostParams);
+        await this.performPostRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'join_team', joinTeamPostParams);
         await this.getTeam();
         this.$emit('teamMembershipChanged', true);
         this.teamName = '';
@@ -161,21 +158,19 @@ export default {
       }
     },
     async createChecklist() {
-      const env = this.getCurrentEnvironment();
       this.checklistItems.forEach(async (item) => {
         const createChecklistPostParams = {
           team_id: this.currentTeam.id,
           checklist_item_id: item,
         };
-        await this.performPostRequest(Config[env].SPONSORS_INFO_ENDPOINT, env, 'create_project_checklist_item', createChecklistPostParams);
+        await this.performPostRequest(this.getEnvVariable('SPONSORS_INFO_ENDPOINT'), 'create_project_checklist_item', createChecklistPostParams);
       });
     },
     async getInvitesForHacker() {
       const params = {
         user_id: this.getUserId(),
       };
-      const env = this.getCurrentEnvironment();
-      const invites = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_invites', params);
+      const invites = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_team_invites', params);
       const formattedInvites = [];
       Object.keys(invites).forEach((k) => {
         formattedInvites[k] = invites[k];
@@ -189,8 +184,7 @@ export default {
       const params = {
         team_id: this.currentTeam.id,
       };
-      const env = this.getCurrentEnvironment();
-      const invites = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_hackers_invited_to_team', params);
+      const invites = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_hackers_invited_to_team', params);
       const formattedInvites = [];
       Object.keys(invites).forEach((k) => {
         formattedInvites[k] = invites[k];
@@ -201,16 +195,15 @@ export default {
       }
     },
     async getTeam() {
-      const env = this.getCurrentEnvironment();
       const teamParams = {
         user_id: this.getUserId(),
       };
-      const team = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_membership_for_user', teamParams);
+      const team = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_team_membership_for_user', teamParams);
       if (team[0]) {
         const params = {
           team_id: team[0].team_id,
         };
-        const teamMembers = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_users_for_team', params);
+        const teamMembers = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_users_for_team', params);
         this.currentTeam = {};
         this.currentTeam.members = teamMembers;
         this.currentTeam.name = 'My Team';
@@ -220,7 +213,6 @@ export default {
       }
     },
     async inviteHacker() {
-      const env = this.getCurrentEnvironment();
       if (this.inviteEmail !== '' && this.$refs.emailInput.checkValidity() && !this.inviteExists()) {
         const createTeamPostParams = {
           team_id: this.currentTeam.id,
@@ -229,7 +221,7 @@ export default {
         };
         this.invitesToCurrentTeam.push({ email: this.inviteEmail, id: (new Date()).toString() });
         this.inviteEmail = '';
-        await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'invite_to_team', createTeamPostParams);
+        await this.performPostRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'invite_to_team', createTeamPostParams);
       }
     },
     inviteExists() {
@@ -243,11 +235,10 @@ export default {
       return emailsInvitedOrEnrolled.includes(this.inviteEmail);
     },
     async leaveTeam() {
-      const env = this.getCurrentEnvironment();
       const params = {
         user_id: this.getUserId(),
       };
-      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'leave_team', params);
+      await this.performPostRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'leave_team', params);
       this.currentTeam = null;
       this.teamName = '';
       this.invites = [];
@@ -256,20 +247,18 @@ export default {
       this.$emit('teamMembershipChanged', false);
     },
     async createZoomLink() {
-      const env = this.getCurrentEnvironment();
       const params = {
         event_name: 'Technica Team Room',
       };
-      const meeting = await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'create_zoom_meeting', params);
+      const meeting = await this.performPostRequest(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'create_zoom_meeting', params);
       return meeting.zoom_link;
     },
     async addZoomLinkForTeam(link) {
-      const env = this.getCurrentEnvironment();
       const params = {
         id: this.currentTeam.id,
         link,
       };
-      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'add_zoom_link_for_team', params);
+      await this.performPostRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'add_zoom_link_for_team', params);
     },
   },
 };

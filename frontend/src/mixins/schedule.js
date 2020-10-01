@@ -1,5 +1,3 @@
-import Config from '../config/general';
-
 const eventBrandingTypes = [{ class: 'content-item-type-a', emptyStarImgName: 'star_purple_empty', filledStarImgName: 'star_purple_filled' }, { class: 'content-item-type-b', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }, { class: 'content-item-type-c', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }];
 
 export default {
@@ -107,14 +105,12 @@ export default {
       targetEvent.addedToUserList = !targetEvent.addedToUserList;
       this.$forceUpdate();
 
-      const env = this.getCurrentEnvironment();
-
       if (!this.eventsInUserList.map((event) => event.event_id).includes(targetEvent.id)) {
         const addEventToUserListParams = {
           user_id: this.getUserId(),
           event_id: targetEvent.id,
         };
-        const addedId = await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'add_event_to_user_list', addEventToUserListParams);
+        const addedId = await this.performPostRequest(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'add_event_to_user_list', addEventToUserListParams);
         // eslint-disable-next-line no-param-reassign
         targetEvent.addedEventId = addedId.id;
         this.eventsInUserList.push({ event_id: targetEvent.id, id: addedId.id });
@@ -122,15 +118,14 @@ export default {
         const removeEventParams = {
           id: targetEvent.addedEventId,
         };
-        await this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'delete_event_from_user_list', removeEventParams);
+        await this.performPostRequest(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'delete_event_from_user_list', removeEventParams);
       }
     },
     async getEventsFromUserList() {
-      const env = this.getCurrentEnvironment();
       const userParams = {
         user_id: this.getUserId(),
       };
-      const rawEvents = await this.performGetRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'get_events_from_user_list', userParams);
+      const rawEvents = await this.performGetRequest(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'get_events_from_user_list', userParams);
       this.eventsInUserList = rawEvents.Items;
     },
   },

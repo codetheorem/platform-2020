@@ -32,7 +32,6 @@
 <script>
 import Button from '@/components/Button.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'WaterCooler',
@@ -42,7 +41,7 @@ export default {
   },
   computed: {
     waterCoolerLink() {
-      return Config.shared.SAMPLE_ZOOM_LINK;
+      return this.getEnvVariable('SAMPLE_ZOOM_LINK');
     },
   },
 };

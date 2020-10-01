@@ -64,7 +64,6 @@ import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
 
-import Config from '../config/general';
 import Button from '../components/Button.vue';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
 
@@ -87,8 +86,8 @@ export default {
       scheduleColumns: 3,
       dataLoaded: false,
       selectedEvent: {},
-      startDate: new Date(Config.shared.START_DATE),
-      endDate: new Date(Config.shared.END_DATE),
+      startDate: new Date(this.getEnvVariable('START_DATE')),
+      endDate: new Date(this.getEnvVariable('END_DATE')),
       targetEventId: null,
     };
   },
@@ -97,8 +96,7 @@ export default {
     this.prepareTimeWindows();
     this.populateDays();
     await this.getEventsFromUserList();
-    const env = this.getCurrentEnvironment();
-    this.rawEvents = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
+    this.rawEvents = await this.getData(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'schedule');
     console.log(this.rawEvents);
     this.processRawEvents();
     this.dataLoaded = true;

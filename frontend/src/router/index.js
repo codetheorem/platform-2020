@@ -21,7 +21,6 @@ const routes = [
   {
     path: '/sponsorship-fair',
     name: 'Sponsorship Fair',
-    component: () => import('../views/SponsorshipFair.vue'),
     displayInNavBar: false,
   },
   {
@@ -245,7 +244,6 @@ const routes = [
   {
     path: '/profile-dropdown',
     name: 'Profile',
-    component: () => import('../views/Profile.vue'),
     displayInNavBar: true,
     dropdown: [
       {

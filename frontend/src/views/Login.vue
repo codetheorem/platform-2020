@@ -41,7 +41,6 @@
 import Button from '@/components/Button.vue';
 import ContentContainer from '@/components/ContentContainer.vue';
 import generalMixin from '@/mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'Login',
@@ -60,19 +59,18 @@ export default {
   },
   methods: {
     async sendMagicLink() {
-      const env = this.getCurrentEnvironment();
       if (this.userEmail !== '' && this.userEmail.includes('@')) {
         const getParams = {
           email: this.userEmail,
         };
-        const user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'find_user_by_email', getParams);
+        const user = await this.performGetRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'find_user_by_email', getParams);
 
         if (user[0]) {
           const postParams = {
             id: user[0].id,
             setRegistrationStatus: false,
           };
-          this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'invite_user', postParams);
+          this.performPostRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'invite_user', postParams);
           this.loginButtonClicked = true;
         } else {
           this.emailInvalid = false;
@@ -97,7 +95,7 @@ export default {
   },
   computed: {
     signupFormLink() {
-      return Config.dev.SIGNUP_FORM_LINK;
+      return this.getEnvVariable('SIGNUP_FORM_LINK');
     },
   },
 };

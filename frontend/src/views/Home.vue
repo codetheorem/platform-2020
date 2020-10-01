@@ -55,7 +55,6 @@ import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 import Button from '../components/Button.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
-import Config from '../config/general';
 
 export default {
   name: 'Home',
@@ -67,9 +66,8 @@ export default {
   mixins: [generalMixin, scheduleMixin],
   methods: {
     initiateOnboardingWalkthrough() {
-      const env = this.getCurrentEnvironment();
       // eslint-disable-next-line no-undef
-      Intercom('startTour', Config[env].PLATFORM_WALKTHROUGH_ID);
+      Intercom('startTour', this.getEnvVariable('PLATFORM_WALKTHROUGH_ID'));
     },
     openIntercom() {
       // eslint-disable-next-line no-undef
@@ -87,16 +85,15 @@ export default {
       scheduleColumns: 3,
       dataLoaded: false,
       selectedEvent: {},
-      startDate: new Date(Config.shared.START_DATE),
-      endDate: new Date(Config.shared.END_DATE),
+      startDate: new Date(this.getEnvVariable('START_DATE')),
+      endDate: new Date(this.getEnvVariable('END_DATE')),
     };
   },
   async mounted() {
     this.prepareTimeWindows();
     this.populateDays();
     await this.getEventsFromUserList();
-    const env = this.getCurrentEnvironment();
-    this.rawEvents = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
+    this.rawEvents = await this.getData(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'schedule');
     this.processRawEvents();
     this.dataLoaded = true;
     await this.activityTracking('HOME');

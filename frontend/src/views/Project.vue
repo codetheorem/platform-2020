@@ -60,7 +60,6 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ChecklistItem from '@/components/ChecklistItem.vue';
 import EasterEggStamp from '@/components/EasterEggStamp.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 const EASTER_EGG_ID = 1;
 const TOTAL_EASTER_EGGS = 6;
@@ -114,23 +113,21 @@ export default {
   },
   methods: {
     async clickSubmitButton() {
-      const env = this.getCurrentEnvironment();
       const params = {
         team_id: this.currentTeamId,
         project_submitted: true,
       };
-      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'update_team_submission', params);
+      await this.performPostRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'update_team_submission', params);
       this.$router.push('/');
     },
     clickReadyButton() {
       this.readyButtonClicked = true;
     },
     async getEasterEggData() {
-      const env = this.getCurrentEnvironment();
       const easterEggParams = {
         user_id: this.getUserId(),
       };
-      const easterEggData = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_easter_eggs', easterEggParams);
+      const easterEggData = await this.performGetRequest(this.getEnvVariable('ADMIN_BASE_ENDPOINT'), 'get_easter_eggs', easterEggParams);
       if (easterEggData && easterEggData[0]) {
         const formattedEEData = [];
         Object.keys(easterEggData).forEach((d) => {
@@ -154,24 +151,23 @@ export default {
       }
     },
     async getTeam() {
-      const env = this.getCurrentEnvironment();
       const teamParams = {
         user_id: this.getUserId(),
       };
-      const team = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_membership_for_user', teamParams);
+      const team = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_team_membership_for_user', teamParams);
       if (team[0]) {
         const params = {
           team_id: team[0].team_id,
         };
         // check submission status of project
-        const status = await this.performGetRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'get_team_submission', params);
+        const status = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_team_submission', params);
         this.projectHasAlreadyBeenSubmitted = status[0].project_submitted;
         if (this.projectHasAlreadyBeenSubmitted) {
           this.readyButtonText = 'Project has been submitted';
           this.readyButtonDisabled = true;
         }
         // get checklist items for team
-        const checklist = await this.performGetRequest(Config[env].SPONSORS_INFO_ENDPOINT, env, 'get_project_checklist_item', params);
+        const checklist = await this.performGetRequest(this.getEnvVariable('SPONSORS_INFO_ENDPOINT'), 'get_project_checklist_item', params);
         Object.values(checklist).forEach((k) => {
           const item = this.checklistItems.find((j) => k.checklist_item_id === j.title);
 
@@ -200,12 +196,11 @@ export default {
       this.easterEggData.find((e) => e.easter_egg_id === EASTER_EGG_ID).discovered = true;
       this.totalEasterEggsFound += 1;
       this.displayEasterEgg = false;
-      const env = this.getCurrentEnvironment();
       const params = {
         user_id: this.getUserId(),
         id: this.currentEasterEggDBId,
       };
-      this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'discover_easter_egg', params);
+      this.performPostRequest(this.getEnvVariable('ADMIN_BASE_ENDPOINT'), 'discover_easter_egg', params);
     },
   },
   computed: {

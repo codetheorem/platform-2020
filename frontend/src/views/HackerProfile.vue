@@ -35,7 +35,6 @@
 
 <script>
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'HackerProfile',
@@ -52,11 +51,10 @@ export default {
   },
   methods: {
     async getUser() {
-      const env = this.getCurrentEnvironment();
       const userParams = {
         id: this.getUserId(),
       };
-      this.user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', userParams);
+      this.user = await this.performGetRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'get_user', userParams);
     },
     getImgUrl(imgName) {
       const images = require.context('../assets/profile_pics', false, /\.png$/);

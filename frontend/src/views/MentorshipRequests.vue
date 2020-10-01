@@ -33,7 +33,6 @@ import MentorManagementCard from '@/components/Mentors/MentorManagementCard.vue'
 import Button from '@/components/Button.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'Home',
@@ -53,8 +52,7 @@ export default {
     };
   },
   async mounted() {
-    const env = this.getCurrentEnvironment();
-    this.allMentorRequests = await this.getDataSimple(Config[env].PROJECTS_BASE_ENDPOINT, env, 'get_active_mentorship_requests');
+    this.allMentorRequests = await this.getDataSimple(this.getEnvVariable('PROJECTS_BASE_ENDPOINT'), 'get_active_mentorship_requests');
 
     this.allMentorRequests.forEach((request) => {
       // eslint-disable-next-line no-param-reassign

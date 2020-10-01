@@ -79,7 +79,6 @@
 
 <script>
 import SectionTitle from '../components/SectionTitle';
-import Config from '../config/general';
 import generalMixin from '../mixins/general';
 
 export default {
@@ -90,8 +89,7 @@ export default {
   mixins: [generalMixin],
   computed: {
     eventIds() {
-      const env = this.getCurrentEnvironment();
-      return Config[env].eventIds;
+      return this.getEnvVariable('eventIds');
     },
   },
 };

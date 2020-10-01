@@ -63,7 +63,6 @@ import Button from '@/components/Button.vue';
 import Banner from '@/components/Banner.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'RequestMentor',
@@ -108,7 +107,6 @@ export default {
   },
   methods: {
     async submitMentorRequest() {
-      const env = this.getCurrentEnvironment();
       const requestMentorPostParams = {
         user_id: this.getUserId(),
         title: this.requestTitle,
@@ -117,7 +115,7 @@ export default {
       };
       this.clearFields();
       console.log(requestMentorPostParams);
-      await this.performPostRequest(Config[env].PROJECTS_BASE_ENDPOINT, env, 'create_mentorship_request', requestMentorPostParams);
+      await this.performPostRequest(this.getEnvVariable('PROJECTS_BASE_ENDPOINT'), 'create_mentorship_request', requestMentorPostParams);
       await this.getMentorRequests();
     },
     async getMentorRequests() {
@@ -125,8 +123,7 @@ export default {
       const params = {
         user_id: this.getUserId(),
       };
-      const env = this.getCurrentEnvironment();
-      const invites = await this.performGetRequest(Config[env].PROJECTS_BASE_ENDPOINT, env, 'get_user_mentorship_requests', params);
+      const invites = await this.performGetRequest(this.getEnvVariable('PROJECTS_BASE_ENDPOINT'), 'get_user_mentorship_requests', params);
       console.log(invites);
       this.requests = [];
       Object.keys(invites).forEach((k) => {

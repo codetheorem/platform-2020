@@ -8,7 +8,6 @@
 
 <script>
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'ChecklistItem',
@@ -34,12 +33,11 @@ export default {
       this.update();
     },
     async update() {
-      const env = this.getCurrentEnvironment();
       const updateChecklistPostParams = {
         id: this.id,
         is_checked: this.checked,
       };
-      await this.performPostRequest(Config[env].SPONSORS_INFO_ENDPOINT, env, 'update_project_checklist_item', updateChecklistPostParams);
+      await this.performPostRequest(this.getEnvVariable('SPONSORS_INFO_ENDPOINT'), 'update_project_checklist_item', updateChecklistPostParams);
     },
   },
   async mounted() {
