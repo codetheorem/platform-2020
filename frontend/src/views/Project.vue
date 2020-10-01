@@ -37,7 +37,7 @@
                 <form @submit.prevent="sendMagicLink">
                   <div class="form-group mx-auto">
                     <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="nameInput" placeholder="Team Name" v-model="teamName">
-                    <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="linkInput" placeholder="Devpost Link" v-model="devLink">
+                    <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="linkInput" placeholder="Devfolio Link" v-model="devLink">
                     <!-- Prize categories will be implemented in a future ticket -->
                     <!-- <input type="text" class="form-control col-xl-4 mx-auto project-form-input" id="emailInput" placeholder="Prize Categories" v-model="teamName"> -->
                   </div>
@@ -83,16 +83,16 @@ export default {
       checklistItems: [
         {
           title: 'submitted my hack on Devpost:',
-          link: 'https://gotechnica.org/submit',
-          linkText: 'gotechnica.org/submit',
+          link: 'https://hackthemountain.tech/submit',
+          linkText: 'hackthemountain.tech/submit',
         },
         {
           title: 'signed up for an expo slot to show off my hack:',
-          link: 'https://gotechnica.org/expo',
-          linkText: 'gotechnica.org/expo',
+          link: 'https://hackthemountain.tech/expo',
+          linkText: 'hackthemountain.tech/expo',
         },
         {
-          title: 'submitted my hack to Technica below:',
+          title: 'submitted my hack to Hack the Mountains below:',
           link: '',
         },
       ],
