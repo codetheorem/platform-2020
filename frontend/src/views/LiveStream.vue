@@ -38,7 +38,7 @@ export default {
     position: absolute;
     align-self: center;
     z-index: 1000;
-    border: 2rem solid var(--lighter-purple);
+    border: 2rem solid #D66D50;
     padding: 0;
     padding-top: 0px;
     margin-top: -1px;
