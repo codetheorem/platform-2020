@@ -68,7 +68,6 @@ import VueCountdown from '@chenfengyuan/vue-countdown';
 import Button from '../components/Button.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
-import Config from '../config/general';
 
 Vue.component(VueCountdown.name, VueCountdown);
 
@@ -84,17 +83,15 @@ export default {
   mixins: [generalMixin, scheduleMixin],
   methods: {
     initiateOnboardingWalkthrough() {
-      const env = this.getCurrentEnvironment();
       // eslint-disable-next-line no-undef
-      Intercom('startTour', Config[env].PLATFORM_WALKTHROUGH_ID);
+      Intercom('startTour', this.getEnvVariable('PLATFORM_WALKTHROUGH_ID'));
     },
     openIntercom() {
       // eslint-disable-next-line no-undef
       Intercom('show');
     },
     async getAnnouncements() {
-      const env = this.getCurrentEnvironment();
-      const announcements = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_announcements', {});
+      const announcements = await this.performGetRequest(this.getEnvVariable('ADMIN_BASE_ENDPOINT'), 'get_announcements', {});
       const formattedAnnouncements = [];
       Object.keys(announcements).forEach((a) => {
         formattedAnnouncements.push(announcements[a]);
@@ -104,7 +101,7 @@ export default {
   },
   data() {
     const now = new Date();
-    const deadline = new Date(Config.shared.COUNTDOWN_END_DATETIME);
+    const deadline = new Date(this.getEnvVariable('COUNTDOWN_END_DATETIME'));
 
     return {
       rawEvents: [],
@@ -116,8 +113,8 @@ export default {
       scheduleColumns: 3,
       dataLoaded: false,
       selectedEvent: {},
-      startDate: new Date(Config.shared.START_DATE),
-      endDate: new Date(Config.shared.END_DATE),
+      startDate: new Date(this.getEnvVariable('START_DATE')),
+      endDate: new Date(this.getEnvVariable('END_DATE')),
       announcements: [],
       countdownTime: deadline - now,
     };
@@ -127,8 +124,7 @@ export default {
     this.populateDays();
     await this.getAnnouncements();
     await this.getEventsFromUserList();
-    const env = this.getCurrentEnvironment();
-    this.rawEvents = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
+    this.rawEvents = await this.getData(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'schedule');
     this.processRawEvents();
     this.dataLoaded = true;
     await this.activityTracking('HOME');

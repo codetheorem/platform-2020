@@ -30,7 +30,6 @@
 <script>
 import Button from '@/components/Button.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'PhotoBooth',
@@ -40,10 +39,10 @@ export default {
   },
   computed: {
     videoMontageLink() {
-      return Config.shared.VIDEO_MONTAGE_LINK;
+      return this.getEnvVariable('VIDEO_MONTAGE_LINK');
     },
     photoBoothLink() {
-      return Config.shared.PHOTO_BOOTH_LINK;
+      return this.getEnvVariable('PHOTO_BOOTH_LINK');
     },
   },
 };

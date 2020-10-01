@@ -49,7 +49,6 @@
 <script>
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'Passport',
@@ -72,13 +71,11 @@ export default {
   },
   methods: {
     async getShortlinkActivity() {
-      const env = this.getCurrentEnvironment();
       const teamParams = {
         user_id: this.getUserId(),
       };
-      this.shortlinkActivity = await this.performGetRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'get_user_shortlink_clicks', teamParams);
+      this.shortlinkActivity = await this.performGetRequest(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'get_user_shortlink_clicks', teamParams);
       this.activityLoaded = true;
-      console.log(this.shortlinkActivity);
     },
     getImgUrl(imgName) {
       const images = require.context('../assets/profile_pics', false, /\.png$/);

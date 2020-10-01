@@ -7,7 +7,6 @@
 <script>
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'Shortlink',
@@ -16,18 +15,17 @@ export default {
     LoadingSpinner,
   },
   async mounted() {
-    const env = this.getCurrentEnvironment();
     const params = {
       shortlinks: this.$route.params.shortlink,
     };
-    const shortlink = await this.performGetRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'get_shortlink', params);
+    const shortlink = await this.performGetRequest(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'get_shortlink', params);
 
     if (shortlink && shortlink.link) {
       const postParams = {
         link_id: shortlink.id,
         user_id: this.getUserId(),
       };
-      this.performPostRequest(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'add_shortlink_click', postParams);
+      this.performPostRequest(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'add_shortlink_click', postParams);
       window.location = shortlink.link;
     } else {
       // redirect to 404

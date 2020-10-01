@@ -144,11 +144,10 @@ export default {
   },
   methods: {
     async getUser() {
-      const env = this.getCurrentEnvironment();
       const userParams = {
         id: this.getUserId(),
       };
-      this.user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', userParams);
+      this.user = await this.performGetRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'get_user', userParams);
       if (this.user.hacker_profile) {
         this.profile = this.user.hacker_profile;
       } else {
@@ -158,12 +157,11 @@ export default {
       }
     },
     async updateProfile() {
-      const env = this.getCurrentEnvironment();
       const userParams = {
         id: this.getUserId(),
         hacker_profile: this.profile,
       };
-      await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', userParams);
+      await this.performPostRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'update_user', userParams);
     },
     getImgUrl(imgName) {
       const images = require.context('../assets/profile_pics', false, /\.png$/);

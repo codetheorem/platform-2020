@@ -19,7 +19,6 @@
 import SponsorSection from '@/components/Sponsors/SponsorSection.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'Sponsors',
@@ -44,8 +43,7 @@ export default {
     };
   },
   async mounted() {
-    const env = this.getCurrentEnvironment();
-    this.sponsors = await this.getDataSimple(Config[env].SPONSORS_INFO_ENDPOINT, env, 'get_sponsorship_info');
+    this.sponsors = await this.getDataSimple(this.getEnvVariable('SPONSORS_INFO_ENDPOINT'), 'get_sponsorship_info');
 
     this.sponsorTiers.forEach((tier) => {
       this.sponsorsByTier[tier] = this.sponsors.filter((s) => s.tier === tier);

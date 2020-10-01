@@ -41,7 +41,6 @@
 <script>
 import Button from '@/components/Button.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'HelpDesk',
@@ -49,13 +48,13 @@ export default {
   components: {
     Button,
   },
-  data() {
-    return {
-      helpDeskLink: Config.shared.SAMPLE_ZOOM_LINK,
-    };
-  },
   async mounted() {
     await this.activityTracking('HELPDESK');
+  },
+  computed: {
+    helpDeskLink() {
+      return this.getEnvVariable('SAMPLE_ZOOM_LINK');
+    },
   },
 };
 </script>

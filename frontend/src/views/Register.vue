@@ -140,7 +140,6 @@ import Button from '@/components/Button.vue';
 import ContentContainer from '@/components/ContentContainer.vue';
 import ProgressCircles from '@/components/ProgressCircles.vue';
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 
 export default {
   name: 'Register',
@@ -198,7 +197,6 @@ export default {
     },
     goToProfile() {
       if (this.profileInformationCompleted && this.emailAddressIsValid) {
-        const env = this.getCurrentEnvironment();
         const profile = {
           id: this.getUserId(),
           email: this.email,
@@ -212,7 +210,7 @@ export default {
           hacker_profile: profile,
           ...profile,
         };
-        this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
+        this.performPostRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'update_user', postParams);
         this.displayEnrollmentVerificationScreen = true;
         this.displayProfileInfoScreen = false;
         this.setUserNameCookie(this.name.split(' ')[0]);
@@ -229,7 +227,6 @@ export default {
         this.setUserSlackId(this.slackEmail);
       }
       this.$router.push('/');
-      const env = this.getCurrentEnvironment();
       const newHackerProfile = this.profile;
       newHackerProfile.profile_text = this.profile_text;
       const postParams = {
@@ -238,20 +235,20 @@ export default {
         registration_status: 'registered',
         hacker_profile: newHackerProfile,
       };
-      this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
+      this.performPostRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'update_user', postParams);
 
       // add easter egg data
       const easterEggPostParams = {
         user_id: this.getUserId(),
       };
-      this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'add_easter_eggs_for_user', easterEggPostParams);
+      this.performPostRequest(this.getEnvVariable('ADMIN_BASE_ENDPOINT'), 'add_easter_eggs_for_user', easterEggPostParams);
     },
     joinSlack() {
-      window.open(Config.shared.SLACK_INVITE_LINK, '_blank');
+      window.open(this.getEnvVariable('SLACK_INVITE_LINK'), '_blank');
       this.slackLinkButtonClicked = true;
     },
     signWaiver() {
-      window.open(Config.shared.DOCUSIGN_WAIVER_LINK, '_blank');
+      window.open(this.getEnvVariable('DOCUSIGN_WAIVER_LINK'), '_blank');
       this.docusignLinkButtonClicked = true;
     },
     goToSlackConfirmationScreen() {
@@ -275,11 +272,10 @@ export default {
       }
     },
     async getUser() {
-      const env = this.getCurrentEnvironment();
       const userParams = {
         id: this.getUserId(),
       };
-      const user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', userParams);
+      const user = await this.performGetRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'get_user', userParams);
       if (user) {
         if (user.full_name) {
           this.name = user.full_name;

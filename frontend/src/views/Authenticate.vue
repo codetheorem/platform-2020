@@ -6,7 +6,6 @@
 
 <script>
 import generalMixin from '../mixins/general';
-import Config from '../config/general';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
 
 export default {
@@ -15,17 +14,11 @@ export default {
   components: {
     LoadingSpinner,
   },
-  data() {
-    return {
-
-    };
-  },
   async created() {
     const params = {
       id: this.$route.query.token,
     };
-    const env = this.getCurrentEnvironment();
-    const user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', params);
+    const user = await this.performGetRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'get_user', params);
     // if user does not exist, redirect to login screen
     if (user && user.id) {
       this.setUserIdCookie(this.$route.query.token);
