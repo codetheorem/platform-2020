@@ -247,10 +247,6 @@ const routes = [
     displayInNavBar: true,
     dropdown: [
       {
-        path: '/profile',
-        name: 'My Profile',
-      },
-      {
         path: '/passport',
         name: 'My Passport',
       },

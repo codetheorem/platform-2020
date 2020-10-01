@@ -95,7 +95,7 @@
         </template>
         <template v-slot:progress><ProgressCircles v-bind:full="1" v-bind:half="1" v-bind:empty="1" /></template>
         <template v-slot:body>
-          <h5>4) Your Hacker Profile</h5>
+          <h5>2) Your Hacker Profile</h5>
           <p class="description-text">Your hacker profile is an optional way for you to share more information about yourselves with the event sponsors. Describe yourself in 1-2 sentences:</p>
           <form>
             <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text"></textarea>
@@ -110,7 +110,7 @@
         </template>
         <template v-slot:progress><ProgressCircles v-bind:full="2" v-bind:half="1" v-bind:empty="0" /></template>
         <template v-slot:body>
-          <h5>5) Set Up Your Slack Account </h5>
+          <h5>3) Set Up Your Slack Account </h5>
           <p class="description-text">We'll be using Slack to share announcements, chat with other hackers, and more! Click the link below to register for our slack workspace, and come back once you're finished.</p>
           <Button v-if="!slackLinkButtonClicked" size="lg" text="Join Slack" @click="joinSlack()" :outlineStyle="true"/>
           <Button v-else size="lg" text="I've Joined Slack" @click="goHome()"/>
