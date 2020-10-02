@@ -37,6 +37,22 @@ functions:
           path: add_sponsor
           method: post
           cors: true
+  update_sponsor:
+    handler: handler.update_sponsor
+    description: Updates a sponsor in the database
+    events:
+      - http:
+          path: update_sponsor
+          method: post
+          cors: true
+  delete_sponsor:
+    handler: handler.delete_sponsor
+    description: Deletes a sponsor in the database
+    events:
+      - http:
+          path: delete_sponsor
+          method: post
+          cors: true
   get_sponsorship_info:
     handler: handler.get_sponsorship_info
     description: gets sponsorship info from the database

@@ -66,6 +66,14 @@ functions:
           path: update_sponsor_booth
           method: post
           cors: true
+  delete_sponsor_booth:
+    handler: handler.delete_sponsor_booth
+    description: Deletes a sponsor booth in the DB
+    events:
+      - http:
+          path: delete_sponsor_booth
+          method: post
+          cors: true
   get_sponsor_booths:
     handler: handler.get_sponsor_booths
     description: Retrieves all sponsor booths
