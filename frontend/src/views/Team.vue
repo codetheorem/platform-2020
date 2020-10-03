@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="dataLoaded">
-      <h2 class="page-header">Team Formation</h2>
+      <h2 class="page-header">My Team</h2>
       <b-container id="team-container" class="teams-container">
         <p>Looking for teammates to collaborate with on your hack? Head over to our <router-link :to="'/schedule?event=' + teamFormationEventId"><a href="#" class="redirect-link">team formation event</a></router-link>.</p>
         <p>Once you know who your teammates are, use this page to create your team in the Technica system! You can then do things like submit your project or request a mentor as a team.</p>
