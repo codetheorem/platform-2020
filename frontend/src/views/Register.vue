@@ -100,7 +100,7 @@
           <h5>4) Your Hacker Profile</h5>
           <p class="description-text">Your hacker profile is an optional way for you to share more information about yourselves with the event sponsors. Describe yourself in 1-2 sentences:</p>
           <form>
-            <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text"></textarea>
+            <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text" placeholder="E.g. I'm a computer science student at the University of Maryland who loves to code!"></textarea>
           </form>
           <Button size="lg" text="Next" @click="proceedToSlackStep()"/>
         </template>
