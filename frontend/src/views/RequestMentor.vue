@@ -6,7 +6,7 @@
     <div class="mentor-body" style="display: flex;">
         <div class="mentor-left">
             <div class="mentor-form">
-                <div>
+                <div style="margin-top: -1rem;">
                     <form @submit.prevent="goToProfile">
                         <div class="form-group">
                             <div class="input-wrapper">
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="mentor-description">
-                <p>This is a small guide to how to request a mentor in the system. It's a great and concise explanation, that hackers will certainly appreciate! </p>
+                <p>After you submit your request for a mentor, the request will be visible by all mentors at the event. Once a mentor claims your request, you'll be connected over slack automatically. Please be as detailed as possible in your request, including specific coding languages/technologies you're using.</p>
             </div>
         </div>
         <div class="mentor-right">
@@ -151,11 +151,11 @@ h2 {
   padding-left: 10rem;
   padding-right: 10rem;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
 }
 .mentor-left {
-    height: 70vh;
+    height: fit-content;
     width: 40%;
     display: flex;
     justify-content: center;
@@ -175,7 +175,7 @@ h2 {
     width: 100%;
 }
 .mentor-description {
-    height: 30%;
+    height: fit-content;
     width: 80%;
     margin-top: 10%;
     background: #F7D0CB;
@@ -288,5 +288,15 @@ h2 {
     border: 1px solid #CA484F !important;
     width: 80%;
     border-radius: 4px;
+}
+
+@media (max-width: 1200px) {
+  .mentor-body {
+    padding: 2rem;
+  }
+
+  .mentor-left, .mentor-right {
+    width: 50%;
+  }
 }
 </style>

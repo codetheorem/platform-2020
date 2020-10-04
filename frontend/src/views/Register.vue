@@ -28,23 +28,23 @@
           <form @submit.prevent="goToProfile">
             <div class="form-group">
               <div class="input-wrapper">
-                <label for="exampleInputEmail1" class="input-label">My Name</label>
+                <label for="exampleInputEmail1" class="input-label">My Name<sup>*</sup></label>
                 <input type="text" class="form-control mx-auto" id="nameInput" placeholder="Grace Hopper" v-model="name">
               </div>
               <div class="input-wrapper">
-                <label for="exampleInputEmail1" class="input-label">My Pronouns</label>
+                <label for="exampleInputEmail1" class="input-label">My Pronouns<sup>*</sup></label>
                 <input type="text" class="form-control mx-auto" id="pronounInput" placeholder="e.g. she/her" v-model="pronouns">
               </div>
               <div class="input-wrapper">
-                <label for="exampleInputEmail1" class="input-label">My Email</label>
+                <label for="exampleInputEmail1" class="input-label">My Email<sup>*</sup></label>
                 <input type="email" class="form-control mx-auto" id="emailInput" placeholder="hello@gotechnica.org" v-model="email">
               </div>
               <div class="input-wrapper">
-                <label for="exampleInputEmail1" class="input-label">My Phone Number</label>
+                <label for="exampleInputEmail1" class="input-label">My Phone Number<sup>*</sup></label>
                 <input type="phone" class="form-control mx-auto" id="phoneInput" placeholder="(XXX) XXX - XXXX" v-model="phone">
               </div>
               <div class="input-wrapper">
-                <label for="exampleInputEmail1" class="input-label">My School</label>
+                <label for="exampleInputEmail1" class="input-label">My School<sup>*</sup></label>
                 <input type="text" class="form-control mx-auto" id="schoolInput" placeholder="e.g. University of Maryland, College Park" v-model="school">
               </div>
             </div>
@@ -98,7 +98,7 @@
           <h5>2) Your Hacker Profile</h5>
           <p class="description-text">Your hacker profile is an optional way for you to share more information about yourselves with the event sponsors. Describe yourself in 1-2 sentences:</p>
           <form>
-            <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text"></textarea>
+            <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text" placeholder="E.g. I'm a computer science student at the University of Maryland who loves to code!"></textarea>
           </form>
           <Button size="lg" text="Next" @click="proceedToSlackStep()"/>
         </template>
@@ -155,6 +155,7 @@ export default {
       enrollmentVerificationFileUpload: null,
       currRegistrationStep: 0,
       totalRegistrationStep: 6,
+      profile: null,
     };
   },
   async mounted() {
@@ -179,7 +180,7 @@ export default {
     },
     goToProfile() {
       if (this.profileInformationCompleted && this.emailAddressIsValid) {
-        const postParams = {
+        const profile = {
           id: this.getUserId(),
           email: this.email,
           pronouns: this.pronouns,
@@ -187,8 +188,13 @@ export default {
           school: this.school,
           phone: this.phone,
         };
+        this.profile = profile;
+        const postParams = {
+          hacker_profile: profile,
+          ...profile,
+        };
         this.performPostRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'update_user', postParams);
-        this.displayHackerProfileDescriptionScreen = true;
+        this.displayEnrollmentVerificationScreen = true;
         this.displayProfileInfoScreen = false;
         this.setUserNameCookie(this.name.split(' ')[0]);
       } else if (!this.profileInformationCompleted) {
@@ -201,10 +207,13 @@ export default {
     },
     goHome() {
       this.$router.push('/');
+      const newHackerProfile = this.profile;
+      newHackerProfile.profile_text = this.profile_text;
       const postParams = {
         id: this.getUserId(),
         profile_text: this.profile_text,
         registration_status: 'registered',
+        hacker_profile: newHackerProfile,
       };
       this.performPostRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'update_user', postParams);
 

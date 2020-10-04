@@ -206,7 +206,8 @@ export default {
 .sponsor-body {
   display: flex;
   justify-content: center;
-  align-items: center;
+  height: fit-content;
+  /* align-items: center; */
 }
 
 .sponsor-body-left {
@@ -321,6 +322,7 @@ export default {
   box-sizing: border-box;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
+  margin-right: 1rem;
 }
 
 .posting-list {

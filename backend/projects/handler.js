@@ -59,6 +59,97 @@ module.exports.add_sponsor = withSentry(async (event) => {
   };
 });
 
+// Updates a sponsor in the database
+module.exports.update_sponsor = withSentry(async event => {
+  const body = JSON.parse(event.body);
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  if (!body["id"]) {
+    return {
+      statusCode: 500,
+      body: "update_sponsor expects key \"id\""
+    }
+  }
+
+  id = body['id'];
+  // Initialize UpdateExpression for ddb.update()
+  let update = 'SET';
+  // Initialize ExpressionAttributeNames for ddb.update()
+  let exprAttrNames = {};
+  // Initialize ExpressionAttributeValues for ddb,updateItem()
+  let exprAttrValues = {};
+  let counter = 0;
+
+  // dynamically update post request body params to document
+  Object.keys(body).forEach(k => {
+    if (k != 'id') {
+      const ref = 'val' + counter;
+      let updateElement = ' #' + k + ' =:' + ref + ',';
+      update = update.concat(updateElement);
+      exprAttrNames['#' + k] = k;
+      exprAttrValues[':' + ref] = body[k];
+      counter++;
+    }
+  });
+
+  // Remove trailing comma from UpdateExpression added on line 405
+  update = update.slice(0, -1);
+
+  const params = {
+    TableName: process.env.SPONSORS_INFO_TABLE,
+    Key: {
+      id: id.toString()
+    },
+    UpdateExpression: update,
+    ExpressionAttributeNames: exprAttrNames,
+    ExpressionAttributeValues: exprAttrValues
+  };
+
+  // Call DynamoDB to update the item to the table
+  const result = await ddb.update(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  };
+});
+
+module.exports.delete_sponsor = withSentry(async (event) => {
+  const body = JSON.parse(event.body);
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  if (!body.id) {
+    return {
+      statusCode: 500,
+      body: 'delete_sponsor expects key "id"',
+    };
+  }
+
+  const params = {
+    TableName: process.env.SPONSORS_INFO_TABLE,
+    Key: {
+      id: body.id,
+    },
+  };
+
+  // Call DynamoDB to delete the item in the table
+  await ddb.delete(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ id: body.id }),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
+
 // adds a new mentorship request to the database
 module.exports.create_mentorship_request = withSentry(async (request) => {
   const body = JSON.parse(request.body);

@@ -8,6 +8,7 @@
     <img v-if="backArrow" src="../assets/back_arrow.svg" style="margin-right: .5rem; margin-top: -.25rem;">
     <span>{{ text }}</span>
     <img v-if="downloadButton" src="../assets/download.svg" style="margin-left: .75rem; margin-top: -.25rem;">
+    <img v-if="editButton" src="../assets/edit.svg" style="margin-left: .75rem; margin-top: -.25rem;">
   </button>
 </template>
 
@@ -29,6 +30,10 @@ export default {
       default: false,
     },
     downloadButton: {
+      type: Boolean,
+      default: false,
+    },
+    editButton: {
       type: Boolean,
       default: false,
     },

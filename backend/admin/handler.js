@@ -214,6 +214,38 @@ module.exports.update_sponsor_booth = withSentry(async event => {
   };	 
 });
 
+module.exports.delete_sponsor_booth = withSentry(async (event) => {
+  const body = JSON.parse(event.body);
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  if (!body.id) {
+    return {
+      statusCode: 500,
+      body: 'delete_sponsor expects key "id"',
+    };
+  }
+
+  const params = {
+    TableName: process.env.SPONSOR_BOOTHS_TABLE,
+    Key: {
+      id: body.id,
+    },
+  };
+
+  // Call DynamoDB to delete the item in the table
+  await ddb.delete(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ id: body.id }),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
+
 module.exports.get_sponsor_booths = withSentry(async () => {
   const params = {
     TableName: process.env.SPONSOR_BOOTHS_TABLE,
@@ -253,6 +285,57 @@ module.exports.get_sponsor_booth = withSentry(async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify(result),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
+
+module.exports.add_announcement = async (event) => {
+  const body = JSON.parse(event.body);
+
+  if (body.event.channel === process.env.ANNOUNCEMENTS_CHANNEL) {
+    const ddb = new AWS.DynamoDB.DocumentClient();
+
+    const id = UUID.v4();
+  
+    const params = {
+      TableName: process.env.ANNOUNCEMENTS_TABLE,
+      Item: {},
+    };
+  
+    params.Item.id = id;
+    const rawText = body.event.text;
+    params.Item.rawText = rawText;
+    const formattedText = rawText.replace(/<.*>/, '').replace(/:.*:/, '').replace(/\*/g, "")
+    params.Item.text = formattedText;
+    params.Item.timestamp = body.event.event_ts;
+    await ddb.put(params).promise();
+  }
+
+  return {
+    statusCode: 200,
+    body: "Complete",
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+};
+
+module.exports.get_announcements = withSentry(async () => {
+  const params = {
+    TableName: process.env.ANNOUNCEMENTS_TABLE,
+  };
+
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const result = await ddb.scan(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result.Items),
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,

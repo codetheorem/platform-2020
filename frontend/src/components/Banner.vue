@@ -35,4 +35,10 @@ export default {
         margin-right: 1rem;
         margin-top: .25rem;
     }
+
+    @media (max-width: 1400px) {
+      .banner-text {
+        font-size: 14px;
+      }
+    }
 </style>

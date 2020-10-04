@@ -13,14 +13,14 @@
           <p>Welcome to the Hack the Mountains platform! We're incredibly excited to host you for an amazing weekend of learning, building, and fun.</p>
           <a id="onboardingWalkthroughButton" href="#" class="home-link" @click="initiateOnboardingWalkthrough"><p>Learn About the Hack the Mountains Platform</p></a>
           <a href="https://slack.com" target="_blank" class="home-link"><p>Join the Conversation on Slack</p></a>
-          <a href="https://gotechnica.org/hacker-resources" target="_blank" class="home-link"><p>Useful Resources for Your Hack</p></a>
+          <router-link to="/resources"><a href="#" class="home-link"><p>Useful Resources for Your Hack</p></a></router-link>
           <router-link to="/help"><a href="#" class="home-link"><p>Get In Touch With An Organizer</p></a></router-link>
         </div>
         <div class="home-announcements">
           <h5>ANNOUNCEMENTS</h5>
           <div class="announcements-list">
-            <Banner text="This is a sample announcement. Welcome to Hack the Mountains!" />
-            <Banner text="This is a sample announcement. Welcome to Hack the Mountains!"/>
+            <Banner v-if="dataLoaded" v-for="announcement in announcements" :text="announcement.text" :key="announcement.id"/>
+            <LoadingSpinner v-else />
           </div>
         </div>
       </div>
@@ -48,6 +48,7 @@
 
 <script>
 import Banner from '@/components/Banner.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 import Button from '../components/Button.vue';
 import generalMixin from '../mixins/general';
@@ -59,6 +60,7 @@ export default {
     Banner,
     ScheduleCarousel,
     Button,
+    LoadingSpinner,
   },
   mixins: [generalMixin, scheduleMixin],
   methods: {
@@ -69,6 +71,15 @@ export default {
     openIntercom() {
       // eslint-disable-next-line no-undef
       Intercom('show');
+    },
+    async getAnnouncements() {
+      const env = this.getCurrentEnvironment();
+      const announcements = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_announcements', {});
+      const formattedAnnouncements = [];
+      Object.keys(announcements).forEach((a) => {
+        formattedAnnouncements.push(announcements[a]);
+      });
+      this.announcements = formattedAnnouncements.sort((a, b) => b.timestamp - a.timestamp); // sort by time
     },
   },
   data() {
@@ -84,11 +95,13 @@ export default {
       selectedEvent: {},
       startDate: new Date(this.getEnvVariable('START_DATE')),
       endDate: new Date(this.getEnvVariable('END_DATE')),
+      announcements: [],
     };
   },
   async mounted() {
     this.prepareTimeWindows();
     this.populateDays();
+    await this.getAnnouncements();
     await this.getEventsFromUserList();
     this.rawEvents = await this.getData(this.getEnvVariable('SCHEDULE_BASE_ENDPOINT'), 'schedule');
     this.processRawEvents();
@@ -138,9 +151,10 @@ h2 {
 
 .announcements-list {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  max-height: 30vh;
+  overflow-y: scroll;
 }
 
 .home-link {
@@ -148,18 +162,6 @@ h2 {
   text-decoration-color: #464343;
   color: #2D2D2D;
 }
-
-  @media (max-width: 800px) {
-    .home-main {
-      flex-flow: column;
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
-    .home-links {
-      margin-bottom: 1rem;
-    }
-  }
 
 .cloud-wrapper {
   display:flex;
@@ -200,6 +202,29 @@ h2 {
 
 .sponsor-button {
   margin-right: 1rem;
+}
+
+@media (max-width: 1500px) {
+  .home-main {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .home-links {
+    margin-right: .5rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .home-main {
+    flex-flow: column;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .home-links {
+    margin-bottom: 1rem;
+  }
 }
 
 </style>
