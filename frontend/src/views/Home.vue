@@ -73,8 +73,7 @@ export default {
       Intercom('show');
     },
     async getAnnouncements() {
-      const env = this.getCurrentEnvironment();
-      const announcements = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_announcements', {});
+      const announcements = await this.performGetRequest(this.getEnvVariable('ADMIN_BASE_ENDPOINT'), 'get_announcements', {});
       const formattedAnnouncements = [];
       Object.keys(announcements).forEach((a) => {
         formattedAnnouncements.push(announcements[a]);
