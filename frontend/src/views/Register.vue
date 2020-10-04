@@ -158,6 +158,7 @@ export default {
       enrollmentVerificationFileUpload: null,
       currRegistrationStep: 0,
       totalRegistrationStep: 6,
+      profile: null,
     };
   },
   async mounted() {
@@ -183,13 +184,18 @@ export default {
     goToProfile() {
       if (this.profileInformationCompleted && this.emailAddressIsValid) {
         const env = this.getCurrentEnvironment();
-        const postParams = {
+        const profile = {
           id: this.getUserId(),
           email: this.email,
           pronouns: this.pronouns,
           full_name: this.name,
           school: this.school,
           phone: this.phone,
+        };
+        this.profile = profile;
+        const postParams = {
+          hacker_profile: profile,
+          ...profile,
         };
         this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
         this.displayEnrollmentVerificationScreen = true;
@@ -206,10 +212,13 @@ export default {
     goHome() {
       this.$router.push('/');
       const env = this.getCurrentEnvironment();
+      const newHackerProfile = this.profile;
+      newHackerProfile.profile_text = this.profile_text;
       const postParams = {
         id: this.getUserId(),
         profile_text: this.profile_text,
         registration_status: 'registered',
+        hacker_profile: newHackerProfile,
       };
       this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', postParams);
 
