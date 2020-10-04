@@ -22,6 +22,7 @@
         </div>
 
         <div v-else>
+            <p>In order to submit your project and get credit for your hack, you'll need to complete a few steps. First, submit your hack on Devpost, then sign up for an expo slot to present your hack to the judges, and finally submit your hack using the fields below. Click "Submit My Project" when you're done. <b>If you need to edit your submission after submitting, please reach out to the Technica organizing team.</b></p>
             <h4>I have...</h4>
             <div class="content-container row-xl-6">
               <div class="checklist-body">
@@ -50,6 +51,13 @@
       <div v-else>
         <LoadingSpinner />
       </div>
+      <b-modal id="projectSubmissionModal" title="Congratulations!" size="lg" centered>
+        <p>Great work! We've received your project submission.</p>
+        <p>If you have any questions, don't hesitate to reach out to the Technica organizing team.</p>
+        <template v-slot:modal-footer>
+            <Button text="Close" @click="closeModal()" size="sm"/>
+        </template>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -113,14 +121,20 @@ export default {
     this.dataLoaded = true;
   },
   methods: {
+    closeModal() {
+      this.$bvModal.hide('projectSubmissionModal');
+    },
     async clickSubmitButton() {
+      this.dataLoaded = false;
       const env = this.getCurrentEnvironment();
       const params = {
         team_id: this.currentTeamId,
         project_submitted: true,
       };
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'update_team_submission', params);
-      this.$router.push('/');
+      await this.getTeam();
+      this.dataLoaded = true;
+      this.$bvModal.show('projectSubmissionModal');
     },
     clickReadyButton() {
       this.readyButtonClicked = true;
