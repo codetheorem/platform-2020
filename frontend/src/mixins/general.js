@@ -98,7 +98,7 @@ export default {
         user_id: this.getUserId(),
       };
       const team = await this.performGetRequest(this.getEnvVariable('TEAMS_BASE_ENDPOINT'), 'get_team_membership_for_user', teamParams);
-      if (team[0]) {
+      if (team && team[0]) {
         return true;
       }
       return false;

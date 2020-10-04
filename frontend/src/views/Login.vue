@@ -7,7 +7,7 @@
         </template>
         <template v-slot:body>
           <p class="description-text">Instead of using a password, enter your email so Hack the Mountains can send you a magic link to sign in.</p>
-          <p v-if="emailNotFound && !emailInvalid" class="text-error">We could not find your email in our records. For further assistance, please contact our support team.</p>
+          <p v-if="emailNotFound && !emailInvalid" class="text-error">We could not find your email in our records. If you do not have an account, please sign up by clicking the "Sign Up" button below.</p>
           <p v-if="emailInvalid" class="text-error">Please enter a valid email address.</p>
           <form @submit.prevent="sendMagicLink">
             <div class="form-group mx-auto">
@@ -29,7 +29,7 @@
           <h3>Check Your Email...</h3>
         </template>
         <template v-slot:body>
-          <p class="description-text" style="margin-bottom: 3rem">We sent an email to <b>{{ userEmail }}</b>! It has a magic link to help sign you in to Technica.</p>
+          <p class="description-text" style="margin-bottom: 3rem">We sent an email to <b>{{ userEmail }}</b>! It has a magic link to help sign you in to Hack the Mountains.</p>
           <img alt="Mail icon" src="../assets/mail-icon.svg"  height="120">
         </template>
       </content-container>
