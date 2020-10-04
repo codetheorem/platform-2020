@@ -124,6 +124,12 @@ const routes = [
     displayInNavBar: false,
   },
   {
+    path: '/signup',
+    name: 'Signup',
+    component: () => import('../views/Signup.vue'),
+    displayInNavBar: false,
+  },
+  {
     path: '/water-cooler',
     name: 'Water Cooler',
     component: () => import('../views/WaterCooler.vue'),
@@ -287,8 +293,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if ((!Vue.cookie.get('userId')) && ((to.name !== 'Login' && to.name !== 'Authenticate'))) {
-    next({ name: 'Login' });
+  if ((!Vue.cookie.get('userId')) && ((to.name !== 'Login' && to.name !== 'Authenticate' && to.name !== 'Signup'))) {
+    next({ name: 'signup' });
   } else {
     next();
   }

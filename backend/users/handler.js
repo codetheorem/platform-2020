@@ -93,7 +93,7 @@ const inviteUserHelper = async (body) => {
         email: user.email,
       }],
       dynamic_template_data: {
-        user_name: user.full_name,
+        user_name: user.full_name || 'there',
         invite_link: inviteLink,
       },
     }],
@@ -144,7 +144,6 @@ module.exports.add_user = withSentry(async (user) => {
 
   // checks if any field is missing to create a  user
   if (!body.email
-   || !body.full_name
    || !body.access_level
    || !body.group) {
     return {
