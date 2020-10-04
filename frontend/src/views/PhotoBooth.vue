@@ -8,7 +8,7 @@
           <div class="card">
             <div class="card-body">
                 <p>
-                  Our virtual photo booth allows for you and other hackers to take photos and videos that you can submit to our montage. Click the links below to open up the booth to take pictures and videos!
+                  Our virtual photo booth allows for you and other hackers to take photos that you can submit to our montage. Click the link below to open up the booth to take a picture and add fun stickers and filters!
                 </p>
             </div>
           </div>
@@ -18,9 +18,6 @@
       <div class="display-center">
         <a :href="photoBoothLink" target="_blank" style="margin-right: 1rem;">
           <Button size="lg" text="Take a Photo"/>
-        </a>
-        <a :href="videoMontageLink" target="_blank">
-          <Button size="lg" text="Record a Video"/>
         </a>
       </div>
     </div>

@@ -6,6 +6,7 @@ export default {
     ABOUT_LINK: 'https://www.hackthemountain.tech',
     SLACK_WORKSPACE_LINK: 'https://join.slack.com/t/hackthemountains2020/shared_invite/zt-horq682f-uOnjGKOlXr3NrsUW2_fesw',
     SLACK_INVITE_LINK: 'https://join.slack.com/t/hackthemountains2020/shared_invite/zt-horq682f-uOnjGKOlXr3NrsUW2_fesw',
+    PHOTO_BOOTH_LINK: 'https://app.virtualbooth.me/booth/VdgmKN64',
   },
   technica: {
     NAV_IMG: 'https://technica-brand-assets.s3.amazonaws.com/technica-logo.svg',
