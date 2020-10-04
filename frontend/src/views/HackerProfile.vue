@@ -149,7 +149,13 @@ export default {
         id: this.getUserId(),
       };
       this.user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', userParams);
-      this.profile = this.user.hacker_profile;
+      if (this.user.hacker_profile) {
+        this.profile = this.user.hacker_profile;
+      } else {
+        this.profile = this.user;
+        await this.updateProfile();
+        await this.getUser();
+      }
     },
     async updateProfile() {
       const env = this.getCurrentEnvironment();
