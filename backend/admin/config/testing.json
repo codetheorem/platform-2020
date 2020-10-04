@@ -2,5 +2,7 @@
     "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
     "ADMIN_TABLE": "platform-test-admin",
     "EASTER_EGGS_TABLE": "platform-test-easter-eggs",
-    "SPONSOR_BOOTHS_TABLE": "platform-test-sponsor-booths"
+    "SPONSOR_BOOTHS_TABLE": "platform-test-sponsor-booths",
+    "ANNOUNCEMENTS_TABLE": "platform-dev-announcements",
+    "ANNOUNCEMENTS_CHANNEL": "C01C9UDP1UZ"
 }

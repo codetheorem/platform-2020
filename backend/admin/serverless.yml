@@ -11,8 +11,10 @@ provider:
   environment:
     SENTRY_DSN: ${file(./config/${self:provider.stage}.json):SENTRY_DSN}
     ADMIN_TABLE: ${file(./config/${self:provider.stage}.json):ADMIN_TABLE}
-    EASTER_EGGS_TABLE:  ${file(./config/${self:provider.stage}.json):EASTER_EGGS_TABLE}
-    SPONSOR_BOOTHS_TABLE:  ${file(./config/${self:provider.stage}.json):SPONSOR_BOOTHS_TABLE}
+    EASTER_EGGS_TABLE: ${file(./config/${self:provider.stage}.json):EASTER_EGGS_TABLE}
+    SPONSOR_BOOTHS_TABLE: ${file(./config/${self:provider.stage}.json):SPONSOR_BOOTHS_TABLE}
+    ANNOUNCEMENTS_TABLE: ${file(./config/${self:provider.stage}.json):ANNOUNCEMENTS_TABLE}
+    ANNOUNCEMENTS_CHANNEL: ${file(./config/${self:provider.stage}.json):ANNOUNCEMENTS_CHANNEL}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -88,6 +90,22 @@ functions:
     events:
       - http:
           path: get_sponsor_booth
+          method: get
+          cors: true
+  add_announcement:
+    handler: handler.add_announcement
+    description: Adds an announcement to the DB
+    events:
+      - http:
+          path: add_announcement
+          method: post
+          cors: true
+  get_announcements:
+    handler: handler.get_announcements
+    description: Retrieves the announcements from the DB
+    events:
+      - http:
+          path: get_announcements
           method: get
           cors: true
 plugins:

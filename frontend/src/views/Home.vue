@@ -19,8 +19,7 @@
         <div class="home-announcements">
           <h5>ANNOUNCEMENTS</h5>
           <div class="announcements-list">
-            <Banner text="This is a sample announcement. Welcome to Technica!"/>
-            <Banner text="This is a sample announcement. Welcome to Technica!"/>
+            <Banner v-for="announcement in announcements" :text="announcement.text" :key="announcement.id"/>
           </div>
         </div>
       </div>
@@ -75,6 +74,15 @@ export default {
       // eslint-disable-next-line no-undef
       Intercom('show');
     },
+    async getAnnouncements() {
+      const env = this.getCurrentEnvironment();
+      const announcements = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_announcements', {});
+      const formattedAnnouncements = [];
+      Object.keys(announcements).forEach((a) => {
+        formattedAnnouncements.push(announcements[a]);
+      });
+      this.announcements = formattedAnnouncements.sort((a, b) => b.timestamp - a.timestamp); // sort by time
+    },
   },
   data() {
     return {
@@ -89,11 +97,13 @@ export default {
       selectedEvent: {},
       startDate: new Date(Config.shared.START_DATE),
       endDate: new Date(Config.shared.END_DATE),
+      announcements: [],
     };
   },
   async mounted() {
     this.prepareTimeWindows();
     this.populateDays();
+    await this.getAnnouncements();
     await this.getEventsFromUserList();
     const env = this.getCurrentEnvironment();
     this.rawEvents = await this.getData(Config[env].SCHEDULE_BASE_ENDPOINT, env, 'schedule');
@@ -144,9 +154,10 @@ h2 {
 
 .announcements-list {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  max-height: 30vh;
+  overflow-y: scroll;
 }
 
 .home-link {
@@ -154,18 +165,6 @@ h2 {
   text-decoration-color: #464343;
   color: #2D2D2D;
 }
-
-  @media (max-width: 800px) {
-    .home-main {
-      flex-flow: column;
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
-    .home-links {
-      margin-bottom: 1rem;
-    }
-  }
 
 .cloud-wrapper {
   display:flex;
@@ -206,6 +205,29 @@ h2 {
 
 .sponsor-button {
   margin-right: 1rem;
+}
+
+@media (max-width: 1500px) {
+  .home-main {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .home-links {
+    margin-right: .5rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .home-main {
+    flex-flow: column;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .home-links {
+    margin-bottom: 1rem;
+  }
 }
 
 </style>
