@@ -46,7 +46,15 @@ const routes = [
     name: 'Prizes',
     displayInNavBar: false,
     beforeEnter() {
-      window.open(Config.dev.PRIZES_LINK, '_blank');
+      window.open(Config.prod2.PRIZES_LINK, '_blank');
+    },
+  },
+  {
+    path: '/about',
+    name: 'About',
+    displayInNavBar: false,
+    beforeEnter() {
+      window.open(Config.prod2.ABOUT_LINK, '_blank');
     },
   },
   {
@@ -126,7 +134,7 @@ const routes = [
     name: 'Slack',
     displayInNavBar: false,
     beforeEnter() {
-      window.open(Config.dev.SLACK_WORKSPACE_LINK, '_blank');
+      window.open(Config.prod2.SLACK_WORKSPACE_LINK, '_blank');
     },
   },
   {
@@ -178,16 +186,8 @@ const routes = [
     displayInNavBar: true,
     dropdown: [
       {
-        path: '/team',
-        name: 'My Team',
-      },
-      {
-        path: '/team-room',
-        name: 'Team Room',
-      },
-      {
-        path: '/project',
-        name: 'Submit Project',
+        path: '/about',
+        name: 'About Hack the Mountains',
       },
       {
         path: '/request-mentor',

@@ -2,6 +2,10 @@ export default {
   prod2: {
     NAV_IMG: 'https://technica-brand-assets.s3.amazonaws.com/logo_small.png',
     NAV_IMG_STYLE: '',
+    PRIZES_LINK: 'https://www.hackthemountain.tech/#prizes',
+    ABOUT_LINK: 'https://www.hackthemountain.tech',
+    SLACK_WORKSPACE_LINK: 'https://join.slack.com/t/hackthemountains2020/shared_invite/zt-horq682f-uOnjGKOlXr3NrsUW2_fesw',
+    SLACK_INVITE_LINK: 'https://join.slack.com/t/hackthemountains2020/shared_invite/zt-horq682f-uOnjGKOlXr3NrsUW2_fesw',
   },
   technica: {
     NAV_IMG: 'https://technica-brand-assets.s3.amazonaws.com/technica-logo.svg',

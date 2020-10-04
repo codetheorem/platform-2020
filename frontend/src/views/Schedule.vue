@@ -126,8 +126,8 @@ export default {
   font-weight: 300;
   font-size: 24px;
   margin-right: 3px;
-  border: 5px solid #DED2E6;
-  color: #B6A1C4;
+  border: 3px solid rgba(214, 109, 80, .6);
+  color: rgba(214, 109, 80, .6);
   cursor: pointer;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -137,6 +137,7 @@ export default {
   border: 4px solid #D66D50;
   box-shadow: 0px 4px 4px rgba(179, 119, 219, 0.25);
   color: #D66D50;
+  font-weight: bold;
 }
 
 .schedule-body {
