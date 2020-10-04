@@ -6,7 +6,7 @@
     <div class="mentor-body" style="display: flex;">
         <div class="mentor-left">
             <div class="mentor-form">
-                <div>
+                <div style="margin-top: -1rem;">
                     <form @submit.prevent="goToProfile">
                         <div class="form-group">
                             <div class="input-wrapper">
@@ -154,11 +154,11 @@ h2 {
   padding-left: 10rem;
   padding-right: 10rem;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
 }
 .mentor-left {
-    height: 70vh;
+    height: fit-content;
     width: 40%;
     display: flex;
     justify-content: center;
@@ -178,7 +178,7 @@ h2 {
     width: 100%;
 }
 .mentor-description {
-    height: 30%;
+    height: fit-content;
     width: 80%;
     margin-top: 10%;
     background: #DED2E5;
@@ -291,5 +291,15 @@ h2 {
     border: 1px solid #A88AA8 !important;
     width: 80%;
     border-radius: 4px;
+}
+
+@media (max-width: 1200px) {
+  .mentor-body {
+    padding: 2rem;
+  }
+
+  .mentor-left, .mentor-right {
+    width: 50%;
+  }
 }
 </style>

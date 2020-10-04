@@ -163,4 +163,9 @@ h2 {
     color: #000000;
     font-family: DIN Pro;
 }
+@media (max-width: 1200px) {
+  .display-container {
+    width: 90vw;
+  }
+}
 </style>
