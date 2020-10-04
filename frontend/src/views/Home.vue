@@ -19,7 +19,8 @@
         <div class="home-announcements">
           <h5>ANNOUNCEMENTS</h5>
           <div class="announcements-list">
-            <Banner v-for="announcement in announcements" :text="announcement.text" :key="announcement.id"/>
+            <Banner v-if="dataLoaded" v-for="announcement in announcements" :text="announcement.text" :key="announcement.id"/>
+            <LoadingSpinner v-else />
           </div>
         </div>
       </div>
@@ -50,6 +51,7 @@
 
 <script>
 import Banner from '@/components/Banner.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
 import Button from '../components/Button.vue';
 import generalMixin from '../mixins/general';
@@ -62,6 +64,7 @@ export default {
     Banner,
     ScheduleCarousel,
     Button,
+    LoadingSpinner,
   },
   mixins: [generalMixin, scheduleMixin],
   methods: {
