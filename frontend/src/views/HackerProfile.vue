@@ -328,4 +328,10 @@ h2 {
     height: 80vh;
   }
 }
+
+@media (max-width: 1500px) {
+  .profile-footer-box {
+    height: 100%;
+  }
+}
 </style>
