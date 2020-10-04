@@ -11,6 +11,7 @@
                 </div>
             </div>
         </div>
+        <p>Your hacker profile is an optional way for you to share more information about yourself with the event sponsors. Only sponsors can see this information.</p>
         <div class="profile-footer">
             <div class="profile-footer-box">
                 <h5 class="profile-footer-box-title">Contact and Connect:</h5>
