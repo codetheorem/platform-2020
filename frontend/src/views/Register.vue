@@ -5,12 +5,11 @@
         <template v-slot:title>
           <h3>Welcome!</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="0" v-bind:empty="3" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="0" v-bind:empty="2" /></template>
         <template v-slot:body>
           <p class="description-text">Welcome to Hack the Mountains! To set up your account, you'll have to go through a few steps:</p>
           <ol class="step-list">
             <li>Update Information</li>
-            <li>Create a Hacker Profile (Optional)</li>
             <li>Set Up Your Slack Account</li>
           </ol>
           <p class="description-text">Ready to get hacking? Click "Get Started" to begin!</p>
@@ -22,7 +21,7 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="1" v-bind:empty="2" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="1" v-bind:empty="1" /></template>
         <template v-slot:body>
           <h5>1) A Little About You</h5>
           <form @submit.prevent="goToProfile">
@@ -108,9 +107,9 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="2" v-bind:half="1" v-bind:empty="0" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="1" v-bind:half="1" v-bind:empty="0" /></template>
         <template v-slot:body>
-          <h5>3) Set Up Your Slack Account </h5>
+          <h5>2) Set Up Your Slack Account </h5>
           <p class="description-text">We'll be using Slack to share announcements, chat with other hackers, and more! Click the link below to register for our slack workspace, and come back once you're finished.</p>
           <Button v-if="!slackLinkButtonClicked" size="lg" text="Join Slack" @click="joinSlack()" :outlineStyle="true"/>
           <Button v-else size="lg" text="I've Joined Slack" @click="goHome()"/>
@@ -194,7 +193,7 @@ export default {
           ...profile,
         };
         this.performPostRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'update_user', postParams);
-        this.displayEnrollmentVerificationScreen = true;
+        this.displaySlackSetupScreen = true;
         this.displayProfileInfoScreen = false;
         this.setUserNameCookie(this.name.split(' ')[0]);
       } else if (!this.profileInformationCompleted) {
