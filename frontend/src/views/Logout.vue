@@ -3,7 +3,7 @@
     <div class="login-container">
       <div class="container content-container col-md-7 col-lg-8 col-xl-4">
         <div class="content-container-title">
-          <h3>Log Out of Technica?</h3>
+          <h3>Log Out of Hack the Mountains?</h3>
         </div>
         <div class="content-container-body">
           <p class="description-text">You can always log back in at any time via a new magic link.</p>
