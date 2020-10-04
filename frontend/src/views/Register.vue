@@ -30,23 +30,23 @@
           <form @submit.prevent="goToProfile">
             <div class="form-group">
               <div class="input-wrapper">
-                <label for="exampleInputEmail1" class="input-label">My Name</label>
+                <label for="exampleInputEmail1" class="input-label">My Name<sup>*</sup></label>
                 <input type="text" class="form-control mx-auto" id="nameInput" placeholder="Grace Hopper" v-model="name">
               </div>
               <div class="input-wrapper">
-                <label for="exampleInputEmail1" class="input-label">My Pronouns</label>
+                <label for="exampleInputEmail1" class="input-label">My Pronouns<sup>*</sup></label>
                 <input type="text" class="form-control mx-auto" id="pronounInput" placeholder="e.g. she/her" v-model="pronouns">
               </div>
               <div class="input-wrapper">
-                <label for="exampleInputEmail1" class="input-label">My Email</label>
+                <label for="exampleInputEmail1" class="input-label">My Email<sup>*</sup></label>
                 <input type="email" class="form-control mx-auto" id="emailInput" placeholder="hello@gotechnica.org" v-model="email">
               </div>
               <div class="input-wrapper">
-                <label for="exampleInputEmail1" class="input-label">My Phone Number</label>
+                <label for="exampleInputEmail1" class="input-label">My Phone Number<sup>*</sup></label>
                 <input type="phone" class="form-control mx-auto" id="phoneInput" placeholder="(XXX) XXX - XXXX" v-model="phone">
               </div>
               <div class="input-wrapper">
-                <label for="exampleInputEmail1" class="input-label">My School</label>
+                <label for="exampleInputEmail1" class="input-label">My School<sup>*</sup></label>
                 <input type="text" class="form-control mx-auto" id="schoolInput" placeholder="e.g. University of Maryland, College Park" v-model="school">
               </div>
             </div>

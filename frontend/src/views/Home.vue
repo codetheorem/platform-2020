@@ -13,7 +13,7 @@
           <p>Welcome to the Technica platform! We're incredibly excited to host you and the entire Technica community for an amazing weekend of learning, inclusiveness, and fun.</p>
           <a id="onboardingWalkthroughButton" href="#" class="home-link" @click="initiateOnboardingWalkthrough"><p>Learn About the Technica Platform</p></a>
           <a href="https://slack.com" target="_blank" class="home-link"><p>Join the Conversation on Slack</p></a>
-          <a href="https://gotechnica.org/hacker-resources" target="_blank" class="home-link"><p>Useful Resources for Your Hack</p></a>
+          <router-link to="/resources"><a href="#" class="home-link"><p>Useful Resources for Your Hack</p></a></router-link>
           <router-link to="/help"><a href="#" class="home-link"><p>Get In Touch With An Organizer</p></a></router-link>
         </div>
         <div class="home-announcements">

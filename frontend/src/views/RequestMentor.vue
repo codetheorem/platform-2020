@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="mentor-description">
-                <p>This is a small guide to how to request a mentor in the system. It's a great and concise explanation, that hackers will certainly appreciate! </p>
+                <p>After you submit your request for a mentor, the request will be visible by all mentors at the event. Once a mentor claims your request, you'll be connected over slack automatically. Please be as detailed as possible in your request, including specific coding languages/technologies you're using.</p>
             </div>
         </div>
         <div class="mentor-right">
