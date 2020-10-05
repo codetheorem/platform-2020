@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SectionTitle :title="tier" />
+    <SectionTitle :title="tier" style="margin-bottom: 2rem;"/>
     <b-row v-for="row in sponsorGrid" :key="row.id" class="row">
         <b-col v-for="sponsor in row" :key="sponsor.id" class="col-sm">
             <SponsorCard v-bind:sponsor="sponsor"/>

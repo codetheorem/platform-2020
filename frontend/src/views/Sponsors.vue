@@ -29,7 +29,7 @@ export default {
   mixins: [generalMixin],
   // create sponsor sections
   data() {
-    const sponsorTiers = ['Partners', 'Platinum', 'Gold'];
+    const sponsorTiers = ['Partners', 'Gold', 'Silver Plus', 'Silver', 'Event Partners'];
     const sponsorsByTier = {};
     sponsorTiers.forEach((tier) => {
       sponsorsByTier[tier] = [];

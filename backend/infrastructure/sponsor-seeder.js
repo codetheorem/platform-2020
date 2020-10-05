@@ -1,0 +1,26 @@
+const Axios = require('axios');
+
+var csv = require("csvtojson");
+
+const endpoint = "https://rsppg0cat8.execute-api.us-east-1.amazonaws.com/prod2/add_sponsor";
+
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }  
+
+// Convert a csv file with csvtojson
+csv()
+  .fromFile('./sponsor_sample_data.csv')
+  .then(async (csvResult) => { 
+    const formattedScheduleItems = csvResult.map(item => {
+        delete item.id;
+        delete item.link;
+        return item;
+    });
+    for (const item of formattedScheduleItems) {
+        await Axios.post(endpoint, item);
+        await sleep(1000);
+      }
+   })
