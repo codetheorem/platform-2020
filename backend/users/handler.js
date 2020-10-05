@@ -87,7 +87,7 @@ const inviteUserHelper = async (body) => {
   sgMail.setApiKey(decodedSendgridKey);
 
   const msg = {
-    from: { email: 'tech@gotechnica.org' },
+    from: { email: 'platform@hackthemountains.com' },
     personalizations: [{
       to: [{
         email: user.email,

@@ -161,7 +161,3 @@ button:focus {
 .carousel-control-prev, .carousel-control-next, .carousel-indicators {
 	z-index: 100 !important;
 }
-
-.intercom-lightweight-app-launcher{
-	background: #E9AE91 !important;
-}

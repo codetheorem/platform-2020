@@ -16,7 +16,7 @@ export default {
     PROJECTS_BASE_ENDPOINT: 'https://rsppg0cat8.execute-api.us-east-1.amazonaws.com',
     TEAMS_BASE_ENDPOINT: 'https://aw4fp52u8l.execute-api.us-east-1.amazonaws.com',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
-    PLATFORM_WALKTHROUGH_ID: '146643',
+    PLATFORM_WALKTHROUGH_ID: '164841',
     ADMIN_BASE_ENDPOINT: 'https://0dx0qtiiob.execute-api.us-east-1.amazonaws.com',
     eventIds: {
       minecraft1: 'cc81c212-8d67-4ea2-b994-43bd89198484',
