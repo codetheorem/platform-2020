@@ -294,7 +294,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if ((!Vue.cookie.get('userId')) && ((to.name !== 'Login' && to.name !== 'Authenticate' && to.name !== 'Signup'))) {
-    next({ name: 'signup' });
+    next({ name: 'Signup' });
   } else {
     next();
   }

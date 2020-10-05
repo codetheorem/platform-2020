@@ -19,7 +19,7 @@ if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test') {
   });
 }
 
-const routesWithoutNavBar = ['Login', 'Register', 'Authenticate'];
+const routesWithoutNavBar = ['Login', 'Register', 'Authenticate', 'Signup'];
 
 export default {
   name: 'App',

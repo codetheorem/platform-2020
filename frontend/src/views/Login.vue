@@ -16,9 +16,9 @@
             <Button size="lg" text="Send Me a Magic Link" @click="sendMagicLink"/>
             <div class="login-footer">
               <span style="padding-right: .75rem">or</span>
-              <a :href="signupFormLink" target="_blank">
+              <router-link to="signup">
                 <Button size="lg" text="Sign Up" :outlineStyle="true"/>
-              </a>
+              </router-link>
             </div>
           </form>
         </template>

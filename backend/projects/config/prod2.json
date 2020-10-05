@@ -1,0 +1,8 @@
+{
+    "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
+    "PROJECTS_TABLE": "platform-prod2-projects",
+    "SPONSORS_INFO_TABLE": "platform-prod2-sponsorship-info",
+    "MENTORSHIP_REQUESTS_TABLE": "platform-prod2-mentorship-requests",
+    "PROJECT_SUBMISSION_CHECKLIST_ITEMS_TABLE": "platform-prod2-project-checklist-items",
+    "DEVPOST_LINK_TABLE": "platform-prod2-project-submissions"
+}

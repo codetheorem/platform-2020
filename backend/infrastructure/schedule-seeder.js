@@ -2,7 +2,7 @@ const Axios = require('axios');
 
 var csv = require("csvtojson");
 
-const endpoint = "https://urbd4h6d6d.execute-api.us-east-1.amazonaws.com/prod/add_event";
+const endpoint = "https://142h18au39.execute-api.us-east-1.amazonaws.com/prod2/add_event";
 
 function sleep(ms) {
     return new Promise((resolve) => {

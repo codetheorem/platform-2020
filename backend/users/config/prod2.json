@@ -1,0 +1,14 @@
+{
+    "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
+    "BANNED_USERS_TABLE": "platform-prod2-banned-users",
+    "USERS_TABLE": "platform-prod2-users",
+    "INVITES_TABLE": "platform-prod2-invites",
+    "INVITE_TEMPLATE_ID": "d-b55f945d51b04bc38aa12f69c4c65d28",
+    "BASE_INVITE_URL": "http://htm.gotechnica.org/authenticate",
+    "SENDGRID_SECRET_NAME": "SENDGRID_API_KEY",
+    "REGISTRATION_REFERRAL_TABLE": "platform-prod2-referrals",
+    "REGISTRATION_TEMPLATE_ID": "d-37d309451576469988ffa38d21309133",
+    "REGISTRATION_INVITE_URL": "http://gotechnica.org/r",
+    "SLACK_WEBHOOK_SECRET_NAME": "PLATFORM_ACTVITY_SLACK_WEBHOOK",
+    "ACTIVITY_TABLE": "platform-prod2-activity"
+}
