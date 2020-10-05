@@ -1,20 +1,20 @@
 ﻿category,start_time,link,end_time,description,id,event_name
-main,2020-10-24T20:00:00Z,localhost:8080/lO0RlD,2020-10-24T21:00:00Z,Sample description,73ca76ea-2009-4de4-8ac1-4ee4fa07913f,Animal Jam Session
-main,2020-10-24T22:00:00Z,localhost:8080/FbyZ4g,2020-10-24T23:00:00Z,Sample description,f681834c-bb13-4fb3-9b66-042dfb19dcb9,Smash Tournament
-main,2020-10-25T15:00:00Z,localhost:8080/VuiW9W,2020-10-25T15:00:00Z,Sample description,73d09f27-18ec-4887-a047-ec3989b7c548,My great event 2
-main,2020-10-25T11:00:00Z,localhost:8080/JLMdK0,2020-10-25T12:00:00Z,Sample description,afa9d09f-9693-436f-a129-ebeb619a07be,My great event 4
-main,2020-10-24T08:00:00Z,localhost:8080/cGIgaE,2020-10-24T09:00:00Z,Sample description,cdc8c2a2-e99a-4a7a-9ca5-48549af24501,Intro to Hackathons: Technica 101
-main,2020-10-24T10:00:00Z,localhost:8080/tDWzbH,2020-10-24T11:00:00Z,Sample description,c2f5e555-8347-49b1-b586-3e040b1b4896,Team Formation
-main,2020-10-24T23:00:00Z,localhost:8080/bZHsrQ,2020-10-24T24:00:00Z,Sample description,7dbe7dd4-bdea-4e3e-ac1f-797714ce9f15,Smash Tournament
-main,2020-10-24T20:00:00Z,localhost:8080/0VXn7l,2020-10-24T21:00:00Z,Sample description,c4fb8dd3-8e51-48f6-9b0b-1da09ffada30,Google Cloud Workshop
-main,2020-10-24T11:00:00Z,localhost:8080/VwGHb2,2020-10-24T12:00:00Z,Sample description,0311ce0c-f85e-4794-9e66-ce69b1bdb57f,My great event 4
-main,2020-10-25T15:00:00Z,localhost:8080/yYzgyg,2020-10-25T15:00:00Z,Sample description,e7af484d-edd3-412d-a4dc-9c0432bedff6,My great event 3
-main,2020-10-24T14:00:00Z,localhost:8080/F9cANW,2020-10-24T15:00:00Z,Sample description,b4316cde-e2e7-4bb7-ab45-c29540bc89fa,Smash Tournament
-main,2020-10-24T12:00:00Z,localhost:8080/6iKrXO,2020-10-24T13:00:00Z,Sample description,ca732d54-b024-432e-a8b8-3ade9d5a7ebd,Building a Scalable Design System
-main,2020-10-24T20:00:00Z,localhost:8080/FLJ3py,2020-10-24T21:00:00Z,Sample description,aff87145-6189-4146-8cf8-827964fca63e,Smash Tournament
-main,2020-10-24T17:00:00Z,localhost:8080/xFjo2m,2020-10-24T18:00:00Z,Sample description,64bb48e5-d326-467e-bff2-ab22539d737a,Animal Jam Session
-main,2020-10-24T09:00:00Z,localhost:8080/JIelQX,2020-10-24T10:00:00Z,Sample description,38281112-3726-4e5c-b13d-f48acd9eaaf7,Breakfast
-main,2020-10-24T17:00:00Z,localhost:8080/JM5kUK,2020-10-24T18:00:00Z,Sample description,57bd007a-a38b-42ad-90b6-c69fb41907aa,Building a Scalable Design System
-main,2020-10-24T11:00:00Z,localhost:8080/ystdSO,2020-10-24T12:00:00Z,Sample description,167e88ae-1967-485c-a51e-ac9f22981d14,My great event 1
-main,2020-10-25T15:00:00Z,localhost:8080/KOmuXj,2020-10-25T15:00:00Z,Sample description,eb35b502-6b49-46d5-9a98-7a5a112cee24,My great event
-main,2020-10-24T23:00:00Z,localhost:8080/cYEVke,2020-10-24T24:00:00Z,Sample description,a15606a3-8aac-4c85-b88f-a804bced0083,Google Cloud Workshop
+main,2020-10-10T09:00:00Z,localhost:8080/lO0RlD,2020-10-10T10:00:00Z,Sample description,73ca76ea-2009-4de4-8ac1-4ee4fa07913f,Opening ceremony
+main,2020-10-10T10:00:00Z,localhost:8080/FbyZ4g,2020-10-10T11:00:00Z,Sample description,f681834c-bb13-4fb3-9b66-042dfb19dcb9,Hackathon Begins
+main,2020-10-10T10:00:00Z,localhost:8080/VuiW9W,2020-10-10T11:00:00Z,Sample description,73d09f27-18ec-4887-a047-ec3989b7c548,Team Formation and Ideation Period
+main,2020-10-10T10:30:00Z,localhost:8080/JLMdK0,2020-10-10T11:00:00Z,Sample description,afa9d09f-9693-436f-a129-ebeb619a07be,Hacking Starts
+main,2020-10-10T11:00:00Z,localhost:8080/cGIgaE,2020-10-10T12:00:00Z,Hosted by Rishabh Singh,cdc8c2a2-e99a-4a7a-9ca5-48549af10501,Do's and Don't Of a Hackathon
+main,2020-10-10T10:00:00Z,localhost:8080/tDWzbH,2020-10-10T11:00:00Z,Sample description,c2f5e555-8347-49b1-b586-3e040b1b4896,Team Formation
+main,2020-10-10T12:30:00Z,localhost:8080/bZHsrQ,2020-10-10T13:15:00Z,Sample description,7dbe7dd4-bdea-4e3e-ac1f-797714ce9f15,Session by EchoAR
+main,2020-10-10T14:00:00Z,localhost:8080/0VXn7l,2020-10-10T14:00:00Z,Sample description,c4fb8dd3-8e51-48f6-9b0b-1da09ffada30,MLH Fun Event
+main,2020-10-10T15:30:00Z,localhost:8080/VwGHb2,2020-10-10T16:10:00Z,Sample description,0311ce0c-f85e-4794-9e66-ce69b1bdb57f,Hack Your Way Into the Future by Codeasylum
+main,2020-10-10T20:00:00Z,localhost:8080/yYzgyg,2020-10-10T20:45:00Z,Sample description,e7af484d-edd3-412d-a4dc-9c0432bedff6,Session by Bubble
+main,2020-10-11T10:00:00Z,localhost:8080/F9cANW,2020-10-11T10:45:00Z,Sample description,b4316cde-e2e7-4bb7-ab45-c29540bc89fa,MLH Session
+main,2020-10-10T21:00:00Z,localhost:8080/6iKrXO,2020-10-10T23:00:00Z,Sample description,ca732d54-b010-432e-a8b8-3ade9d5a7ebd,Movie Night
+main,2020-10-11T11:30:00Z,localhost:8080/FLJ3py,2020-10-11T13:00:00Z,Sample description,aff87145-6189-4146-8cf8-827964fca63e,Hacktoberfest Session
+main,2020-10-11T14:00:00Z,localhost:8080/xFjo2m,2020-10-11T14:45:00Z,Sample description,64bb48e5-d326-467e-bff2-ab21039d737a,MLH Fun Event
+main,2020-10-11T17:00:00Z,localhost:8080/JIelQX,2020-10-11T18:00:00Z,Sample description,38281112-3726-4e5c-b13d-f48acd9eaaf7,Project Submission Deadline
+main,2020-10-11T17:30:00Z,localhost:8080/JM5kUK,2020-10-11T18:30:00Z,Sample description,57bd007a-a38b-42ad-90b6-c69fb41907aa,MLH Session
+main,2020-10-11T19:00:00Z,localhost:8080/ystdSO,2020-10-11T20:00:00Z,Sample description,167e88ae-1967-485c-a51e-ac9f22981d14,Comedy Session
+main,2020-10-11T20:00:00Z,localhost:8080/KOmuXj,2020-10-11T21:00:00Z,Sample description,eb35b502-6b49-46d5-9a98-7a5a112cee10,Judging Begins
+main,2020-10-12T12:00:00Z,localhost:8080/cYEVke,2020-12-12T13:00:00Z,Sample description,a15606a3-8aac-4c85-b88f-a804bced0083,Closing Ceremony

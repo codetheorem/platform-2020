@@ -39,8 +39,8 @@ export default {
     SLACK_INVITE_LINK: 'https://join.slack.com/t/technica2020/shared_invite/zt-higqqg9d-njO1xc8o__xAKhLyId_kvw',
     DOCUSIGN_WAIVER_LINK: 'https://docusign.com',
     VIDEO_MONTAGE_LINK: 'https://getmontage.co/s/0JQ0',
-    START_DATE: '2020-10-25',
-    END_DATE: '2020-10-26',
+    START_DATE: '2020-10-10',
+    END_DATE: '2020-10-12',
     PHOTO_BOOTH_LINK: 'https://app.virtualbooth.me/booth/4GmD3p6l',
   },
   dev: {
