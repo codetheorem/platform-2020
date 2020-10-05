@@ -110,7 +110,7 @@ export default {
       if (window.location.hostname === 'platform-staging.gotechnica.org') {
         return 'stage';
       }
-      if (window.location.hostname === 'htm.gotechnica.org' || window.location.hostname === 'd1pidxtn9bq8br.cloudfront.net') {
+      if (window.location.hostname === 'htm.gotechnica.org' || window.location.hostname === 'd1pidxtn9bq8br.cloudfront.net' || window.location.hostname === 'hackthemountains.com') {
         return 'prod2';
       }
       return 'dev';
