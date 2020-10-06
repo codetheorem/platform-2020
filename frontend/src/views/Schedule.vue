@@ -1,6 +1,7 @@
 <template>
   <div class="schedule-page">
     <h2 class="page-header">Events</h2>
+    <p>Events are automatically displayed in your time zone.</p>
     <div v-if="dataLoaded" class="schedule-list">
       <ScheduleCarousel
         title="MY SAVED EVENTS"

@@ -3,6 +3,6 @@
     "ADMIN_TABLE": "platform-prod2-admin",
     "EASTER_EGGS_TABLE": "platform-prod2-easter-eggs",
     "SPONSOR_BOOTHS_TABLE": "platform-prod2-sponsor-booths",
-    "ANNOUNCEMENTS_TABLE": "platform-dev-announcements",
+    "ANNOUNCEMENTS_TABLE": "platform-prod2-announcements",
     "ANNOUNCEMENTS_CHANNEL": "C01C9UDP1UZ"
 }

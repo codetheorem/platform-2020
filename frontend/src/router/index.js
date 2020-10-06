@@ -177,10 +177,6 @@ const routes = [
         name: 'Schedule',
       },
       {
-        path: '/live-stream',
-        name: 'Live Stream',
-      },
-      {
         path: '/sponsors',
         name: 'Sponsors',
       },
