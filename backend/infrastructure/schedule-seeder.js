@@ -21,6 +21,6 @@ csv()
     });
     for (const item of formattedScheduleItems) {
         await Axios.post(endpoint, item);
-        await sleep(1000);
+        await sleep(500);
       }
    })

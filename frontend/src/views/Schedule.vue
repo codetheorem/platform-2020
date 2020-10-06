@@ -83,7 +83,7 @@ export default {
       selectedDay: null,
       days: [],
       timeWindows: [],
-      scheduleColumns: 3,
+      scheduleColumns: 1,
       dataLoaded: false,
       selectedEvent: {},
       startDate: new Date(this.getEnvVariable('START_DATE')),

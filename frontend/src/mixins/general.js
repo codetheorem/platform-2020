@@ -104,6 +104,7 @@ export default {
       return false;
     },
     getCurrentEnvironment() {
+      return 'prod2';
       if (window.location.hostname === 'platform.gotechnica.org') {
         return 'prod';
       }

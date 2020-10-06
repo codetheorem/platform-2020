@@ -71,6 +71,12 @@ export default {
       console.log(this.formattedEvents);
     },
     convertTimeWindowTo24HourFormat(timeWindow) {
+      if (timeWindow === '12AM') {
+        return 0;
+      }
+      if (timeWindow === '12PM') {
+        return 12;
+      }
       if (timeWindow.includes('AM')) {
         return parseInt(timeWindow.replace(/[^0-9]/g, ''), 10);
       }
