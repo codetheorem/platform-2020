@@ -255,7 +255,7 @@ module.exports.create_mentorship_request = withSentry(async (request) => {
             },
             "style": "primary",
             "value": body.id,
-            "action_id": "U01C9B0C7KN"
+            "action_id": userQueryResult.Items[0].slack_id || 'test'
           }
         ]
       }
@@ -640,7 +640,7 @@ module.exports.claim_mentorship_request = withSentry(async (event) => {
 
   const web = new WebClient(SlackOauthToken);
   const conversation = await web.conversations.open({ token: SlackOauthToken, users: mentor_slack_user_id + ',' + hacker_slack_user_id});
-  const sendMessage = await web.chat.postMessage({ channel: conversation.channel.id, text: `Hi there! I'm connecting the two of you so <@${hacker_slack_user_id}> can recieve help with his mentorship request, titled: ${title}` });
+  const sendMessage = await web.chat.postMessage({ channel: conversation.channel.id, text: `Hi there! I'm connecting the two of you so <@${hacker_slack_user_id}> can recieve help with their mentorship request, titled: ${title}` });
 
   const slackUpdateMessageResponse = {
     "blocks": [
