@@ -103,9 +103,8 @@ export default {
     },
   },
   data() {
-    const env = this.getCurrentEnvironment();
     var now = new Date();
-    var deadline = new Date(Config[env].COUNTDOWN_END_DATETIME);
+    var deadline = new Date(Config.shared.COUNTDOWN_END_DATETIME);
     
     return {
       rawEvents: [],
