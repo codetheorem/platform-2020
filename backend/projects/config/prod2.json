@@ -4,5 +4,7 @@
     "SPONSORS_INFO_TABLE": "platform-prod2-sponsorship-info",
     "MENTORSHIP_REQUESTS_TABLE": "platform-prod2-mentorship-requests",
     "PROJECT_SUBMISSION_CHECKLIST_ITEMS_TABLE": "platform-prod2-project-checklist-items",
-    "DEVPOST_LINK_TABLE": "platform-prod2-project-submissions"
+    "DEVPOST_LINK_TABLE": "platform-prod2-project-submissions",
+    "SLACK_WEBHOOK_SECRET_NAME": "PROD2_SLACK_WEBHOOK",
+    "USERS_TABLE": "platform-prod2-users"
 }
