@@ -13,6 +13,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@chenfengyuan/vue-countdown": "^1.1.5",
     "@sentry/browser": "^5.19.1",
     "@sentry/integrations": "^5.19.1",
     "animate.css": "^4.1.1",

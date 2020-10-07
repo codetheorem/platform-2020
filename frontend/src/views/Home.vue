@@ -1,5 +1,15 @@
 <template>
   <div id="home-page">
+    <countdown class="countdown" :time=countdownTime>
+      <template slot-scope="props">
+        <div>
+          Time left to submit my hack:
+        </div>
+        <div style="font-weight: bold;">
+          {{ props.days }}d:{{ props.hours }}h:{{ props.minutes }}m
+        </div>
+      </template>
+    </countdown>
     <h2 class="page-header animate__animated animate__fadeInUp">Welcome, {{ getUserName() }}</h2>
     <div class="home-header animate__animated animate__fadeInUp delay1">
       <div v-if="getUserGroup() === 'sponsor'" class="sponsor-buttons">
@@ -57,6 +67,10 @@ import Button from '../components/Button.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
 import Config from '../config/general';
+import Vue from 'vue';
+import VueCountdown from '@chenfengyuan/vue-countdown';
+
+Vue.component(VueCountdown.name, VueCountdown);
 
 export default {
   name: 'Home',
@@ -65,6 +79,7 @@ export default {
     ScheduleCarousel,
     Button,
     LoadingSpinner,
+    VueCountdown
   },
   mixins: [generalMixin, scheduleMixin],
   methods: {
@@ -88,6 +103,10 @@ export default {
     },
   },
   data() {
+    const env = this.getCurrentEnvironment();
+    var now = new Date();
+    var deadline = new Date(Config[env].COUNTDOWN_END_DATETIME);
+    
     return {
       rawEvents: [],
       formattedEvents: {},
@@ -101,6 +120,7 @@ export default {
       startDate: new Date(Config.shared.START_DATE),
       endDate: new Date(Config.shared.END_DATE),
       announcements: [],
+      countdownTime: deadline - now,
     };
   },
   async mounted() {
@@ -124,6 +144,19 @@ export default {
 </script>
 
 <style scoped>
+
+
+.countdown {
+
+  border-radius: 8px;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25));
+
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 20px;
+  
+  padding: 20px;
+  background: white;
+}
 
 h2 {
   color: var(--bright-purple);
@@ -183,6 +216,8 @@ h2 {
   .cloud-image {
     max-height: 40vw;
   }
+
+  
 }
 
 @media (max-height: 850px) {
@@ -232,5 +267,14 @@ h2 {
     margin-bottom: 1rem;
   }
 }
+
+/* on large screens, put countdown timer on right */
+@media only screen and (min-width: 1200px) {
+  .countdown {
+    position: absolute;
+    right: 0;
+  }
+}
+
 
 </style>

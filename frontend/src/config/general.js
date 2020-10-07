@@ -8,6 +8,7 @@ export default {
     START_DATE: '2020-10-25',
     END_DATE: '2020-10-26',
     PHOTO_BOOTH_LINK: 'https://app.virtualbooth.me/booth/4GmD3p6l',
+    COUNTDOWN_END_DATETIME: 'October 25, 2020 15:00:00',
   },
   dev: {
     SCHEDULE_BASE_ENDPOINT: 'https://dxz39cp5d0.execute-api.us-east-1.amazonaws.com',
@@ -33,6 +34,7 @@ export default {
       Trivia2: '73ca76ea-2009-4de4-8ac1-4ee4fa07913f',
       teamFormation: 'c2f5e555-8347-49b1-b586-3e040b1b4896',
     },
+    COUNTDOWN_END_DATETIME: 'October 25, 2020 15:00:00',
   },
   testing: {
     SCHEDULE_BASE_ENDPOINT: 'https://dxz39cp5d0.execute-api.us-east-1.amazonaws.com',
