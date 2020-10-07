@@ -4,5 +4,7 @@
     "SPONSORS_INFO_TABLE": "platform-stage-sponsorship-info",
     "DEVPOST_LINK_TABLE": "platform-stage-project-submissions",
     "PROJECT_SUBMISSION_CHECKLIST_ITEMS_TABLE": "platform-stage-project-checklist-items",
-    "MENTORSHIP_REQUESTS_TABLE": "platform-stage-mentorship-requests"
+    "MENTORSHIP_REQUESTS_TABLE": "platform-stage-mentorship-requests",
+    "SLACK_WEBHOOK_SECRET_NAME": "PLATFORM_ACTVITY_SLACK_WEBHOOK",
+    "USERS_TABLE": "platform-stage-users"
 }

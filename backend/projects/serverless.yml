@@ -16,6 +16,8 @@ provider:
     MENTORSHIP_REQUESTS_TABLE: ${file(./config/${self:provider.stage}.json):MENTORSHIP_REQUESTS_TABLE}
     DEVPOST_LINK_TABLE: ${file(./config/${self:provider.stage}.json):DEVPOST_LINK_TABLE}
     PROJECT_SUBMISSION_CHECKLIST_ITEMS_TABLE: ${file(./config/${self:provider.stage}.json):PROJECT_SUBMISSION_CHECKLIST_ITEMS_TABLE}
+    SLACK_WEBHOOK_SECRET_NAME: ${file(./config/${self:provider.stage}.json):SLACK_WEBHOOK_SECRET_NAME}
+    USERS_TABLE: ${file(./config/${self:provider.stage}.json):USERS_TABLE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -26,7 +28,11 @@ provider:
        - dynamodb:UpdateItem
        - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*"
-
+    - Effect: "Allow"
+      Action:
+        - secretsmanager:DescribeSecret
+        - secretsmanager:GetSecretValue
+      Resource: "arn:aws:secretsmanager:us-east-1:*"
 
 functions:
   add_sponsor:
@@ -133,7 +139,14 @@ functions:
           path: update_project_submission
           method: post
           cors: true
-
+  claim_mentorship_request:
+    handler: handler.claim_mentorship_request
+    description: claims an open mentorship request
+    events:
+      - http: 
+          path: claim_mentorship_request
+          method: post
+          cors: true
 plugins:
   - serverless-sentry
   - serverless-jest-plugin

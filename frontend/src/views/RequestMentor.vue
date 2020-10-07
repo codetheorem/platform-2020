@@ -130,7 +130,9 @@ export default {
       console.log(invites);
       this.requests = [];
       Object.keys(invites).forEach((k) => {
-        this.requests.push(invites[k]);
+        if (!invites[k].resolved) {
+          this.requests.push(invites[k]);
+        }
       });
       this.requestsLoading = false;
     },
