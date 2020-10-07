@@ -715,3 +715,37 @@ module.exports.claim_mentorship_request = withSentry(async (event) => {
     },
   };
 });
+
+module.exports.lookup_user_slack_id_by_email = withSentry(async (event) => {
+  const email = event.queryStringParameters.email;
+
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });    
+  const SecretsManagerSlackKey = await SecretsManager.getSecretValue(
+    { SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME },
+  ).promise();
+  const webhookJSON = JSON.parse(SecretsManagerSlackKey.SecretString);
+  const SlackOauthToken = webhookJSON.PLATFORM_SLACK_OAUTH_TOKEN;
+
+  const web = new WebClient(SlackOauthToken);
+  let result = {};
+  try {
+    const apiResult = await web.users.lookupByEmail({token: SlackOauthToken, email: email});
+    result = apiResult;
+  } catch (e) {
+    const webhookUrl = webhookJSON.PLATFORM_ACTVITY_SLACK_WEBHOOK;
+    const webhook = new IncomingWebhook(webhookUrl);
+    await webhook.send({
+      text: `Could not find slack account for email ${email}`,
+    });
+  }
+  
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});

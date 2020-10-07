@@ -147,6 +147,14 @@ functions:
           path: claim_mentorship_request
           method: post
           cors: true
+  lookup_user_slack_id_by_email:
+    handler: handler.lookup_user_slack_id_by_email
+    description: looks up a user by their email to get their slack ID
+    events:
+      - http: 
+          path: lookup_user_slack_id_by_email
+          method: get
+          cors: true
 plugins:
   - serverless-sentry
   - serverless-jest-plugin
