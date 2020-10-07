@@ -1,6 +1,9 @@
 const AWS = require('aws-sdk');
 const UUID = require('uuid');
 const withSentry = require('serverless-sentry-lib');
+const { IncomingWebhook } = require('@slack/webhook');
+const { WebClient } = require('@slack/web-api');
+const axios = require('axios');
 
 AWS.config.update({ region: 'us-east-1' });
 
@@ -157,6 +160,20 @@ module.exports.create_mentorship_request = withSentry(async (request) => {
   const id = UUID.v4();
   body.id = id;
 
+  const userQueryParams = {
+    TableName: process.env.USERS_TABLE,
+    KeyConditionExpression: "#id = :id",
+    ExpressionAttributeNames:{
+      "#id": "id"
+    },
+    ExpressionAttributeValues: {
+      ":id": body.user_id
+    }
+  };
+
+  const userQueryResult = await ddb.query(userQueryParams).promise();
+  const userName = userQueryResult.Items[0].full_name;
+
   // checks if any field is missing to create a request
   if (!body.title || !body.description || !body.topic) {
     return {
@@ -176,9 +193,74 @@ module.exports.create_mentorship_request = withSentry(async (request) => {
   });
 
   params.Item.timestamp = new Date().toString();
+  params.Item.full_user_name = userName;
+  params.Item.resolved = false;
 
   // Call DynamoDB to add the item to the table
   await ddb.put(params).promise();
+
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });    
+  const SecretsManagerSlackKey = await SecretsManager.getSecretValue(
+    { SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME },
+  ).promise();
+  const webhookJSON = JSON.parse(SecretsManagerSlackKey.SecretString);
+  const webhookUrl = webhookJSON.PLATFORM_ACTVITY_SLACK_WEBHOOK;
+  const webhook = new IncomingWebhook(webhookUrl);
+
+  await webhook.send({
+    "blocks": [
+      {
+        "block_id": userName,
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "New mentorship request:"
+        }
+      },
+      {
+        "type": "section",
+        "fields": [
+          {
+            "type": "mrkdwn",
+            "text": "*Name:*\n" + userName
+          },
+          {
+            "type": "mrkdwn",
+            "text": "*Topic:*\n" + body.topic
+          },
+          {
+            "type": "mrkdwn",
+            "text": "*Title:*\n" + body.title,
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "fields": [
+          {
+            "type": "mrkdwn",
+            "text": "*Description:*\n" + body.description
+          }
+        ]
+      },
+      {
+        "type": "actions",
+        "elements": [
+          {
+            "type": "button",
+            "text": {
+              "type": "plain_text",
+              "emoji": true,
+              "text": "Claim"
+            },
+            "style": "primary",
+            "value": body.id,
+            "action_id": userQueryResult.Items[0].slack_id || 'test'
+          }
+        ]
+      }
+    ]
+  });
 
   // Returns status code 200 and JSON string of 'result'
   return {
@@ -519,4 +601,151 @@ module.exports.update_project_submission = withSentry(async event => {
       'Access-Control-Allow-Credentials': true,
     }
   };	 
+});
+
+module.exports.claim_mentorship_request = withSentry(async (event) => {
+  const ddb = new AWS.DynamoDB.DocumentClient();
+  const body = event.body;
+  const parsedPayload = JSON.parse(decodeURIComponent(body.slice(body.indexOf("payload=") + "payload=".length)));
+  const user = parsedPayload.user;
+  const mentor_slack_user_id = user.id;
+
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });    
+  const SecretsManagerSlackKey = await SecretsManager.getSecretValue(
+    { SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME },
+  ).promise();
+  const webhookJSON = JSON.parse(SecretsManagerSlackKey.SecretString);
+  const webhookUrl = webhookJSON.PLATFORM_ACTVITY_SLACK_WEBHOOK;
+  const webhook = new IncomingWebhook(webhookUrl);
+  const SlackOauthToken = webhookJSON.PLATFORM_SLACK_OAUTH_TOKEN;
+
+  const mentorship_request_id = parsedPayload.actions[0].value;
+  const hacker_slack_user_id = parsedPayload.actions[0].action_id;
+  const response_url = parsedPayload.response_url;
+
+  const queryParams = {
+    TableName: process.env.MENTORSHIP_REQUESTS_TABLE,
+    KeyConditionExpression: "#id = :id",
+    ExpressionAttributeNames:{
+      "#id": "id"
+    },
+    ExpressionAttributeValues: {
+      ":id": mentorship_request_id
+    }
+  };
+
+  const queryResult = await ddb.query(queryParams).promise();
+  const title = queryResult.Items[0].title;
+  const user_name = queryResult.Items[0].full_user_name;
+
+  const web = new WebClient(SlackOauthToken);
+  const conversation = await web.conversations.open({ token: SlackOauthToken, users: mentor_slack_user_id + ',' + hacker_slack_user_id});
+  const sendMessage = await web.chat.postMessage({ channel: conversation.channel.id, text: `Hi there! I'm connecting the two of you so <@${hacker_slack_user_id}> can recieve help with their mentorship request, titled: ${title}` });
+
+  const slackUpdateMessageResponse = {
+    "blocks": [
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "New mentorship request:"
+        }
+      },
+      {
+        "type": "section",
+        "block_id": body.title,
+        "fields": [
+          {
+            "type": "mrkdwn",
+            "text": "*Name:*\n" + user_name
+          },
+          {
+            "type": "mrkdwn",
+            "text": "*Topic:*\n" + queryResult.Items[0].topic
+          },
+          {
+            "type": "mrkdwn",
+            "text": "*Title:*\n" + queryResult.Items[0].title,
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "fields": [
+          {
+            "type": "mrkdwn",
+            "text": "*Description:*\n" + queryResult.Items[0].description
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "fields": [
+          {
+            "type": "mrkdwn",
+            "text": `:white_check_mark: Claimed by <@${mentor_slack_user_id}>`
+          }
+        ]
+      }
+    ]
+  };
+
+  const updateResponse = await axios.post(response_url, slackUpdateMessageResponse);
+
+  const updateParams = {
+    TableName: process.env.MENTORSHIP_REQUESTS_TABLE,
+    Key: {
+      id: mentorship_request_id,
+    },
+    UpdateExpression: 'set resolved = :p',
+    ExpressionAttributeValues: {
+      ':p': true,
+    },
+    ReturnValues: 'UPDATED_NEW',
+  };
+
+  await ddb.update(updateParams).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({}),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
+});
+
+module.exports.lookup_user_slack_id_by_email = withSentry(async (event) => {
+  const email = event.queryStringParameters.email;
+
+  const SecretsManager = new AWS.SecretsManager({ region: 'us-east-1' });    
+  const SecretsManagerSlackKey = await SecretsManager.getSecretValue(
+    { SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME },
+  ).promise();
+  const webhookJSON = JSON.parse(SecretsManagerSlackKey.SecretString);
+  const SlackOauthToken = webhookJSON.PLATFORM_SLACK_OAUTH_TOKEN;
+
+  const web = new WebClient(SlackOauthToken);
+  let result = {};
+  try {
+    const apiResult = await web.users.lookupByEmail({token: SlackOauthToken, email: email});
+    result = apiResult;
+  } catch (e) {
+    const webhookUrl = webhookJSON.PLATFORM_ACTVITY_SLACK_WEBHOOK;
+    const webhook = new IncomingWebhook(webhookUrl);
+    await webhook.send({
+      text: `Could not find slack account for email ${email}`,
+    });
+  }
+  
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  };
 });

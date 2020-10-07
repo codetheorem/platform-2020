@@ -104,6 +104,7 @@ export default {
   async mounted() {
     await this.activityTracking('REQUEST_MENTOR');
     await this.getMentorRequests();
+    await this.setUserSlackId();
   },
   methods: {
     async submitMentorRequest() {
@@ -127,7 +128,9 @@ export default {
       console.log(invites);
       this.requests = [];
       Object.keys(invites).forEach((k) => {
-        this.requests.push(invites[k]);
+        if (!invites[k].resolved) {
+          this.requests.push(invites[k]);
+        }
       });
       this.requestsLoading = false;
     },

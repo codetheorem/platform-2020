@@ -156,5 +156,16 @@ export default {
       minutes = minutes < 10 ? `0${minutes}` : minutes;
       return `${hours}:${minutes} ${ampm}`;
     },
+    async setUserSlackId() {
+      const env = this.getCurrentEnvironment();
+      const user = await this.performGetRequest(Config[env].USERS_BASE_ENDPOINT, env, 'get_user', { id: this.getUserId() });
+      if (!user.slack_id) {
+        const slackId = await this.performGetRequest(Config[env].PROJECTS_BASE_ENDPOINT, env, 'lookup_user_slack_id_by_email', { email: user.email });
+        if (slackId.user) {
+          const rawSlackId = slackId.user.id;
+          await this.performPostRequest(Config[env].USERS_BASE_ENDPOINT, env, 'update_user', { id: this.getUserId(), slack_id: rawSlackId });
+        }
+      }
+    },
   },
 };
