@@ -7,7 +7,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
               <div class="card" style="margin-bottom: 2rem;">
-                <EasterEggStamp :displayStamp="displayEasterEgg" @viewEasterEgg="viewEasterEgg()" :totalEasterEggsFound="totalEasterEggsFound" :totalEasterEggs="totalEasterEggs" :postcards="easterEggData"/>
+                <EasterEggStamp :eggId="1" @viewEasterEgg="viewEasterEgg()" :totalEasterEggsFound="totalEasterEggsFound" :totalEasterEggs="totalEasterEggs"/>
                 <div class="card-body">
                     <p>
                       If you are ready to submit your Technica Hack, please click on the button below! <b>Only one hacker needs to submit per team.</b>
@@ -117,7 +117,7 @@ export default {
   },
   async created() {
     await this.getTeam();
-    await this.getEasterEggData();
+    // await this.getEasterEggData();
     this.dataLoaded = true;
   },
   methods: {
@@ -139,34 +139,35 @@ export default {
     clickReadyButton() {
       this.readyButtonClicked = true;
     },
-    async getEasterEggData() {
-      const env = this.getCurrentEnvironment();
-      const easterEggParams = {
-        user_id: this.getUserId(),
-      };
-      const easterEggData = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_easter_eggs', easterEggParams);
-      if (easterEggData && easterEggData[0]) {
-        const formattedEEData = [];
-        Object.keys(easterEggData).forEach((d) => {
-          formattedEEData.push(easterEggData[d]);
-        });
-        const easterEgg = formattedEEData.find((e) => e.easter_egg_id === EASTER_EGG_ID);
-        if (easterEgg) {
-          if (easterEgg.discovered === false) {
-            this.displayEasterEgg = true;
-            this.currentEasterEggDBId = easterEgg.id;
-          }
-          this.easterEggData = formattedEEData;
-          let totalEEFound = 0;
-          this.easterEggData.forEach((d) => {
-            if (d.discovered) {
-              totalEEFound += 1;
-            }
-          });
-          this.totalEasterEggsFound = totalEEFound;
-        }
-      }
-    },
+    // async getEasterEggData() {
+    //   const env = this.getCurrentEnvironment();
+    //   const easterEggParams = {
+    //     user_id: this.getUserId(),
+    //   };
+    //   const easterEggData = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_easter_eggs', easterEggParams);
+    //   console.log('easter egg: ', easterEggData);
+    //   if (easterEggData && easterEggData[0]) {
+    //     const formattedEEData = [];
+    //     Object.keys(easterEggData).forEach((d) => {
+    //       formattedEEData.push(easterEggData[d]);
+    //     });
+    //     const easterEgg = formattedEEData.find((e) => e.easter_egg_id === EASTER_EGG_ID);
+    //     if (easterEgg) {
+    //       if (easterEgg.discovered === false) {
+    //         this.displayEasterEgg = true;
+    //         this.currentEasterEggDBId = easterEgg.id;
+    //       }
+    //       this.easterEggData = formattedEEData;
+    //       let totalEEFound = 0;
+    //       this.easterEggData.forEach((d) => {
+    //         if (d.discovered) {
+    //           totalEEFound += 1;
+    //         }
+    //       });
+    //       this.totalEasterEggsFound = totalEEFound;
+    //     }
+    //   }
+    // },
     async getTeam() {
       const env = this.getCurrentEnvironment();
       const teamParams = {
@@ -210,17 +211,17 @@ export default {
         this.checklistCounter -= 1;
       }
     },
-    viewEasterEgg() {
-      this.easterEggData.find((e) => e.easter_egg_id === EASTER_EGG_ID).discovered = true;
-      this.totalEasterEggsFound += 1;
-      this.displayEasterEgg = false;
-      const env = this.getCurrentEnvironment();
-      const params = {
-        user_id: this.getUserId(),
-        id: this.currentEasterEggDBId,
-      };
-      this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'discover_easter_egg', params);
-    },
+    // viewEasterEgg() {
+    //   this.easterEggData.find((e) => e.easter_egg_id === EASTER_EGG_ID).discovered = true;
+    //   this.totalEasterEggsFound += 1;
+    //   this.displayEasterEgg = false;
+    //   const env = this.getCurrentEnvironment();
+    //   const params = {
+    //     user_id: this.getUserId(),
+    //     id: this.currentEasterEggDBId,
+    //   };
+    //   this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'discover_easter_egg', params);
+    // },
   },
   computed: {
     checklistDisabled() {

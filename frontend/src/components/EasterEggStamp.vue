@@ -22,17 +22,35 @@
 
 <script>
 import Button from '@/components/Button.vue';
+import generalMixin from '../mixins/general';
+import Config from '../config/general';
+
 
 export default {
   name: 'EasterEggStamp',
+  mixins: [generalMixin],
   components: {
     Button,
   },
   props: {
     totalEasterEggsFound: Number,
     totalEasterEggs: Number,
-    postcards: Array,
-    displayStamp: Boolean,
+    // postcards: Array,
+    
+    eggId: Number,
+  },
+  data() {
+    return {
+      postcards: [],
+      easterEggData: [],
+      displayStamp: false,
+    }
+  },
+  async created() {
+    // await this.getTeam();
+    await this.getEasterEggData();
+    console.log(this.postcards);
+    // this.dataLoaded = true;
   },
   computed: {
     modalTitle() {
@@ -47,8 +65,52 @@ export default {
     goBack() {
       this.$bvModal.hide('easterEggModal');
     },
+    // viewEasterEgg() {
+    //   this.$emit('viewEasterEgg');
+    // },
     viewEasterEgg() {
-      this.$emit('viewEasterEgg');
+      this.easterEggData.find((e) => e.easter_egg_id === EASTER_EGG_ID).discovered = true;
+      this.totalEasterEggsFound += 1;
+      this.displayStamp = false;
+      const env = this.getCurrentEnvironment();
+      const params = {
+        user_id: this.getUserId(),
+        id: this.currentEasterEggDBId,
+      };
+      this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'discover_easter_egg', params);
+    },
+    async getEasterEggData() {
+      const env = this.getCurrentEnvironment();
+      const easterEggParams = {
+        user_id: this.getUserId(),
+      };
+      const easterEggData = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_easter_eggs', easterEggParams);
+      console.log('easter egg: ', easterEggData);
+      if (easterEggData && easterEggData[0]) {
+        const formattedEEData = [];
+        Object.keys(easterEggData).forEach((d) => {
+          formattedEEData.push(easterEggData[d]);
+        });
+        const easterEgg = formattedEEData.find((e) => e.easter_egg_id === this.eggId);
+        // DELETE
+        console.log(easterEgg);
+        easterEgg.discovered = false;
+        if (easterEgg) {
+          if (easterEgg.discovered === false) {
+            this.displayStamp = true;
+            this.currentEasterEggDBId = easterEgg.id;
+          }
+
+          this.postcards = formattedEEData;
+          let totalEEFound = 0;
+          this.postcards.forEach((d) => {
+            if (d.discovered) {
+              totalEEFound += 1;
+            }
+          });
+          this.totalEasterEggsFound = totalEEFound;
+        }
+      }
     },
   },
 };
