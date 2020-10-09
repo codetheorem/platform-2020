@@ -35,6 +35,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
+
 export default {
   name: 'Home',
   components: {

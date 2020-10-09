@@ -11,6 +11,7 @@
       </template>
     </countdown>
     <h2 class="page-header animate__animated animate__fadeInUp">Welcome, {{ getUserName() }}</h2>
+    <EasterEggStamp :easterEggID="2" />
     <div class="home-header animate__animated animate__fadeInUp delay1">
       <div v-if="getUserGroup() === 'sponsor'" class="sponsor-buttons">
         <Button text="Chat with an Organizer" @click="openIntercom()" class="sponsor-button"/>
@@ -63,12 +64,14 @@
 import Banner from '@/components/Banner.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
+import Vue from 'vue';
+import VueCountdown from '@chenfengyuan/vue-countdown';
 import Button from '../components/Button.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
 import Config from '../config/general';
-import Vue from 'vue';
-import VueCountdown from '@chenfengyuan/vue-countdown';
+import EasterEggStamp from '@/components/EasterEggStamp.vue';
+
 
 Vue.component(VueCountdown.name, VueCountdown);
 
@@ -79,7 +82,8 @@ export default {
     ScheduleCarousel,
     Button,
     LoadingSpinner,
-    VueCountdown
+    VueCountdown,
+    EasterEggStamp,
   },
   mixins: [generalMixin, scheduleMixin],
   methods: {
@@ -103,9 +107,9 @@ export default {
     },
   },
   data() {
-    var now = new Date();
-    var deadline = new Date(Config.shared.COUNTDOWN_END_DATETIME);
-    
+    const now = new Date();
+    const deadline = new Date(Config.shared.COUNTDOWN_END_DATETIME);
+
     return {
       rawEvents: [],
       formattedEvents: {},
@@ -144,7 +148,6 @@ export default {
 
 <style scoped>
 
-
 .countdown {
 
   border-radius: 8px;
@@ -152,7 +155,7 @@ export default {
 
   font-family: 'Noto Sans', sans-serif;
   font-size: 20px;
-  
+
   padding: 20px;
   background: white;
 }
@@ -216,7 +219,6 @@ h2 {
     max-height: 40vw;
   }
 
-  
 }
 
 @media (max-height: 850px) {
@@ -274,6 +276,5 @@ h2 {
     right: 0;
   }
 }
-
 
 </style>

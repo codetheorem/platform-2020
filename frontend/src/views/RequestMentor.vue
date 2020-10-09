@@ -2,6 +2,7 @@
   <div>
     <b-container id="mentor-container">
       <h2 class="page-header">Request a Mentor</h2>
+      <EasterEggStamp :easterEggID="3" />
     </b-container>
     <div class="mentor-body" style="display: flex;">
         <div class="mentor-left">
@@ -64,6 +65,7 @@ import Banner from '@/components/Banner.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
+import EasterEggStamp from '@/components/EasterEggStamp.vue';
 
 export default {
   name: 'RequestMentor',
@@ -71,6 +73,7 @@ export default {
     Button,
     Banner,
     LoadingSpinner,
+    EasterEggStamp,
   },
   mixins: [generalMixin],
   data() {

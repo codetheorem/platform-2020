@@ -7,7 +7,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
               <div class="card" style="margin-bottom: 2rem;">
-                <EasterEggStamp :eggId="1" @viewEasterEgg="viewEasterEgg()" :totalEasterEggsFound="totalEasterEggsFound" :totalEasterEggs="totalEasterEggs"/>
+                <EasterEggStamp :easterEggID="this.easterEggID" />
                 <div class="card-body">
                     <p>
                       If you are ready to submit your Technica Hack, please click on the button below! <b>Only one hacker needs to submit per team.</b>
@@ -113,6 +113,7 @@ export default {
       currentEasterEggDBId: null,
       easterEggData: [],
       totalEasterEggsFound: 0,
+      easterEggID: EASTER_EGG_ID,
     };
   },
   async created() {
