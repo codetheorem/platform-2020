@@ -10,8 +10,9 @@
         </div>
       </template>
     </countdown>
+
     <h2 class="page-header animate__animated animate__fadeInUp">Welcome, {{ getUserName() }}</h2>
-    <EasterEggStamp :easterEggID="2" />
+    <EasterEggStamp :easterEggID="1" />
     <div class="home-header animate__animated animate__fadeInUp delay1">
       <div v-if="getUserGroup() === 'sponsor'" class="sponsor-buttons">
         <Button text="Chat with an Organizer" @click="openIntercom()" class="sponsor-button"/>

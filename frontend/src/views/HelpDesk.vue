@@ -1,6 +1,7 @@
 <template>
   <div class="about">
     <h2 class="page-header">Help Desk</h2>
+    <EasterEggStamp :easterEggID="5" />
     <div id="help-body" class="container my-3 my-md-5">
       <div class="row">
         <div class="col-md-1"></div>
@@ -42,12 +43,14 @@
 import Button from '@/components/Button.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
+import EasterEggStamp from '@/components/EasterEggStamp.vue';
 
 export default {
   name: 'HelpDesk',
   mixins: [generalMixin],
   components: {
     Button,
+    EasterEggStamp,
   },
   data() {
     return {

@@ -1,6 +1,7 @@
 <template>
   <div class="schedule-page">
     <h2 class="page-header">Events</h2>
+    <EasterEggStamp :easterEggID="2" />
     <div v-if="dataLoaded" class="schedule-list">
       <ScheduleCarousel
         title="MY SAVED EVENTS"
@@ -67,6 +68,7 @@ import scheduleMixin from '../mixins/schedule';
 import Config from '../config/general';
 import Button from '../components/Button.vue';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
+import EasterEggStamp from '@/components/EasterEggStamp.vue';
 
 export default {
   name: 'Schedule',
@@ -75,6 +77,7 @@ export default {
     Button,
     LoadingSpinner,
     ScheduleCarousel,
+    EasterEggStamp
   },
   data() {
     return {

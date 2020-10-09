@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="stamp-wrapper" @click="viewEasterEgg()" v-b-modal.easterEggModal>
+        <div :class="baseClass + easterEggID" @click="viewEasterEgg()" v-b-modal.easterEggModal>
             <img v-if="displayStamp" src="../assets/stamp.png" class="stamp-img">
         </div>
         <b-modal id="easterEggModal" :title="modalTitle" size="xl">
@@ -54,7 +54,8 @@ export default {
         3: "https://technica-brand-assets.s3.amazonaws.com/carolyn bertozzi.png",
         4: "https://technica-brand-assets.s3.amazonaws.com/farida bedwei.png",
         5: "https://technica-brand-assets.s3.amazonaws.com/dijannafigueroa.png",
-      }
+      },
+      baseClass: "stamp-wrapper-"
     };
   },
   async created() {
@@ -76,8 +77,7 @@ export default {
         user_id: this.getUserId(),
       };
       const easterEggData = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_easter_eggs', easterEggParams);
-      console.log('easter egg data: ', easterEggData);
-      console.log('egg ID: ', this.easterEggID);
+      
       if (easterEggData && easterEggData[0]) {
         const formattedEEData = [];
         Object.keys(easterEggData).forEach((d) => {
@@ -85,7 +85,9 @@ export default {
         });
         const easterEgg = formattedEEData.find((e) => e.easter_egg_id === this.easterEggID);
         // DELETE
-        console.log(easterEgg);
+        console.log('easter egg data: ', easterEggData);
+        console.log('egg ID: ', this.easterEggID);
+        console.log('egg data: ', easterEgg);
         easterEgg.discovered = false;
         if (easterEgg) {
           if (easterEgg.discovered === false) {
@@ -129,12 +131,7 @@ export default {
 </script>
 
 <style>
-.stamp-wrapper {
-    position: absolute;
-    z-index: 1 !important;
-    margin-left: -1rem;
-    margin-top: -1rem;
-}
+
 
 .stamp-img:hover {
     filter: drop-shadow(0px 0px 12px rgba(255, 80, 145, 0.7));
@@ -180,6 +177,61 @@ export default {
 
 .modal-footer {
     justify-content: center !important;
+}
+
+
+/* .stamp-wrapper {
+    position: absolute;
+    z-index: 1 !important;
+    margin-left: -1rem;
+    margin-top: -1rem;
+} */
+
+.stamp-wrapper-1 {
+    position: relative;
+    right: 30rem;
+    top: 23rem;
+    z-index: 1 !important;
+    margin-left: -1rem;
+    margin-top: -1rem;
+}
+
+.stamp-wrapper-2 {
+    position: relative;
+    right: 35rem;
+    top: 100rem;
+    z-index: 1 !important;
+    margin-left: -1rem;
+    margin-top: -1rem;
+}
+.stamp-wrapper-3 {
+  position: absolute;
+  z-index: 1 !important;
+  margin-left: -1rem;
+  margin-top: -1rem;
+}
+.stamp-wrapper-4 {
+  position: relative;
+  left: 30rem;
+  top: 45rem;
+  z-index: 1 !important;
+  margin-left: -1rem;
+  margin-top: -1rem;
+}
+.stamp-wrapper-5 {
+  position: absolute;
+  top: 45rem;
+  z-index: 1 !important;
+  margin-left: -1rem;
+  margin-top: -1rem;
+}
+.stamp-wrapper-6 {
+  position: absolute;
+  top: 45rem;
+  left: 71rem;
+  z-index: 1 !important;
+  margin-left: -1rem;
+  margin-top: -1rem;
 }
 
 </style>

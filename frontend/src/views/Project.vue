@@ -70,8 +70,7 @@ import EasterEggStamp from '@/components/EasterEggStamp.vue';
 import generalMixin from '../mixins/general';
 import Config from '../config/general';
 
-const EASTER_EGG_ID = 1;
-const TOTAL_EASTER_EGGS = 6;
+const EASTER_EGG_ID = 3;
 
 export default {
   name: 'Project',
@@ -112,7 +111,6 @@ export default {
       displayEasterEgg: false,
       currentEasterEggDBId: null,
       easterEggData: [],
-      totalEasterEggsFound: 0,
       easterEggID: EASTER_EGG_ID,
     };
   },
@@ -227,9 +225,6 @@ export default {
   computed: {
     checklistDisabled() {
       return (this.devLink === '' || this.teamName === '') || this.checklistCounter !== this.checklistItems.length;
-    },
-    totalEasterEggs() {
-      return TOTAL_EASTER_EGGS;
     },
   },
 };
