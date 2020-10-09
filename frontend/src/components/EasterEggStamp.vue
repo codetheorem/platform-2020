@@ -9,7 +9,7 @@
                 <div class="postcard-list-container">
                     <div class="postcard-wrapper" v-for="(postcard, index) in easterEggData" :key="postcard.id">
                         <a :href="easterEggLinks[index]">
-                            <img v-if="postcard.discovered" :src="getPostcardImg(postcard)" class="postcard-img"/>
+                            <img v-if="postcard.discovered" :src="getPostcardImg(postcard, index)" class="postcard-img"/>
                             <div v-else class="postcard-placeholder"></div>
                         </a>
                     </div>
@@ -55,7 +55,8 @@ export default {
         4: "https://technica-brand-assets.s3.amazonaws.com/farida bedwei.png",
         5: "https://technica-brand-assets.s3.amazonaws.com/dijannafigueroa.png",
       },
-      baseClass: "stamp-wrapper-"
+      baseClass: "stamp-wrapper-",
+      postcard_paths: ["sofyako.png","wandamerced.png","ada lovelace.png","carolyn bertozzi.png","farida bedwei.png","dijannafigueroa.png"],
     };
   },
   async created() {
@@ -84,11 +85,7 @@ export default {
           formattedEEData.push(easterEggData[d]);
         });
         const easterEgg = formattedEEData.find((e) => e.easter_egg_id === this.easterEggID);
-        // DELETE
-        console.log('easter egg data: ', easterEggData);
-        console.log('egg ID: ', this.easterEggID);
-        console.log('egg data: ', easterEgg);
-        easterEgg.discovered = false;
+
         if (easterEgg) {
           if (easterEgg.discovered === false) {
             this.displayStamp = true;
@@ -106,9 +103,10 @@ export default {
         }
       }
     },
-    getPostcardImg(postcard) {
+    getPostcardImg(postcard, index) {
       const imgContext = require.context('../assets/postcards', false, /\.png$/);
-      return imgContext(`./postcard${postcard.easter_egg_id}.png`);
+      console.log(this.postcard_paths[index], index);
+      return imgContext(`./${this.postcard_paths[index]}`);
     },
     goBack() {
       this.$bvModal.hide('easterEggModal');
@@ -179,6 +177,7 @@ export default {
     justify-content: center !important;
 }
 
+/* custom positions for each stamp */
 
 /* .stamp-wrapper {
     position: absolute;

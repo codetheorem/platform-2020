@@ -138,35 +138,6 @@ export default {
     clickReadyButton() {
       this.readyButtonClicked = true;
     },
-    // async getEasterEggData() {
-    //   const env = this.getCurrentEnvironment();
-    //   const easterEggParams = {
-    //     user_id: this.getUserId(),
-    //   };
-    //   const easterEggData = await this.performGetRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'get_easter_eggs', easterEggParams);
-    //   console.log('easter egg: ', easterEggData);
-    //   if (easterEggData && easterEggData[0]) {
-    //     const formattedEEData = [];
-    //     Object.keys(easterEggData).forEach((d) => {
-    //       formattedEEData.push(easterEggData[d]);
-    //     });
-    //     const easterEgg = formattedEEData.find((e) => e.easter_egg_id === EASTER_EGG_ID);
-    //     if (easterEgg) {
-    //       if (easterEgg.discovered === false) {
-    //         this.displayEasterEgg = true;
-    //         this.currentEasterEggDBId = easterEgg.id;
-    //       }
-    //       this.easterEggData = formattedEEData;
-    //       let totalEEFound = 0;
-    //       this.easterEggData.forEach((d) => {
-    //         if (d.discovered) {
-    //           totalEEFound += 1;
-    //         }
-    //       });
-    //       this.totalEasterEggsFound = totalEEFound;
-    //     }
-    //   }
-    // },
     async getTeam() {
       const env = this.getCurrentEnvironment();
       const teamParams = {
@@ -210,17 +181,6 @@ export default {
         this.checklistCounter -= 1;
       }
     },
-    // viewEasterEgg() {
-    //   this.easterEggData.find((e) => e.easter_egg_id === EASTER_EGG_ID).discovered = true;
-    //   this.totalEasterEggsFound += 1;
-    //   this.displayEasterEgg = false;
-    //   const env = this.getCurrentEnvironment();
-    //   const params = {
-    //     user_id: this.getUserId(),
-    //     id: this.currentEasterEggDBId,
-    //   };
-    //   this.performPostRequest(Config[env].ADMIN_BASE_ENDPOINT, env, 'discover_easter_egg', params);
-    // },
   },
   computed: {
     checklistDisabled() {
