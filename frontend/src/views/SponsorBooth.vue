@@ -133,7 +133,7 @@ export default {
     } else {
       this.$router.push('/sponsors');
     }
-    console.log(this.sponsor)
+    console.log(this.sponsor);
     this.dataLoaded = true;
   },
   data() {

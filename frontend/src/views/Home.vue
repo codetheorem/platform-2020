@@ -24,7 +24,7 @@
           <a id="onboardingWalkthroughButton" href="#" class="home-link" @click="initiateOnboardingWalkthrough"><p>Learn About the Technica Platform</p></a>
           <a href="https://slack.com" target="_blank" class="home-link"><p>Join the Conversation on Slack</p></a>
           <router-link to="/resources"><a href="#" class="home-link"><p>Useful Resources for Your Hack</p></a></router-link>
-          <router-link to="/help"><a href="#" class="home-link"><p>Get In Touch With An Organizer</p></a></router-link>
+          <router-link to="/help"><a href="#" class="home-link"><p>Get In Touch With a Representative</p></a></router-link>
         </div>
         <div class="home-announcements">
           <h5>ANNOUNCEMENTS</h5>
@@ -63,12 +63,12 @@
 import Banner from '@/components/Banner.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ScheduleCarousel from '@/components/ScheduleCarousel.vue';
+import Vue from 'vue';
+import VueCountdown from '@chenfengyuan/vue-countdown';
 import Button from '../components/Button.vue';
 import generalMixin from '../mixins/general';
 import scheduleMixin from '../mixins/schedule';
 import Config from '../config/general';
-import Vue from 'vue';
-import VueCountdown from '@chenfengyuan/vue-countdown';
 
 Vue.component(VueCountdown.name, VueCountdown);
 
@@ -79,7 +79,7 @@ export default {
     ScheduleCarousel,
     Button,
     LoadingSpinner,
-    VueCountdown
+    VueCountdown,
   },
   mixins: [generalMixin, scheduleMixin],
   methods: {
@@ -103,9 +103,9 @@ export default {
     },
   },
   data() {
-    var now = new Date();
-    var deadline = new Date(Config.shared.COUNTDOWN_END_DATETIME);
-    
+    const now = new Date();
+    const deadline = new Date(Config.shared.COUNTDOWN_END_DATETIME);
+
     return {
       rawEvents: [],
       formattedEvents: {},
@@ -144,7 +144,6 @@ export default {
 
 <style scoped>
 
-
 .countdown {
 
   border-radius: 8px;
@@ -152,7 +151,7 @@ export default {
 
   font-family: 'Noto Sans', sans-serif;
   font-size: 20px;
-  
+
   padding: 20px;
   background: white;
 }
@@ -216,7 +215,6 @@ h2 {
     max-height: 40vw;
   }
 
-  
 }
 
 @media (max-height: 850px) {
@@ -274,6 +272,5 @@ h2 {
     right: 0;
   }
 }
-
 
 </style>
