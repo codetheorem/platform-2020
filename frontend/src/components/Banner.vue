@@ -2,14 +2,29 @@
   <div class="banner-wrapper">
     <img src="../assets/technica-logo-icon.png" style="width: 30px; height: 30px;">
     <span class="banner-text">{{ text }}</span>
+    <Button v-if="displayAcceptButton" text="Accept" @click="handleAcceptClick" size="sm" :outlineStyle="true"/>
   </div>
 </template>
 
 <script>
+import Button from '@/components/Button.vue';
+
 export default {
   name: 'Banner',
+  components: {
+    Button,
+  },
   props: {
     text: String,
+    displayAcceptButton: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    handleAcceptClick() {
+      this.$emit('accept');
+    },
   },
 };
 </script>
@@ -35,6 +50,10 @@ export default {
         margin-left: 1rem;
         margin-right: 1rem;
         margin-top: .25rem;
+    }
+
+    .btn-wrapper {
+      margin-bottom: 0px !important;
     }
 
     @media (max-width: 1400px) {

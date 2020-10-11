@@ -112,6 +112,13 @@ functions:
           path: get_team
           method: get
           cors: true
+  delete_team_invite:
+    handler: handler.delete_team_invite
+    events:
+      - http: 
+          path: delete_team_invite
+          method: post
+          cors: true
 plugins:
   - serverless-sentry
   - serverless-jest-plugin

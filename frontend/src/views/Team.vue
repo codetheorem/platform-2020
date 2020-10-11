@@ -25,7 +25,8 @@
             <span>You have no pending invites!</span>
           </b-row>
           <b-row v-if="!currentTeam && invites.length > 0" class="invite-list">
-            <Banner v-for="invite in invites" :text="'You have an invite for invite ' + invite.id" :key="invite.id"/>
+            {{ invites }}
+            <Banner v-for="invite in invites" :text="'You have a pending invite for the team: ' + invite.team_name" :key="invite.id" :displayAcceptButton="true" @accept="acceptInvite(invite)"/>
           </b-row>
           <b-row v-if="currentTeam" class="team-list-container">
             <div v-for="teamMember in currentTeam.members" :key="teamMember.id" class="team-list-item">
@@ -181,7 +182,7 @@ export default {
       Object.keys(invites).forEach((k) => {
         formattedInvites[k] = invites[k];
       });
-      // console.log(formattedInvites);
+
       if (formattedInvites.length > 0) {
         this.invites = formattedInvites;
       }
@@ -271,6 +272,22 @@ export default {
         link,
       };
       await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'add_zoom_link_for_team', params);
+    },
+    async acceptInvite(invite) {
+      this.teamCreationLoading = true;
+      const env = this.getCurrentEnvironment();
+      const joinTeamPostParams = {
+        team_id: invite.team_id,
+        user_id: this.getUserId(),
+      };
+      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'join_team', joinTeamPostParams);
+      const deleteInviteParams = {
+        id: invite.id,
+      };
+      await this.performPostRequest(Config[env].TEAMS_BASE_ENDPOINT, env, 'delete_team_invite', deleteInviteParams);
+      await this.getTeam();
+      this.$emit('teamMembershipChanged', true);
+      this.teamCreationLoading = false;
     },
   },
 };

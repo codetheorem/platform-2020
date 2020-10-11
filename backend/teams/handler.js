@@ -438,3 +438,33 @@ module.exports.get_team = withSentry(async (event) => {
     },
   };
 });
+
+module.exports.delete_team_invite = withSentry(async (event) => {
+  const body = JSON.parse(event.body);
+  const ddb = new AWS.DynamoDB.DocumentClient();
+
+  const deleteParams = {
+    TableName: process.env.INVITES_TABLE,
+    Key: {
+      id: body.id,
+    },
+  };
+
+  try {
+    // Call DynamoDB to delete the item from the table
+    const statusResult = await ddb.delete(deleteParams).promise();
+    return {
+      statusCode: 200,
+      body: JSON.stringify(statusResult),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: 'Error, id may not be present',
+    };
+  }
+});
