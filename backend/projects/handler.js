@@ -204,7 +204,7 @@ module.exports.create_mentorship_request = withSentry(async (request) => {
     { SecretId: process.env.SLACK_WEBHOOK_SECRET_NAME },
   ).promise();
   const webhookJSON = JSON.parse(SecretsManagerSlackKey.SecretString);
-  const webhookUrl = webhookJSON.PLATFORM_ACTVITY_SLACK_WEBHOOK;
+  const webhookUrl = webhookJSON.PLATFORM_MENTOR_SLACK_WEBHOOK;
   const webhook = new IncomingWebhook(webhookUrl);
 
   await webhook.send({
