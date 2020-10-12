@@ -45,9 +45,6 @@ export default {
   },
   mixins: [generalMixin],
   methods: {
-    sleep(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    },
     teamMembershipChanged(change) {
       this.userIsMemberOfTeam = change;
     },

@@ -115,7 +115,20 @@
           <h5>5) Set Up Your Slack Account </h5>
           <p class="description-text">We'll be using Slack to share announcements, chat with other hackers, and more! Click the link below to register for our slack workspace, and come back once you're finished.</p>
           <Button v-if="!slackLinkButtonClicked" size="lg" text="Join Slack" @click="joinSlack()" :outlineStyle="true"/>
-          <Button v-else size="lg" text="I've Joined Slack" @click="goHome()"/>
+          <Button v-else size="lg" text="I've Joined Slack" @click="goToSlackConfirmationScreen()"/>
+        </template>
+      </content-container>
+
+      <content-container v-if="displaySlackConfirmationScreen">
+        <template v-slot:title>
+          <h3>Register</h3>
+        </template>
+        <template v-slot:progress><ProgressCircles v-bind:full="4" v-bind:half="1" v-bind:empty="0" /></template>
+        <template v-slot:body>
+          <h5>5) Confirm Your Slack Account Email </h5>
+          <p class="description-text">Please confirm the email you just used to sign in to the Technica Slack workspace.</p>
+          <input type="email" class="form-control mx-auto" id="slackEmailInput" placeholder="e.g. hello@gotechnica.org" v-model="slackEmail">
+          <Button size="lg" text="Done" @click="goHome()"/>
         </template>
       </content-container>
     </div>
@@ -145,6 +158,7 @@ export default {
       displayHackerProfileDescriptionScreen: false,
       displaySlackSetupScreen: false,
       displayWaiverScreen: false,
+      displaySlackConfirmationScreen: false,
       displayIncompleteInfoMessage: false,
       emailIsInvalid: false,
       name: '',
@@ -153,6 +167,7 @@ export default {
       phone: '',
       pronouns: '',
       profile_text: '',
+      slackEmail: '',
       slackLinkButtonClicked: false,
       docusignLinkButtonClicked: false,
       enrollmentVerificationFileUpload: null,
@@ -210,6 +225,9 @@ export default {
       }
     },
     goHome() {
+      if (this.slackEmail !== '') {
+        this.setUserSlackId(this.slackEmail);
+      }
       this.$router.push('/');
       const env = this.getCurrentEnvironment();
       const newHackerProfile = this.profile;
@@ -235,6 +253,26 @@ export default {
     signWaiver() {
       window.open(Config.shared.DOCUSIGN_WAIVER_LINK, '_blank');
       this.docusignLinkButtonClicked = true;
+    },
+    goToSlackConfirmationScreen() {
+      if (this.emailFoundForSlack) {
+        this.goHome();
+      } else {
+        this.displaySlackSetupScreen = false;
+        this.displaySlackConfirmationScreen = true;
+      }
+    },
+    async initiateSlackPolling() {
+      let result = false;
+      while (!result && this.displaySlackSetupScreen) {
+        // eslint-disable-next-line no-await-in-loop
+        result = await this.setUserSlackId(this.email);
+        // eslint-disable-next-line no-await-in-loop
+        await this.sleep(500);
+      }
+      if (result) {
+        this.emailFoundForSlack = true;
+      }
     },
     async getUser() {
       const env = this.getCurrentEnvironment();
@@ -333,6 +371,10 @@ export default {
     padding-left: 20%;
     padding-right: 20%;
     margin-bottom: 1rem;
+  }
+
+  #slackEmailInput {
+    width: 70%;
   }
 
   @media (max-width: 1500px) {
