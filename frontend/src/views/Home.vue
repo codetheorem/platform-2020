@@ -30,7 +30,7 @@
           <h5>ANNOUNCEMENTS</h5>
           <div class="announcements-list">
             <Banner v-if="dataLoaded" v-for="announcement in announcements" :text="announcement.text" :key="announcement.id"/>
-            <LoadingSpinner v-else />
+            <LoadingSpinner v-if="!dataLoaded" />
           </div>
         </div>
       </div>
