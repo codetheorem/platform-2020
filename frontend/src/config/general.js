@@ -122,7 +122,7 @@ export default {
     TEAMS_BASE_ENDPOINT: 'https://1x6w9w47oi.execute-api.us-east-1.amazonaws.com',
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
-    SLACK_WORKSPACE_LINK: 'https://slack.com',
+    SLACK_WORKSPACE_LINK: 'https://join.slack.com/t/bluebonnethacks/shared_invite/zt-igvh77yo-FXAMTnVc~QnmLSCN08~lfA',
     PLATFORM_WALKTHROUGH_ID: '146643',
     ADMIN_BASE_ENDPOINT: 'https://5wtxswpjy0.execute-api.us-east-1.amazonaws.com',
     eventIds: {
