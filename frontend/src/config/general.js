@@ -7,7 +7,7 @@ export default {
     VIDEO_MONTAGE_LINK: 'https://getmontage.co/s/0JQ0',
     START_DATE: '2020-10-25',
     END_DATE: '2020-10-26',
-    PHOTO_BOOTH_LINK: 'https://app.virtualbooth.me/booth/4GmD3p6l',
+    PHOTO_BOOTH_LINK: 'https://bluebonnet.vbooth.me/booth/AG8pngGJ',
     COUNTDOWN_END_DATETIME: 'October 25, 2020 15:00:00',
     PRIZES_LINK: 'https://bluebonnet-hacks.devpost.com',
   },

@@ -8,7 +8,7 @@
           <div class="card">
             <div class="card-body">
                 <p>
-                  Our virtual photo booth allows for you and other hackers to take photos and videos that you can submit to our montage. Click the links below to open up the booth to take pictures and videos!
+                  Our virtual photo booth allows for you and other hackers to take photos that you can submit to our montage. Click the links below to open up the booth to take a picture and add fun stickers!
                 </p>
             </div>
           </div>
