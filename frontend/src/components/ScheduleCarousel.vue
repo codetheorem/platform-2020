@@ -9,7 +9,7 @@
                     </div>
                     <carousel :perPage="3" :navigationEnabled="true" paginationColor="#C4C4C4" paginationActiveColor="#8B8787" :mouseDrag="false" :centerMode="true" :loop="true">
                         <slide class="p-2" v-for="(event, index) in rawEvents" :key="event.id">
-                            <b-card :title="event.event_name" :img-src="`https://technica-brand-assets.s3.amazonaws.com/ScheduleCard${(index % 3) + 1}.png`" img-alt="Image" img-top tag="article">
+                            <b-card :title="event.event_name" :img-src="`https://technica-brand-assets.s3.amazonaws.com/merge.png`" img-alt="Image" img-top tag="article">
                                 <b-card-text>
                                     {{ getTimeDescriptionForEvent(event) }}
                                 </b-card-text>

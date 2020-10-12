@@ -76,7 +76,7 @@ export default {
   }
 
   .banner-action:hover {
-    color: #B377DB !important;
+    color: #1721DE !important;
     cursor: pointer;
   }
 

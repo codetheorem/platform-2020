@@ -181,7 +181,7 @@ h2 {
     height: fit-content;
     width: 80%;
     margin-top: 10%;
-    background: #DED2E5;
+    background: #90D8F6;
     border-radius: 8px;
     padding: 1rem;
 }
@@ -209,7 +209,7 @@ h2 {
     height: 100%;
     width: 80%;
     background: #FFFFFF;
-    border: 4px solid #B377DB;
+    border: 4px solid #1721DE;
     box-sizing: border-box;
     border-radius: 0px 0px 4px 4px;
 }
@@ -222,12 +222,12 @@ h2 {
     font-size: 2rem !important;
     padding: .5rem;
     line-height: 31px;
-    color: #B377DB;
+    color: #1721DE;
 }
 .mentor-request-list-body {
     height: 90%;
     width: 100%;
-    border-top: 4px solid #B377DB;
+    border-top: 4px solid #1721DE;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -264,14 +264,14 @@ h2 {
     margin-left: 5px;
 }
 .dropdown-item:hover{
-    color: #B377DB !important;
+    color: #1721DE !important;
     background: rgba(182, 161, 196, 0.25);
     border-radius: 4px;
     width: 93%;
 }
 @media (max-width: 1950px) {
   .dropdown-item:hover{
-    color: #B377DB !important;
+    color: #1721DE !important;
     background: rgba(182, 161, 196, 0.25);
     border-radius: 4px;
     width: 90%;
@@ -279,7 +279,7 @@ h2 {
 }
 @media (max-width: 1800px) {
   .dropdown-item:hover{
-    color: #B377DB !important;
+    color: #1721DE !important;
     background: rgba(182, 161, 196, 0.25);
     border-radius: 4px;
     width: 85%;

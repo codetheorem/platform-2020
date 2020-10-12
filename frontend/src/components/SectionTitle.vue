@@ -34,7 +34,7 @@ export default {
 
 /* horizontal line */
 .hl {
-  border-top: 6px solid #B377DB;
+  border-top: 6px solid #1721DE;
   width: 100%;
   height: 10px;
 }

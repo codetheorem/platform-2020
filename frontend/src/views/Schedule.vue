@@ -126,17 +126,17 @@ export default {
   font-weight: 300;
   font-size: 24px;
   margin-right: 3px;
-  border: 5px solid #DED2E6;
-  color: #B6A1C4;
+  border: 5px solid rgba(23, 33, 222, .5);
+  color: rgba(23, 33, 222, .5);
   cursor: pointer;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 }
 
 .schedule-list-title-item-selected {
-  border: 4px solid #B377DB;
+  border: 4px solid #1721DE;
   box-shadow: 0px 4px 4px rgba(179, 119, 219, 0.25);
-  color: #B377DB;
+  color: #1721DE;
 }
 
 .schedule-body {
@@ -210,18 +210,18 @@ export default {
 }
 
 .content-item-type-a {
-  color: #B377DB;
-  background: #DED2E5;
+  color: #1721DE;
+  background: #90D8F6;
 }
 
 .content-item-type-b {
-  background: #A88AA8;
+  background: #0099ff;
   border-radius: 8px;
   color: #FFFFFF;
 }
 
 .content-item-type-c {
-  background: #B377DB;
+  background: #1721DE;
   border-radius: 8px;
   color: #FFFFFF;
 }

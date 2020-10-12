@@ -1,6 +1,6 @@
 <template>
   <div class="banner-wrapper">
-    <img src="../assets/technica-logo-icon.png" style="width: 30px; height: 30px;">
+    <img src="../assets/Icon3.png" style="width: 32px; height: 32px;">
     <span class="banner-text">{{ text }}</span>
     <Button v-if="displayAcceptButton" text="Accept" @click="handleAcceptClick" size="sm" :outlineStyle="true"/>
   </div>

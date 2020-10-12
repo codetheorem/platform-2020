@@ -1,4 +1,4 @@
-const eventBrandingTypes = [{ class: 'content-item-type-a', emptyStarImgName: 'star_purple_empty', filledStarImgName: 'star_purple_filled' }, { class: 'content-item-type-b', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }, { class: 'content-item-type-c', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }];
+const eventBrandingTypes = [{ class: 'content-item-type-b', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }, { class: 'content-item-type-c', emptyStarImgName: 'star_white_empty', filledStarImgName: 'star_white_filled' }];
 
 export default {
   methods: {
@@ -54,7 +54,7 @@ export default {
     },
     processRawEvents() {
       for (let i = 0; i < this.rawEvents.length; i += 1) {
-        this.rawEvents[i].branding = eventBrandingTypes[i % 3];
+        this.rawEvents[i].branding = eventBrandingTypes[i % 2];
         this.rawEvents[i].addedToUserList = false;
         if (this.eventsInUserList.map((event) => event.event_id).includes(this.rawEvents[i].id)) {
           this.rawEvents[i].addedToUserList = true;

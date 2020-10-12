@@ -3,7 +3,7 @@
       <div class="logo-nav">
         <router-link to="/">
           <a class="navbar-brand" href="#">
-            <img alt="Vue logo" src="../assets/technica-logo.svg" class="img-responsive" />
+            <img alt="Vue logo" src="../assets/Logo-Secondary.png" class="img-responsive" style="height: 50px; width: 246px;"/>
           </a>
         </router-link>
       </div>

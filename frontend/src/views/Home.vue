@@ -53,9 +53,6 @@
           <Button text="Attend" @click="attendEvent()" size="sm"/>
       </template>
     </b-modal>
-    <div class="cloud-wrapper animate__animated animate__fadeInUp delay3">
-      <img src="@/assets/home_page_bg.svg" alt="Two technica hackers getting to know each other" class="cloud-image">
-    </div>
   </div>
 </template>
 
@@ -169,7 +166,7 @@ h2 {
 
 .home-links {
   width: 80%;
-  background: #DED2E5;
+  background: #90D8F6;
   border-radius: 8px;
   margin-right: 3rem;
   padding: 1rem;

@@ -16,7 +16,7 @@
             <div>
                 <Button size="lg" text="Slack Chat" @click="joinSlack()" class="create-team-button"/>
             </div>
-            <Button size="lg" text="Join Video Call" @click="joinZoom()" class="create-team-button" style="background: #EA668E !important; border: #EA668E !important;"/>
+            <Button size="lg" text="Join Video Call" @click="joinZoom()" class="create-team-button" style="background: #0099ff !important; border: #0099ff !important;"/>
         </div>
       </div>
       <LoadingSpinner v-else />
@@ -104,7 +104,7 @@ h2 {
 
 .member-list-item {
     width: 100%;
-    border: 2px solid #A88AA8;
+    border: 2px solid #1721DE;
     box-sizing: border-box;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
     border-radius: 4px;

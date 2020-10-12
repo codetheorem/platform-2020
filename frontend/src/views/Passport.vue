@@ -163,7 +163,7 @@ h2 {
     font-style: normal;
     font-weight: 600;
     font-size: 96px;
-    color: #B377DB;
+    color: #1721DE;
     margin-right: 1rem;
 }
 
@@ -241,7 +241,7 @@ h2 {
 }
 
 .activity-completed {
-    background: #B377DB;
+    background: #1721DE;
 }
 
 @media (max-width: 1300px) {

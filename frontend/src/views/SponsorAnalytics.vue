@@ -252,7 +252,7 @@ export default {
   text-align: center;
   color: #000000;
   opacity: 0.8;
-  border-bottom: 4px solid #B377DB;
+  border-bottom: 4px solid #1721DE;
   width: fit-content;
   margin-bottom: .5rem;
   margin-top: 3rem;
@@ -318,7 +318,7 @@ export default {
   font-weight: 600;
   font-size: 18px;
   line-height: 22px;
-  color: #EA668E;
+  color: #0099ff;
   margin-bottom: .5rem;
 }
 
