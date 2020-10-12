@@ -19,9 +19,6 @@
         <a :href="photoBoothLink" target="_blank" style="margin-right: 1rem;">
           <Button size="lg" text="Take a Photo"/>
         </a>
-        <a :href="videoMontageLink" target="_blank">
-          <Button size="lg" text="Record a Video"/>
-        </a>
       </div>
     </div>
   </div>

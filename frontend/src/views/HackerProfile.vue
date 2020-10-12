@@ -31,7 +31,7 @@
                 <h5 class="profile-footer-box-title">Our Hack:</h5>
                 <p v-if="profile.project_description" class="profile-footer-box-content">{{ profile.project_description }}</p>
                 <p v-if="profile.devpost" class="profile-footer-box-content"><a :href="profile.devpost" target="_blank">Link to Project <img src="../assets/link.svg" style="margin-left: .5rem;"></a></p>
-                <p v-if="!profile.project_description">Add information about your Technica project by clicking the edit button below!</p>
+                <p v-if="!profile.project_description">Add information about your hackathon project by clicking the edit button below!</p>
             </div>
         </div>
         <div class="profile-bottom">
@@ -73,7 +73,7 @@
           </form>
         </div>
         <div class="modal-half">
-          <h5>3) Academics</h5>
+          <h5>2) Academics</h5>
           <form @submit.prevent="goToProfile">
             <div class="form-group">
               <div class="input-wrapper">
@@ -94,7 +94,7 @@
               </div>
             </div>
           </form>
-          <h5>4) Hack</h5>
+          <h5>3) Hack</h5>
           <form @submit.prevent="goToProfile">
             <div class="form-group">
               <div class="input-wrapper">
@@ -196,7 +196,7 @@ h2 {
 
 .member-list-item {
     width: 100%;
-    border: 2px solid #A88AA8;
+    border: 2px solid #0099ff;
     box-sizing: border-box;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
@@ -204,7 +204,7 @@ h2 {
 }
 
 .member-list-photo {
-    background: #C4C4C4;
+    background: #0099ff;
     border-radius: 8px;
     width: 13rem;
     height: 13rem;
@@ -253,7 +253,7 @@ h2 {
     padding-top: 1rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    border: 2px solid #B6A1C4;
+    border: 2px solid #0099ff;
     box-sizing: border-box;
     border-radius: 8px;
     flex: 0 0 30%;
@@ -261,7 +261,7 @@ h2 {
 }
 
 .profile-footer-box-title {
-    color: #B6A1C4;
+    color: #0099ff;
     font-family: DIN Pro;
     font-style: normal;
     font-weight: bold;

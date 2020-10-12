@@ -9,7 +9,7 @@
               <div class="card" style="margin-bottom: 2rem;">
                 <div class="card-body">
                     <p>
-                      If you are ready to submit your Technica Hack, please click on the button below! <b>Only one hacker needs to submit per team.</b>
+                      If you are ready to submit your hack, please click on the button below! <b>Only one hacker needs to submit per team.</b>
                     </p>
                     <p>
                       If the button is grayed out, another member of your team has already submitted your project!
@@ -21,14 +21,14 @@
         </div>
 
         <div v-else>
-            <p>In order to submit your project and get credit for your hack, you'll need to complete a few steps. First, submit your hack on Devpost, then sign up for an expo slot to present your hack to the judges, and finally submit your hack using the fields below. Click "Submit My Project" when you're done. <b>If you need to edit your submission after submitting, please reach out to the Technica organizing team.</b></p>
+            <p>In order to submit your project and get credit for your hack, you'll need to complete a few steps. First, submit your hack on Devpost, then sign up for an expo slot to present your hack to the judges, and finally submit your hack using the fields below. Click "Submit My Project" when you're done. <b>If you need to edit your submission after submitting, please reach out to the Bluebonnet organizing team.</b></p>
             <h4>I have...</h4>
             <div class="content-container row-xl-6">
               <div class="checklist-body">
                 <div v-for="checklistItem in checklistItems" :key="checklistItem.title" class="checklist-item">
                   <checklist-item :isChecked="checklistItem.checked" :id="checklistItem.id" @click="toggleCheckboxChecked">
                       <template v-slot:text>
-                          <label>{{ checklistItem.title }} <a :href="checklistItem.link" target="_blank" class="project-checklist-link">{{ checklistItem.linkText }}</a></label>
+                          <label>{{ checklistItem.displayTitle || checklistItem.title }} <a :href="checklistItem.link" target="_blank" class="project-checklist-link">{{ checklistItem.linkText }}</a></label>
                       </template>
                   </checklist-item>
                 </div>
@@ -52,7 +52,7 @@
       </div>
       <b-modal id="projectSubmissionModal" title="Congratulations!" size="lg" centered>
         <p>Great work! We've received your project submission.</p>
-        <p>If you have any questions, don't hesitate to reach out to the Technica organizing team.</p>
+        <p>If you have any questions, don't hesitate to reach out to the Bluebonnet organizing team.</p>
         <template v-slot:modal-footer>
             <Button text="Close" @click="closeModal()" size="sm"/>
         </template>
@@ -90,15 +90,16 @@ export default {
       checklistItems: [
         {
           title: 'submitted my hack on Devpost:',
-          link: 'https://gotechnica.org/submit',
-          linkText: 'gotechnica.org/submit',
+          link: 'https://bluebonnet-hacks.devpost.com',
+          linkText: 'bluebonnet-hacks.devpost.com',
         },
         {
           title: 'signed up for an expo slot to show off my hack:',
-          link: 'https://gotechnica.org/expo',
-          linkText: 'gotechnica.org/expo',
+          link: 'https://www.bluebonnetdata.org/',
+          linkText: 'bluebonnetdata.org/expo',
         },
         {
+          displayTitle: 'submitted my hack to Bluebonnet below:',
           title: 'submitted my hack to Technica below:',
           link: '',
         },

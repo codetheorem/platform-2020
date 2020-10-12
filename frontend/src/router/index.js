@@ -46,7 +46,7 @@ const routes = [
     name: 'Prizes',
     displayInNavBar: false,
     beforeEnter() {
-      window.open(Config.dev.PRIZES_LINK, '_blank');
+      window.open(Config.shared.PRIZES_LINK, '_blank');
     },
   },
   {
@@ -126,7 +126,7 @@ const routes = [
     name: 'Slack',
     displayInNavBar: false,
     beforeEnter() {
-      window.open(Config.dev.SLACK_WORKSPACE_LINK, '_blank');
+      window.open(Config.shared.SLACK_WORKSPACE_LINK, '_blank');
     },
   },
   {

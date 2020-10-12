@@ -11,8 +11,6 @@
                   If you have platform related questions, you are in the right place!
                 </p>
                 <p>
-                  For frequently asked questions, check the <a href="https://slack.com" target="_blank" class="help-links">Technica's Slack Workspace</a>!
-                <p>
                   For coding/project questions, check out our <router-link to="/request-mentor"><a href="#" class="help-links">Request a Mentor feature</a></router-link>!
                 </p>
             </div>
@@ -26,11 +24,8 @@
           <p class="btn filler pb-0" disabled="true"><b>Need help?</b></p>
         </div>
         <div class="col-md-7 text-md-left">
-          <a :href="helpDeskLink" target="_blank">
-            <Button size="lg" text="Talk to an organizer over video"/>
-          </a><br>
           <a onclick="Intercom('show')">
-            <Button size="lg" text="Or, chat with an organizer"/>
+            <Button size="lg" text="Chat with an organizer"/>
           </a>
         </div>
       </div>

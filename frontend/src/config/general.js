@@ -9,6 +9,7 @@ export default {
     END_DATE: '2020-10-26',
     PHOTO_BOOTH_LINK: 'https://app.virtualbooth.me/booth/4GmD3p6l',
     COUNTDOWN_END_DATETIME: 'October 25, 2020 15:00:00',
+    PRIZES_LINK: 'https://bluebonnet-hacks.devpost.com',
   },
   dev: {
     SCHEDULE_BASE_ENDPOINT: 'https://dxz39cp5d0.execute-api.us-east-1.amazonaws.com',
