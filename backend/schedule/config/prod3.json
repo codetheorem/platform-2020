@@ -1,0 +1,12 @@
+{
+    "SENTRY_DSN": "https://0e393a6ba49641debefd3774cb69ed2c@o414418.ingest.sentry.io/5303942",
+    "SCHEDULE_TABLE": "platform-prod3-schedule",
+    "USER_EVENTS_TABLE": "platform-prod3-user-events",
+    "SHORTLINKS_TABLE": "platform-prod3-shortlinks",
+    "SHORTLINK_CLICKS_TABLE": "platform-prod3-shortlink-clicks",
+    "ZOOM_API_EMAIL_ACCOUNT": "hugoburbelo@gmail.com",
+    "ZOOM_LINK_TABLE": "platform-prod3-meetings",
+    "ZOOM_API_KEY_SECRET_NAME": "ZOOM_TESTING_API_KEY",
+    "PLATFORM_BASE_URL": "https://platform.bluebonnetdata.org",
+    "ZOOM_API_KEYS_TABLE": "platform-prod3-zoom-api-keys"
+}

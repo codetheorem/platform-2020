@@ -26,9 +26,10 @@ const TABLE_LIST = [
   { name: 'easter-eggs', keyName: 'id' },
   { name: 'sponsor-booths', keyName: 'id' },
   { name: 'announcements', keyName: 'id' },
+  { name: 'mentorship-requests', keyName: 'id' }
 ];
 
-const STAGE_LIST = ['prod', 'stage', 'dev', 'test'];
+const STAGE_LIST = ['prod3', 'prod', 'stage', 'dev', 'test'];
 
 const createTable = (tableName, keyName, stage) => {
   const fullTableName = `platform-${stage}-${tableName}`;
