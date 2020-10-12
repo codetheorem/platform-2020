@@ -6,7 +6,7 @@
           <h3>Login</h3>
         </template>
         <template v-slot:body>
-          <p class="description-text">Instead of using a password, enter your email so Technica can send you a magic link to sign in.</p>
+          <p class="description-text">Instead of using a password, enter your email so Bluebonnet can send you a magic link to sign in.</p>
           <p v-if="emailNotFound && !emailInvalid" class="text-error">We could not find your email in our records. For further assistance, please contact our support team.</p>
           <p v-if="emailInvalid" class="text-error">Please enter a valid email address.</p>
           <form @submit.prevent="sendMagicLink">
@@ -29,7 +29,7 @@
           <h3>Check Your Email...</h3>
         </template>
         <template v-slot:body>
-          <p class="description-text" style="margin-bottom: 3rem">We sent an email to <b>{{ userEmail }}</b>! It has a magic link to help sign you in to Technica.</p>
+          <p class="description-text" style="margin-bottom: 3rem">We sent an email to <b>{{ userEmail }}</b>! It has a magic link to help sign you in to the platform.</p>
           <img alt="Mail icon" src="../assets/mail-icon.svg"  height="120">
         </template>
       </content-container>
@@ -104,7 +104,7 @@ export default {
 <style scoped>
   .page-container {
     /* background: conic-gradient(from 212.03deg at 50% 33.82%,rgb(255,107,152, .6) -123.4deg, rgb(182,161,196, .6) 11.75deg, rgb(35,216,216, .6) 79.77deg, rgb(255,107,152, .6) 236.6deg, rgb(182,161,196, .6) 371.75deg); */
-    background: linear-gradient(0.4turn,rgb(255,107,152, .6),rgb(182,161,196, .6), rgb(35,216,216, .6));
+    background: linear-gradient(to bottom, rgba(23, 33, 222, .25) 0%,rgba(0, 153, 255, .25) 33%, rgba(144, 216, 246, .25) 66%,rgba(23, 33, 222, .25) 100%);
     backdrop-filter: blur(40px);
     width: 100vw;
     height: 100vh;
@@ -124,7 +124,7 @@ export default {
   }
 
   .description-text {
-    color: #A88AA8;
+    color: #1721DE;
   }
 
   .login-footer {

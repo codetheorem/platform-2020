@@ -50,7 +50,7 @@ export default {
 
 <style scoped>
   .page-container {
-    background: conic-gradient(from 212.03deg at 50% 33.82%,rgb(255,107,152, .6) -123.4deg, rgb(182,161,196, .6) 11.75deg, rgb(35,216,216, .6) 79.77deg, rgb(255,107,152, .6) 236.6deg, rgb(182,161,196, .6) 371.75deg);
+    background: linear-gradient(to bottom, rgba(23, 33, 222, .25) 0%,rgba(0, 153, 255, .25) 33%, rgba(144, 216, 246, .25) 66%,rgba(23, 33, 222, .25) 100%);
     backdrop-filter: blur(40px);
     width: 100vw;
     height: 100vh;

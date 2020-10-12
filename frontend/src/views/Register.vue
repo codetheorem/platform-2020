@@ -5,13 +5,11 @@
         <template v-slot:title>
           <h3>Welcome!</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="0" v-bind:empty="5" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="0" v-bind:empty="3" /></template>
         <template v-slot:body>
-          <p class="description-text">Welcome to Technica! To set up your account, you'll have to go through a few steps:</p>
+          <p class="description-text">Welcome to Bluebonnet Hacks! To set up your account, you'll have to go through a few steps:</p>
           <ol class="step-list">
             <li>Update Information</li>
-            <li>Verify You're a Student</li>
-            <li>Sign the Event Waiver</li>
             <li>Create a Hacker Profile (Optional)</li>
             <li>Set Up Your Slack Account</li>
           </ol>
@@ -24,7 +22,7 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="1" v-bind:empty="4" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="0" v-bind:half="1" v-bind:empty="2" /></template>
         <template v-slot:body>
           <h5>1) A Little About You</h5>
           <form @submit.prevent="goToProfile">
@@ -39,7 +37,7 @@
               </div>
               <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My Email<sup>*</sup></label>
-                <input type="email" class="form-control mx-auto" id="emailInput" placeholder="hello@gotechnica.org" v-model="email">
+                <input type="email" class="form-control mx-auto" id="emailInput" placeholder="hello@bluebonnet.org" v-model="email">
               </div>
               <div class="input-wrapper">
                 <label for="exampleInputEmail1" class="input-label">My Phone Number<sup>*</sup></label>
@@ -95,9 +93,9 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="3" v-bind:half="1" v-bind:empty="1" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="1" v-bind:half="1" v-bind:empty="1" /></template>
         <template v-slot:body>
-          <h5>4) Your Hacker Profile</h5>
+          <h5>2) Your Hacker Profile</h5>
           <p class="description-text">Your hacker profile is an optional way for you to share more information about yourselves with the event sponsors. Describe yourself in 1-2 sentences:</p>
           <form>
             <textarea id="exampleFormControlTextarea1" rows="4" class="form-control hacker-profile-text" v-model="profile_text" placeholder="E.g. I'm a computer science student at the University of Maryland who loves to code!"></textarea>
@@ -110,9 +108,9 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="4" v-bind:half="1" v-bind:empty="0" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="2" v-bind:half="1" v-bind:empty="0" /></template>
         <template v-slot:body>
-          <h5>5) Set Up Your Slack Account </h5>
+          <h5>3) Set Up Your Slack Account </h5>
           <p class="description-text">We'll be using Slack to share announcements, chat with other hackers, and more! Click the link below to register for our slack workspace, and come back once you're finished.</p>
           <Button v-if="!slackLinkButtonClicked" size="lg" text="Join Slack" @click="joinSlack()" :outlineStyle="true"/>
           <Button v-else size="lg" text="I've Joined Slack" @click="goToSlackConfirmationScreen()"/>
@@ -123,11 +121,11 @@
         <template v-slot:title>
           <h3>Register</h3>
         </template>
-        <template v-slot:progress><ProgressCircles v-bind:full="4" v-bind:half="1" v-bind:empty="0" /></template>
+        <template v-slot:progress><ProgressCircles v-bind:full="2" v-bind:half="1" v-bind:empty="0" /></template>
         <template v-slot:body>
           <h5>5) Confirm Your Slack Account Email </h5>
-          <p class="description-text">Please confirm the email you just used to sign in to the Technica Slack workspace.</p>
-          <input type="email" class="form-control mx-auto" id="slackEmailInput" placeholder="e.g. hello@gotechnica.org" v-model="slackEmail">
+          <p class="description-text">Please confirm the email you just used to sign in to the Bluebonnet Slack workspace.</p>
+          <input type="email" class="form-control mx-auto" id="slackEmailInput" placeholder="e.g. hello@goBluebonnet.org" v-model="slackEmail">
           <Button size="lg" text="Done" @click="goHome()"/>
         </template>
       </content-container>
@@ -211,7 +209,7 @@ export default {
           ...profile,
         };
         this.performPostRequest(this.getEnvVariable('USERS_BASE_ENDPOINT'), 'update_user', postParams);
-        this.displayEnrollmentVerificationScreen = true;
+        this.displayHackerProfileDescriptionScreen = true;
         this.displayProfileInfoScreen = false;
         this.setUserNameCookie(this.name.split(' ')[0]);
       } else if (!this.profileInformationCompleted) {
@@ -311,7 +309,7 @@ export default {
 
 <style scoped>
   .page-container {
-    background: conic-gradient(from 212.03deg at 50% 33.82%,rgb(255,107,152, .6) -123.4deg, rgb(182,161,196, .6) 11.75deg, rgb(35,216,216, .6) 79.77deg, rgb(255,107,152, .6) 236.6deg, rgb(182,161,196, .6) 371.75deg);
+    background: linear-gradient(to bottom, rgba(23, 33, 222, .25) 0%,rgba(0, 153, 255, .25) 33%, rgba(144, 216, 246, .25) 66%,rgba(23, 33, 222, .25) 100%);
     backdrop-filter: blur(40px);
     width: 100vw;
     height: 100vh;
@@ -325,7 +323,7 @@ export default {
   }
 
   .description-text {
-    color: #A88AA8;
+    color: #1721DE;
   }
 
   .text-error {

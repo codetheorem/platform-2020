@@ -38,18 +38,18 @@ export default {
   height: 0.75rem;
   width: 0.75rem;
   border-radius: 50%;
-  border: 1px solid rgb(168, 138, 168);
+  border: 1px solid #1721DE;
   display: inline-block;
   margin-left: 0.1rem;
   margin-right: 0.1rem
 }
 
 .done {
-  background-color: rgba(168, 138, 168, 1);
+  background-color: #1721DE;
 }
 
 .doing {
-  background-color: rgba(168, 138, 168, 0.5);
+  background-color: rgba(23, 33, 222, .5);
 }
 
 .to-do {
