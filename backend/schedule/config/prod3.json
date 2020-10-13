@@ -7,6 +7,6 @@
     "ZOOM_API_EMAIL_ACCOUNT": "hugoburbelo@gmail.com",
     "ZOOM_LINK_TABLE": "platform-prod3-meetings",
     "ZOOM_API_KEY_SECRET_NAME": "ZOOM_TESTING_API_KEY",
-    "PLATFORM_BASE_URL": "https://platform.bluebonnetdata.org",
+    "PLATFORM_BASE_URL": "https://d1jy8h471hjwid.cloudfront.net",
     "ZOOM_API_KEYS_TABLE": "platform-prod3-zoom-api-keys"
 }

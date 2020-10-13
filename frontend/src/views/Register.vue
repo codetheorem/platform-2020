@@ -123,7 +123,7 @@
         </template>
         <template v-slot:progress><ProgressCircles v-bind:full="2" v-bind:half="1" v-bind:empty="0" /></template>
         <template v-slot:body>
-          <h5>5) Confirm Your Slack Account Email </h5>
+          <h5>4) Confirm Your Slack Account Email </h5>
           <p class="description-text">Please confirm the email you just used to sign in to the Bluebonnet Slack workspace.</p>
           <input type="email" class="form-control mx-auto" id="slackEmailInput" placeholder="e.g. hello@goBluebonnet.org" v-model="slackEmail">
           <Button size="lg" text="Done" @click="goHome()"/>

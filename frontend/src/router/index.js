@@ -231,10 +231,6 @@ const routes = [
         path: '/resources',
         name: 'Hacker Resources',
       },
-      {
-        path: '/faq',
-        name: 'FAQ',
-      },
     ],
   },
   {

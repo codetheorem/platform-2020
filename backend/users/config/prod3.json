@@ -4,7 +4,7 @@
     "USERS_TABLE": "platform-prod3-users",
     "INVITES_TABLE": "platform-prod3-invites",
     "INVITE_TEMPLATE_ID": "d-cb07bdf44d114a67884bbb1ce3af2a5d",
-    "BASE_INVITE_URL": "http://platform.gotechnica.org/authenticate",
+    "BASE_INVITE_URL": "https://d1jy8h471hjwid.cloudfront.net/authenticate",
     "SENDGRID_SECRET_NAME": "SENDGRID_API_KEY",
     "REGISTRATION_REFERRAL_TABLE": "platform-prod3-referrals",
     "REGISTRATION_TEMPLATE_ID": "d-cb07bdf44d114a67884bbb1ce3af2a5d",

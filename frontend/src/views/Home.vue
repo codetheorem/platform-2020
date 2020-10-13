@@ -22,7 +22,7 @@
           <h5>HELPFUL LINKS</h5>
           <p>Welcome to the Bluebonnet platform! We're incredibly excited to host you and the entire Bluebonnet community for an amazing weekend of learning, innovation, and fun.</p>
           <a id="onboardingWalkthroughButton" href="#" class="home-link" @click="initiateOnboardingWalkthrough"><p>Learn About the Bluebonnet Platform</p></a>
-          <a href="https://slack.com" target="_blank" class="home-link"><p>Join the Conversation on Slack</p></a>
+          <a href="https://join.slack.com/t/bluebonnethacks/shared_invite/zt-igvh77yo-FXAMTnVc~QnmLSCN08~lfA" target="_blank" class="home-link"><p>Join the Conversation on Slack</p></a>
           <router-link to="/resources"><a href="#" class="home-link"><p>Useful Resources for Your Hack</p></a></router-link>
           <router-link to="/help"><a href="#" class="home-link"><p>Get In Touch With a Representative</p></a></router-link>
         </div>

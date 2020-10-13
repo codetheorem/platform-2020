@@ -103,7 +103,7 @@
               </div>
               <form>
                 <label for="exampleFormControlTextarea1" class="input-label">2 Sentence Description of Project</label>
-                <textarea id="exampleFormControlTextarea1" rows="3" class="form-control hacker-profile-text" v-model="profile.project_description" placeholder="e.g. For my Technica project, we designed a cool website."></textarea>
+                <textarea id="exampleFormControlTextarea1" rows="3" class="form-control hacker-profile-text" v-model="profile.project_description" placeholder="e.g. For my hackathon project, we designed a cool website."></textarea>
               </form>
             </div>
           </form>

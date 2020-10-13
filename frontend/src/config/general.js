@@ -2,7 +2,7 @@ export default {
   shared: {
     SAMPLE_ZOOM_LINK: 'https://us04web.zoom.us/j/9191971697?pwd=U1lPSUlJeElXQldCTkJwSnJOYjB4dz09',
     LIVESTREAM_LINK: 'https://www.youtube.com/embed/5jPwFWIvBzk',
-    SLACK_INVITE_LINK: 'https://join.slack.com/t/technica2020/shared_invite/zt-higqqg9d-njO1xc8o__xAKhLyId_kvw',
+    SLACK_INVITE_LINK: 'https://join.slack.com/t/bluebonnethacks/shared_invite/zt-igvh77yo-FXAMTnVc~QnmLSCN08~lfA',
     DOCUSIGN_WAIVER_LINK: 'https://docusign.com',
     VIDEO_MONTAGE_LINK: 'https://getmontage.co/s/0JQ0',
     START_DATE: '2020-10-25',
@@ -123,7 +123,8 @@ export default {
     PRIZES_LINK: 'https://technica2019.devpost.com/#prizes',
     HACKER_RESOURCES_LINK: 'https://docs.google.com/document/d/1jUgCjvzZqAYbus2QMwfcaubS67R9mcfzfOPzEKpf4OY/edit?usp=sharing',
     SLACK_WORKSPACE_LINK: 'https://join.slack.com/t/bluebonnethacks/shared_invite/zt-igvh77yo-FXAMTnVc~QnmLSCN08~lfA',
-    PLATFORM_WALKTHROUGH_ID: '146643',
+    SLACK_INVITE_LINK: 'https://join.slack.com/t/bluebonnethacks/shared_invite/zt-igvh77yo-FXAMTnVc~QnmLSCN08~lfA',
+    PLATFORM_WALKTHROUGH_ID: '164841',
     ADMIN_BASE_ENDPOINT: 'https://5wtxswpjy0.execute-api.us-east-1.amazonaws.com',
     eventIds: {
       minecraft1: 'cc81c212-8d67-4ea2-b994-43bd89198484',

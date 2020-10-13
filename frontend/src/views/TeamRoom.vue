@@ -13,9 +13,6 @@
             </div>
         </div>
         <div>
-            <div>
-                <Button size="lg" text="Slack Chat" @click="joinSlack()" class="create-team-button"/>
-            </div>
             <Button size="lg" text="Join Video Call" @click="joinZoom()" class="create-team-button" style="background: #0099ff !important; border: #0099ff !important;"/>
         </div>
       </div>
